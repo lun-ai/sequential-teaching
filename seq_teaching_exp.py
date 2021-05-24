@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2021.1.4),
-    on Mon 24 May 2021 16:54:57 BST
+    on Mon 24 May 2021 21:30:27 BST
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -89,6 +89,19 @@ gen_info = visual.TextStim(win=win, name='gen_info',
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
+brf_btn = visual.ButtonStim(win, 
+   text='Next', font='Arvo',
+   pos=(0, 0),
+   letterHeight=0.05,
+   size=[2,1], borderWidth=0.0,
+   fillColor='darkgrey', borderColor=None,
+   color='white', colorSpace='rgb',
+   opacity=None,
+   bold=True, italic=False,
+   padding=None,
+   anchor='bottom-right',
+   name='brf_btn')
+brf_btn.buttonClock = core.Clock()
 
 # Initialize components for Routine "Raven_Matrices"
 Raven_MatricesClock = core.Clock()
@@ -250,7 +263,7 @@ continueRoutine = True
 routineTimer.add(10.000000)
 # update component parameters for each repeat
 # keep track of which components have finished
-BriefingComponents = [gen_info]
+BriefingComponents = [gen_info, brf_btn]
 for thisComponent in BriefingComponents:
     thisComponent.tStart = None
     thisComponent.tStop = None
@@ -290,6 +303,40 @@ while continueRoutine and routineTimer.getTime() > 0:
             win.timeOnFlip(gen_info, 'tStopRefresh')  # time at next scr refresh
             gen_info.setAutoDraw(False)
     
+    # *brf_btn* updates
+    if brf_btn.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        brf_btn.frameNStart = frameN  # exact frame index
+        brf_btn.tStart = t  # local t and not account for scr refresh
+        brf_btn.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(brf_btn, 'tStartRefresh')  # time at next scr refresh
+        brf_btn.setAutoDraw(True)
+    if brf_btn.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > brf_btn.tStartRefresh + 10.0-frameTolerance:
+            # keep track of stop time/frame for later
+            brf_btn.tStop = t  # not accounting for scr refresh
+            brf_btn.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(brf_btn, 'tStopRefresh')  # time at next scr refresh
+            brf_btn.setAutoDraw(False)
+    if brf_btn.status == STARTED:
+        # check whether brf_btn has been pressed
+        if brf_btn.isClicked:
+            if not brf_btn.wasClicked:
+                brf_btn.timesOn.append(brf_btn.buttonClock.getTime()) # store time of first click
+                brf_btn.timesOff.append(brf_btn.buttonClock.getTime()) # store time clicked until
+            else:
+                brf_btn.timesOff[-1] = brf_btn.buttonClock.getTime() # update time clicked until
+            if not brf_btn.wasClicked:
+                continueRoutine = False  # end routine when brf_btn is clicked
+                None
+            brf_btn.wasClicked = True  # if brf_btn is still clicked next frame, it is not a new click
+        else:
+            brf_btn.wasClicked = False  # if brf_btn is clicked next frame, it is a new click
+    else:
+        brf_btn.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
+        brf_btn.wasClicked = False  # if brf_btn is clicked next frame, it is a new click
+    
     # check for quit (typically the Esc key)
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
         core.quit()
@@ -313,6 +360,15 @@ for thisComponent in BriefingComponents:
         thisComponent.setAutoDraw(False)
 thisExp.addData('gen_info.started', gen_info.tStartRefresh)
 thisExp.addData('gen_info.stopped', gen_info.tStopRefresh)
+thisExp.addData('brf_btn.started', brf_btn.tStartRefresh)
+thisExp.addData('brf_btn.stopped', brf_btn.tStopRefresh)
+thisExp.addData('brf_btn.numClicks', brf_btn.numClicks)
+if brf_btn.numClicks:
+   thisExp.addData('brf_btn.timesOn', brf_btn.timesOn)
+   thisExp.addData('brf_btn.timesOff', brf_btn.timesOff)
+else:
+   thisExp.addData('brf_btn.timesOn', "")
+   thisExp.addData('brf_btn.timesOff', "")
 
 # ------Prepare to start Routine "Raven_Matrices"-------
 continueRoutine = True

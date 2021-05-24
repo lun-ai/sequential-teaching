@@ -6,7 +6,8 @@ dependencies:
 - psychopy
 - pip
 - pip:
-  - psychtoolbox==3.0.16
+# need to manually install psychotoolbox to prevent compatiability issues
+#  - psychtoolbox==3.0.16
   - pygame
   - pyo
   - pyparallel; platform_system != "Windows"
