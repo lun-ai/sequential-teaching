@@ -1,0 +1,78 @@
+compute answers done - id:1; No. answers:1
+compute answers done - id:2; No. answers:1
+compute answers done - id:3; No. answers:1
+compute answers done - id:4; No. answers:1
+compute answers done - id:5; No. answers:1
+compute answers done - id:6; No. answers:4
+compute answers done - id:7; No. answers:1
+compute answers done - id:9; No. answers:1
+compute answers done - id:16; No. answers:1
+compute answers done - id:17; No. answers:1
+compute answers done - id:20; No. answers:1
+compute answers done - id:8; No. answers:2
+compute answers done - id:10; No. answers:3
+compute answers done - id:11; No. answers:1
+compute answers done - id:12; No. answers:9
+compute answers done - id:13; No. answers:1
+compute answers done - id:14; No. answers:1
+compute answers done - id:15; No. answers:1
+compute answers done - id:18; No. answers:1
+compute answers done - id:19; No. answers:1
+compute answers done - id:21; No. answers:1
+compute answers done - id:23; No. answers:1
+compute answers done - id:22; No. answers:1
+compute answers done - id:24; No. answers:11
+compute answers done - id:25; No. answers:4
+
+seq(25,[[5,5,1,1,4,3,3,4,4,4]])
+seq(25,[[5,5,1,1,5,3,3,1,3,5]])
+seq(25,[[5,5,1,1,5,3,3,3,1,5]])
+seq(25,[[5,5,1,1,5,3,3,3,3,5]])
+seq(24,[[1,1,3,2,1,1,1,2,5,5]])
+seq(24,[[1,1,4,2,1,1,1,2,4,4]])
+seq(24,[[1,1,4,2,1,1,1,2,5,5]])
+seq(24,[[1,1,4,4,1,1,4,4,2,1]])
+seq(24,[[1,1,4,4,1,1,4,4,2,4]])
+seq(24,[[1,1,4,4,1,1,4,4,5,1]])
+seq(24,[[1,1,4,4,1,1,4,4,5,4]])
+seq(24,[[1,1,4,4,1,1,4,4,5,5]])
+seq(24,[[1,1,4,4,1,3,4,4,2,4]])
+seq(24,[[1,1,4,4,1,3,4,4,5,4]])
+seq(24,[[1,1,4,4,1,3,4,4,5,5]])
+seq(22,[[2,1,5,5,4,1,1,3,3,3]])
+seq(23,[[2,1,1,3,5,3,5,2,2,2]])
+seq(21,[[3,1,4,1,1,4,3,3,2,3]])
+seq(19,[[1,1,2,1,2,2]])
+seq(18,[[1,1,3,2,1,1]])
+seq(15,[[4,4,1,2,4,2,2,3]])
+seq(14,[[1,1,2,2,2,3,1,2]])
+seq(13,[[4,4,2,3,3,3,3,2]])
+seq(12,[[1,1,2,2,2,1,1,1]])
+seq(12,[[1,1,2,2,2,1,4,4]])
+seq(12,[[1,1,2,2,2,4,1,4]])
+seq(12,[[1,1,2,2,3,1,1,1]])
+seq(12,[[1,1,2,2,3,1,1,3]])
+seq(12,[[1,1,2,2,3,1,4,3]])
+seq(12,[[1,1,2,2,3,1,4,4]])
+seq(12,[[1,1,2,2,3,4,1,3]])
+seq(12,[[1,1,2,2,3,4,1,4]])
+seq(11,[[1,1,2,2,1,1,3]])
+seq(10,[[2,2,3,2,3,3,3]])
+seq(10,[[2,2,3,3,2,3,3]])
+seq(10,[[3,3,2,2,2,3,3]])
+seq(8,[[1,1,1,1,3,3,3]])
+seq(8,[[1,2,2,2,3,3,3]])
+seq(20,[[3,3,3,3,3,3]])
+seq(17,[[2,2,3,3,1,1]])
+seq(16,[[4,1,2,4,1,2,3,3]])
+seq(9,[[1,1,3,3,2,3,2]])
+seq(7,[[1,1,1,1,2,2]])
+seq(6,[[1,1,1,2,1,2]])
+seq(6,[[1,1,1,2,2,1]])
+seq(6,[[1,1,2,1,1,2]])
+seq(6,[[1,1,2,1,2,1]])
+seq(5,[[1,1,2,1,2,2]])
+seq(4,[[1,3,2,3,2]])
+seq(3,[[1,1,2,1,2]])
+seq(2,[[1,2,3,2,3]])
+seq(1,[[1,1,3,2,3]])

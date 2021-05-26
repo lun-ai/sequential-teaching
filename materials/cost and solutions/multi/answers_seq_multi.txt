@@ -1,0 +1,55 @@
+compute answers done - id:1; No. answers:1
+compute answers done - id:2; No. answers:1
+compute answers done - id:4; No. answers:1
+compute answers done - id:5; No. answers:1
+compute answers done - id:17; No. answers:1
+compute answers done - id:19; No. answers:1
+compute answers done - id:3; No. answers:1
+compute answers done - id:6; No. answers:1
+compute answers done - id:7; No. answers:1
+compute answers done - id:9; No. answers:1
+compute answers done - id:11; No. answers:1
+compute answers done - id:12; No. answers:1
+compute answers done - id:14; No. answers:1
+compute answers done - id:15; No. answers:1
+compute answers done - id:16; No. answers:1
+compute answers done - id:18; No. answers:1
+compute answers done - id:21; No. answers:4
+compute answers done - id:8; No. answers:1
+compute answers done - id:10; No. answers:1
+compute answers done - id:13; No. answers:1
+compute answers done - id:20; No. answers:1
+compute answers done - id:22; No. answers:1
+compute answers done - id:23; No. answers:1
+compute answers done - id:24; No. answers:1
+compute answers done - id:25; No. answers:1
+
+
+seq(1,[[2,4,3,1],[2,4,3,1]])
+seq(2,[[4,3,1,2],[4,3,1,2]])
+seq(4,[[4,4,1,3],[4,4,1,3]])
+seq(5,[[1,3,4,4,1],[1,3,4,4,1]])
+seq(17,[[4,3,5,1],[4,3,5,1],[4,3,5,1],[4,3,5,1]])
+seq(19,[[4,3,1,2],[4,3,1,2],[4,3,1,2],[4,3,1,2]])
+seq(3,[[2,1,3,2],[2,1,3,2]])
+seq(6,[[4,3,2,1,2],[4,3,2,1,2]])
+seq(7,[[1,2,3,2,4],[1,2,3,2,4]])
+seq(9,[[1,3,1,3],[1,3,1,3],[1,3,1,3]])
+seq(11,[[2,2,2,1],[2,2,2,1],[2,2,2,1]])
+seq(12,[[3,2,3,1],[3,2,3,1],[3,2,3,1]])
+seq(14,[[4,2,3,1,5,3],[4,2,3,1,5,3],[4,2,3,1,5,3]])
+seq(15,[[3,3,1,1,5,5],[3,3,1,1,5,5],[3,3,1,1,5,5]])
+seq(16,[[5,4,3,2,5,4],[5,4,3,2,5,4],[5,4,3,2,5,4]])
+seq(18,[[3,4,5,5],[3,4,5,5],[3,4,5,5],[3,4,5,5]])
+seq(21,[[4,4,2,3,3,2,1],[4,4,2,3,3,2,1]])
+seq(21,[[4,4,2,3,3,1,2],[4,4,2,3,3,1,2]])
+seq(21,[[4,3,2,4,3,2,1],[4,3,2,4,3,2,1]])
+seq(21,[[4,3,2,4,3,1,2],[4,3,2,4,3,1,2]])
+seq(8,[[1,1,4,3,3],[1,1,4,3,3]])
+seq(10,[[1,2,1,1],[1,2,1,1],[1,2,1,1]])
+seq(13,[[1,4,4,3,1,1],[1,4,4,3,1,1],[1,4,4,3,1,1]])
+seq(20,[[2,4,1,4],[2,4,1,4],[2,4,1,4],[2,4,1,4]])
+seq(22,[[3,3,2,1,2,2,3],[3,3,2,1,2,2,3]])
+seq(23,[[4,4,1,2,4,2,4],[4,4,1,2,4,2,4]])
+seq(24,[[1,2,3,4,3,4],[1,2,3,4,3,4],[1,2,3,4,3,4],[1,2,3,4,3,4],[1,2,3,4,3,4]])
+seq(25,[[5,2,3,3,2,5],[5,2,3,3,2,5],[5,2,3,3,2,5],[5,2,3,3,2,5],[5,2,3,3,2,5]])
