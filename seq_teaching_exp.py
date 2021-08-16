@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2021.1.4),
-    on Wed 26 May 2021 13:15:20 BST
+    on Mon 16 Aug 2021 01:45:57 BST
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -84,10 +84,33 @@ else:
 # create a default keyboard (e.g. to check for escape)
 defaultKeyboard = keyboard.Keyboard()
 
+# Initialize components for Routine "Intro"
+IntroClock = core.Clock()
+intro_text = visual.TextStim(win=win, name='intro_text',
+    text='Some introduction TBC.',
+    font='Open Sans',
+    pos=(0, 0), height=0.1, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=0.0);
+intro_btn = visual.ButtonStim(win, 
+   text='Next', font='Arvo',
+   pos=(0, -0.45),
+   letterHeight=0.05,
+   size=[0.2,0.1], borderWidth=0.0,
+   fillColor='white', borderColor=None,
+   color='black', colorSpace='rgb',
+   opacity=None,
+   bold=True, italic=False,
+   padding=None,
+   anchor='center',
+   name='intro_btn')
+intro_btn.buttonClock = core.Clock()
+
 # Initialize components for Routine "Briefing"
 BriefingClock = core.Clock()
 gen_info = visual.TextStim(win=win, name='gen_info',
-    text='Some initial general information:\n\nTBC',
+    text='Some initial general information:\n\nParticipation consent TBC.\n\nDemographic information collection TBC.',
     font='Open Sans',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -969,7 +992,7 @@ perf3_bg2 = visual.ImageStim(
 # Initialize components for Routine "Debriefing"
 DebriefingClock = core.Clock()
 debrf_info = visual.TextStim(win=win, name='debrf_info',
-    text='Thank you for participating in this experiment.\n\nWe would like to know more about you.\n\nAll records will be kept strictly confidental (privacy statement TBC).\n\nPlease click the relevant option for you concerning your background.',
+    text='Thank you for participating in this experiment.',
     font='Open Sans',
     pos=(0, 0.2), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -992,6 +1015,118 @@ debrf_btn.buttonClock = core.Clock()
 # Create some handy timers
 globalClock = core.Clock()  # to track the time since experiment started
 routineTimer = core.CountdownTimer()  # to track time remaining of each (non-slip) routine 
+
+# ------Prepare to start Routine "Intro"-------
+continueRoutine = True
+routineTimer.add(300.500000)
+# update component parameters for each repeat
+# keep track of which components have finished
+IntroComponents = [intro_text, intro_btn]
+for thisComponent in IntroComponents:
+    thisComponent.tStart = None
+    thisComponent.tStop = None
+    thisComponent.tStartRefresh = None
+    thisComponent.tStopRefresh = None
+    if hasattr(thisComponent, 'status'):
+        thisComponent.status = NOT_STARTED
+# reset timers
+t = 0
+_timeToFirstFrame = win.getFutureFlipTime(clock="now")
+IntroClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+frameN = -1
+
+# -------Run Routine "Intro"-------
+while continueRoutine and routineTimer.getTime() > 0:
+    # get current time
+    t = IntroClock.getTime()
+    tThisFlip = win.getFutureFlipTime(clock=IntroClock)
+    tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+    # update/draw components on each frame
+    
+    # *intro_text* updates
+    if intro_text.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        intro_text.frameNStart = frameN  # exact frame index
+        intro_text.tStart = t  # local t and not account for scr refresh
+        intro_text.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(intro_text, 'tStartRefresh')  # time at next scr refresh
+        intro_text.setAutoDraw(True)
+    if intro_text.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > intro_text.tStartRefresh + 300.0-frameTolerance:
+            # keep track of stop time/frame for later
+            intro_text.tStop = t  # not accounting for scr refresh
+            intro_text.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(intro_text, 'tStopRefresh')  # time at next scr refresh
+            intro_text.setAutoDraw(False)
+    
+    # *intro_btn* updates
+    if intro_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+        # keep track of start time/frame for later
+        intro_btn.frameNStart = frameN  # exact frame index
+        intro_btn.tStart = t  # local t and not account for scr refresh
+        intro_btn.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(intro_btn, 'tStartRefresh')  # time at next scr refresh
+        intro_btn.setAutoDraw(True)
+    if intro_btn.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > intro_btn.tStartRefresh + 300.0-frameTolerance:
+            # keep track of stop time/frame for later
+            intro_btn.tStop = t  # not accounting for scr refresh
+            intro_btn.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(intro_btn, 'tStopRefresh')  # time at next scr refresh
+            intro_btn.setAutoDraw(False)
+    if intro_btn.status == STARTED:
+        # check whether intro_btn has been pressed
+        if intro_btn.isClicked:
+            if not intro_btn.wasClicked:
+                intro_btn.timesOn.append(intro_btn.buttonClock.getTime()) # store time of first click
+                intro_btn.timesOff.append(intro_btn.buttonClock.getTime()) # store time clicked until
+            else:
+                intro_btn.timesOff[-1] = intro_btn.buttonClock.getTime() # update time clicked until
+            if not intro_btn.wasClicked:
+                continueRoutine = False  # end routine when intro_btn is clicked
+                None
+            intro_btn.wasClicked = True  # if intro_btn is still clicked next frame, it is not a new click
+        else:
+            intro_btn.wasClicked = False  # if intro_btn is clicked next frame, it is a new click
+    else:
+        intro_btn.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
+        intro_btn.wasClicked = False  # if intro_btn is clicked next frame, it is a new click
+    
+    # check for quit (typically the Esc key)
+    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+        core.quit()
+    
+    # check if all components have finished
+    if not continueRoutine:  # a component has requested a forced-end of Routine
+        break
+    continueRoutine = False  # will revert to True if at least one component still running
+    for thisComponent in IntroComponents:
+        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+            continueRoutine = True
+            break  # at least one component has not yet finished
+    
+    # refresh the screen
+    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+        win.flip()
+
+# -------Ending Routine "Intro"-------
+for thisComponent in IntroComponents:
+    if hasattr(thisComponent, "setAutoDraw"):
+        thisComponent.setAutoDraw(False)
+thisExp.addData('intro_text.started', intro_text.tStartRefresh)
+thisExp.addData('intro_text.stopped', intro_text.tStopRefresh)
+thisExp.addData('intro_btn.started', intro_btn.tStartRefresh)
+thisExp.addData('intro_btn.stopped', intro_btn.tStopRefresh)
+thisExp.addData('intro_btn.numClicks', intro_btn.numClicks)
+if intro_btn.numClicks:
+   thisExp.addData('intro_btn.timesOn', intro_btn.timesOn)
+   thisExp.addData('intro_btn.timesOff', intro_btn.timesOff)
+else:
+   thisExp.addData('intro_btn.timesOn', "")
+   thisExp.addData('intro_btn.timesOff', "")
 
 # ------Prepare to start Routine "Briefing"-------
 continueRoutine = True

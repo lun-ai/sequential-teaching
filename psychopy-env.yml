@@ -6,7 +6,9 @@ dependencies:
 - psychopy
 - pip
 - pip:
-# need to manually install psychotoolbox to prevent compatiability issues
+# need to manually install psychotoolbox to prevent compatibility issues
+# use webkit2gtk-4.0 as an alternative to webkitgtk
+# follow steps to create conda env for psychopy installation from https://www.psychopy.org/download.html
 #  - psychtoolbox==3.0.16
   - pygame
   - pyo
