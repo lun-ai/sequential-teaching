@@ -161,7 +161,7 @@ instr1_txt1 = visual.TextStim(win=win, name='instr1_txt1',
     pos=(0, 0.3), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
-    depth=0.0);
+    depth=0.0)
 instr1_btn3 = visual.ButtonStim(win, 
    text='Next', font='Arvo',
    pos=(0, -0.45),

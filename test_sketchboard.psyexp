@@ -34,6 +34,216 @@
   </Settings>
   <Routines>
     <Routine name="test_sketchboard">
+      <TextboxComponent name="response">
+        <Param name="anchor" updates="constant" val="top-center" valType="str"/>
+        <Param name="autoLog" updates="constant" val="True" valType="bool"/>
+        <Param name="bold" updates="constant" val="False" valType="bool"/>
+        <Param name="borderColor" updates="constant" val="None" valType="color"/>
+        <Param name="borderWidth" updates="constant" val="2" valType="num"/>
+        <Param name="color" updates="constant" val="black" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="True" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="editable" updates="constant" val="True" valType="bool"/>
+        <Param name="fillColor" updates="constant" val="white" valType="color"/>
+        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
+        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
+        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
+        <Param name="italic" updates="constant" val="False" valType="bool"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.03" valType="num"/>
+        <Param name="lineSpacing" updates="constant" val="1.0" valType="num"/>
+        <Param name="name" updates="None" val="response" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="padding" updates="constant" val="" valType="num"/>
+        <Param name="pos" updates="constant" val="(0, -0.3)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="size" updates="constant" val="(0.6,0.1)" valType="list"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="constant" val="" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+      </TextboxComponent>
+      <TextComponent name="answer_instruction">
+        <Param name="color" updates="constant" val="white" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="True" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="flip" updates="constant" val="None" valType="str"/>
+        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
+        <Param name="name" updates="None" val="answer_instruction" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="pos" updates="constant" val="(0, -0.25)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="constant" val="Type the item order in the following box as your answer" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+        <Param name="wrapWidth" updates="constant" val="" valType="num"/>
+      </TextComponent>
+      <ImageComponent name="separate">
+        <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="True" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
+        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/demo_imgs/white_BG.png" valType="file"/>
+        <Param name="interpolate" updates="constant" val="linear" valType="str"/>
+        <Param name="mask" updates="constant" val="" valType="str"/>
+        <Param name="name" updates="None" val="separate" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="pos" updates="constant" val="(0, -0.15)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="size" updates="constant" val="(1.5,0.01)" valType="list"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="texture resolution" updates="constant" val="128" valType="num"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+      </ImageComponent>
+      <TextComponent name="instruction">
+        <Param name="color" updates="constant" val="white" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="True" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="flip" updates="constant" val="None" valType="str"/>
+        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.05" valType="num"/>
+        <Param name="name" updates="None" val="instruction" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="pos" updates="constant" val="(0.65, 0.2)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="constant" val="Some instructions" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+        <Param name="wrapWidth" updates="constant" val="" valType="num"/>
+      </TextComponent>
+      <TextboxComponent name="scale_right">
+        <Param name="anchor" updates="constant" val="top-center" valType="str"/>
+        <Param name="autoLog" updates="constant" val="True" valType="bool"/>
+        <Param name="bold" updates="constant" val="False" valType="bool"/>
+        <Param name="borderColor" updates="constant" val="None" valType="color"/>
+        <Param name="borderWidth" updates="constant" val="2" valType="num"/>
+        <Param name="color" updates="constant" val="black" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="editable" updates="constant" val="False" valType="bool"/>
+        <Param name="fillColor" updates="constant" val="white" valType="color"/>
+        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
+        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
+        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
+        <Param name="italic" updates="constant" val="False" valType="bool"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
+        <Param name="lineSpacing" updates="constant" val="1.0" valType="num"/>
+        <Param name="name" updates="None" val="scale_right" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="padding" updates="constant" val="" valType="num"/>
+        <Param name="pos" updates="constant" val="(-0.55, 0.4)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="size" updates="constant" val="(0.1,0.07)" valType="list"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="constant" val="Pick RHS" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+      </TextboxComponent>
+      <TextboxComponent name="scale_left">
+        <Param name="anchor" updates="constant" val="top-center" valType="str"/>
+        <Param name="autoLog" updates="constant" val="True" valType="bool"/>
+        <Param name="bold" updates="constant" val="False" valType="bool"/>
+        <Param name="borderColor" updates="constant" val="None" valType="color"/>
+        <Param name="borderWidth" updates="constant" val="2" valType="num"/>
+        <Param name="color" updates="constant" val="black" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="editable" updates="constant" val="False" valType="bool"/>
+        <Param name="fillColor" updates="constant" val="white" valType="color"/>
+        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
+        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
+        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
+        <Param name="italic" updates="constant" val="False" valType="bool"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
+        <Param name="lineSpacing" updates="constant" val="1.0" valType="num"/>
+        <Param name="name" updates="None" val="scale_left" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="padding" updates="constant" val="" valType="num"/>
+        <Param name="pos" updates="constant" val="(-0.75, 0.4)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="size" updates="constant" val="(0.1,0.07)" valType="list"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="constant" val="Pick LHS" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+      </TextboxComponent>
+      <ImageComponent name="scale_BK">
+        <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="True" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
+        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/demo_imgs/grey_BK.png" valType="file"/>
+        <Param name="interpolate" updates="constant" val="linear" valType="str"/>
+        <Param name="mask" updates="constant" val="" valType="str"/>
+        <Param name="name" updates="None" val="scale_BK" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="pos" updates="constant" val="(-0.65, 0.2)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="size" updates="constant" val="(0.4, 0.5)" valType="list"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="texture resolution" updates="constant" val="128" valType="num"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+      </ImageComponent>
       <ImageComponent name="sketchboard">
         <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
@@ -48,9 +258,35 @@
         <Param name="name" updates="None" val="sketchboard" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(0, 0)" valType="list"/>
+        <Param name="pos" updates="constant" val="(0, 0.2)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(1, 1)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.8, 0.5)" valType="list"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="texture resolution" updates="constant" val="128" valType="num"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+      </ImageComponent>
+      <ImageComponent name="item3">
+        <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
+        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/demo_imgs/banana_3.png" valType="file"/>
+        <Param name="interpolate" updates="constant" val="linear" valType="str"/>
+        <Param name="mask" updates="constant" val="" valType="str"/>
+        <Param name="name" updates="None" val="item3" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="pos" updates="constant" val="(0.2, 0.3)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="size" updates="constant" val="(0.05, 0.05)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -74,9 +310,9 @@
         <Param name="name" updates="None" val="item2" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(0.2, 0)" valType="list"/>
+        <Param name="pos" updates="constant" val="(0, 0.3)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.1, 0.1)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.05, 0.05)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -100,9 +336,9 @@
         <Param name="name" updates="None" val="item1" valType="code"/>
         <Param name="opacity" updates="constant" val="1" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="set every repeat" val="(0, 0)" valType="list"/>
+        <Param name="pos" updates="set every repeat" val="(-0.2, 0.3)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.1, 0.1)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.05, 0.05)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -113,15 +349,15 @@
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
       <CodeComponent name="code">
-        <Param name="Before Experiment" updates="constant" val="# Begin Experiment&amp;#10;def movePicked(mouse, grabbed):&amp;#10;    # Move piece if we already moving that piece&amp;#10;    if grabbed is not None and mouse.isPressedIn(grabbed):&amp;#10;        (u,v) = mouse.getPos()&amp;#10;        if left &lt;= u and u &lt;= right and bot &lt;= v and v &lt;= top:&amp;#10;            grabbed.pos = (u,v)&amp;#10;        return grabbed&amp;#10;    else:&amp;#10;        # Move newly clicked piece&amp;#10;        for block in blocks:&amp;#10;            if mouse.isPressedIn(block) and grabbed is not block:&amp;#10;                return block" valType="extendedCode"/>
-        <Param name="Before JS Experiment" updates="constant" val="function movePicked(mouse, grabbed) {&amp;#10;    var u, v;&amp;#10;    if (((grabbed !== null) &amp;&amp; mouse.isPressedIn(grabbed))) {&amp;#10;        [u, v] = mouse.getPos();&amp;#10;        if (((((left &lt;= u) &amp;&amp; (u &lt;= right)) &amp;&amp; (bot &lt;= v)) &amp;&amp; (v &lt;= top))) {&amp;#10;            grabbed.pos = [u, v];&amp;#10;        }&amp;#10;        return grabbed;&amp;#10;    } else {&amp;#10;        for (var block, _pj_c = 0, _pj_a = blocks, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;            block = _pj_a[_pj_c];&amp;#10;            if ((mouse.isPressedIn(block) &amp;&amp; (grabbed !== block))) {&amp;#10;                return block;&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;" valType="extendedCode"/>
+        <Param name="Before Experiment" updates="constant" val="import time&amp;#10;&amp;#10;sleepTime = 0.2&amp;#10;scale_eq_img = &quot;materials/merge_sort/demo_imgs/left_eq_right.png&quot;&amp;#10;scale_lt_img = &quot;materials/merge_sort/demo_imgs/left_lt_right.png&quot;&amp;#10;scale_gt_img = &quot;materials/merge_sort/demo_imgs/left_gt_right.png&quot;&amp;#10;&amp;#10;# Begin Experiment&amp;#10;def moveItem(mouse, grabbed):&amp;#10;    # Move piece if we already moving that piece&amp;#10;    if grabbed is not None and mouse.isPressedIn(grabbed):&amp;#10;        (u,v) = mouse.getPos()&amp;#10;        if left &lt;= u and u &lt;= right and bot &lt;= v and v &lt;= top:&amp;#10;            grabbed.pos = (u,v)&amp;#10;        return grabbed&amp;#10;    else:&amp;#10;        # Move newly clicked piece&amp;#10;        for item in items:&amp;#10;            if mouse.isPressedIn(item) and grabbed is not item:&amp;#10;                return item&amp;#10;&amp;#10;def selectItem(mouse,side,picked,lock):    &amp;#10;    for item in items:&amp;#10;        if picked is None and mouse.isPressedIn(item):&amp;#10;            side.color = &quot;black&quot;&amp;#10;            side.fillColor = &quot;white&quot;&amp;#10;            side.text = item.name&amp;#10;            return item,False&amp;#10;    return None,lock&amp;#10;          &amp;#10;def pickScaleLeft(mouse,left_lock,right_lock):&amp;#10;    # cancel selection for scale LHS&amp;#10;    if left_lock:&amp;#10;        scale_left.color = &quot;black&quot;&amp;#10;        scale_left.fillColor = &quot;white&quot;&amp;#10;        scale_left.text = &quot;Pick LHS&quot;&amp;#10;        time.sleep(sleepTime)&amp;#10;        return False&amp;#10;    # initiate selection for scale LHS&amp;#10;    else:&amp;#10;        if right_lock:&amp;#10;            return left_lock&amp;#10;        scale_left.color = &quot;grey&quot;&amp;#10;        scale_left.fillColor = &quot;black&quot;&amp;#10;        scale_left.text = &quot;Picking&quot;&amp;#10;        picked_left = None&amp;#10;        time.sleep(sleepTime)&amp;#10;        return True&amp;#10;    &amp;#10;def pickScaleRight(mouse,left_lock,right_lock):&amp;#10;    # cancel selection for scale RHS&amp;#10;    if right_lock:&amp;#10;        scale_right.color = &quot;black&quot;&amp;#10;        scale_right.fillColor = &quot;white&quot;&amp;#10;        scale_right.text = &quot;Pick RHS&quot;&amp;#10;        time.sleep(sleepTime)&amp;#10;        return False&amp;#10;    # initiate selection for scale RHS&amp;#10;    else:&amp;#10;        if left_lock:&amp;#10;            return right_lock&amp;#10;        scale_right.color = &quot;grey&quot;&amp;#10;        scale_right.fillColor = &quot;black&quot;&amp;#10;        scale_right.text = &quot;Picking&quot;&amp;#10;        picked_right = None&amp;#10;        time.sleep(sleepTime)&amp;#10;        return True &amp;#10;        &amp;#10;def comparePickedItems(scale,left_item,right_item):&amp;#10;    #if left_item is None:&amp;#10;    left_value = values[items.index(left_item)]&amp;#10;    right_value = values[items.index(right_item)]&amp;#10;    if left_value &gt; right_value:&amp;#10;        scale.image = scale_gt_img&amp;#10;    elif left_value &lt; right_value:&amp;#10;        scale.image = scale_lt_img&amp;#10;    else:&amp;#10;        scale.image = scale_eq_img&amp;#10;    time.sleep(sleepTime)" valType="extendedCode"/>
+        <Param name="Before JS Experiment" updates="constant" val="import * as time from 'time';&amp;#10;var scale_eq_img, scale_gt_img, scale_lt_img, sleepTime;&amp;#10;sleepTime = 0.2;&amp;#10;scale_eq_img = &quot;materials/merge_sort/demo_imgs/left_eq_right.png&quot;;&amp;#10;scale_lt_img = &quot;materials/merge_sort/demo_imgs/left_lt_right.png&quot;;&amp;#10;scale_gt_img = &quot;materials/merge_sort/demo_imgs/left_gt_right.png&quot;;&amp;#10;function moveItem(mouse, grabbed) {&amp;#10;    var u, v;&amp;#10;    if (((grabbed !== null) &amp;&amp; mouse.isPressedIn(grabbed))) {&amp;#10;        [u, v] = mouse.getPos();&amp;#10;        if (((((left &lt;= u) &amp;&amp; (u &lt;= right)) &amp;&amp; (bot &lt;= v)) &amp;&amp; (v &lt;= top))) {&amp;#10;            grabbed.pos = [u, v];&amp;#10;        }&amp;#10;        return grabbed;&amp;#10;    } else {&amp;#10;        for (var item, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;            item = _pj_a[_pj_c];&amp;#10;            if ((mouse.isPressedIn(item) &amp;&amp; (grabbed !== item))) {&amp;#10;                return item;&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;function selectItem(mouse, side, picked, lock) {&amp;#10;    for (var item, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;        item = _pj_a[_pj_c];&amp;#10;        if (((picked === null) &amp;&amp; mouse.isPressedIn(item))) {&amp;#10;            side.color = &quot;black&quot;;&amp;#10;            side.fillColor = &quot;white&quot;;&amp;#10;            side.text = item.name;&amp;#10;            return [item, false];&amp;#10;        }&amp;#10;    }&amp;#10;    return [null, lock];&amp;#10;}&amp;#10;function pickScaleLeft(mouse, left_lock, right_lock) {&amp;#10;    var picked_left;&amp;#10;    if (left_lock) {&amp;#10;        scale_left.color = &quot;black&quot;;&amp;#10;        scale_left.fillColor = &quot;white&quot;;&amp;#10;        scale_left.text = &quot;Pick LHS&quot;;&amp;#10;        time.sleep(sleepTime);&amp;#10;        return false;&amp;#10;    } else {&amp;#10;        if (right_lock) {&amp;#10;            return left_lock;&amp;#10;        }&amp;#10;        scale_left.color = &quot;grey&quot;;&amp;#10;        scale_left.fillColor = &quot;black&quot;;&amp;#10;        scale_left.text = &quot;Picking&quot;;&amp;#10;        picked_left = null;&amp;#10;        time.sleep(sleepTime);&amp;#10;        return true;&amp;#10;    }&amp;#10;}&amp;#10;function pickScaleRight(mouse, left_lock, right_lock) {&amp;#10;    var picked_right;&amp;#10;    if (right_lock) {&amp;#10;        scale_right.color = &quot;black&quot;;&amp;#10;        scale_right.fillColor = &quot;white&quot;;&amp;#10;        scale_right.text = &quot;Pick RHS&quot;;&amp;#10;        time.sleep(sleepTime);&amp;#10;        return false;&amp;#10;    } else {&amp;#10;        if (left_lock) {&amp;#10;            return right_lock;&amp;#10;        }&amp;#10;        scale_right.color = &quot;grey&quot;;&amp;#10;        scale_right.fillColor = &quot;black&quot;;&amp;#10;        scale_right.text = &quot;Picking&quot;;&amp;#10;        picked_right = null;&amp;#10;        time.sleep(sleepTime);&amp;#10;        return true;&amp;#10;    }&amp;#10;}&amp;#10;function comparePickedItems(scale, left_item, right_item) {&amp;#10;    var left_value, right_value;&amp;#10;    left_value = values[items.index(left_item)];&amp;#10;    right_value = values[items.index(right_item)];&amp;#10;    if ((left_value &gt; right_value)) {&amp;#10;        scale.image = scale_gt_img;&amp;#10;    } else {&amp;#10;        if ((left_value &lt; right_value)) {&amp;#10;            scale.image = scale_lt_img;&amp;#10;        } else {&amp;#10;            scale.image = scale_eq_img;&amp;#10;        }&amp;#10;    }&amp;#10;    time.sleep(sleepTime);&amp;#10;}&amp;#10;" valType="extendedCode"/>
         <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="Begin JS Routine" updates="constant" val="blocks = [item1, item2];&amp;#10;movingPiece = null;&amp;#10;[x, y] = sketchboard.pos;&amp;#10;[w, h] = sketchboard.size;&amp;#10;top = (y + (h / 2));&amp;#10;bot = (y - (h / 2));&amp;#10;left = (x - (w / 2));&amp;#10;right = (x + (w / 2));&amp;#10;" valType="extendedCode"/>
-        <Param name="Begin Routine" updates="constant" val="# Begin Routine&amp;#10;blocks = [item1,item2]&amp;#10;movingPiece = None&amp;#10;(x, y) = sketchboard.pos&amp;#10;(w,h) = sketchboard.size&amp;#10;top = y+h/2&amp;#10;bot = y-h/2&amp;#10;left = x-w/2&amp;#10;right = x+w/2" valType="extendedCode"/>
+        <Param name="Begin JS Routine" updates="constant" val="items = [item1, item2, item3];&amp;#10;values = [3, 1, 2];&amp;#10;movingItem = null;&amp;#10;[x, y] = sketchboard.pos;&amp;#10;[w, h] = sketchboard.size;&amp;#10;top = (y + (h / 2));&amp;#10;bot = (y - (h / 2));&amp;#10;left = (x - (w / 2));&amp;#10;right = (x + (w / 2));&amp;#10;picking_left = false;&amp;#10;picking_right = false;&amp;#10;picked_left = null;&amp;#10;picked_right = null;&amp;#10;" valType="extendedCode"/>
+        <Param name="Begin Routine" updates="constant" val="# Begin Routine&amp;#10;items = [item1,item2,item3]&amp;#10;values = [3,1,2]&amp;#10;movingItem = None&amp;#10;(x, y) = sketchboard.pos&amp;#10;(w,h) = sketchboard.size&amp;#10;top = y+h/2&amp;#10;bot = y-h/2&amp;#10;left = x-w/2&amp;#10;right = x+w/2&amp;#10;&amp;#10;picking_left = False&amp;#10;picking_right = False&amp;#10;picked_left = None&amp;#10;picked_right=None" valType="extendedCode"/>
         <Param name="Code Type" updates="None" val="Auto-&gt;JS" valType="str"/>
-        <Param name="Each Frame" updates="constant" val="# Each Frame&amp;#10;for block in blocks:&amp;#10;    if mouse.isPressedIn(block) and movingPiece is None:&amp;#10;        movingPiece = block&amp;#10;&amp;#10;movingPiece = movePicked(mouse, movingPiece)" valType="extendedCode"/>
-        <Param name="Each JS Frame" updates="constant" val="for (var block, _pj_c = 0, _pj_a = blocks, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;    block = _pj_a[_pj_c];&amp;#10;    if ((mouse.isPressedIn(block) &amp;&amp; (movingPiece === null))) {&amp;#10;        movingPiece = block;&amp;#10;    }&amp;#10;}&amp;#10;movingPiece = movePicked(mouse, movingPiece);&amp;#10;" valType="extendedCode"/>
+        <Param name="Each Frame" updates="constant" val="# Each Frame&amp;#10;for item in items:&amp;#10;    if mouse.isPressedIn(item) and movingItem is None:&amp;#10;        movingItem = item&amp;#10;&amp;#10;movingItem = moveItem(mouse, movingItem)&amp;#10;&amp;#10;if mouse.isPressedIn(scale_left):&amp;#10;    picking_left = pickScaleLeft(mouse,picking_left,picking_right)&amp;#10;    &amp;#10;if mouse.isPressedIn(scale_right):&amp;#10;    picking_right = pickScaleRight(mouse,picking_left,picking_right)&amp;#10;&amp;#10;if picking_left:&amp;#10;    picked_left,picking_left = selectItem(mouse,scale_left,picked_left,picking_left)&amp;#10;    &amp;#10;if picking_right:&amp;#10;    picked_right,picking_right = selectItem(mouse,scale_right,picked_right,picking_right)&amp;#10;    &amp;#10;if mouse.isPressedIn(compare):&amp;#10;    if picked_left is None or picked_right is None:&amp;#10;        warning.text = &quot;Need to select both LHS and RHS&quot;&amp;#10;    else:&amp;#10;        comparePickedItems(scale,picked_left,picked_right)&amp;#10;        warning.text = &quot;&quot;" valType="extendedCode"/>
+        <Param name="Each JS Frame" updates="constant" val="for (var item, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;    item = _pj_a[_pj_c];&amp;#10;    if ((mouse.isPressedIn(item) &amp;&amp; (movingItem === null))) {&amp;#10;        movingItem = item;&amp;#10;    }&amp;#10;}&amp;#10;movingItem = moveItem(mouse, movingItem);&amp;#10;if (mouse.isPressedIn(scale_left)) {&amp;#10;    picking_left = pickScaleLeft(mouse, picking_left, picking_right);&amp;#10;}&amp;#10;if (mouse.isPressedIn(scale_right)) {&amp;#10;    picking_right = pickScaleRight(mouse, picking_left, picking_right);&amp;#10;}&amp;#10;if (picking_left) {&amp;#10;    [picked_left, picking_left] = selectItem(mouse, scale_left, picked_left, picking_left);&amp;#10;}&amp;#10;if (picking_right) {&amp;#10;    [picked_right, picking_right] = selectItem(mouse, scale_right, picked_right, picking_right);&amp;#10;}&amp;#10;if (mouse.isPressedIn(compare)) {&amp;#10;    if (((picked_left === null) || (picked_right === null))) {&amp;#10;        warning.text = &quot;Need to select both LHS and RHS&quot;;&amp;#10;    } else {&amp;#10;        comparePickedItems(scale, picked_left, picked_right);&amp;#10;        warning.text = &quot;&quot;;&amp;#10;    }&amp;#10;}&amp;#10;" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
@@ -147,6 +383,93 @@
         <Param name="syncScreenRefresh" updates="None" val="False" valType="bool"/>
         <Param name="timeRelativeTo" updates="constant" val="mouse onset" valType="str"/>
       </MouseComponent>
+      <ImageComponent name="scale">
+        <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
+        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/demo_imgs/left_eq_right.png" valType="file"/>
+        <Param name="interpolate" updates="constant" val="linear" valType="str"/>
+        <Param name="mask" updates="constant" val="" valType="str"/>
+        <Param name="name" updates="None" val="scale" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="pos" updates="constant" val="(-0.65, 0.15)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="size" updates="constant" val="(0.3, 0.1)" valType="list"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="texture resolution" updates="constant" val="128" valType="num"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+      </ImageComponent>
+      <TextboxComponent name="compare">
+        <Param name="anchor" updates="constant" val="top-center" valType="str"/>
+        <Param name="autoLog" updates="constant" val="True" valType="bool"/>
+        <Param name="bold" updates="constant" val="False" valType="bool"/>
+        <Param name="borderColor" updates="constant" val="None" valType="color"/>
+        <Param name="borderWidth" updates="constant" val="2" valType="num"/>
+        <Param name="color" updates="constant" val="black" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="editable" updates="constant" val="False" valType="bool"/>
+        <Param name="fillColor" updates="constant" val="white" valType="color"/>
+        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
+        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
+        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
+        <Param name="italic" updates="constant" val="False" valType="bool"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.03" valType="num"/>
+        <Param name="lineSpacing" updates="constant" val="1.0" valType="num"/>
+        <Param name="name" updates="None" val="compare" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="padding" updates="constant" val="" valType="num"/>
+        <Param name="pos" updates="constant" val="(-0.65, 0.05)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="size" updates="constant" val="(0.16,0.07)" valType="list"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="constant" val="Compare" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+      </TextboxComponent>
+      <TextComponent name="warning">
+        <Param name="color" updates="constant" val="red" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="flip" updates="constant" val="None" valType="str"/>
+        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
+        <Param name="name" updates="None" val="warning" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="pos" updates="constant" val="(-0.65,0.07)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="constant" val="" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+        <Param name="wrapWidth" updates="constant" val="" valType="num"/>
+      </TextComponent>
     </Routine>
     <Routine name="test_sketchboard_2">
       <ImageComponent name="item1_2">
