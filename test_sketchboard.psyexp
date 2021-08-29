@@ -253,32 +253,6 @@
         <Param name="text" updates="constant" val="" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </TextboxComponent>
-      <ImageComponent name="scale_BK">
-        <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="True" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="num"/>
-        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
-        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/demo_imgs/grey_BK.png" valType="file"/>
-        <Param name="interpolate" updates="constant" val="linear" valType="str"/>
-        <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="scale_BK" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(-0.65, 0.2)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.4, 0.5)" valType="list"/>
-        <Param name="startEstim" updates="None" val="" valType="num"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.0" valType="num"/>
-        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="300" valType="num"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="texture resolution" updates="constant" val="128" valType="num"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-      </ImageComponent>
       <ImageComponent name="sketchboard">
         <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>

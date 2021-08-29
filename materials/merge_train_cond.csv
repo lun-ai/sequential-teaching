@@ -1,0 +1,2 @@
+img_path,input,mc_path_1,mc_path_2,expl_path
+materials/merge_sort/demo_imgs/merge_train_ex_1.png,"[7,8,10,15,20,2,3,12,17,18]",materials/merge_sort/demo_imgs/merge_train_ex_1_correct.png,materials/merge_sort/demo_imgs/merge_train_ex_1_wrong.png,materials/merge_sort/demo_imgs/merge_train_ex_1_expl.png

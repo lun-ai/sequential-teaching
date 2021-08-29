@@ -1,0 +1,2 @@
+img_path_base,input,mc_path_1,mc_path_2,expl_path
+materials/merge_sort/demo_imgs/apple,"[1,4,5,23,34,40,71]",materials/merge_sort/demo_imgs/sort_train_ex_2_correct.png,materials/merge_sort/demo_imgs/sort_train_ex_2_wrong.png,materials/merge_sort/demo_imgs/sort_train_ex_2.png
