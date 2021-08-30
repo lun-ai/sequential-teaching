@@ -7,7 +7,7 @@
     <Param name="Data file delimiter" updates="None" val="auto" valType="str"/>
     <Param name="Data filename" updates="None" val="u'data/%s_%s_%s' % (expInfo['participant'], expName, expInfo['date'])" valType="code"/>
     <Param name="Enable Escape" updates="None" val="True" valType="bool"/>
-    <Param name="Experiment info" updates="None" val="{'participant':'', 'session':'001'}" valType="code"/>
+    <Param name="Experiment info" updates="None" val="{'participant': '000', 'session': '001'}" valType="code"/>
     <Param name="Force stereo" updates="None" val="True" valType="bool"/>
     <Param name="Full-screen window" updates="None" val="True" valType="bool"/>
     <Param name="HTML path" updates="None" val="" valType="str"/>
@@ -403,7 +403,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0, -0.15)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(1.5,0.01)" valType="list"/>
+        <Param name="size" updates="constant" val="(1.5,0.005)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -585,7 +585,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="Select one from two partial answers" valType="str"/>
+        <Param name="text" updates="constant" val="Please SELECT the arrangement that has the correct fruit(s) in its YELLOW cell(s):&amp;#10;" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="num"/>
       </TextComponent>
@@ -833,7 +833,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0, -0.11)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(1.5,0.01)" valType="list"/>
+        <Param name="size" updates="constant" val="(1.5,0.005)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -1588,7 +1588,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0, -0.15)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(1.5,0.01)" valType="list"/>
+        <Param name="size" updates="constant" val="(1.5,0.005)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -2010,14 +2010,14 @@
         <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin JS Routine" updates="constant" val="cntCompared = 0;&amp;#10;mc_order = [];&amp;#10;submitted = (- 1);&amp;#10;" valType="extendedCode"/>
-        <Param name="Begin Routine" updates="constant" val="# Begin Routine&amp;#10;cntCompared = 0&amp;#10;mc_order = []&amp;#10;submitted = -1" valType="extendedCode"/>
+        <Param name="Begin Routine" updates="constant" val="cntCompared = 0&amp;#10;mc_order = []&amp;#10;submitted = -1" valType="extendedCode"/>
         <Param name="Code Type" updates="None" val="Auto-&gt;JS" valType="str"/>
-        <Param name="Each Frame" updates="constant" val="# Each Frame&amp;#10;if mc_order == []:&amp;#10;    mc_order = getCorrectMCOrder(merge_train_mc_path_1,merge_train_mc_path_2)&amp;#10;&amp;#10;if mouse.isPressedIn(merge_train_compare):&amp;#10;    compare(merge_train_scale,merge_train_input,merge_train_scale_instr,merge_train_scale_left,merge_train_scale_right)" valType="extendedCode"/>
-        <Param name="Each JS Frame" updates="constant" val="if ((mc_order === [])) {&amp;#10;    mc_order = getCorrectMCOrder(merge_train_mc_path_1, merge_train_mc_path_2);&amp;#10;}&amp;#10;if (mouse.isPressedIn(merge_train_compare)) {&amp;#10;    compare(merge_train_scale, merge_train_input, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right);&amp;#10;}&amp;#10;" valType="extendedCode"/>
+        <Param name="Each Frame" updates="constant" val="# Each Frame&amp;#10;if mc_order == []:&amp;#10;    mc_order = getCorrectMCOrder(merge_train_mc_path_1,merge_train_mc_path_2,merge_train_mc_1,merge_train_mc_2)&amp;#10;&amp;#10;if mouse.isPressedIn(merge_train_compare):&amp;#10;    compare(merge_train_scale,merge_train_input,merge_train_scale_instr,merge_train_scale_left,merge_train_scale_right)" valType="extendedCode"/>
+        <Param name="Each JS Frame" updates="constant" val="if ((mc_order === [])) {&amp;#10;    mc_order = getCorrectMCOrder(merge_train_mc_path_1, merge_train_mc_path_2, merge_train_mc_1, merge_train_mc_2);&amp;#10;}&amp;#10;if (mouse.isPressedIn(merge_train_compare)) {&amp;#10;    compare(merge_train_scale, merge_train_input, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right);&amp;#10;}&amp;#10;" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot(repeats);&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot(repeats)" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="merge_train_setup" valType="code"/>
       </CodeComponent>
@@ -2050,11 +2050,11 @@
         <Param name="flip" updates="constant" val="None" valType="str"/>
         <Param name="font" updates="constant" val="Open Sans" valType="str"/>
         <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
-        <Param name="letterHeight" updates="constant" val="0.03" valType="num"/>
+        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
         <Param name="name" updates="None" val="merge_ans_instr" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(-0.3, -0.15)" valType="list"/>
+        <Param name="pos" updates="constant" val="(0, -0.15)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
@@ -2062,7 +2062,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="Select one from two partial answers" valType="str"/>
+        <Param name="text" updates="constant" val="Please SELECT the sequence that has the correct fruit(s) in its YELLOW cell(s):" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="num"/>
       </TextComponent>
@@ -2087,9 +2087,9 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="Enter the labels of item in the boxes" valType="str"/>
+        <Param name="text" updates="constant" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
-        <Param name="wrapWidth" updates="constant" val="" valType="num"/>
+        <Param name="wrapWidth" updates="constant" val="0.3" valType="num"/>
       </TextComponent>
       <TextComponent name="merge_train_instr">
         <Param name="color" updates="constant" val="white" valType="color"/>
@@ -2112,7 +2112,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="Your task in this room is to group two fruits together in boxes. The first one in the box is always supposed to be the lighter one. You can use the scale to determine, which of the two is lighter!&amp;#10;&amp;#10;Please choose an option that you think is more likely to be correct and I will give you some feedback afterwards!" valType="str"/>
+        <Param name="text" updates="constant" val="- Use the scale on the left to COMPARE weights of two fruits by entering their alphabetic labels&amp;#10;&amp;#10;- Try to find how the BLUE STAR arranges the fruits" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="0.4" valType="num"/>
       </TextComponent>
@@ -2310,7 +2310,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0, -0.11)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(1.5,0.01)" valType="list"/>
+        <Param name="size" updates="constant" val="(1.5,0.005)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -2354,7 +2354,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="set every repeat" val="$mc_path_1" valType="file"/>
+        <Param name="image" updates="set every repeat" val="materials/merge_sort/demo_imgs/white_BG.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="merge_train_mc_1" valType="code"/>
@@ -2380,7 +2380,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="set every repeat" val="$mc_path_2" valType="file"/>
+        <Param name="image" updates="set every repeat" val="materials/merge_sort/demo_imgs/white_BG.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="merge_train_mc_2" valType="code"/>
@@ -2477,7 +2477,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(-0.1, 0)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.01,0.8)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.005,0.8)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -2685,7 +2685,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(-0.25, 0)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.01,0.8)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.005,0.8)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -2711,7 +2711,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0.35, 0.05)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(1, 0.6)" valType="list"/>
+        <Param name="size" updates="constant" val="(1, 0.8)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -2729,7 +2729,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/demo_imgs/sort_train_ex_2_wrong_submitted.png" valType="file"/>
+        <Param name="image" updates="set every repeat" val="materials/merge_sort/demo_imgs/white_BG.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="merge_train_expl_mc_1" valType="code"/>
@@ -2755,7 +2755,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/demo_imgs/sort_train_ex_2_wrong_submitted.png" valType="file"/>
+        <Param name="image" updates="set every repeat" val="materials/merge_sort/demo_imgs/white_BG.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="merge_train_expl_mc_2" valType="code"/>
@@ -2828,15 +2828,15 @@
         <Param name="Before JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="Begin JS Routine" updates="constant" val="if ((submitted === 0)) {&amp;#10;    merge_train_expl_feedback_1.text = &quot;Submitted &gt;&gt;&gt; \n&quot;;&amp;#10;} else {&amp;#10;    if ((submitted === 1)) {&amp;#10;        merge_train_expl_feedback_2.text = &quot;Submitted &gt;&gt;&gt; \n&quot;;&amp;#10;    }&amp;#10;}&amp;#10;if ((mc_order === [1, 0])) {&amp;#10;    merge_train_expl_feedback_1.color = green;&amp;#10;    merge_train_expl_feedback_2.color = red;&amp;#10;    merge_train_expl_feedback_1.text = (merge_train_expl_feedback_1.text + &quot;This answer is correct!&quot;);&amp;#10;    merge_train_expl_feedback_2.text = (merge_train_expl_feedback_2.text + &quot;This answer is wrong!&quot;);&amp;#10;} else {&amp;#10;    merge_train_expl_feedback_1.color = red;&amp;#10;    merge_train_expl_feedback_2.color = green;&amp;#10;    merge_train_expl_feedback_1.text = (merge_train_expl_feedback_1.text + &quot;This answer is wrong!&quot;);&amp;#10;    merge_train_expl_feedback_2.text = (merge_train_expl_feedback_2.text + &quot;This answer is correct!&quot;);&amp;#10;}&amp;#10;merge_train_expl_mc_1.image = (merge_train_mc_path_1.split(&quot;.png&quot;)[0] + &quot;_submitted.png&quot;);&amp;#10;merge_train_expl_mc_2.image = (merge_train_mc_path_2.split(&quot;.png&quot;)[0] + &quot;_submitted.png&quot;);&amp;#10;" valType="extendedCode"/>
-        <Param name="Begin Routine" updates="constant" val="if submitted == 0:&amp;#10;    merge_train_expl_feedback_1.text = &quot;Submitted &gt;&gt;&gt; \n&quot;&amp;#10;elif submitted == 1:&amp;#10;    merge_train_expl_feedback_2.text = &quot;Submitted &gt;&gt;&gt; \n&quot;&amp;#10;    &amp;#10;if mc_order == [1,0]:&amp;#10;    merge_train_expl_feedback_1.color = green&amp;#10;    merge_train_expl_feedback_2.color = red&amp;#10;    merge_train_expl_feedback_1.text = merge_train_expl_feedback_1.text + &quot;This answer is correct!&quot;&amp;#10;    merge_train_expl_feedback_2.text = merge_train_expl_feedback_2.text + &quot;This answer is wrong!&quot;&amp;#10;else:&amp;#10;    merge_train_expl_feedback_1.color = red&amp;#10;    merge_train_expl_feedback_2.color = green&amp;#10;    merge_train_expl_feedback_1.text = merge_train_expl_feedback_1.text + &quot;This answer is wrong!&quot;&amp;#10;    merge_train_expl_feedback_2.text = merge_train_expl_feedback_2.text + &quot;This answer is correct!&quot;&amp;#10;    &amp;#10;merge_train_expl_mc_1.image = merge_train_mc_path_1.split(&quot;.png&quot;)[0] + &quot;_submitted.png&quot;&amp;#10;merge_train_expl_mc_2.image = merge_train_mc_path_2.split(&quot;.png&quot;)[0] + &quot;_submitted.png&quot;" valType="extendedCode"/>
+        <Param name="Begin JS Routine" updates="constant" val="showExpl(merge_train_expl_feedback_1, merge_train_expl_feedback_2, merge_train_expl_mc_1, merge_train_expl_mc_2, merge_train_mc_path_1, merge_train_mc_path_2);&amp;#10;" valType="extendedCode"/>
+        <Param name="Begin Routine" updates="constant" val="showExpl(merge_train_expl_feedback_1,merge_train_expl_feedback_2,merge_train_expl_mc_1,merge_train_expl_mc_2,merge_train_mc_path_1,merge_train_mc_path_2)" valType="extendedCode"/>
         <Param name="Code Type" updates="None" val="Auto-&gt;JS" valType="str"/>
         <Param name="Each Frame" updates="constant" val="" valType="extendedCode"/>
         <Param name="Each JS Frame" updates="constant" val="" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot(repeats);&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot(repeats)" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="merge_train_expl_setup" valType="code"/>
       </CodeComponent>
@@ -2855,7 +2855,7 @@
         <Param name="name" updates="None" val="intro_text_2" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(0, -0.1)" valType="list"/>
+        <Param name="pos" updates="constant" val="(0, -0.15)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
@@ -2863,7 +2863,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="ALICE: BIZZ ... Thank you for coming to help!&amp;#10;&amp;#10;The fruits have different weights. We use the BLUE STAR to group two piles of fruits. You will learn what it does in a moment!&amp;#10;&amp;#10;I will first walk you through and you can try it on you own later!" valType="str"/>
+        <Param name="text" updates="constant" val="ALICE: BIZZ ... Thank you for coming to help!&amp;#10;&amp;#10;The fruits have different weights. The BLUE STAR is a specific arrangement of fruits from two boxes (ORANGE) into one. &amp;#10;&amp;#10;LEARN and MASTER what the BLUE STAR does. I will first walk you through and you can try it on you own later!" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="num"/>
       </TextComponent>
@@ -2936,7 +2936,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/demo_imgs/merge_test_ex_2.png" valType="file"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/demo_imgs/merge_train_ex_1.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="merge_example" valType="code"/>
@@ -2944,7 +2944,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0.2, 0.2)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.5, 0.25)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.5, 0.20)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -2980,6 +2980,23 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
+      <CodeComponent name="code">
+        <Param name="Before Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Before JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin JS Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Code Type" updates="None" val="Auto-&gt;JS" valType="str"/>
+        <Param name="Each Frame" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Each JS Frame" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot(repeats);&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot(repeats)" valType="extendedCode"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="name" updates="None" val="code" valType="code"/>
+      </CodeComponent>
     </Routine>
     <Routine name="INTRO">
       <TextComponent name="intro_text">
@@ -2995,7 +3012,7 @@
         <Param name="name" updates="None" val="intro_text" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(0, -0.1)" valType="list"/>
+        <Param name="pos" updates="constant" val="(0, -0.15)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
@@ -3043,8 +3060,8 @@
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ButtonComponent>
       <CodeComponent name="setup">
-        <Param name="Before Experiment" updates="constant" val="import time&amp;#10;&amp;#10;sleepTime = 0.2&amp;#10;mouse = None&amp;#10;green =  (-0.0039, 1.0000, -1.0000)&amp;#10;alphabet = [&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;,&quot;F&quot;,&quot;G&quot;,&quot;H&quot;,&quot;I&quot;,&quot;J&quot;,&quot;K&quot;,&quot;L&quot;]&amp;#10;red = &quot;red&quot;&amp;#10;white = &quot;white&quot;&amp;#10;&amp;#10;scaleEqPath = &quot;materials/merge_sort/demo_imgs/scale_balanced.png&quot;&amp;#10;scaleLtPath = &quot;materials/merge_sort/demo_imgs/scale_right.png&quot;&amp;#10;scaleGtPath = &quot;materials/merge_sort/demo_imgs/scale_left.png&quot;&amp;#10;&amp;#10;#scaleEqPath = &quot;materials/merge_sort/demo_imgs/left_eq_right.png&quot;&amp;#10;#scaleLtPath = &quot;materials/merge_sort/demo_imgs/left_lt_right.png&quot;&amp;#10;#scaleGtPath = &quot;materials/merge_sort/demo_imgs/left_gt_right.png&quot;&amp;#10;&amp;#10;# Begin Experiment&amp;#10;def moveItem(mouse, grabbed):&amp;#10;    # Move piece if we already moving that piece&amp;#10;    if grabbed is not None and mouse.isPressedIn(grabbed):&amp;#10;        (u,v) = mouse.getPos()&amp;#10;        if left &lt;= u and u &lt;= right and bot &lt;= v and v &lt;= top:&amp;#10;            grabbed.pos = (u,v)&amp;#10;        return grabbed&amp;#10;    else:&amp;#10;        # Move newly clicked piece&amp;#10;        for item in items:&amp;#10;            if mouse.isPressedIn(item) and grabbed is not item:&amp;#10;                return item&amp;#10; &amp;#10;# compare inputs from scale left and right inputs&amp;#10;def comparePickedItems(scale,values,leftInput,rightInput):&amp;#10;    leftLabel = int(leftInput.text)&amp;#10;    rightLabel = int(rightInput.text)&amp;#10;    leftValue = values[leftLabel-1]&amp;#10;    rightValue = values[rightLabel-1]&amp;#10;    if leftValue &gt; rightValue:&amp;#10;        scale.image = scaleGtPath&amp;#10;    elif leftValue &lt; rightValue:&amp;#10;        scale.image = scaleLtPath&amp;#10;    else:&amp;#10;        scale.image = scaleEqPath&amp;#10;    time.sleep(sleepTime)&amp;#10;    &amp;#10;def compare(scale,listValues,instr,scaleLeft,scaleRight):&amp;#10;    try:&amp;#10;        comparePickedItems(scale,listValues,scaleLeft,scaleRight)&amp;#10;        instr.text = &quot;&quot;&amp;#10;        instr.color = white&amp;#10;    except ValueError:&amp;#10;        instr.text = &quot;Please provide labels for both LHS and RHS&quot;&amp;#10;        instr.color = red&amp;#10;    except IndexError:&amp;#10;        instr.text = &quot;Please enter an existing item&quot;&amp;#10;        instr.color = red&amp;#10;    except TypeError:&amp;#10;        instr.text = &quot;Please enter labels as single capitals&quot;&amp;#10;        instr.color = red&amp;#10;        &amp;#10;# enable image components on white board given an input list to sort&amp;#10;def enableImageComponents(components,listValues,imagePathBase):&amp;#10;    enabledComponents = []&amp;#10;    for component in components:&amp;#10;        if isinstance(component,visual.ImageStim):&amp;#10;            exId= component.name.split(&quot;_&quot;)[-2:]&amp;#10;            if exId[-2] == &quot;ex&quot;:&amp;#10;                idxStr = exId[-1]&amp;#10;                if int(idxStr) &gt; len(listValues):&amp;#10;                    component.image = None&amp;#10;                else:&amp;#10;                    component.image = imagePathBase + &quot;_&quot; + idxStr + &quot;.png&quot;&amp;#10;                    enabledComponents.append(component)&amp;#10;    return enabledComponents&amp;#10;&amp;#10;def getCorrectMCOrder(path1,path2):&amp;#10;    if path1.split(&quot;_&quot;)[-1] == &quot;wrong.png&quot; and path2.split(&quot;_&quot;)[-1] == &quot;correct.png&quot;:&amp;#10;        return [0,1]&amp;#10;    elif path2.split(&quot;_&quot;)[-1] == &quot;wrong.png&quot; and path1.split(&quot;_&quot;)[-1] == &quot;correct.png&quot;:&amp;#10;        return [1,0]&amp;#10;    else:&amp;#10;        raise ValueError(&quot;Training multiple choice setup is incorrect!&quot;)" valType="extendedCode"/>
-        <Param name="Before JS Experiment" updates="constant" val="import * as time from 'time';&amp;#10;var alphabet, green, mouse, red, scaleEqPath, scaleGtPath, scaleLtPath, sleepTime, white;&amp;#10;sleepTime = 0.2;&amp;#10;mouse = null;&amp;#10;green = [(- 0.0039), 1.0, (- 1.0)];&amp;#10;alphabet = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;, &quot;G&quot;, &quot;H&quot;, &quot;I&quot;, &quot;J&quot;, &quot;K&quot;, &quot;L&quot;];&amp;#10;red = &quot;red&quot;;&amp;#10;white = &quot;white&quot;;&amp;#10;scaleEqPath = &quot;materials/merge_sort/demo_imgs/scale_balanced.png&quot;;&amp;#10;scaleLtPath = &quot;materials/merge_sort/demo_imgs/scale_right.png&quot;;&amp;#10;scaleGtPath = &quot;materials/merge_sort/demo_imgs/scale_left.png&quot;;&amp;#10;function moveItem(mouse, grabbed) {&amp;#10;    var u, v;&amp;#10;    if (((grabbed !== null) &amp;&amp; mouse.isPressedIn(grabbed))) {&amp;#10;        [u, v] = mouse.getPos();&amp;#10;        if (((((left &lt;= u) &amp;&amp; (u &lt;= right)) &amp;&amp; (bot &lt;= v)) &amp;&amp; (v &lt;= top))) {&amp;#10;            grabbed.pos = [u, v];&amp;#10;        }&amp;#10;        return grabbed;&amp;#10;    } else {&amp;#10;        for (var item, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;            item = _pj_a[_pj_c];&amp;#10;            if ((mouse.isPressedIn(item) &amp;&amp; (grabbed !== item))) {&amp;#10;                return item;&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;function comparePickedItems(scale, values, leftInput, rightInput) {&amp;#10;    var leftLabel, leftValue, rightLabel, rightValue;&amp;#10;    leftLabel = Number.parseInt(leftInput.text);&amp;#10;    rightLabel = Number.parseInt(rightInput.text);&amp;#10;    leftValue = values[(leftLabel - 1)];&amp;#10;    rightValue = values[(rightLabel - 1)];&amp;#10;    if ((leftValue &gt; rightValue)) {&amp;#10;        scale.image = scaleGtPath;&amp;#10;    } else {&amp;#10;        if ((leftValue &lt; rightValue)) {&amp;#10;            scale.image = scaleLtPath;&amp;#10;        } else {&amp;#10;            scale.image = scaleEqPath;&amp;#10;        }&amp;#10;    }&amp;#10;    time.sleep(sleepTime);&amp;#10;}&amp;#10;function compare(scale, listValues, instr, scaleLeft, scaleRight) {&amp;#10;    try {&amp;#10;        comparePickedItems(scale, listValues, scaleLeft, scaleRight);&amp;#10;        instr.text = &quot;&quot;;&amp;#10;        instr.color = white;&amp;#10;    } catch(e) {&amp;#10;        if ((e instanceof ValueError)) {&amp;#10;            instr.text = &quot;Please provide labels for both LHS and RHS&quot;;&amp;#10;            instr.color = red;&amp;#10;        } else {&amp;#10;            if ((e instanceof IndexError)) {&amp;#10;                instr.text = &quot;Please enter an existing item&quot;;&amp;#10;                instr.color = red;&amp;#10;            } else {&amp;#10;                if ((e instanceof TypeError)) {&amp;#10;                    instr.text = &quot;Please enter labels as single capitals&quot;;&amp;#10;                    instr.color = red;&amp;#10;                } else {&amp;#10;                    throw e;&amp;#10;                }&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;function enableImageComponents(components, listValues, imagePathBase) {&amp;#10;    var enabledComponents, exId, idxStr;&amp;#10;    enabledComponents = [];&amp;#10;    for (var component, _pj_c = 0, _pj_a = components, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;        component = _pj_a[_pj_c];&amp;#10;        if ((component instanceof visual.ImageStim)) {&amp;#10;            exId = component.name.split(&quot;_&quot;).slice((- 2));&amp;#10;            if ((exId.slice((- 2))[0] === &quot;ex&quot;)) {&amp;#10;                idxStr = exId.slice((- 1))[0];&amp;#10;                if ((Number.parseInt(idxStr) &gt; listValues.length)) {&amp;#10;                    component.image = null;&amp;#10;                } else {&amp;#10;                    component.image = (((imagePathBase + &quot;_&quot;) + idxStr) + &quot;.png&quot;);&amp;#10;                    enabledComponents.append(component);&amp;#10;                }&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;    return enabledComponents;&amp;#10;}&amp;#10;function getCorrectMCOrder(path1, path2) {&amp;#10;    if (((path1.split(&quot;_&quot;).slice((- 1))[0] === &quot;wrong.png&quot;) &amp;&amp; (path2.split(&quot;_&quot;).slice((- 1))[0] === &quot;correct.png&quot;))) {&amp;#10;        return [0, 1];&amp;#10;    } else {&amp;#10;        if (((path2.split(&quot;_&quot;).slice((- 1))[0] === &quot;wrong.png&quot;) &amp;&amp; (path1.split(&quot;_&quot;).slice((- 1))[0] === &quot;correct.png&quot;))) {&amp;#10;            return [1, 0];&amp;#10;        } else {&amp;#10;            throw new ValueError(&quot;Training multiple choice setup is incorrect!&quot;);&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;" valType="extendedCode"/>
+        <Param name="Before Experiment" updates="constant" val="import time&amp;#10;import random&amp;#10;&amp;#10;sleepTime = 0.2&amp;#10;mouse = None&amp;#10;green =  (-0.0039, 1.0000, -1.0000)&amp;#10;alphabet = [&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;,&quot;F&quot;,&quot;G&quot;,&quot;H&quot;,&quot;I&quot;,&quot;J&quot;,&quot;K&quot;,&quot;L&quot;]&amp;#10;red = &quot;red&quot;&amp;#10;white = &quot;white&quot;&amp;#10;repeats = 0&amp;#10;&amp;#10;scaleEqPath = &quot;materials/merge_sort/demo_imgs/scale_balanced.png&quot;&amp;#10;scaleLtPath = &quot;materials/merge_sort/demo_imgs/scale_right.png&quot;&amp;#10;scaleGtPath = &quot;materials/merge_sort/demo_imgs/scale_left.png&quot;&amp;#10;&amp;#10;#scaleEqPath = &quot;materials/merge_sort/demo_imgs/left_eq_right.png&quot;&amp;#10;#scaleLtPath = &quot;materials/merge_sort/demo_imgs/left_lt_right.png&quot;&amp;#10;#scaleGtPath = &quot;materials/merge_sort/demo_imgs/left_gt_right.png&quot;&amp;#10;&amp;#10;# Begin Experiment&amp;#10;def moveItem(mouse, grabbed):&amp;#10;    # Move piece if we already moving that piece&amp;#10;    if grabbed is not None and mouse.isPressedIn(grabbed):&amp;#10;        (u,v) = mouse.getPos()&amp;#10;        if left &lt;= u and u &lt;= right and bot &lt;= v and v &lt;= top:&amp;#10;            grabbed.pos = (u,v)&amp;#10;        return grabbed&amp;#10;    else:&amp;#10;        # Move newly clicked piece&amp;#10;        for item in items:&amp;#10;            if mouse.isPressedIn(item) and grabbed is not item:&amp;#10;                return item&amp;#10; &amp;#10;# compare inputs from scale left and right inputs&amp;#10;def comparePickedItems(scale,values,leftInput,rightInput):&amp;#10;    if len(leftInput.text) == 0 or len(leftInput.text) == 0:&amp;#10;        raise ValueError()&amp;#10;    elif len(leftInput.text) &gt; 1 or len(leftInput.text) &gt; 1:&amp;#10;        raise TypeError()&amp;#10;    leftLabel = alphabet.index(leftInput.text)&amp;#10;    rightLabel = alphabet.index(rightInput.text)&amp;#10;    leftValue = values[leftLabel]&amp;#10;    rightValue = values[rightLabel]&amp;#10;    if leftValue &gt; rightValue:&amp;#10;        scale.image = scaleGtPath&amp;#10;    elif leftValue &lt; rightValue:&amp;#10;        scale.image = scaleLtPath&amp;#10;    else:&amp;#10;        scale.image = scaleEqPath&amp;#10;    time.sleep(sleepTime)&amp;#10;    &amp;#10;def compare(scale,listValues,instr,scaleLeft,scaleRight):&amp;#10;    try:&amp;#10;        comparePickedItems(scale,listValues,scaleLeft,scaleRight)&amp;#10;        instr.text = &quot;&quot;&amp;#10;        instr.color = white&amp;#10;    except ValueError:&amp;#10;        instr.text = &quot;Please provide labels for both LHS and RHS&quot;&amp;#10;        instr.color = red&amp;#10;    except IndexError:&amp;#10;        instr.text = &quot;Please enter an existing item&quot;&amp;#10;        instr.color = red&amp;#10;    except TypeError:&amp;#10;        instr.text = &quot;Please enter labels as single capitals&quot;&amp;#10;        instr.color = red&amp;#10;        &amp;#10;# enable image components on white board given an input list to sort&amp;#10;def enableImageComponents(components,listValues,imagePathBase):&amp;#10;    enabledComponents = []&amp;#10;    for component in components:&amp;#10;        if isinstance(component,visual.ImageStim):&amp;#10;            exId= component.name.split(&quot;_&quot;)[-2:]&amp;#10;            if exId[-2] == &quot;ex&quot;:&amp;#10;                idxStr = exId[-1]&amp;#10;                if int(idxStr) &gt; len(listValues):&amp;#10;                    component.image = None&amp;#10;                else:&amp;#10;                    component.image = imagePathBase + &quot;_&quot; + idxStr + &quot;.png&quot;&amp;#10;                    enabledComponents.append(component)&amp;#10;    return enabledComponents&amp;#10;&amp;#10;def getCorrectMCOrder(path1,path2,img1,img2):&amp;#10;    rand = random.randint(0,1)&amp;#10;    order = [rand,1-rand]&amp;#10;    if (path1.split(&quot;_&quot;)[-1] == &quot;wrong.png&quot; and path2.split(&quot;_&quot;)[-1] == &quot;correct.png&quot;) or (path2.split(&quot;_&quot;)[-1] == &quot;wrong.png&quot; and path1.split(&quot;_&quot;)[-1] == &quot;correct.png&quot;):&amp;#10;        if order == [1,0]:&amp;#10;            img1.image = path1&amp;#10;            img2.image = path2&amp;#10;        else:&amp;#10;            img1.image = path2&amp;#10;            img2.image = path1&amp;#10;        return order&amp;#10;    else:&amp;#10;        raise ValueError(&quot;Training multiple choice setup is incorrect!&quot;)&amp;#10;&amp;#10;def showExpl(feedback1,feedback2,mc1,mc2,mcPath1,mcPath2):&amp;#10;    # finds which choice user has selected&amp;#10;    feedback1.text = &quot;&quot;&amp;#10;    feedback2.text = &quot;&quot;&amp;#10;    &amp;#10;    if submitted == 0:&amp;#10;        feedback1.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;&amp;#10;    elif submitted == 1:&amp;#10;        feedback2.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;&amp;#10;    &amp;#10;    # show user which answer is correct and wrong&amp;#10;    if mc_order == [1,0]:&amp;#10;        feedback1.color = green&amp;#10;        feedback2.color = red&amp;#10;        feedback1.text = feedback1.text + &quot;This answer is correct!&quot;&amp;#10;        feedback2.text = feedback2.text + &quot;This answer is wrong!&quot;&amp;#10;         &amp;#10;         # show the selections&amp;#10;        mc1.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        mc2.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;    else:&amp;#10;        feedback1.color = red&amp;#10;        feedback2.color = green&amp;#10;        feedback1.text = feedback1.text + &quot;This answer is wrong!&quot;&amp;#10;        feedback2.text = feedback2.text + &quot;This answer is correct!&quot;&amp;#10;        &amp;#10;         # show the selections&amp;#10;        mc1.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        mc2.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;&amp;#10;def makeScreenShot(repeats):&amp;#10;    win.getMovieFrame()&amp;#10;    win.saveMovieFrames(str(repeats) + '.png') &amp;#10;    return repeats + 1" valType="extendedCode"/>
+        <Param name="Before JS Experiment" updates="constant" val="import * as time from 'time';&amp;#10;import * as random from 'random';&amp;#10;var alphabet, green, mouse, red, repeats, scaleEqPath, scaleGtPath, scaleLtPath, sleepTime, white;&amp;#10;sleepTime = 0.2;&amp;#10;mouse = null;&amp;#10;green = [(- 0.0039), 1.0, (- 1.0)];&amp;#10;alphabet = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;, &quot;G&quot;, &quot;H&quot;, &quot;I&quot;, &quot;J&quot;, &quot;K&quot;, &quot;L&quot;];&amp;#10;red = &quot;red&quot;;&amp;#10;white = &quot;white&quot;;&amp;#10;repeats = 0;&amp;#10;scaleEqPath = &quot;materials/merge_sort/demo_imgs/scale_balanced.png&quot;;&amp;#10;scaleLtPath = &quot;materials/merge_sort/demo_imgs/scale_right.png&quot;;&amp;#10;scaleGtPath = &quot;materials/merge_sort/demo_imgs/scale_left.png&quot;;&amp;#10;function moveItem(mouse, grabbed) {&amp;#10;    var u, v;&amp;#10;    if (((grabbed !== null) &amp;&amp; mouse.isPressedIn(grabbed))) {&amp;#10;        [u, v] = mouse.getPos();&amp;#10;        if (((((left &lt;= u) &amp;&amp; (u &lt;= right)) &amp;&amp; (bot &lt;= v)) &amp;&amp; (v &lt;= top))) {&amp;#10;            grabbed.pos = [u, v];&amp;#10;        }&amp;#10;        return grabbed;&amp;#10;    } else {&amp;#10;        for (var item, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;            item = _pj_a[_pj_c];&amp;#10;            if ((mouse.isPressedIn(item) &amp;&amp; (grabbed !== item))) {&amp;#10;                return item;&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;function comparePickedItems(scale, values, leftInput, rightInput) {&amp;#10;    var leftLabel, leftValue, rightLabel, rightValue;&amp;#10;    if (((leftInput.text.length === 0) || (leftInput.text.length === 0))) {&amp;#10;        throw new ValueError();&amp;#10;    } else {&amp;#10;        if (((leftInput.text.length &gt; 1) || (leftInput.text.length &gt; 1))) {&amp;#10;            throw new TypeError();&amp;#10;        }&amp;#10;    }&amp;#10;    leftLabel = alphabet.index(leftInput.text);&amp;#10;    rightLabel = alphabet.index(rightInput.text);&amp;#10;    leftValue = values[leftLabel];&amp;#10;    rightValue = values[rightLabel];&amp;#10;    if ((leftValue &gt; rightValue)) {&amp;#10;        scale.image = scaleGtPath;&amp;#10;    } else {&amp;#10;        if ((leftValue &lt; rightValue)) {&amp;#10;            scale.image = scaleLtPath;&amp;#10;        } else {&amp;#10;            scale.image = scaleEqPath;&amp;#10;        }&amp;#10;    }&amp;#10;    time.sleep(sleepTime);&amp;#10;}&amp;#10;function compare(scale, listValues, instr, scaleLeft, scaleRight) {&amp;#10;    try {&amp;#10;        comparePickedItems(scale, listValues, scaleLeft, scaleRight);&amp;#10;        instr.text = &quot;&quot;;&amp;#10;        instr.color = white;&amp;#10;    } catch(e) {&amp;#10;        if ((e instanceof ValueError)) {&amp;#10;            instr.text = &quot;Please provide labels for both LHS and RHS&quot;;&amp;#10;            instr.color = red;&amp;#10;        } else {&amp;#10;            if ((e instanceof IndexError)) {&amp;#10;                instr.text = &quot;Please enter an existing item&quot;;&amp;#10;                instr.color = red;&amp;#10;            } else {&amp;#10;                if ((e instanceof TypeError)) {&amp;#10;                    instr.text = &quot;Please enter labels as single capitals&quot;;&amp;#10;                    instr.color = red;&amp;#10;                } else {&amp;#10;                    throw e;&amp;#10;                }&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;function enableImageComponents(components, listValues, imagePathBase) {&amp;#10;    var enabledComponents, exId, idxStr;&amp;#10;    enabledComponents = [];&amp;#10;    for (var component, _pj_c = 0, _pj_a = components, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;        component = _pj_a[_pj_c];&amp;#10;        if ((component instanceof visual.ImageStim)) {&amp;#10;            exId = component.name.split(&quot;_&quot;).slice((- 2));&amp;#10;            if ((exId.slice((- 2))[0] === &quot;ex&quot;)) {&amp;#10;                idxStr = exId.slice((- 1))[0];&amp;#10;                if ((Number.parseInt(idxStr) &gt; listValues.length)) {&amp;#10;                    component.image = null;&amp;#10;                } else {&amp;#10;                    component.image = (((imagePathBase + &quot;_&quot;) + idxStr) + &quot;.png&quot;);&amp;#10;                    enabledComponents.append(component);&amp;#10;                }&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;    return enabledComponents;&amp;#10;}&amp;#10;function getCorrectMCOrder(path1, path2, img1, img2) {&amp;#10;    var order, rand;&amp;#10;    rand = random.randint(0, 1);&amp;#10;    order = [rand, (1 - rand)];&amp;#10;    if ((((path1.split(&quot;_&quot;).slice((- 1))[0] === &quot;wrong.png&quot;) &amp;&amp; (path2.split(&quot;_&quot;).slice((- 1))[0] === &quot;correct.png&quot;)) || ((path2.split(&quot;_&quot;).slice((- 1))[0] === &quot;wrong.png&quot;) &amp;&amp; (path1.split(&quot;_&quot;).slice((- 1))[0] === &quot;correct.png&quot;)))) {&amp;#10;        if ((order === [1, 0])) {&amp;#10;            img1.image = path1;&amp;#10;            img2.image = path2;&amp;#10;        } else {&amp;#10;            img1.image = path2;&amp;#10;            img2.image = path1;&amp;#10;        }&amp;#10;        return order;&amp;#10;    } else {&amp;#10;        throw new ValueError(&quot;Training multiple choice setup is incorrect!&quot;);&amp;#10;    }&amp;#10;}&amp;#10;function showExpl(feedback1, feedback2, mc1, mc2, mcPath1, mcPath2) {&amp;#10;    feedback1.text = &quot;&quot;;&amp;#10;    feedback2.text = &quot;&quot;;&amp;#10;    if ((submitted === 0)) {&amp;#10;        feedback1.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;;&amp;#10;    } else {&amp;#10;        if ((submitted === 1)) {&amp;#10;            feedback2.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;;&amp;#10;        }&amp;#10;    }&amp;#10;    if ((mc_order === [1, 0])) {&amp;#10;        feedback1.color = green;&amp;#10;        feedback2.color = red;&amp;#10;        feedback1.text = (feedback1.text + &quot;This answer is correct!&quot;);&amp;#10;        feedback2.text = (feedback2.text + &quot;This answer is wrong!&quot;);&amp;#10;        mc1.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        mc2.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;    } else {&amp;#10;        feedback1.color = red;&amp;#10;        feedback2.color = green;&amp;#10;        feedback1.text = (feedback1.text + &quot;This answer is wrong!&quot;);&amp;#10;        feedback2.text = (feedback2.text + &quot;This answer is correct!&quot;);&amp;#10;        mc1.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        mc2.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;    }&amp;#10;}&amp;#10;function makeScreenShot(repeats) {&amp;#10;    win.getMovieFrame();&amp;#10;    win.saveMovieFrames((repeats.toString() + &quot;.png&quot;));&amp;#10;    return (repeats + 1);&amp;#10;}&amp;#10;" valType="extendedCode"/>
         <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin JS Routine" updates="constant" val="" valType="extendedCode"/>
@@ -3630,7 +3647,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0, -0.15)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(1.5,0.01)" valType="list"/>
+        <Param name="size" updates="constant" val="(1.5,0.005)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -4021,7 +4038,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0, -0.15)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(1.5,0.01)" valType="list"/>
+        <Param name="size" updates="constant" val="(1.5,0.005)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
