@@ -1,3 +1,3 @@
 img_path,input
-materials/merge_sort/demo_imgs/merge_test_ex_2.png,"[5,7,8,2,3,10]"
-materials/merge_sort/demo_imgs/merge_test_ex_3.png,"[1,3,5,7,9,11,2,4,6,8,10,12]"
+materials/merge_sort/demo_imgs/merge_test/merge_test_ex_1.png,"[5, 6, 4, 3, 2, 1, 8, 7]"
+materials/merge_sort/demo_imgs/merge_test/merge_test_ex_2.png,"[8, 4, 2, 1, 5, 6, 3, 7, 9]"

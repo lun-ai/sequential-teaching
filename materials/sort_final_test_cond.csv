@@ -1,3 +1,3 @@
 img_path_base,input
-materials/merge_sort/demo_imgs/melon,"[9,8,7,6,5,4]"
-materials/merge_sort/demo_imgs/apple,"[3,4,6,1,2,8,10,17,21,7,9,15]"
+materials/merge_sort/demo_imgs/fruits/melon,"[9,8,7,6,5,4]"
+materials/merge_sort/demo_imgs/fruits/apple,"[3,4,6,1,2,8,10,17,21,7,9,15]"

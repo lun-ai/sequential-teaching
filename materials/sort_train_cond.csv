@@ -1,2 +1,4 @@
-img_path_base,input,mc_path_1,mc_path_2,expl_path
-materials/merge_sort/demo_imgs/apple,"[1,4,5,23,34,40,71]",materials/merge_sort/demo_imgs/sort_train_ex_2_correct.png,materials/merge_sort/demo_imgs/sort_train_ex_2_wrong.png,materials/merge_sort/demo_imgs/sort_train_ex_2.png
+img_path_base,input,expl_path
+materials/merge_sort/demo_imgs/sort_train/sort_train_ex_1.png,"",materials/merge_sort/demo_imgs/sort_train/sort_train_ex_1_expl.png
+materials/merge_sort/demo_imgs/sort_train/sort_train_ex_2.png,"",materials/merge_sort/demo_imgs/sort_train/sort_train_ex_2_expl.png
+materials/merge_sort/demo_imgs/sort_train/sort_train_ex_3.png,"",materials/merge_sort/demo_imgs/sort_train/sort_train_ex_3_expl.png
