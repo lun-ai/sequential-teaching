@@ -1,4 +1,4 @@
-img_path_base,input,expl_path
-materials/merge_sort/demo_imgs/sort_train/sort_train_ex_1.png,"",materials/merge_sort/demo_imgs/sort_train/sort_train_ex_1_expl.png
-materials/merge_sort/demo_imgs/sort_train/sort_train_ex_2.png,"",materials/merge_sort/demo_imgs/sort_train/sort_train_ex_2_expl.png
-materials/merge_sort/demo_imgs/sort_train/sort_train_ex_3.png,"",materials/merge_sort/demo_imgs/sort_train/sort_train_ex_3_expl.png
+img_path,input,expl_path
+materials/merge_sort/demo_imgs/sort_train/sort_train_ex_1.png,"[5, 7, 6, 3, 4, 1, 2]",materials/merge_sort/demo_imgs/sort_train/sort_train_ex_1_expl.png
+materials/merge_sort/demo_imgs/sort_train/sort_train_ex_2.png,"[5, 7, 6, 3, 4, 1, 2]",materials/merge_sort/demo_imgs/sort_train/sort_train_ex_2_expl.png
+materials/merge_sort/demo_imgs/sort_train/sort_train_ex_3.png,"[5, 7, 6, 3, 4, 1, 2]",materials/merge_sort/demo_imgs/sort_train/sort_train_ex_3_expl.png
