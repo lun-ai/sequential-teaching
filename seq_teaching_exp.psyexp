@@ -117,7 +117,7 @@
         <Param name="syncScreenRefresh" updates="None" val="False" valType="bool"/>
       </VariableComponent>
       <TextComponent name="merge_test_scale_instr">
-        <Param name="color" updates="constant" val="white" valType="color"/>
+        <Param name="color" updates="set every repeat" val="white" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
         <Param name="contrast" updates="constant" val="1" valType="num"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
@@ -137,7 +137,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
+        <Param name="text" updates="set every repeat" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="0.3" valType="num"/>
       </TextComponent>
@@ -412,7 +412,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0, 0.2)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.8, 0.3)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.8, 0.4)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -430,7 +430,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="$scaleEqPath" valType="file"/>
+        <Param name="image" updates="set every repeat" val="$scaleEqPath" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="merge_test_scale" valType="code"/>
@@ -460,8 +460,8 @@
         <Param name="Each JS Frame" updates="constant" val="if (mouse.isPressedIn(merge_test_compare)) {&amp;#10;    compare(merge_test_scale, merge_test_input, labels, merge_test_scale_instr, merge_test_scale_left, merge_test_scale_right);&amp;#10;}&amp;#10;" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="merge_test_setup" valType="code"/>
       </CodeComponent>
@@ -522,6 +522,31 @@
         <Param name="timeRelativeTo" updates="constant" val="button onset" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ButtonComponent>
+      <TextComponent name="sort_train_scale_instr">
+        <Param name="color" updates="set every repeat" val="white" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="flip" updates="constant" val="None" valType="str"/>
+        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
+        <Param name="name" updates="None" val="sort_train_scale_instr" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="pos" updates="constant" val="(-0.65,0.45)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="set every repeat" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+        <Param name="wrapWidth" updates="constant" val="0.3" valType="num"/>
+      </TextComponent>
       <TextComponent name="sort_train_ans_instr">
         <Param name="color" updates="constant" val="white" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
@@ -543,34 +568,9 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="Please ENTER labels of the fruit(s) between parentheses for EACH of YELLOW box(es) as &amp;#10;(X,X,...,X),(X,X,...,X),...,(X,X,...,X)" valType="str"/>
+        <Param name="text" updates="constant" val="Please ENTER labels of the fruit(s) for EACH of YELLOW box(es) between parentheses as&amp;#10;(X,X,...,X),(X,X,...,X),...,(X,X,...,X)" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="1" valType="num"/>
-      </TextComponent>
-      <TextComponent name="sort_train_scale_instr">
-        <Param name="color" updates="constant" val="white" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="num"/>
-        <Param name="flip" updates="constant" val="None" valType="str"/>
-        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
-        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
-        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
-        <Param name="name" updates="None" val="sort_train_scale_instr" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(-0.65,0.45)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="startEstim" updates="None" val="" valType="num"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.0" valType="num"/>
-        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-        <Param name="wrapWidth" updates="constant" val="0.3" valType="num"/>
       </TextComponent>
       <TextComponent name="sort_train_instr">
         <Param name="color" updates="constant" val="white" valType="color"/>
@@ -801,7 +801,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="$scaleEqPath" valType="file"/>
+        <Param name="image" updates="set every repeat" val="$scaleEqPath" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="sort_train_scale" valType="code"/>
@@ -831,8 +831,8 @@
         <Param name="Each JS Frame" updates="constant" val="if (mouse.isPressedIn(sort_train_compare)) {&amp;#10;    compare(sort_train_scale, sort_train_input, labels, sort_train_scale_instr, sort_train_scale_left, sort_train_scale_right);&amp;#10;}&amp;#10;" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="sort_train_setup" valType="code"/>
       </CodeComponent>
@@ -878,6 +878,31 @@
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="False" valType="bool"/>
       </VariableComponent>
+      <TextComponent name="sort_test_scale_instr">
+        <Param name="color" updates="set every repeat" val="white" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="flip" updates="constant" val="None" valType="str"/>
+        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
+        <Param name="name" updates="None" val="sort_test_scale_instr" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="pos" updates="constant" val="(-0.65,0.45)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="set every repeat" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+        <Param name="wrapWidth" updates="constant" val="0.3" valType="num"/>
+      </TextComponent>
       <TextComponent name="sort_test_ans_instr">
         <Param name="color" updates="constant" val="white" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
@@ -902,31 +927,6 @@
         <Param name="text" updates="constant" val="Put fruits into the PACKAGE by entering their labels as  X,X,X,X,X,X,X,X, ... ,X" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="num"/>
-      </TextComponent>
-      <TextComponent name="sort_test_scale_instr">
-        <Param name="color" updates="constant" val="white" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="num"/>
-        <Param name="flip" updates="constant" val="None" valType="str"/>
-        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
-        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
-        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
-        <Param name="name" updates="None" val="sort_test_scale_instr" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(-0.65,0.45)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="startEstim" updates="None" val="" valType="num"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.0" valType="num"/>
-        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-        <Param name="wrapWidth" updates="constant" val="0.3" valType="num"/>
       </TextComponent>
       <TextComponent name="sort_test_instr">
         <Param name="color" updates="constant" val="white" valType="color"/>
@@ -1192,7 +1192,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="$scaleEqPath" valType="file"/>
+        <Param name="image" updates="set every repeat" val="$scaleEqPath" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="sort_test_scale" valType="code"/>
@@ -1534,8 +1534,8 @@
         <Param name="Each JS Frame" updates="constant" val="if ((items === [])) {&amp;#10;    items = enableImageComponents(SORT_TESTComponents, labels, sort_test_path_base);&amp;#10;}&amp;#10;for (var item, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;    item = _pj_a[_pj_c];&amp;#10;    if ((mouse.isPressedIn(item) &amp;&amp; (movingItem === null))) {&amp;#10;        movingItem = item;&amp;#10;    }&amp;#10;}&amp;#10;movingItem = moveItem(mouse, movingItem);&amp;#10;if (mouse.isPressedIn(sort_test_compare)) {&amp;#10;    compare(sort_test_scale, sort_test_input, labels, sort_test_scale_instr, sort_test_scale_left, sort_test_scale_right);&amp;#10;}&amp;#10;" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="sort_test_setup" valType="code"/>
       </CodeComponent>
@@ -1601,6 +1601,31 @@
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="False" valType="bool"/>
       </VariableComponent>
+      <TextComponent name="merge_train_scale_instr">
+        <Param name="color" updates="set every repeat" val="white" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="flip" updates="constant" val="None" valType="str"/>
+        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
+        <Param name="name" updates="None" val="merge_train_scale_instr" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="pos" updates="constant" val="(-0.65,0.45)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="set every repeat" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+        <Param name="wrapWidth" updates="constant" val="0.3" valType="num"/>
+      </TextComponent>
       <TextComponent name="merge_ans_instr">
         <Param name="color" updates="constant" val="white" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
@@ -1625,31 +1650,6 @@
         <Param name="text" updates="constant" val="Please SELECT the CONVEYOR BELT that has the correct fruit(s) on YELLOW position(s):" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="1.5" valType="num"/>
-      </TextComponent>
-      <TextComponent name="merge_train_scale_instr">
-        <Param name="color" updates="constant" val="white" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="num"/>
-        <Param name="flip" updates="constant" val="None" valType="str"/>
-        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
-        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
-        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
-        <Param name="name" updates="None" val="merge_train_scale_instr" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(-0.65,0.45)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="startEstim" updates="None" val="" valType="num"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.0" valType="num"/>
-        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-        <Param name="wrapWidth" updates="constant" val="0.3" valType="num"/>
       </TextComponent>
       <TextComponent name="merge_train_instr">
         <Param name="color" updates="constant" val="white" valType="color"/>
@@ -1896,7 +1896,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0, 0.2)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.8, 0.3)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.8, 0.4)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -1966,7 +1966,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="$scaleEqPath" valType="file"/>
+        <Param name="image" updates="set every repeat" val="$scaleEqPath" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="merge_train_scale" valType="code"/>
@@ -1996,8 +1996,8 @@
         <Param name="Each JS Frame" updates="constant" val="if (mouse.isPressedIn(merge_train_compare)) {&amp;#10;    compare(merge_train_scale, merge_train_input, labels, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right);&amp;#10;}&amp;#10;" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="merge_train_setup" valType="code"/>
       </CodeComponent>
@@ -2038,7 +2038,7 @@
         <Param name="timeRelativeTo" updates="constant" val="button onset" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ButtonComponent>
-      <TextboxComponent name="sort_submitted_res_1">
+      <TextboxComponent name="sort_submitted_res">
         <Param name="anchor" updates="constant" val="top-center" valType="str"/>
         <Param name="autoLog" updates="constant" val="True" valType="bool"/>
         <Param name="bold" updates="constant" val="False" valType="bool"/>
@@ -2058,7 +2058,7 @@
         <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
         <Param name="letterHeight" updates="constant" val="0.05" valType="num"/>
         <Param name="lineSpacing" updates="constant" val="1.0" valType="num"/>
-        <Param name="name" updates="None" val="sort_submitted_res_1" valType="code"/>
+        <Param name="name" updates="None" val="sort_submitted_res" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="padding" updates="constant" val="" valType="num"/>
@@ -2072,42 +2072,6 @@
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
         <Param name="text" updates="set every repeat" val="" valType="str"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-      </TextboxComponent>
-      <TextboxComponent name="sort_submitted_res_2">
-        <Param name="anchor" updates="constant" val="top-center" valType="str"/>
-        <Param name="autoLog" updates="constant" val="True" valType="bool"/>
-        <Param name="bold" updates="constant" val="False" valType="bool"/>
-        <Param name="borderColor" updates="constant" val="None" valType="color"/>
-        <Param name="borderWidth" updates="constant" val="2" valType="num"/>
-        <Param name="color" updates="constant" val="black" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="num"/>
-        <Param name="editable" updates="constant" val="False" valType="bool"/>
-        <Param name="fillColor" updates="constant" val="white" valType="color"/>
-        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
-        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
-        <Param name="italic" updates="constant" val="False" valType="bool"/>
-        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
-        <Param name="letterHeight" updates="constant" val="0.05" valType="num"/>
-        <Param name="lineSpacing" updates="constant" val="1.0" valType="num"/>
-        <Param name="name" updates="None" val="sort_submitted_res_2" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="padding" updates="constant" val="" valType="num"/>
-        <Param name="pos" updates="constant" val="(-0.5, -0.15)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.7,0.1)" valType="list"/>
-        <Param name="startEstim" updates="None" val="" valType="num"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.0" valType="num"/>
-        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="set every repeat" val="Correct answer" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </TextboxComponent>
       <ImageComponent name="sort_train_expl_sep">
@@ -2175,7 +2139,7 @@
         <Param name="name" updates="None" val="sort_train_expl_feedback_1" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(-0.5, 0.15)" valType="list"/>
+        <Param name="pos" updates="constant" val="(-0.5, 0.1)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
@@ -2183,9 +2147,9 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="Feedback" valType="str"/>
+        <Param name="text" updates="set every repeat" val="" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
-        <Param name="wrapWidth" updates="constant" val="" valType="num"/>
+        <Param name="wrapWidth" updates="constant" val="0.7" valType="num"/>
       </TextComponent>
       <TextComponent name="sort_train_expl_feedback_2">
         <Param name="color" updates="constant" val="white" valType="color"/>
@@ -2200,7 +2164,7 @@
         <Param name="name" updates="None" val="sort_train_expl_feedback_2" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(-0.5, -0.25)" valType="list"/>
+        <Param name="pos" updates="constant" val="(-0.5, -0.15)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
@@ -2208,7 +2172,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="Feedback" valType="str"/>
+        <Param name="text" updates="set every repeat" val="" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="num"/>
       </TextComponent>
@@ -2242,15 +2206,15 @@
         <Param name="Before JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="Begin JS Routine" updates="constant" val="sort_submitted_res.text = sort_inter_res;&amp;#10;" valType="extendedCode"/>
-        <Param name="Begin Routine" updates="constant" val="sort_submitted_res.text = sort_inter_res" valType="extendedCode"/>
+        <Param name="Begin JS Routine" updates="constant" val="sort_submitted_res.text = sort_inter_res;&amp;#10;checkSortTrainAns(sort_train_input, TRAIN_2.thisTrialN, labels, sort_inter_res, sort_train_expl_feedback_1, sort_train_expl_feedback_2);&amp;#10;" valType="extendedCode"/>
+        <Param name="Begin Routine" updates="constant" val="sort_submitted_res.text = sort_inter_res&amp;#10;checkSortTrainAns(sort_train_input,TRAIN_2.thisTrialN,labels,sort_inter_res,sort_train_expl_feedback_1,sort_train_expl_feedback_2)" valType="extendedCode"/>
         <Param name="Code Type" updates="None" val="Auto-&gt;JS" valType="str"/>
         <Param name="Each Frame" updates="constant" val="" valType="extendedCode"/>
         <Param name="Each JS Frame" updates="constant" val="" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="sort_train_expl_setup" valType="code"/>
       </CodeComponent>
@@ -2508,8 +2472,8 @@
         <Param name="Each JS Frame" updates="constant" val="" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="merge_train_expl_setup" valType="code"/>
       </CodeComponent>
@@ -2536,7 +2500,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="ALICE: BIZZ ... Thank you for coming to help!&amp;#10;&amp;#10;1. The fruits in EACH ORANGE box INCREASE in weight from LEFT to RIGHT&amp;#10;&amp;#10;2. The BLUE STAR puts fruits from two ORANGE boxes on the CONVEYOR BELT in INCREASING weights from LEFT to RIGHT&amp;#10;&amp;#10;LEARN and MASTER what the BLUE STAR does. " valType="str"/>
+        <Param name="text" updates="constant" val="ALICE: BIZZ ... Thank you for coming to help! We have fruits in some boxes to be put on a conveyor.&amp;#10;&amp;#10;1. The fruits in EACH ORANGE box INCREASE in weight from LEFT to RIGHT&amp;#10;&amp;#10;2. The BLUE STAR puts fruits from two ORANGE boxes on the CONVEYOR BELT in INCREASING weights from LEFT to RIGHT &amp;#10;&amp;#10;LEARN the BLUE STAR operation in steps and master it. " valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="1" valType="num"/>
       </TextComponent>
@@ -2653,6 +2617,23 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
+      <CodeComponent name="merge_intro_code">
+        <Param name="Before Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Before JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin JS Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Code Type" updates="None" val="Auto-&gt;JS" valType="str"/>
+        <Param name="Each Frame" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Each JS Frame" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="name" updates="None" val="merge_intro_code" valType="code"/>
+      </CodeComponent>
     </Routine>
     <Routine name="INTRO">
       <TextComponent name="intro_text">
@@ -2838,8 +2819,8 @@
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
       <CodeComponent name="setup">
-        <Param name="Before Experiment" updates="constant" val="import time&amp;#10;import random&amp;#10;&amp;#10;sleepTime = 0.2&amp;#10;mouse = None&amp;#10;green =  (-0.0039, 1.0000, -1.0000)&amp;#10;red = (1.0000, -0.2235, -0.4431)&amp;#10;white = &quot;white&quot;&amp;#10;repeats = 0&amp;#10;alphabet = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;, &quot;G&quot;, &quot;H&quot;, &quot;I&quot;, &quot;J&quot;, &quot;K&quot;, &quot;L&quot;]&amp;#10;&amp;#10;scaleEqPath = &quot;materials/merge_sort/demo_imgs/scale_balanced.png&quot;&amp;#10;scaleLtPath = &quot;materials/merge_sort/demo_imgs/scale_right.png&quot;&amp;#10;scaleGtPath = &quot;materials/merge_sort/demo_imgs/scale_left.png&quot;&amp;#10;&amp;#10;#scaleEqPath = &quot;materials/merge_sort/demo_imgs/left_eq_right.png&quot;&amp;#10;#scaleLtPath = &quot;materials/merge_sort/demo_imgs/left_lt_right.png&quot;&amp;#10;#scaleGtPath = &quot;materials/merge_sort/demo_imgs/left_gt_right.png&quot;&amp;#10;&amp;#10;# Begin Experiment&amp;#10;def moveItem(mouse, grabbed):&amp;#10;    # Move piece if we already moving that piece&amp;#10;    if grabbed is not None and mouse.isPressedIn(grabbed):&amp;#10;        (u,v) = mouse.getPos()&amp;#10;        if left &lt;= u and u &lt;= right and bot &lt;= v and v &lt;= top:&amp;#10;            grabbed.pos = (u,v)&amp;#10;        return grabbed&amp;#10;    else:&amp;#10;        # Move newly clicked piece&amp;#10;        for item in items:&amp;#10;            if mouse.isPressedIn(item) and grabbed is not item:&amp;#10;                return item&amp;#10; &amp;#10;# compare inputs from scale left and right inputs&amp;#10;def comparePickedItems(scale,values,labels,leftInput,rightInput):&amp;#10;    if len(leftInput.text) == 0 or len(leftInput.text) == 0:&amp;#10;        raise ValueError()&amp;#10;    elif len(leftInput.text) &gt; 1 or len(leftInput.text) &gt; 1:&amp;#10;        raise TypeError()&amp;#10;        &amp;#10;    print(labels)&amp;#10;    leftIdx = labels.index(leftInput.text)&amp;#10;    rightIdx = labels.index(rightInput.text)&amp;#10;    leftValue = values[leftIdx]&amp;#10;    rightValue = values[rightIdx]&amp;#10;    if leftValue &gt; rightValue:&amp;#10;        scale.image = scaleGtPath&amp;#10;    elif leftValue &lt; rightValue:&amp;#10;        scale.image = scaleLtPath&amp;#10;    else:&amp;#10;        scale.image = scaleEqPath&amp;#10;    time.sleep(sleepTime)&amp;#10;    &amp;#10;def compare(scale,listValues,labels,instr,scaleLeft,scaleRight):&amp;#10;    try:&amp;#10;        comparePickedItems(scale,listValues,labels,scaleLeft,scaleRight)&amp;#10;        instr.text = &quot;&quot;&amp;#10;        instr.color = white&amp;#10;    except ValueError:&amp;#10;        instr.text = &quot;Please provide labels in correct format for both LHS and RHS&quot;&amp;#10;        instr.color = red&amp;#10;    except IndexError:&amp;#10;        instr.text = &quot;Please enter an existing item&quot;&amp;#10;        instr.color = red&amp;#10;    except TypeError:&amp;#10;        instr.text = &quot;Please enter labels as single capitals&quot;&amp;#10;        instr.color = red&amp;#10;        &amp;#10;def labelMergeInput(input, labelList):&amp;#10;    temp = sorted(input)&amp;#10;    labels = []&amp;#10;    for i in temp:&amp;#10;        labels.append(labelList[input.index(i)])&amp;#10;    return labels&amp;#10;        &amp;#10;# enable image components on white board given an input list to sort&amp;#10;def enableImageComponents(components,labels,imagePathBase):&amp;#10;    enabledComponents = []&amp;#10;    i = 0&amp;#10;    for component in components:&amp;#10;        if isinstance(component,visual.ImageStim):&amp;#10;            exId= component.name.split(&quot;_&quot;)[-2:]&amp;#10;            if exId[-2] == &quot;ex&quot;:&amp;#10;                imageIdx= exId[-1]&amp;#10;                if int(imageIdx) &gt; len(labels):&amp;#10;                    component.image = None&amp;#10;                else:&amp;#10;                    component.image = imagePathBase + &quot;_&quot; + labels[i] + &quot;.png&quot;&amp;#10;                    enabledComponents.append(component)&amp;#10;                    i += 1&amp;#10;    return enabledComponents&amp;#10;&amp;#10;def getCorrectMCOrder(path1,path2,img1,img2):&amp;#10;    rand = random.randint(0,1)&amp;#10;    order = [rand,1-rand]&amp;#10;    if (path1.split(&quot;_&quot;)[-1] == &quot;wrong.png&quot; and path2.split(&quot;_&quot;)[-1] == &quot;correct.png&quot;) or (path2.split(&quot;_&quot;)[-1] == &quot;wrong.png&quot; and path1.split(&quot;_&quot;)[-1] == &quot;correct.png&quot;):&amp;#10;        if order == [1,0]:&amp;#10;            img1.image = path1&amp;#10;            img2.image = path2&amp;#10;        else:&amp;#10;            img1.image = path2&amp;#10;            img2.image = path1&amp;#10;        return order&amp;#10;    else:&amp;#10;        raise ValueError(&quot;Training multiple choice setup is incorrect!&quot;)&amp;#10;&amp;#10;def showSortExpl(feedback1,feedback2,mc1,mc2,mcPath1,mcPath2):&amp;#10;    # finds which choice user has selected&amp;#10;    feedback1.text = &quot;&quot;&amp;#10;    feedback2.text = &quot;&quot;&amp;#10;    &amp;#10;    if submitted == 0:&amp;#10;        feedback1.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;&amp;#10;    elif submitted == 1:&amp;#10;        feedback2.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;&amp;#10;    &amp;#10;    # show user which answer is correct and wrong&amp;#10;    if mc_order == [1,0]:&amp;#10;        feedback1.color = green&amp;#10;        feedback2.color = red&amp;#10;        feedback1.text = feedback1.text + &quot;This answer is correct!&quot;&amp;#10;        feedback2.text = feedback2.text + &quot;This answer is wrong!&quot;&amp;#10;         &amp;#10;         # show the selections&amp;#10;        mc1.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        mc2.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;    else:&amp;#10;        feedback1.color = red&amp;#10;        feedback2.color = green&amp;#10;        feedback1.text = feedback1.text + &quot;This answer is wrong!&quot;&amp;#10;        feedback2.text = feedback2.text + &quot;This answer is correct!&quot;&amp;#10;        &amp;#10;         # show the selections&amp;#10;        mc1.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        mc2.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;&amp;#10;def showMergeExpl(feedback1,feedback2,mc1,mc2,mcPath1,mcPath2,expl1,expl2):&amp;#10;    # finds which choice user has selected&amp;#10;    feedback1.text = &quot;&quot;&amp;#10;    feedback2.text = &quot;&quot;&amp;#10;    &amp;#10;    if submitted == 0:&amp;#10;        feedback1.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;&amp;#10;    elif submitted == 1:&amp;#10;        feedback2.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;&amp;#10;    &amp;#10;    # show user which answer is correct and wrong&amp;#10;    if mc_order == [1,0]:&amp;#10;        feedback1.color = green&amp;#10;        feedback2.color = red&amp;#10;        feedback1.text = feedback1.text + &quot;This answer is correct!&quot;&amp;#10;        feedback2.text = feedback2.text + &quot;This answer is wrong!&quot;&amp;#10;         &amp;#10;         # show the selections&amp;#10;        mc1.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        mc2.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        expl1.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;&amp;#10;        expl2.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;&amp;#10;        print(&quot;pressed 1&quot;)&amp;#10;    else:&amp;#10;        feedback1.color = red&amp;#10;        feedback2.color = green&amp;#10;        feedback1.text = feedback1.text + &quot;This answer is wrong!&quot;&amp;#10;        feedback2.text = feedback2.text + &quot;This answer is correct!&quot;&amp;#10;        &amp;#10;         # show the selections&amp;#10;        mc1.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        mc2.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        expl1.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;&amp;#10;        expl2.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;&amp;#10;        &amp;#10;        print()&amp;#10;        print(&quot;pressed 2&quot;)&amp;#10;        &amp;#10;def makeScreenShot(repeats):&amp;#10;    win.getMovieFrame()&amp;#10;    win.saveMovieFrames(str(repeats) + '.png') &amp;#10;    return repeats + 1" valType="extendedCode"/>
-        <Param name="Before JS Experiment" updates="constant" val="import * as time from 'time';&amp;#10;import * as random from 'random';&amp;#10;var alphabet, green, mouse, red, repeats, scaleEqPath, scaleGtPath, scaleLtPath, sleepTime, white;&amp;#10;sleepTime = 0.2;&amp;#10;mouse = null;&amp;#10;green = [(- 0.0039), 1.0, (- 1.0)];&amp;#10;red = [1.0, (- 0.2235), (- 0.4431)];&amp;#10;white = &quot;white&quot;;&amp;#10;repeats = 0;&amp;#10;alphabet = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;, &quot;G&quot;, &quot;H&quot;, &quot;I&quot;, &quot;J&quot;, &quot;K&quot;, &quot;L&quot;];&amp;#10;scaleEqPath = &quot;materials/merge_sort/demo_imgs/scale_balanced.png&quot;;&amp;#10;scaleLtPath = &quot;materials/merge_sort/demo_imgs/scale_right.png&quot;;&amp;#10;scaleGtPath = &quot;materials/merge_sort/demo_imgs/scale_left.png&quot;;&amp;#10;function moveItem(mouse, grabbed) {&amp;#10;    var u, v;&amp;#10;    if (((grabbed !== null) &amp;&amp; mouse.isPressedIn(grabbed))) {&amp;#10;        [u, v] = mouse.getPos();&amp;#10;        if (((((left &lt;= u) &amp;&amp; (u &lt;= right)) &amp;&amp; (bot &lt;= v)) &amp;&amp; (v &lt;= top))) {&amp;#10;            grabbed.pos = [u, v];&amp;#10;        }&amp;#10;        return grabbed;&amp;#10;    } else {&amp;#10;        for (var item, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;            item = _pj_a[_pj_c];&amp;#10;            if ((mouse.isPressedIn(item) &amp;&amp; (grabbed !== item))) {&amp;#10;                return item;&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;function comparePickedItems(scale, values, labels, leftInput, rightInput) {&amp;#10;    var leftIdx, leftValue, rightIdx, rightValue;&amp;#10;    if (((leftInput.text.length === 0) || (leftInput.text.length === 0))) {&amp;#10;        throw new ValueError();&amp;#10;    } else {&amp;#10;        if (((leftInput.text.length &gt; 1) || (leftInput.text.length &gt; 1))) {&amp;#10;            throw new TypeError();&amp;#10;        }&amp;#10;    }&amp;#10;    console.log(labels);&amp;#10;    leftIdx = labels.index(leftInput.text);&amp;#10;    rightIdx = labels.index(rightInput.text);&amp;#10;    leftValue = values[leftIdx];&amp;#10;    rightValue = values[rightIdx];&amp;#10;    if ((leftValue &gt; rightValue)) {&amp;#10;        scale.image = scaleGtPath;&amp;#10;    } else {&amp;#10;        if ((leftValue &lt; rightValue)) {&amp;#10;            scale.image = scaleLtPath;&amp;#10;        } else {&amp;#10;            scale.image = scaleEqPath;&amp;#10;        }&amp;#10;    }&amp;#10;    time.sleep(sleepTime);&amp;#10;}&amp;#10;function compare(scale, listValues, labels, instr, scaleLeft, scaleRight) {&amp;#10;    try {&amp;#10;        comparePickedItems(scale, listValues, labels, scaleLeft, scaleRight);&amp;#10;        instr.text = &quot;&quot;;&amp;#10;        instr.color = white;&amp;#10;    } catch(e) {&amp;#10;        if ((e instanceof ValueError)) {&amp;#10;            instr.text = &quot;Please provide labels in correct format for both LHS and RHS&quot;;&amp;#10;            instr.color = red;&amp;#10;        } else {&amp;#10;            if ((e instanceof IndexError)) {&amp;#10;                instr.text = &quot;Please enter an existing item&quot;;&amp;#10;                instr.color = red;&amp;#10;            } else {&amp;#10;                if ((e instanceof TypeError)) {&amp;#10;                    instr.text = &quot;Please enter labels as single capitals&quot;;&amp;#10;                    instr.color = red;&amp;#10;                } else {&amp;#10;                    throw e;&amp;#10;                }&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;function labelMergeInput(input, labelList) {&amp;#10;    var labels, temp;&amp;#10;    temp = sorted(input);&amp;#10;    labels = [];&amp;#10;    for (var i, _pj_c = 0, _pj_a = temp, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;        i = _pj_a[_pj_c];&amp;#10;        labels.append(labelList[input.index(i)]);&amp;#10;    }&amp;#10;    return labels;&amp;#10;}&amp;#10;function enableImageComponents(components, labels, imagePathBase) {&amp;#10;    var enabledComponents, exId, i, imageIdx;&amp;#10;    enabledComponents = [];&amp;#10;    i = 0;&amp;#10;    for (var component, _pj_c = 0, _pj_a = components, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;        component = _pj_a[_pj_c];&amp;#10;        if ((component instanceof visual.ImageStim)) {&amp;#10;            exId = component.name.split(&quot;_&quot;).slice((- 2));&amp;#10;            if ((exId.slice((- 2))[0] === &quot;ex&quot;)) {&amp;#10;                imageIdx = exId.slice((- 1))[0];&amp;#10;                if ((Number.parseInt(imageIdx) &gt; labels.length)) {&amp;#10;                    component.image = null;&amp;#10;                } else {&amp;#10;                    component.image = (((imagePathBase + &quot;_&quot;) + labels[i]) + &quot;.png&quot;);&amp;#10;                    enabledComponents.append(component);&amp;#10;                    i += 1;&amp;#10;                }&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;    return enabledComponents;&amp;#10;}&amp;#10;function getCorrectMCOrder(path1, path2, img1, img2) {&amp;#10;    var order, rand;&amp;#10;    rand = random.randint(0, 1);&amp;#10;    order = [rand, (1 - rand)];&amp;#10;    if ((((path1.split(&quot;_&quot;).slice((- 1))[0] === &quot;wrong.png&quot;) &amp;&amp; (path2.split(&quot;_&quot;).slice((- 1))[0] === &quot;correct.png&quot;)) || ((path2.split(&quot;_&quot;).slice((- 1))[0] === &quot;wrong.png&quot;) &amp;&amp; (path1.split(&quot;_&quot;).slice((- 1))[0] === &quot;correct.png&quot;)))) {&amp;#10;        if ((order === [1, 0])) {&amp;#10;            img1.image = path1;&amp;#10;            img2.image = path2;&amp;#10;        } else {&amp;#10;            img1.image = path2;&amp;#10;            img2.image = path1;&amp;#10;        }&amp;#10;        return order;&amp;#10;    } else {&amp;#10;        throw new ValueError(&quot;Training multiple choice setup is incorrect!&quot;);&amp;#10;    }&amp;#10;}&amp;#10;function showSortExpl(feedback1, feedback2, mc1, mc2, mcPath1, mcPath2) {&amp;#10;    feedback1.text = &quot;&quot;;&amp;#10;    feedback2.text = &quot;&quot;;&amp;#10;    if ((submitted === 0)) {&amp;#10;        feedback1.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;;&amp;#10;    } else {&amp;#10;        if ((submitted === 1)) {&amp;#10;            feedback2.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;;&amp;#10;        }&amp;#10;    }&amp;#10;    if ((mc_order === [1, 0])) {&amp;#10;        feedback1.color = green;&amp;#10;        feedback2.color = red;&amp;#10;        feedback1.text = (feedback1.text + &quot;This answer is correct!&quot;);&amp;#10;        feedback2.text = (feedback2.text + &quot;This answer is wrong!&quot;);&amp;#10;        mc1.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        mc2.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;    } else {&amp;#10;        feedback1.color = red;&amp;#10;        feedback2.color = green;&amp;#10;        feedback1.text = (feedback1.text + &quot;This answer is wrong!&quot;);&amp;#10;        feedback2.text = (feedback2.text + &quot;This answer is correct!&quot;);&amp;#10;        mc1.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        mc2.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;    }&amp;#10;}&amp;#10;function showMergeExpl(feedback1, feedback2, mc1, mc2, mcPath1, mcPath2, expl1, expl2) {&amp;#10;    feedback1.text = &quot;&quot;;&amp;#10;    feedback2.text = &quot;&quot;;&amp;#10;    if ((submitted === 0)) {&amp;#10;        feedback1.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;;&amp;#10;    } else {&amp;#10;        if ((submitted === 1)) {&amp;#10;            feedback2.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;;&amp;#10;        }&amp;#10;    }&amp;#10;    if ((mc_order === [1, 0])) {&amp;#10;        feedback1.color = green;&amp;#10;        feedback2.color = red;&amp;#10;        feedback1.text = (feedback1.text + &quot;This answer is correct!&quot;);&amp;#10;        feedback2.text = (feedback2.text + &quot;This answer is wrong!&quot;);&amp;#10;        mc1.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        mc2.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        expl1.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;);&amp;#10;        expl2.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;);&amp;#10;        console.log(&quot;pressed 1&quot;);&amp;#10;    } else {&amp;#10;        feedback1.color = red;&amp;#10;        feedback2.color = green;&amp;#10;        feedback1.text = (feedback1.text + &quot;This answer is wrong!&quot;);&amp;#10;        feedback2.text = (feedback2.text + &quot;This answer is correct!&quot;);&amp;#10;        mc1.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        mc2.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        expl1.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;);&amp;#10;        expl2.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;);&amp;#10;        console.log();&amp;#10;        console.log(&quot;pressed 2&quot;);&amp;#10;    }&amp;#10;}&amp;#10;function makeScreenShot(repeats) {&amp;#10;    win.getMovieFrame();&amp;#10;    win.saveMovieFrames((repeats.toString() + &quot;.png&quot;));&amp;#10;    return (repeats + 1);&amp;#10;}&amp;#10;" valType="extendedCode"/>
+        <Param name="Before Experiment" updates="constant" val="import time&amp;#10;from random import randint&amp;#10;from math import floor&amp;#10;&amp;#10;sleepTime = 0.2&amp;#10;mouse = None&amp;#10;green =  (-0.0039, 1.0000, -1.0000)&amp;#10;red = (1.0000, -0.2235, -0.4431)&amp;#10;white = &quot;white&quot;&amp;#10;repeats = 0&amp;#10;alphabet = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;, &quot;G&quot;, &quot;H&quot;, &quot;I&quot;, &quot;J&quot;, &quot;K&quot;, &quot;L&quot;]&amp;#10;&amp;#10;scaleEqPath = &quot;materials/merge_sort/demo_imgs/scale_balanced.png&quot;&amp;#10;scaleLtPath = &quot;materials/merge_sort/demo_imgs/scale_right.png&quot;&amp;#10;scaleGtPath = &quot;materials/merge_sort/demo_imgs/scale_left.png&quot;&amp;#10;&amp;#10;#scaleEqPath = &quot;materials/merge_sort/demo_imgs/left_eq_right.png&quot;&amp;#10;#scaleLtPath = &quot;materials/merge_sort/demo_imgs/left_lt_right.png&quot;&amp;#10;#scaleGtPath = &quot;materials/merge_sort/demo_imgs/left_gt_right.png&quot;&amp;#10;&amp;#10;# Begin Experiment&amp;#10;def moveItem(mouse, grabbed):&amp;#10;    # Move piece if we already moving that piece&amp;#10;    if grabbed is not None and mouse.isPressedIn(grabbed):&amp;#10;        (u,v) = mouse.getPos()&amp;#10;        if left &lt;= u and u &lt;= right and bot &lt;= v and v &lt;= top:&amp;#10;            grabbed.pos = (u,v)&amp;#10;        return grabbed&amp;#10;    else:&amp;#10;        # Move newly clicked piece&amp;#10;        for item in items:&amp;#10;            if mouse.isPressedIn(item) and grabbed is not item:&amp;#10;                return item&amp;#10; &amp;#10;# compare inputs from scale left and right inputs&amp;#10;def comparePickedItems(scale,values,labels,leftInput,rightInput):&amp;#10;    if len(leftInput.text) == 0 or len(leftInput.text) == 0:&amp;#10;        raise ValueError()&amp;#10;    elif len(leftInput.text) &gt; 1 or len(leftInput.text) &gt; 1:&amp;#10;        raise TypeError()&amp;#10;    leftIdx = labels.index(leftInput.text)&amp;#10;    rightIdx = labels.index(rightInput.text)&amp;#10;    leftValue = values[leftIdx]&amp;#10;    rightValue = values[rightIdx]&amp;#10;    if leftValue &gt; rightValue:&amp;#10;        scale.image = scaleGtPath&amp;#10;    elif leftValue &lt; rightValue:&amp;#10;        scale.image = scaleLtPath&amp;#10;    else:&amp;#10;        scale.image = scaleEqPath&amp;#10;    time.sleep(sleepTime)&amp;#10;    &amp;#10;def compare(scale,listValues,labels,instr,scaleLeft,scaleRight):&amp;#10;    try:&amp;#10;        comparePickedItems(scale,listValues,labels,scaleLeft,scaleRight)&amp;#10;        instr.text = &quot;&quot;&amp;#10;        instr.color = white&amp;#10;    except ValueError:&amp;#10;        instr.text = &quot;Please provide labels in correct format for both LHS and RHS&quot;&amp;#10;        instr.color = red&amp;#10;    except IndexError:&amp;#10;        instr.text = &quot;Please enter an existing item&quot;&amp;#10;        instr.color = red&amp;#10;    except TypeError:&amp;#10;        instr.text = &quot;Please enter labels as single capitals&quot;&amp;#10;        instr.color = red&amp;#10;        &amp;#10;def labelMergeInput(input, labelList):&amp;#10;    temp = sorted(input)&amp;#10;    labels = []&amp;#10;    for i in temp:&amp;#10;        labels.append(labelList[input.index(i)])&amp;#10;    return labels&amp;#10;&amp;#10;def checkSortTrainAns(input,repeat,labels,res,feedback_1,feedback_2):&amp;#10;    correct = getSortTrace(input,repeat,labels)&amp;#10;    submitted = res.replace(&quot; &quot;,&quot;&quot;)&amp;#10;    values = res.replace(&quot;(&quot;,&quot;&quot;).replace(&quot;)&quot;,&quot;&quot;)&amp;#10;    correctValues = correct.replace(&quot;(&quot;,&quot;&quot;).replace(&quot;)&quot;,&quot;&quot;)&amp;#10;    if submitted == correct:&amp;#10;        feedback_1.text = &quot;Your answer is correct!&quot;&amp;#10;        feedback_1.color = green&amp;#10;        feedback_2.text = &quot;&quot;&amp;#10;    elif values == correctValues:&amp;#10;        feedback_1.text = &quot;The values in your answer are not in correct boxes!&quot;&amp;#10;        feedback_1.color = red&amp;#10;        feedback_2.text = &quot;The correct answer is &gt;&gt;&gt;&gt;\n&quot; + correct&amp;#10;        feedback_2.color = green&amp;#10;    else:&amp;#10;        feedback_1.text = &quot;Your answer is wrong!&quot;&amp;#10;        feedback_1.color = red&amp;#10;        feedback_2.text = &quot;The correct answer is &gt;&gt;&gt;&gt;\n&quot; + correct&amp;#10;        feedback_2.color = green&amp;#10;    &amp;#10;def getSortTrace(input,repeat,labels):&amp;#10;    temp = []&amp;#10;    for i in input:&amp;#10;        temp.append([i])&amp;#10;    while repeat &gt;= 0:&amp;#10;        sublists = []&amp;#10;        for i in range(0,floor(len(temp)/2)):&amp;#10;            sublists.append(sorted(temp[i*2] + temp[i*2+1]))&amp;#10;        if len(temp) % 2 == 1:&amp;#10;            temp = sublists + [temp[-1]]&amp;#10;        else:&amp;#10;            temp = sublists&amp;#10;        repeat -= 1&amp;#10;        sublistLabels = &quot;&quot;&amp;#10;    for i in range(0,len(temp)):&amp;#10;        sublistLabels = sublistLabels + &quot;(&quot;&amp;#10;        for j in range(0,len(temp[i])):&amp;#10;            sublistLabels = sublistLabels + labels[input.index(temp[i][j])]&amp;#10;            if j &lt; len(temp[i]) - 1: sublistLabels = sublistLabels + &quot;,&quot;&amp;#10;        sublistLabels = sublistLabels + &quot;)&quot;&amp;#10;        if i &lt; len(temp) - 1: sublistLabels = sublistLabels + &quot;,&quot;&amp;#10;    return sublistLabels&amp;#10;&amp;#10;# enable image components on white board given an input list to sort&amp;#10;def enableImageComponents(components,labels,imagePathBase):&amp;#10;    enabledComponents = []&amp;#10;    i = 0&amp;#10;    for component in components:&amp;#10;        if isinstance(component,visual.ImageStim):&amp;#10;            exId= component.name.split(&quot;_&quot;)[-2:]&amp;#10;            if exId[-2] == &quot;ex&quot;:&amp;#10;                imageIdx= exId[-1]&amp;#10;                if int(imageIdx) &gt; len(labels):&amp;#10;                    component.image = None&amp;#10;                else:&amp;#10;                    component.image = imagePathBase + &quot;_&quot; + labels[i] + &quot;.png&quot;&amp;#10;                    enabledComponents.append(component)&amp;#10;                    i += 1&amp;#10;    return enabledComponents&amp;#10;&amp;#10;def getCorrectMCOrder(path1,path2,img1,img2):&amp;#10;    rand = randint(0,1)&amp;#10;    order = [rand,1-rand]&amp;#10;    if (path1.split(&quot;_&quot;)[-1] == &quot;wrong.png&quot; and path2.split(&quot;_&quot;)[-1] == &quot;correct.png&quot;) or (path2.split(&quot;_&quot;)[-1] == &quot;wrong.png&quot; and path1.split(&quot;_&quot;)[-1] == &quot;correct.png&quot;):&amp;#10;        if order == [1,0]:&amp;#10;            img1.image = path1&amp;#10;            img2.image = path2&amp;#10;        else:&amp;#10;            img1.image = path2&amp;#10;            img2.image = path1&amp;#10;        return order&amp;#10;    else:&amp;#10;        raise ValueError(&quot;Training multiple choice setup is incorrect!&quot;)&amp;#10;&amp;#10;def showSortExpl(feedback1,feedback2,mc1,mc2,mcPath1,mcPath2):&amp;#10;    # finds which choice user has selected&amp;#10;    feedback1.text = &quot;&quot;&amp;#10;    feedback2.text = &quot;&quot;&amp;#10;    &amp;#10;    if submitted == 0:&amp;#10;        feedback1.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;&amp;#10;    elif submitted == 1:&amp;#10;        feedback2.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;&amp;#10;    &amp;#10;    # show user which answer is correct and wrong&amp;#10;    if mc_order == [1,0]:&amp;#10;        feedback1.color = green&amp;#10;        feedback2.color = red&amp;#10;        feedback1.text = feedback1.text + &quot;This answer is correct!&quot;&amp;#10;        feedback2.text = feedback2.text + &quot;This answer is wrong!&quot;&amp;#10;         &amp;#10;         # show the selections&amp;#10;        mc1.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        mc2.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;    else:&amp;#10;        feedback1.color = red&amp;#10;        feedback2.color = green&amp;#10;        feedback1.text = feedback1.text + &quot;This answer is wrong!&quot;&amp;#10;        feedback2.text = feedback2.text + &quot;This answer is correct!&quot;&amp;#10;        &amp;#10;         # show the selections&amp;#10;        mc1.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        mc2.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;&amp;#10;def showMergeExpl(feedback1,feedback2,mc1,mc2,mcPath1,mcPath2,expl1,expl2):&amp;#10;    # finds which choice user has selected&amp;#10;    feedback1.text = &quot;&quot;&amp;#10;    feedback2.text = &quot;&quot;&amp;#10;    &amp;#10;    if submitted == 0:&amp;#10;        feedback1.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;&amp;#10;    elif submitted == 1:&amp;#10;        feedback2.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;&amp;#10;    &amp;#10;    # show user which answer is correct and wrong&amp;#10;    if mc_order == [1,0]:&amp;#10;        feedback1.color = green&amp;#10;        feedback2.color = red&amp;#10;        feedback1.text = feedback1.text + &quot;This answer is correct!&quot;&amp;#10;        feedback2.text = feedback2.text + &quot;This answer is wrong!&quot;&amp;#10;         &amp;#10;         # show the selections&amp;#10;        mc1.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        mc2.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        expl1.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;&amp;#10;        expl2.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;&amp;#10;    else:&amp;#10;        feedback1.color = red&amp;#10;        feedback2.color = green&amp;#10;        feedback1.text = feedback1.text + &quot;This answer is wrong!&quot;&amp;#10;        feedback2.text = feedback2.text + &quot;This answer is correct!&quot;&amp;#10;        &amp;#10;         # show the selections&amp;#10;        mc1.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        mc2.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;&amp;#10;        expl1.image = mcPath2.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;&amp;#10;        expl2.image = mcPath1.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;&amp;#10;        &amp;#10;def makeScreenShot():&amp;#10;    win.getMovieFrame()&amp;#10;    win.saveMovieFrames(str(repeats) + '.png')&amp;#10;    return repeats + 1" valType="extendedCode"/>
+        <Param name="Before JS Experiment" updates="constant" val="import * as time from 'time';&amp;#10;import {randint} from 'random';&amp;#10;import {floor} from 'math';&amp;#10;var alphabet, green, mouse, red, repeats, scaleEqPath, scaleGtPath, scaleLtPath, sleepTime, white;&amp;#10;sleepTime = 0.2;&amp;#10;mouse = null;&amp;#10;green = [(- 0.0039), 1.0, (- 1.0)];&amp;#10;red = [1.0, (- 0.2235), (- 0.4431)];&amp;#10;white = &quot;white&quot;;&amp;#10;repeats = 0;&amp;#10;alphabet = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;, &quot;G&quot;, &quot;H&quot;, &quot;I&quot;, &quot;J&quot;, &quot;K&quot;, &quot;L&quot;];&amp;#10;scaleEqPath = &quot;materials/merge_sort/demo_imgs/scale_balanced.png&quot;;&amp;#10;scaleLtPath = &quot;materials/merge_sort/demo_imgs/scale_right.png&quot;;&amp;#10;scaleGtPath = &quot;materials/merge_sort/demo_imgs/scale_left.png&quot;;&amp;#10;function moveItem(mouse, grabbed) {&amp;#10;    var u, v;&amp;#10;    if (((grabbed !== null) &amp;&amp; mouse.isPressedIn(grabbed))) {&amp;#10;        [u, v] = mouse.getPos();&amp;#10;        if (((((left &lt;= u) &amp;&amp; (u &lt;= right)) &amp;&amp; (bot &lt;= v)) &amp;&amp; (v &lt;= top))) {&amp;#10;            grabbed.pos = [u, v];&amp;#10;        }&amp;#10;        return grabbed;&amp;#10;    } else {&amp;#10;        for (var item, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;            item = _pj_a[_pj_c];&amp;#10;            if ((mouse.isPressedIn(item) &amp;&amp; (grabbed !== item))) {&amp;#10;                return item;&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;function comparePickedItems(scale, values, labels, leftInput, rightInput) {&amp;#10;    var leftIdx, leftValue, rightIdx, rightValue;&amp;#10;    if (((leftInput.text.length === 0) || (leftInput.text.length === 0))) {&amp;#10;        throw new ValueError();&amp;#10;    } else {&amp;#10;        if (((leftInput.text.length &gt; 1) || (leftInput.text.length &gt; 1))) {&amp;#10;            throw new TypeError();&amp;#10;        }&amp;#10;    }&amp;#10;    leftIdx = labels.index(leftInput.text);&amp;#10;    rightIdx = labels.index(rightInput.text);&amp;#10;    leftValue = values[leftIdx];&amp;#10;    rightValue = values[rightIdx];&amp;#10;    if ((leftValue &gt; rightValue)) {&amp;#10;        scale.image = scaleGtPath;&amp;#10;    } else {&amp;#10;        if ((leftValue &lt; rightValue)) {&amp;#10;            scale.image = scaleLtPath;&amp;#10;        } else {&amp;#10;            scale.image = scaleEqPath;&amp;#10;        }&amp;#10;    }&amp;#10;    time.sleep(sleepTime);&amp;#10;}&amp;#10;function compare(scale, listValues, labels, instr, scaleLeft, scaleRight) {&amp;#10;    try {&amp;#10;        comparePickedItems(scale, listValues, labels, scaleLeft, scaleRight);&amp;#10;        instr.text = &quot;&quot;;&amp;#10;        instr.color = white;&amp;#10;    } catch(e) {&amp;#10;        if ((e instanceof ValueError)) {&amp;#10;            instr.text = &quot;Please provide labels in correct format for both LHS and RHS&quot;;&amp;#10;            instr.color = red;&amp;#10;        } else {&amp;#10;            if ((e instanceof IndexError)) {&amp;#10;                instr.text = &quot;Please enter an existing item&quot;;&amp;#10;                instr.color = red;&amp;#10;            } else {&amp;#10;                if ((e instanceof TypeError)) {&amp;#10;                    instr.text = &quot;Please enter labels as single capitals&quot;;&amp;#10;                    instr.color = red;&amp;#10;                } else {&amp;#10;                    throw e;&amp;#10;                }&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;function labelMergeInput(input, labelList) {&amp;#10;    var labels, temp;&amp;#10;    temp = sorted(input);&amp;#10;    labels = [];&amp;#10;    for (var i, _pj_c = 0, _pj_a = temp, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;        i = _pj_a[_pj_c];&amp;#10;        labels.append(labelList[input.index(i)]);&amp;#10;    }&amp;#10;    return labels;&amp;#10;}&amp;#10;function checkSortTrainAns(input, repeat, labels, res, feedback_1, feedback_2) {&amp;#10;    var correct, correctValues, submitted, values;&amp;#10;    correct = getSortTrace(input, repeat, labels);&amp;#10;    submitted = res.replace(&quot; &quot;, &quot;&quot;);&amp;#10;    values = res.replace(&quot;(&quot;, &quot;&quot;).replace(&quot;)&quot;, &quot;&quot;);&amp;#10;    correctValues = correct.replace(&quot;(&quot;, &quot;&quot;).replace(&quot;)&quot;, &quot;&quot;);&amp;#10;    if ((submitted === correct)) {&amp;#10;        feedback_1.text = &quot;Your answer is correct!&quot;;&amp;#10;        feedback_1.color = green;&amp;#10;        feedback_2.text = &quot;&quot;;&amp;#10;    } else {&amp;#10;        if ((values === correctValues)) {&amp;#10;            feedback_1.text = &quot;The values in your answer are not in correct boxes!&quot;;&amp;#10;            feedback_1.color = red;&amp;#10;            feedback_2.text = (&quot;The correct answer is &gt;&gt;&gt;&gt;\n&quot; + correct);&amp;#10;            feedback_2.color = green;&amp;#10;        } else {&amp;#10;            feedback_1.text = &quot;Your answer is wrong!&quot;;&amp;#10;            feedback_1.color = red;&amp;#10;            feedback_2.text = (&quot;The correct answer is &gt;&gt;&gt;&gt;\n&quot; + correct);&amp;#10;            feedback_2.color = green;&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;function getSortTrace(input, repeat, labels) {&amp;#10;    var sublistLabels, sublists, temp;&amp;#10;    temp = [];&amp;#10;    for (var i, _pj_c = 0, _pj_a = input, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;        i = _pj_a[_pj_c];&amp;#10;        temp.append([i]);&amp;#10;    }&amp;#10;    while ((repeat &gt;= 0)) {&amp;#10;        sublists = [];&amp;#10;        for (var i = 0, _pj_a = Math.floor((temp.length / 2)); (i &lt; _pj_a); i += 1) {&amp;#10;            sublists.append(sorted((temp[(i * 2)] + temp[((i * 2) + 1)])));&amp;#10;        }&amp;#10;        if (((temp.length % 2) === 1)) {&amp;#10;            temp = (sublists + [temp.slice((- 1))[0]]);&amp;#10;        } else {&amp;#10;            temp = sublists;&amp;#10;        }&amp;#10;        repeat -= 1;&amp;#10;        sublistLabels = &quot;&quot;;&amp;#10;    }&amp;#10;    for (var i = 0, _pj_a = temp.length; (i &lt; _pj_a); i += 1) {&amp;#10;        sublistLabels = (sublistLabels + &quot;(&quot;);&amp;#10;        for (var j = 0, _pj_b = temp[i].length; (j &lt; _pj_b); j += 1) {&amp;#10;            sublistLabels = (sublistLabels + labels[input.index(temp[i][j])]);&amp;#10;            if ((j &lt; (temp[i].length - 1))) {&amp;#10;                sublistLabels = (sublistLabels + &quot;,&quot;);&amp;#10;            }&amp;#10;        }&amp;#10;        sublistLabels = (sublistLabels + &quot;)&quot;);&amp;#10;        if ((i &lt; (temp.length - 1))) {&amp;#10;            sublistLabels = (sublistLabels + &quot;,&quot;);&amp;#10;        }&amp;#10;    }&amp;#10;    return sublistLabels;&amp;#10;}&amp;#10;function enableImageComponents(components, labels, imagePathBase) {&amp;#10;    var enabledComponents, exId, i, imageIdx;&amp;#10;    enabledComponents = [];&amp;#10;    i = 0;&amp;#10;    for (var component, _pj_c = 0, _pj_a = components, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;        component = _pj_a[_pj_c];&amp;#10;        if ((component instanceof visual.ImageStim)) {&amp;#10;            exId = component.name.split(&quot;_&quot;).slice((- 2));&amp;#10;            if ((exId.slice((- 2))[0] === &quot;ex&quot;)) {&amp;#10;                imageIdx = exId.slice((- 1))[0];&amp;#10;                if ((Number.parseInt(imageIdx) &gt; labels.length)) {&amp;#10;                    component.image = null;&amp;#10;                } else {&amp;#10;                    component.image = (((imagePathBase + &quot;_&quot;) + labels[i]) + &quot;.png&quot;);&amp;#10;                    enabledComponents.append(component);&amp;#10;                    i += 1;&amp;#10;                }&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;    return enabledComponents;&amp;#10;}&amp;#10;function getCorrectMCOrder(path1, path2, img1, img2) {&amp;#10;    var order, rand;&amp;#10;    rand = randint(0, 1);&amp;#10;    order = [rand, (1 - rand)];&amp;#10;    if ((((path1.split(&quot;_&quot;).slice((- 1))[0] === &quot;wrong.png&quot;) &amp;&amp; (path2.split(&quot;_&quot;).slice((- 1))[0] === &quot;correct.png&quot;)) || ((path2.split(&quot;_&quot;).slice((- 1))[0] === &quot;wrong.png&quot;) &amp;&amp; (path1.split(&quot;_&quot;).slice((- 1))[0] === &quot;correct.png&quot;)))) {&amp;#10;        if ((order === [1, 0])) {&amp;#10;            img1.image = path1;&amp;#10;            img2.image = path2;&amp;#10;        } else {&amp;#10;            img1.image = path2;&amp;#10;            img2.image = path1;&amp;#10;        }&amp;#10;        return order;&amp;#10;    } else {&amp;#10;        throw new ValueError(&quot;Training multiple choice setup is incorrect!&quot;);&amp;#10;    }&amp;#10;}&amp;#10;function showSortExpl(feedback1, feedback2, mc1, mc2, mcPath1, mcPath2) {&amp;#10;    feedback1.text = &quot;&quot;;&amp;#10;    feedback2.text = &quot;&quot;;&amp;#10;    if ((submitted === 0)) {&amp;#10;        feedback1.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;;&amp;#10;    } else {&amp;#10;        if ((submitted === 1)) {&amp;#10;            feedback2.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;;&amp;#10;        }&amp;#10;    }&amp;#10;    if ((mc_order === [1, 0])) {&amp;#10;        feedback1.color = green;&amp;#10;        feedback2.color = red;&amp;#10;        feedback1.text = (feedback1.text + &quot;This answer is correct!&quot;);&amp;#10;        feedback2.text = (feedback2.text + &quot;This answer is wrong!&quot;);&amp;#10;        mc1.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        mc2.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;    } else {&amp;#10;        feedback1.color = red;&amp;#10;        feedback2.color = green;&amp;#10;        feedback1.text = (feedback1.text + &quot;This answer is wrong!&quot;);&amp;#10;        feedback2.text = (feedback2.text + &quot;This answer is correct!&quot;);&amp;#10;        mc1.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        mc2.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;    }&amp;#10;}&amp;#10;function showMergeExpl(feedback1, feedback2, mc1, mc2, mcPath1, mcPath2, expl1, expl2) {&amp;#10;    feedback1.text = &quot;&quot;;&amp;#10;    feedback2.text = &quot;&quot;;&amp;#10;    if ((submitted === 0)) {&amp;#10;        feedback1.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;;&amp;#10;    } else {&amp;#10;        if ((submitted === 1)) {&amp;#10;            feedback2.text = &quot;SELECTED &gt;&gt;&gt; \n&quot;;&amp;#10;        }&amp;#10;    }&amp;#10;    if ((mc_order === [1, 0])) {&amp;#10;        feedback1.color = green;&amp;#10;        feedback2.color = red;&amp;#10;        feedback1.text = (feedback1.text + &quot;This answer is correct!&quot;);&amp;#10;        feedback2.text = (feedback2.text + &quot;This answer is wrong!&quot;);&amp;#10;        mc1.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        mc2.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        expl1.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;);&amp;#10;        expl2.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;);&amp;#10;    } else {&amp;#10;        feedback1.color = red;&amp;#10;        feedback2.color = green;&amp;#10;        feedback1.text = (feedback1.text + &quot;This answer is wrong!&quot;);&amp;#10;        feedback2.text = (feedback2.text + &quot;This answer is correct!&quot;);&amp;#10;        mc1.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        mc2.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_selected.png&quot;);&amp;#10;        expl1.image = (mcPath2.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;);&amp;#10;        expl2.image = (mcPath1.split(&quot;.png&quot;)[0] + &quot;_expl.png&quot;);&amp;#10;    }&amp;#10;}&amp;#10;function makeScreenShot() {&amp;#10;    win.getMovieFrame();&amp;#10;    win.saveMovieFrames((repeats.toString() + &quot;.png&quot;));&amp;#10;    return (repeats + 1);&amp;#10;}&amp;#10;" valType="extendedCode"/>
         <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin JS Routine" updates="constant" val="" valType="extendedCode"/>
@@ -2849,8 +2830,8 @@
         <Param name="Each JS Frame" updates="constant" val="" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="setup" valType="code"/>
       </CodeComponent>
@@ -2877,7 +2858,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="BOB: CLIKKKK ... SOOO GOOooD to see you!&amp;#10;&amp;#10;1. You need to arrange a PILE of fruits that is most likely UNORDERED&amp;#10;&amp;#10;2. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT&amp;#10;&amp;#10;LEARN and MASTER what the PURPLE DIAMOND does" valType="str"/>
+        <Param name="text" updates="constant" val="BOB: CLIKKKK ... SOOO GOOooD to see you!&amp;#10;&amp;#10;1. You need to arrange a PILE of fruits that is most likely UNORDERED&amp;#10;&amp;#10;2. The PURPLE DIAMOND arranges fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT&amp;#10;&amp;#10;LEARN the PURPLE DIAMOND operation in steps and master it. " valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="num"/>
       </TextComponent>
@@ -2994,6 +2975,23 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
+      <CodeComponent name="sort_intro_code">
+        <Param name="Before Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Before JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin JS Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Code Type" updates="None" val="Auto-&gt;JS" valType="str"/>
+        <Param name="Each Frame" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Each JS Frame" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="name" updates="None" val="sort_intro_code" valType="code"/>
+      </CodeComponent>
     </Routine>
     <Routine name="FINAL_TEST_1">
       <VariableComponent name="final_test_1_input">
@@ -3017,7 +3015,7 @@
         <Param name="syncScreenRefresh" updates="None" val="False" valType="bool"/>
       </VariableComponent>
       <TextComponent name="final_test_1_scale_instr">
-        <Param name="color" updates="constant" val="white" valType="color"/>
+        <Param name="color" updates="set every repeat" val="white" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
         <Param name="contrast" updates="constant" val="1" valType="num"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
@@ -3037,7 +3035,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
+        <Param name="text" updates="set every repeat" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="0.3" valType="num"/>
       </TextComponent>
@@ -3312,7 +3310,7 @@
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0, 0.2)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.8, 0.3)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.8, 0.4)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -3330,7 +3328,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="$scaleEqPath" valType="file"/>
+        <Param name="image" updates="set every repeat" val="$scaleEqPath" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="final_test_1_scale" valType="code"/>
@@ -3360,8 +3358,8 @@
         <Param name="Each JS Frame" updates="constant" val="if (mouse.isPressedIn(final_test_1_compare)) {&amp;#10;    compare(final_test_1_scale, final_test_1_input, labels, final_test_1_scale_instr, final_test_1_scale_left, final_test_1_scale_right);&amp;#10;}&amp;#10;" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="final_test_1_setup" valType="code"/>
       </CodeComponent>
@@ -3407,6 +3405,31 @@
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="False" valType="bool"/>
       </VariableComponent>
+      <TextComponent name="final_test_2_scale_instr">
+        <Param name="color" updates="set every repeat" val="white" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="flip" updates="constant" val="None" valType="str"/>
+        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
+        <Param name="name" updates="None" val="final_test_2_scale_instr" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="pos" updates="constant" val="(-0.65,0.45)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="set every repeat" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+        <Param name="wrapWidth" updates="constant" val="0.3" valType="num"/>
+      </TextComponent>
       <TextComponent name="final_test_2_ans_instr">
         <Param name="color" updates="constant" val="white" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
@@ -3431,31 +3454,6 @@
         <Param name="text" updates="constant" val="Put fruits into the PACKAGE by entering their labels as  X,X,X,X,X,X,X,X, ... ,X" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="num"/>
-      </TextComponent>
-      <TextComponent name="final_test_2_scale_instr">
-        <Param name="color" updates="constant" val="white" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="num"/>
-        <Param name="flip" updates="constant" val="None" valType="str"/>
-        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
-        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
-        <Param name="letterHeight" updates="constant" val="0.02" valType="num"/>
-        <Param name="name" updates="None" val="final_test_2_scale_instr" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(-0.65,0.45)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="startEstim" updates="None" val="" valType="num"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.0" valType="num"/>
-        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="COMPARE weights by typing fruit labels in both LHS and RHS  textboxes" valType="str"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-        <Param name="wrapWidth" updates="constant" val="0.3" valType="num"/>
       </TextComponent>
       <TextComponent name="final_test_2_instr">
         <Param name="color" updates="constant" val="white" valType="color"/>
@@ -3721,7 +3719,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="$scaleEqPath" valType="file"/>
+        <Param name="image" updates="set every repeat" val="$scaleEqPath" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="final_test_2_scale" valType="code"/>
@@ -4063,8 +4061,8 @@
         <Param name="Each JS Frame" updates="constant" val="if ((items === [])) {&amp;#10;    items = enableImageComponents(FINAL_TEST_2Components, labels, final_test_2_path_base);&amp;#10;}&amp;#10;for (var item, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c &lt; _pj_b); _pj_c += 1) {&amp;#10;    item = _pj_a[_pj_c];&amp;#10;    if ((mouse.isPressedIn(item) &amp;&amp; (movingItem === null))) {&amp;#10;        movingItem = item;&amp;#10;    }&amp;#10;}&amp;#10;movingItem = moveItem(mouse, movingItem);&amp;#10;if (mouse.isPressedIn(final_test_2_compare)) {&amp;#10;    compare(final_test_2_scale, final_test_2_input, labels, final_test_2_scale_instr, final_test_2_scale_left, final_test_2_scale_right);&amp;#10;}&amp;#10;" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="final_test_2_setup" valType="code"/>
       </CodeComponent>
@@ -4091,7 +4089,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="You have done a great job! Here are some final challenges!&amp;#10;&amp;#10;Recall what you have learned and give your best to answer these questions!" valType="str"/>
+        <Param name="text" updates="constant" val="You have done a great job! Here are some final challenges!&amp;#10;&amp;#10;Recall what you have learned and you will answer some questions similar to the ones that you have seen.&amp;#10;&amp;#10;Try your best to answer these questions!" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="num"/>
       </TextComponent>
@@ -4234,6 +4232,23 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
+      <CodeComponent name="final_test_intro_code">
+        <Param name="Before Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Before JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin JS Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Code Type" updates="None" val="Auto-&gt;JS" valType="str"/>
+        <Param name="Each Frame" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Each JS Frame" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="name" updates="None" val="final_test_intro_code" valType="code"/>
+      </CodeComponent>
     </Routine>
     <Routine name="DEBRIEF">
       <TextComponent name="intro_text_5">
@@ -4436,6 +4451,23 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
+      <CodeComponent name="merge_test_intro_code">
+        <Param name="Before Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Before JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin JS Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Code Type" updates="None" val="Auto-&gt;JS" valType="str"/>
+        <Param name="Each Frame" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Each JS Frame" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="name" updates="None" val="merge_test_intro_code" valType="code"/>
+      </CodeComponent>
     </Routine>
     <Routine name="SORT_TEST_INTRO">
       <TextComponent name="intro_text_7">
@@ -4459,7 +4491,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="BOB: CLIKKKK ... Now is time to apply the knowledge you learned about the PURPLE DIAMOND&amp;#10;&amp;#10;1. You need to arrange a PILE of fruits that is most likely UNORDERED&amp;#10;&amp;#10;2. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT" valType="str"/>
+        <Param name="text" updates="constant" val="BOB: CLIKKKK ... Now is time to apply the knowledge you learned about the PURPLE DIAMOND&amp;#10;&amp;#10;1. You need to arrange a PILE of fruits that is most likely UNORDERED&amp;#10;&amp;#10;2. The PURPLE DIAMOND arranges fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="num"/>
       </TextComponent>
@@ -4576,6 +4608,23 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
+      <CodeComponent name="sort_test_intro_code">
+        <Param name="Before Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Before JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin JS Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Code Type" updates="None" val="Auto-&gt;JS" valType="str"/>
+        <Param name="Each Frame" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Each JS Frame" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End JS Routine" updates="constant" val="repeats = makeScreenShot();&amp;#10;" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="repeats = makeScreenShot()" valType="extendedCode"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="name" updates="None" val="sort_test_intro_code" valType="code"/>
+      </CodeComponent>
     </Routine>
   </Routines>
   <Flow>
