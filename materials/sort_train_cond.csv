@@ -1,4 +1,2 @@
-img_path,input,expl_path
-materials/merge_sort/demo_imgs/sort_train/sort_train_ex_1.png,"[5, 7, 6, 3, 4, 1, 2]",materials/merge_sort/demo_imgs/sort_train/sort_train_ex_1_expl.png
-materials/merge_sort/demo_imgs/sort_train/sort_train_ex_2.png,"[5, 7, 6, 3, 4, 1, 2]",materials/merge_sort/demo_imgs/sort_train/sort_train_ex_2_expl.png
-materials/merge_sort/demo_imgs/sort_train/sort_train_ex_3.png,"[5, 7, 6, 3, 4, 1, 2]",materials/merge_sort/demo_imgs/sort_train/sort_train_ex_3_expl.png
+img_path_base,input,labels
+materials/merge_sort/demo_imgs/fruits/apple,"[7, 1, 6, 3, 4, 5, 12]","['D', 'G', 'B', 'F', 'A', 'E', 'C']"
