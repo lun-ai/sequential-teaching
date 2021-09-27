@@ -1,8 +1,8 @@
-﻿#!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2021.1.4),
-    on Mon 16 Aug 2021 01:45:57 BST
+    on Mon 27 Sep 2021 17:20:57 BST
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -29,9 +29,222 @@ import sys  # to get file system encoding
 from psychopy.hardware import keyboard
 
 import time
-LOCK_ON=True
-LOCK_OFF=False
-btn_locks={}
+
+sleepTime = 0.2
+green =  (-0.0039, 1.0000, -1.0000)
+red = (1.0000, -0.2235, -0.4431)
+white = (1.0000, 1.0000, 1.0000)
+repeats = 0
+traceSaveAtFrame = 20
+
+introTimeL=120
+mergeTestTimeL = 90
+mergeTrainTimeL = 60
+mergeExplTimeL = 30
+sortTestTimeL = 300
+sortTrainTimeL = 240
+sortExplTimeL=60
+
+
+scaleEqPath = "materials/merge_sort/imgs/scale_balanced.png"
+scaleLtPath = "materials/merge_sort/imgs/scale_right.png"
+scaleGtPath = "materials/merge_sort/imgs/scale_left.png"
+
+def moveItem(mouse, grabbed):
+    # Move piece if we already moving that piece
+    if grabbed is not None and mouse.isPressedIn(grabbed):
+        (u,v) = mouse.getPos()
+        if left <= u and u <= right and bot <= v and v <= top:
+            grabbed.pos = (u,v)
+        return grabbed
+    else:
+        # Move newly clicked piece
+        for item in items:
+            if mouse.isPressedIn(item) and grabbed is not item:
+                return item
+    return grabbed
+ 
+def comparePickedItems(scale,values,labels,leftInput,rightInput):
+    if len(leftInput.text) == 0 or len(leftInput.text) == 0:
+        raise ValueError()
+    elif len(leftInput.text) > 1 or len(leftInput.text) > 1:
+        raise TypeError()
+    try:
+        leftIdx = labels.index(leftInput.text)
+        rightIdx = labels.index(rightInput.text)
+    except ValueError:
+        raise IndexError()
+    leftValue = values[leftIdx]
+    rightValue = values[rightIdx]
+    if leftValue > rightValue:
+        scale.image = scaleGtPath
+    elif leftValue < rightValue:
+        scale.image = scaleLtPath
+    else:
+        scale.image = scaleEqPath
+    timeSleep(sleepTime)
+    
+def timeSleep(T):
+    time.sleep(T)
+    
+def compare(scale,listValues,labels,instr,scaleLeft,scaleRight):
+    try:
+        comparePickedItems(scale,listValues,labels,scaleLeft,scaleRight)
+        instr.text = ""
+        instr.color = white
+        return 1
+    except ValueError:
+        instr.text = "Please provide labels in correct format for both LHS and RHS"
+        instr.color = red
+        return 0
+    except IndexError:
+        instr.text = "Please enter an existing item"
+        instr.color = red
+        return 0
+    except TypeError:
+        instr.text = "Please enter labels as single capitals"
+        instr.color = red
+        return 0
+def labelMergeInput(input, labelList):
+    temp = sorted(input)
+    labels = []
+    for i in temp:
+        labels.append(labelList[input.index(i)])
+    return labels
+
+def checkSortTrainAns(input,labels,res,feedback_1,feedback_2):
+    correct = getSortTrace(input,labels)
+    submitted = res.replace(" ","")
+    values = res.replace(",","")
+    correctValues = correct.replace(",","")
+    if submitted == correct:
+        feedback_1.text = "Your answer is correct!"
+        feedback_1.color = green
+        feedback_2.text = ""
+    elif values == correctValues:
+        feedback_1.text = "Your answer does not have the correct format!\n"
+        feedback_1.color = red
+        feedback_2.text = "The correct answer is >>>>\n" + correct
+        feedback_2.color = green
+    else:
+        feedback_1.text = "Your answer is wrong!"
+        feedback_1.color = red
+        feedback_2.text = "The correct answer is >>>>\n" + correct
+        feedback_2.color = green
+    
+def getSortTrace(input,labels):
+    temp = []
+    for i in input:
+        temp.append([i])
+    while len(temp) > 1:
+        sublists = []
+        for i in range(0,int(len(temp)/2)):
+            sublists.append(sorted(temp[i*2] + temp[i*2+1]))
+        if len(temp) % 2 == 1:
+            temp = sublists + [temp[-1]]
+        else:
+            temp = sublists
+    sublistLabels = ""
+    for i in range(0,len(temp)):
+        for j in range(0,len(temp[i])):
+            sublistLabels = sublistLabels + labels[input.index(temp[i][j])]
+            if i < len(temp) - 1 or j < len(temp[i]) - 1: sublistLabels = sublistLabels + ","
+    return sublistLabels
+
+# enable image components on white board given an input list to sort
+def enableImageComponents(components,labels,imagePathBase):
+    enabledComponents = []
+    i = 0
+    for component in components:
+        if isinstance(component,visual.ImageStim):
+            exId= component.name.split("_")[-2:]
+            if exId[-2] == "ex":
+                imageIdx= exId[-1]
+                if int(imageIdx) > len(labels):
+                    component.image = None
+                else:
+                    component.image = imagePathBase + "_" + labels[i] + ".png"
+                    enabledComponents.append(component)
+                    i += 1
+    return enabledComponents
+
+def getCorrectMCOrder(N,path1,path2,img1,img2): 
+    rand_seq = [0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1]
+    order = [rand_seq[N-1],1-rand_seq[N-1]]
+    if (path1.split("_")[-1] == "wrong.png" and path2.split("_")[-1] == "correct.png") or (path2.split("_")[-1] == "wrong.png" and path1.split("_")[-1] == "correct.png"):
+        if order == [1,0]:
+            img1.image = path1
+            img2.image = path2
+        else:
+            img1.image = path2
+            img2.image = path1
+        return order
+    else:
+        raise ValueError("Training multiple choice setup is incorrect!")
+
+def showMergeExpl(submitted,feedback1,feedback2,mc1,mc2,mcPath1,mcPath2,expl1,expl2):
+    # finds which choice user has selected
+    feedback1.text = ""
+    feedback2.text = ""
+    
+    if submitted == 0:
+        feedback1.text = "SELECTED >>> \n"
+    elif submitted == 1:
+        feedback2.text = "SELECTED >>> \n"
+    
+    # show user which answer is correct and wrong
+    if mc_order == [1,0]:
+        feedback1.color = green
+        feedback2.color = red
+        feedback1.text = feedback1.text + "This answer is correct!"
+        feedback2.text = feedback2.text + "This answer is wrong!"
+         
+         # show the selections
+        mc1.image = mcPath1.split(".png")[0] + "_selected.png"
+        mc2.image = mcPath2.split(".png")[0] + "_selected.png"
+        expl1.image = mcPath1.split(".png")[0] + "_expl.png"
+        expl2.image = mcPath2.split(".png")[0] + "_expl.png"
+    else:
+        feedback1.color = red
+        feedback2.color = green
+        feedback1.text = feedback1.text + "This answer is wrong!"
+        feedback2.text = feedback2.text + "This answer is correct!"
+        
+         # show the selections
+        mc1.image = mcPath2.split(".png")[0] + "_selected.png"
+        mc2.image = mcPath1.split(".png")[0] + "_selected.png"
+        expl1.image = mcPath2.split(".png")[0] + "_expl.png"
+        expl2.image = mcPath1.split(".png")[0] + "_expl.png"
+        
+def checkBGSelection(m,groups,picked):
+    for item in groups:
+        if m != None and m.isPressedIn(item):
+            for others in groups:
+                others.fillColor = white
+            item.fillColor = green
+            timeSleep(sleepTime)
+            return item
+    return picked
+
+def timerWarning(timeLimt, timePassed):
+    tRemain = int(timeLimt- t)
+    if tRemain <= 30:
+        return "Remain time sec: "+ str(tRemain)
+    else:
+        return ""
+        
+def updateTrace(itemPos,newItemPos):
+    updated = []
+    for i in itemPos:
+        for j in newItemPos:
+            if i[0] == j[0] and not (i[1] == j[1] and i[2] == j[2]):
+                updated.append(j)
+    return updated
+        
+def makeScreenShot():
+    #win.getMovieFrame()
+    #win.saveMovieFrames(str(repeats) + '.png')
+    return repeats + 1
 
 
 # Ensure that relative paths start from the same directory as this script
@@ -41,7 +254,7 @@ os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2021.1.4'
 expName = 'seq_teaching_exp'  # from the Builder filename that created this script
-expInfo = {'participant': '', 'session': '001'}
+expInfo = {'participant': '000', 'session': '001'}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
@@ -69,9 +282,9 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=(1024, 768), fullscr=True, screen=0, 
+    size=[1920, 1080], fullscr=True, screen=0, 
     winType='pyglet', allowGUI=False, allowStencil=False,
-    monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
+    monitor='testMonitor', color=(0,0,0), colorSpace='rgb',
     blendMode='avg', useFBO=True, 
     units='height')
 # store frame rate of monitor if we can measure it
@@ -84,945 +297,1810 @@ else:
 # create a default keyboard (e.g. to check for escape)
 defaultKeyboard = keyboard.Keyboard()
 
-# Initialize components for Routine "Intro"
-IntroClock = core.Clock()
+# Initialize components for Routine "INTRO"
+INTROClock = core.Clock()
 intro_text = visual.TextStim(win=win, name='intro_text',
-    text='Some introduction TBC.',
+    text='Today, you will learn how to help our robot trader friends ALICE & BOB to package fruits for shipment. \n\nYou will visit two warehouses "rooms", in which you will learn individual steps of the process from ALICE and BOB. \n\nIn the end, you can put the skills learned in the rooms together and complete the whole process by yourself!',
     font='Open Sans',
-    pos=(0, 0), height=0.1, wrapWidth=None, ori=0.0, 
+    pos=(0, -0.15), height=0.03, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
-intro_btn = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(0, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=None,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='intro_btn')
-intro_btn.buttonClock = core.Clock()
-
-# Initialize components for Routine "Briefing"
-BriefingClock = core.Clock()
-gen_info = visual.TextStim(win=win, name='gen_info',
-    text='Some initial general information:\n\nParticipation consent TBC.\n\nDemographic information collection TBC.',
-    font='Open Sans',
-    pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
-    color='white', colorSpace='rgb', opacity=None, 
-    languageStyle='LTR',
-    depth=0.0);
-brf_btn = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(0, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor='black',
-   color='black', colorSpace='rgb',
-   opacity=None,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='brf_btn')
-brf_btn.buttonClock = core.Clock()
-
-# Initialize components for Routine "Raven_Matrices"
-Raven_MatricesClock = core.Clock()
-rv_txt1 = visual.TextStim(win=win, name='rv_txt1',
-    text='Pre-training phase',
-    font='Open Sans',
-    pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
-    color='white', colorSpace='rgb', opacity=None, 
-    languageStyle='LTR',
-    depth=0.0);
-rv_btn1 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(0, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=None,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='rv_btn1')
-rv_btn1.buttonClock = core.Clock()
-
-# Initialize components for Routine "Instructions_1"
-Instructions_1Clock = core.Clock()
-instr1_txt1 = visual.TextStim(win=win, name='instr1_txt1',
-    text='Some instructions for the performance questions\n',
-    font='Open Sans',
-    pos=(0, 0.3), height=0.05, wrapWidth=None, ori=0.0, 
-    color='white', colorSpace='rgb', opacity=None, 
-    languageStyle='LTR',
-    depth=0.0)
-instr1_btn3 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(0, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='instr1_btn3')
-instr1_btn3.buttonClock = core.Clock()
-instr1_ex3 = visual.ImageStim(
+alice = visual.ImageStim(
     win=win,
-    name='instr1_ex3', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 16.png', mask=None,
-    ori=0.0, pos=(0, 0), size=[1,0.5],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
+    name='alice', 
+    image='materials/merge_sort/imgs/alice.png', mask=None,
+    ori=0.0, pos=(-0.2, 0.2), size=(0.2, 0.2),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-1.0)
+bob = visual.ImageStim(
+    win=win,
+    name='bob', 
+    image='materials/merge_sort/imgs/bob.png', mask=None,
+    ori=0.0, pos=(0.2, 0.2), size=(0.2, 0.2),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-2.0)
-instr1_btn2 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(0, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='instr1_btn2')
-instr1_btn2.buttonClock = core.Clock()
-instr1_ex2 = visual.ImageStim(
+door_1 = visual.ImageStim(
     win=win,
-    name='instr1_ex2', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 09.png', mask=None,
-    ori=0.0, pos=(0, 0), size=[1,0.5],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
+    name='door_1', 
+    image='materials/merge_sort/imgs/door.png', mask=None,
+    ori=0.0, pos=(-0.4, 0.2), size=(0.15, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-3.0)
+door_2 = visual.ImageStim(
+    win=win,
+    name='door_2', 
+    image='materials/merge_sort/imgs/door.png', mask=None,
+    ori=0.0, pos=(0.4, 0.2), size=(0.15, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-4.0)
-instr1_btn1 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(0, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=1.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='instr1_btn1')
-instr1_btn1.buttonClock = core.Clock()
-instr1_ex1 = visual.ImageStim(
-    win=win,
-    name='instr1_ex1', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 07.png', mask=None,
-    ori=0.0, pos=(0, 0), size=[1,0.5],
-    color=[1,1,1], colorSpace='rgb', opacity=1.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-6.0)
+intro_btn = visual.TextBox2(
+     win, text='Continue', font='Open Sans',
+     pos=(0, -0.4),     letterHeight=0.05,
+     size=[0.28,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='intro_btn',
+     autoLog=False,
+)
+intro_mouse = event.Mouse(win=win)
+x, y = [None, None]
+intro_mouse.mouseClock = core.Clock()
 
-# Initialize components for Routine "Training_1"
-Training_1Clock = core.Clock()
-train1_num = visual.TextStim(win=win, name='train1_num',
-    text='Training example 1 (this could be removed)',
+# Initialize components for Routine "BACKGROUND"
+BACKGROUNDClock = core.Clock()
+# Set experiment start values for variable component demographic_gender
+demographic_gender = ''
+demographic_genderContainer = []
+# Set experiment start values for variable component demographic_education
+demographic_education = ''
+demographic_educationContainer = []
+# Set experiment start values for variable component demographic_age
+demographic_age = ''
+demographic_ageContainer = []
+background_instr = visual.TextStim(win=win, name='background_instr',
+    text='',
     font='Open Sans',
-    pos=(-0.4, 0.45), height=0.02, wrapWidth=None, ori=0.0, 
+    pos=(0, 0.4), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-3.0);
+gender = visual.TextStim(win=win, name='gender',
+    text='',
+    font='Open Sans',
+    pos=(0, 0.3), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-4.0);
+background_gender_female = visual.TextBox2(
+     win, text='Female', font='Open Sans',
+     pos=(-0.15, 0.25),     letterHeight=0.03,
+     size=(0.12, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_gender_female',
+     autoLog=False,
+)
+background_gender_male = visual.TextBox2(
+     win, text='Male', font='Open Sans',
+     pos=(0.15, 0.25),     letterHeight=0.03,
+     size=(0.1, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_gender_male',
+     autoLog=False,
+)
+age = visual.TextStim(win=win, name='age',
+    text='',
+    font='Open Sans',
+    pos=(0, 0.1), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-7.0);
+background_age_18_24 = visual.TextBox2(
+     win, text='18-24', font='Open Sans',
+     pos=(-0.5, 0.05),     letterHeight=0.03,
+     size=(0.1, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_age_18_24',
+     autoLog=False,
+)
+background_age_25_34 = visual.TextBox2(
+     win, text='25-34', font='Open Sans',
+     pos=(-0.3, 0.05),     letterHeight=0.03,
+     size=(0.1, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_age_25_34',
+     autoLog=False,
+)
+background_age_35_44 = visual.TextBox2(
+     win, text='35-44', font='Open Sans',
+     pos=(-0.1, 0.05),     letterHeight=0.03,
+     size=(0.1, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_age_35_44',
+     autoLog=False,
+)
+background_age_45_54 = visual.TextBox2(
+     win, text='45-54', font='Open Sans',
+     pos=(0.1, 0.05),     letterHeight=0.03,
+     size=(0.1, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_age_45_54',
+     autoLog=False,
+)
+background_age_55_64 = visual.TextBox2(
+     win, text='55-64', font='Open Sans',
+     pos=(0.3, 0.05),     letterHeight=0.03,
+     size=(0.1, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_age_55_64',
+     autoLog=False,
+)
+background_age_65 = visual.TextBox2(
+     win, text='Above 65', font='Open Sans',
+     pos=(0.5, 0.05),     letterHeight=0.03,
+     size=(0.15, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_age_65',
+     autoLog=False,
+)
+education = visual.TextStim(win=win, name='education',
+    text='',
+    font='Open Sans',
+    pos=(0, -0.1), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-14.0);
+background_education_before_high_school = visual.TextBox2(
+     win, text='Less than high school', font='Open Sans',
+     pos=(-0.75, -0.15),     letterHeight=0.02,
+     size=(0.2, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_education_before_high_school',
+     autoLog=False,
+)
+background_education_high_school = visual.TextBox2(
+     win, text='High school  and equivalent', font='Open Sans',
+     pos=(-0.5, -0.15),     letterHeight=0.02,
+     size=(0.2, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_education_high_school',
+     autoLog=False,
+)
+background_education_college = visual.TextBox2(
+     win, text='Some college, no degree', font='Open Sans',
+     pos=(-0.25, -0.15),     letterHeight=0.02,
+     size=(0.2, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_education_college',
+     autoLog=False,
+)
+background_education_bachelor = visual.TextBox2(
+     win, text='Bachelor’s degree', font='Open Sans',
+     pos=(0, -0.15),     letterHeight=0.02,
+     size=(0.2, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_education_bachelor',
+     autoLog=False,
+)
+background_education_graudate = visual.TextBox2(
+     win, text='Graduate or professional degree', font='Open Sans',
+     pos=(0.25, -0.15),     letterHeight=0.02,
+     size=(0.2, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_education_graudate',
+     autoLog=False,
+)
+backgrond_education_doctorate = visual.TextBox2(
+     win, text='Doctorate degree', font='Open Sans',
+     pos=(0.5, -0.15),     letterHeight=0.02,
+     size=(0.2, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='backgrond_education_doctorate',
+     autoLog=False,
+)
+background_education_other = visual.TextBox2(
+     win, text='Other', font='Open Sans',
+     pos=(0.75, -0.15),     letterHeight=0.02,
+     size=(0.2, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_education_other',
+     autoLog=False,
+)
+background_btn = visual.TextBox2(
+     win, text='Continue', font='Open Sans',
+     pos=(5, 5),     letterHeight=0.05,
+     size=(0,0), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='background_btn',
+     autoLog=False,
+)
+background_mouse = event.Mouse(win=win)
+x, y = [None, None]
+background_mouse.mouseClock = core.Clock()
+
+# Initialize components for Routine "MERGE_INTRO"
+MERGE_INTROClock = core.Clock()
+intro_text_2 = visual.TextStim(win=win, name='intro_text_2',
+    text='ALICE: BIZZ ... Thank you for coming to help! We have fruits in some boxes to be put on a conveyor.\n\n1. The fruits in EACH ORANGE box INCREASE in weight from LEFT to RIGHT\n\n2. The BLUE STAR puts fruits from two ORANGE boxes on the CONVEYOR BELT in INCREASING weights from LEFT to RIGHT \n\nLEARN the BLUE STAR operation in steps and master it. ',
+    font='Open Sans',
+    pos=(0, -0.15), height=0.03, wrapWidth=1.0, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
-train1_txt1 = visual.TextStim(win=win, name='train1_txt1',
-    text='Revised instructions for user operation.',
-    font='Open Sans',
-    pos=(0.4, 0.1), height=0.03, wrapWidth=None, ori=0.0, 
-    color='white', colorSpace='rgb', opacity=None, 
-    languageStyle='LTR',
-    depth=-1.0);
-train1_btn5 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='train1_btn5')
-train1_btn5.buttonClock = core.Clock()
-train1_ex5 = visual.ImageStim(
+alice_2 = visual.ImageStim(
     win=win,
-    name='train1_ex5', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 20.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
+    name='alice_2', 
+    image='materials/merge_sort/imgs/alice.png', mask=None,
+    ori=0.0, pos=(-0.25, 0.25), size=(0.2, 0.2),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-3.0)
-train1_btn4 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='train1_btn4')
-train1_btn4.buttonClock = core.Clock()
-train1_ex4 = visual.ImageStim(
+    texRes=128.0, interpolate=True, depth=-1.0)
+merge_example = visual.ImageStim(
     win=win,
-    name='train1_ex4', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 17.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-5.0)
-train1_btn3 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='train1_btn3')
-train1_btn3.buttonClock = core.Clock()
-train1_ex3 = visual.ImageStim(
-    win=win,
-    name='train1_ex3', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 16.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-7.0)
-train1_btn2 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='train1_btn2')
-train1_btn2.buttonClock = core.Clock()
-train1_ex2 = visual.ImageStim(
-    win=win,
-    name='train1_ex2', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 09.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-9.0)
-train1_btn1 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=1.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='train1_btn1')
-train1_btn1.buttonClock = core.Clock()
-train1_ex1 = visual.ImageStim(
-    win=win,
-    name='train1_ex1', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 07.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=1.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-11.0)
-train1_bg1 = visual.ImageStim(
-    win=win,
-    name='train1_bg1', 
-    image='materials/demo_imgs/white_BG.png', mask=None,
-    ori=0.0, pos=(0.4, 0.3), size=(0.7, 0.3),
-    color=[255,255,255], colorSpace='rgb', opacity=1.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-12.0)
-train1_bg2 = visual.ImageStim(
-    win=win,
-    name='train1_bg2', 
-    image='materials/demo_imgs/white_BG.png', mask=None,
-    ori=0.0, pos=(0.4, -0.2), size=(0.7, 0.5),
-    color='white', colorSpace='rgb', opacity=None,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-13.0)
-
-# Initialize components for Routine "Performance_1"
-Performance_1Clock = core.Clock()
-perf1_num = visual.TextStim(win=win, name='perf1_num',
-    text='Test example 1 (this could be removed)',
-    font='Open Sans',
-    pos=(-0.4, 0.45), height=0.02, wrapWidth=None, ori=0.0, 
-    color='white', colorSpace='rgb', opacity=None, 
-    languageStyle='LTR',
-    depth=0.0);
-perf1_txt1 = visual.TextStim(win=win, name='perf1_txt1',
-    text='Revised instructions for user operation.',
-    font='Open Sans',
-    pos=(0.4, 0.1), height=0.03, wrapWidth=None, ori=0.0, 
-    color='white', colorSpace='rgb', opacity=None, 
-    languageStyle='LTR',
-    depth=-1.0);
-perf1_btn5 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf1_btn5')
-perf1_btn5.buttonClock = core.Clock()
-perf1_ex5 = visual.ImageStim(
-    win=win,
-    name='perf1_ex5', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 20.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-3.0)
-perf1_btn4 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf1_btn4')
-perf1_btn4.buttonClock = core.Clock()
-perf1_ex4 = visual.ImageStim(
-    win=win,
-    name='perf1_ex4', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 17.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-5.0)
-perf1_btn3 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf1_btn3')
-perf1_btn3.buttonClock = core.Clock()
-perf1_ex3 = visual.ImageStim(
-    win=win,
-    name='perf1_ex3', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 16.png', mask=None,
-    ori=0.0, pos=(-0.4,0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-7.0)
-perf1_btn2 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf1_btn2')
-perf1_btn2.buttonClock = core.Clock()
-perf1_ex2 = visual.ImageStim(
-    win=win,
-    name='perf1_ex2', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 09.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-9.0)
-perf1_btn1 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=1.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf1_btn1')
-perf1_btn1.buttonClock = core.Clock()
-perf1_ex1 = visual.ImageStim(
-    win=win,
-    name='perf1_ex1', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 07.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=1.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-11.0)
-perf1_bg1 = visual.ImageStim(
-    win=win,
-    name='perf1_bg1', 
-    image='materials/demo_imgs/white_BG.png', mask=None,
-    ori=0.0, pos=(0.4, 0.3), size=(0.7, 0.3),
-    color=[255,255,255], colorSpace='rgb', opacity=1.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-12.0)
-perf1_bg2 = visual.ImageStim(
-    win=win,
-    name='perf1_bg2', 
-    image='materials/demo_imgs/white_BG.png', mask=None,
-    ori=0.0, pos=(0.4, -0.2), size=(0.7, 0.5),
-    color='white', colorSpace='rgb', opacity=None,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-13.0)
-
-# Initialize components for Routine "Instructions_2"
-Instructions_2Clock = core.Clock()
-instr2_txt1 = visual.TextStim(win=win, name='instr2_txt1',
-    text='Some instructions for the performance questions\n',
-    font='Open Sans',
-    pos=(0, 0.3), height=0.05, wrapWidth=None, ori=0.0, 
-    color='white', colorSpace='rgb', opacity=None, 
-    languageStyle='LTR',
-    depth=0.0);
-instr2_btn3 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(0, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='instr2_btn3')
-instr2_btn3.buttonClock = core.Clock()
-instr2_ex3 = visual.ImageStim(
-    win=win,
-    name='instr2_ex3', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 16.png', mask=None,
-    ori=0.0, pos=(0, 0), size=[1,0.5],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
+    name='merge_example', 
+    image='materials/merge_sort/imgs/merge_train/merge_train_example.png', mask=None,
+    ori=0.0, pos=(0.3, 0.25), size=(0.7, 0.4),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-2.0)
-instr2_btn2 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(0, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='instr2_btn2')
-instr2_btn2.buttonClock = core.Clock()
-instr2_ex2 = visual.ImageStim(
+door_3 = visual.ImageStim(
     win=win,
-    name='instr2_ex2', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 09.png', mask=None,
-    ori=0.0, pos=(0, 0), size=[1,0.5],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
+    name='door_3', 
+    image='materials/merge_sort/imgs/door.png', mask=None,
+    ori=0.0, pos=(-0.45, 0.25), size=(0.15, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-3.0)
+merge_intro_btn = visual.TextBox2(
+     win, text='Continue', font='Open Sans',
+     pos=(0, -0.4),     letterHeight=0.05,
+     size=[0.28,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='merge_intro_btn',
+     autoLog=False,
+)
+merge_intro_mouse = event.Mouse(win=win)
+x, y = [None, None]
+merge_intro_mouse.mouseClock = core.Clock()
+
+# Initialize components for Routine "MERGE_TRAIN"
+MERGE_TRAINClock = core.Clock()
+# Set experiment start values for variable component mc_order
+mc_order = ''
+mc_orderContainer = []
+# Set experiment start values for variable component merge_train_labels
+merge_train_labels = ''
+merge_train_labelsContainer = []
+# Set experiment start values for variable component merge_train_compareN
+merge_train_compareN = ''
+merge_train_compareNContainer = []
+# Set experiment start values for variable component merge_train_mc_path_2
+merge_train_mc_path_2 = ''
+merge_train_mc_path_2Container = []
+# Set experiment start values for variable component merge_train_mc_path_1
+merge_train_mc_path_1 = ''
+merge_train_mc_path_1Container = []
+# Set experiment start values for variable component merge_train_input
+merge_train_input = ''
+merge_train_inputContainer = []
+merge_train_scale_instr = visual.TextStim(win=win, name='merge_train_scale_instr',
+    text='',
+    font='Open Sans',
+    pos=(-0.65,0.45), height=0.02, wrapWidth=0.3, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-6.0);
+merge_ans_instr = visual.TextStim(win=win, name='merge_ans_instr',
+    text='Please SELECT the CONVEYOR BELT that has the correct fruit(s) on YELLOW position(s):',
+    font='Open Sans',
+    pos=(0, -0.15), height=0.03, wrapWidth=1.5, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-7.0);
+merge_train_instr = visual.TextStim(win=win, name='merge_train_instr',
+    text='1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. In EACH ORANGE box, fruits are arranged in INCREASING weights from LEFT to RIGHT\n\n3. Fruits on the CONVEYOR BELT are arranged in INCREASING weights from LEFT to RIGHT',
+    font='Open Sans',
+    pos=(0.65, 0.2), height=0.025, wrapWidth=0.4, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-8.0);
+merge_train_scale_right = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.55, 0.4),     letterHeight=0.03,
+     size=(0.1,0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='merge_train_scale_right',
+     autoLog=False,
+)
+merge_train_scale_left = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.75, 0.4),     letterHeight=0.03,
+     size=(0.1, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='merge_train_scale_left',
+     autoLog=False,
+)
+merge_train_compare = visual.TextBox2(
+     win, text='Compare', font='Open Sans',
+     pos=(-0.65, -0.02),     letterHeight=0.03,
+     size=(0.16,0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='merge_train_compare',
+     autoLog=False,
+)
+merge_train_sep = visual.ImageStim(
+    win=win,
+    name='merge_train_sep', 
+    image='materials/merge_sort/imgs/white_BG.png', mask=None,
+    ori=0.0, pos=(0, -0.11), size=(1.5,0.005),
+    color=[1,1,1], colorSpace='rgb', opacity=1.0,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-12.0)
+merge_train = visual.ImageStim(
+    win=win,
+    name='merge_train', 
+    image='sin', mask=None,
+    ori=0.0, pos=(0, 0.2), size=(0.8, 0.4),
+    color=[1,1,1], colorSpace='rgb', opacity=1.0,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-13.0)
+merge_train_mc_1 = visual.ImageStim(
+    win=win,
+    name='merge_train_mc_1', 
+    image='sin', mask=None,
+    ori=0.0, pos=(-0.3,-0.25), size=(0.7,0.1),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-14.0)
+merge_train_mc_2 = visual.ImageStim(
+    win=win,
+    name='merge_train_mc_2', 
+    image='sin', mask=None,
+    ori=0.0, pos=(-0.3, -0.4), size=(0.7,0.1),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-15.0)
+merge_train_scale = visual.ImageStim(
+    win=win,
+    name='merge_train_scale', 
+    image='sin', mask=None,
+    ori=0.0, pos=(-0.65, 0.15), size=(0.3, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-16.0)
+merge_train_btn_1 = visual.TextBox2(
+     win, text='Submit', font='Open Sans',
+     pos=(0.5, -0.25),     letterHeight=0.05,
+     size=[0.24,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='merge_train_btn_1',
+     autoLog=False,
+)
+merge_train_btn_2 = visual.TextBox2(
+     win, text='Submit', font='Open Sans',
+     pos=(0.5, -0.4),     letterHeight=0.05,
+     size=[0.24,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='merge_train_btn_2',
+     autoLog=False,
+)
+merge_train_mouse = event.Mouse(win=win)
+x, y = [None, None]
+merge_train_mouse.mouseClock = core.Clock()
+merge_train_timer = visual.TextStim(win=win, name='merge_train_timer',
+    text=None,
+    font='Open Sans',
+    pos=(0.65, -0.05), height=0.03, wrapWidth=None, ori=0.0, 
+    color='orange', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-21.0);
+
+# Initialize components for Routine "MERGE_EXPL"
+MERGE_EXPLClock = core.Clock()
+merge_expl_instr = visual.TextStim(win=win, name='merge_expl_instr',
+    text='Read the feedback and continue whenever you are ready',
+    font='Open Sans',
+    pos=(-0.55,0.40), height=0.03, wrapWidth=0.6, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=0.0);
+merge_expl_feedback_1 = visual.TextStim(win=win, name='merge_expl_feedback_1',
+    text=None,
+    font='Open Sans',
+    pos=(-0.55,0.15), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-1.0);
+merge_expl_feedback_2 = visual.TextStim(win=win, name='merge_expl_feedback_2',
+    text=None,
+    font='Open Sans',
+    pos=(-0.55, -0.25), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-2.0);
+merge_expl_sep = visual.ImageStim(
+    win=win,
+    name='merge_expl_sep', 
+    image='materials/merge_sort/imgs/white_BG.png', mask=None,
+    ori=0.0, pos=(-0.25, 0), size=(0.005,0.8),
+    color=[1,1,1], colorSpace='rgb', opacity=1.0,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-3.0)
+merge_expl_1 = visual.ImageStim(
+    win=win,
+    name='merge_expl_1', 
+    image='sin', mask=None,
+    ori=0.0, pos=(0.35, 0.25), size=(0.8, 0.4),
+    color=[1,1,1], colorSpace='rgb', opacity=1.0,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-4.0)
-instr2_btn1 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(0, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=1.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='instr2_btn1')
-instr2_btn1.buttonClock = core.Clock()
-instr2_ex1 = visual.ImageStim(
+merge_expl_2 = visual.ImageStim(
     win=win,
-    name='instr2_ex1', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 07.png', mask=None,
-    ori=0.0, pos=(0, 0), size=[1,0.5],
+    name='merge_expl_2', 
+    image='sin', mask=None,
+    ori=0.0, pos=(0.35, -0.15), size=(0.8, 0.4),
     color=[1,1,1], colorSpace='rgb', opacity=1.0,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-5.0)
+merge_expl_mc_1 = visual.ImageStim(
+    win=win,
+    name='merge_expl_mc_1', 
+    image='sin', mask=None,
+    ori=0.0, pos=(-0.55,0.25), size=(0.4,0.1),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-6.0)
-
-# Initialize components for Routine "Training_2"
-Training_2Clock = core.Clock()
-train2_num = visual.TextStim(win=win, name='train2_num',
-    text='Training example 1',
+merge_expl_mc_2 = visual.ImageStim(
+    win=win,
+    name='merge_expl_mc_2', 
+    image='sin', mask=None,
+    ori=0.0, pos=(-0.55, -0.15), size=(0.4,0.1),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-7.0)
+merge_expl_btn = visual.TextBox2(
+     win, text='Continue', font='Open Sans',
+     pos=(0.35, -0.42),     letterHeight=0.05,
+     size=[0.28,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='merge_expl_btn',
+     autoLog=False,
+)
+merge_expl_mouse = event.Mouse(win=win)
+x, y = [None, None]
+merge_expl_mouse.mouseClock = core.Clock()
+merge_expl_timer = visual.TextStim(win=win, name='merge_expl_timer',
+    text=None,
     font='Open Sans',
-    pos=(-0.4, 0.45), height=0.02, wrapWidth=None, ori=0.0, 
+    pos=(-0.55, -0.42), height=0.03, wrapWidth=None, ori=0.0, 
+    color='orange', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-11.0);
+
+# Initialize components for Routine "MERGE_TEST_INTRO"
+MERGE_TEST_INTROClock = core.Clock()
+intro_text_6 = visual.TextStim(win=win, name='intro_text_6',
+    text='ALICE: BIZZ ... Now is time to apply the knowledge you learned about the BLUE STAR\n\n1. The fruits in EACH ORANGE box INCREASE in weight from LEFT to RIGHT\n\n2. The BLUE STAR puts fruits from two ORANGE boxes on the CONVEYOR BELT in INCREASING weights from LEFT to RIGHT',
+    font='Open Sans',
+    pos=(0, -0.15), height=0.03, wrapWidth=1.0, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
-train2_txt1 = visual.TextStim(win=win, name='train2_txt1',
-    text='Revised instructions for user operation.',
-    font='Open Sans',
-    pos=(0.4, 0.1), height=0.03, wrapWidth=None, ori=0.0, 
-    color='white', colorSpace='rgb', opacity=None, 
-    languageStyle='LTR',
-    depth=-1.0);
-train2_btn5 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='train2_btn5')
-train2_btn5.buttonClock = core.Clock()
-train2_ex5 = visual.ImageStim(
+alice_4 = visual.ImageStim(
     win=win,
-    name='train2_ex5', 
-    image='materials/demo_imgs/[MULTI - SIMPLE] example 19.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
+    name='alice_4', 
+    image='materials/merge_sort/imgs/alice.png', mask=None,
+    ori=0.0, pos=(-0.25, 0.25), size=(0.2, 0.2),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-1.0)
+merge_example_2 = visual.ImageStim(
+    win=win,
+    name='merge_example_2', 
+    image='materials/merge_sort/imgs/merge_train/merge_train_example.png', mask=None,
+    ori=0.0, pos=(0.3, 0.25), size=(0.7, 0.4),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-2.0)
+door_6 = visual.ImageStim(
+    win=win,
+    name='door_6', 
+    image='materials/merge_sort/imgs/door.png', mask=None,
+    ori=0.0, pos=(-0.45, 0.25), size=(0.15, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-3.0)
-train2_btn4 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='train2_btn4')
-train2_btn4.buttonClock = core.Clock()
-train2_ex4 = visual.ImageStim(
+merge_test_intro_btn = visual.TextBox2(
+     win, text='Continue', font='Open Sans',
+     pos=(0, -0.4),     letterHeight=0.05,
+     size=[0.28,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='merge_test_intro_btn',
+     autoLog=False,
+)
+merge_test_intro_mouse = event.Mouse(win=win)
+x, y = [None, None]
+merge_test_intro_mouse.mouseClock = core.Clock()
+
+# Initialize components for Routine "MERGE_TEST"
+MERGE_TESTClock = core.Clock()
+# Set experiment start values for variable component merge_test_ans
+merge_test_ans = ''
+merge_test_ansContainer = []
+# Set experiment start values for variable component merge_test_labels
+merge_test_labels = ''
+merge_test_labelsContainer = []
+# Set experiment start values for variable component merge_test_compareN
+merge_test_compareN = ''
+merge_test_compareNContainer = []
+# Set experiment start values for variable component merge_test_input
+merge_test_input = ''
+merge_test_inputContainer = []
+merge_test_scale_instr = visual.TextStim(win=win, name='merge_test_scale_instr',
+    text='',
+    font='Open Sans',
+    pos=(-0.65,0.45), height=0.02, wrapWidth=0.3, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-4.0);
+merge_test_ans_instr = visual.TextStim(win=win, name='merge_test_ans_instr',
+    text='Put fruits on the CONVEYOR BELT by entering their labels as  X,X,X,X,X,X,X,X, ... ,X',
+    font='Open Sans',
+    pos=(-0.25, -0.25), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-5.0);
+merge_test_instr = visual.TextStim(win=win, name='merge_test_instr',
+    text='1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. In EACH ORANGE box, fruits are arranged in INCREASING weights from LEFT to RIGHT\n\n3. Fruits on the CONVEYOR BELT are arranged in INCREASING weights from LEFT to RIGHT',
+    font='Open Sans',
+    pos=(0.65, 0.2), height=0.025, wrapWidth=0.4, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-6.0);
+merge_test_scale_right = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.55, 0.4),     letterHeight=0.03,
+     size=(0.1,0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='merge_test_scale_right',
+     autoLog=False,
+)
+merge_test_scale_left = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.75, 0.4),     letterHeight=0.03,
+     size=(0.1, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='merge_test_scale_left',
+     autoLog=False,
+)
+merge_test_compare = visual.TextBox2(
+     win, text='Compare', font='Open Sans',
+     pos=(-0.65, -0.02),     letterHeight=0.03,
+     size=(0.16,0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='merge_test_compare',
+     autoLog=False,
+)
+merge_test_res = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.25, -0.3),     letterHeight=0.05,
+     size=(0.7,0.1), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='merge_test_res',
+     autoLog=False,
+)
+merge_test_sep = visual.ImageStim(
     win=win,
-    name='train2_ex4', 
-    image='materials/demo_imgs/[MULTI - SIMPLE] example 17.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-5.0)
-train2_btn3 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='train2_btn3')
-train2_btn3.buttonClock = core.Clock()
-train2_ex3 = visual.ImageStim(
-    win=win,
-    name='train2_ex3', 
-    image='materials/demo_imgs/[MULTI - SIMPLE] example 05.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-7.0)
-train2_btn2 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='train2_btn2')
-train2_btn2.buttonClock = core.Clock()
-train2_ex2 = visual.ImageStim(
-    win=win,
-    name='train2_ex2', 
-    image='materials/demo_imgs/[MULTI - SIMPLE] example 04.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-9.0)
-train2_btn1 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=1.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='train2_btn1')
-train2_btn1.buttonClock = core.Clock()
-train2_ex1 = visual.ImageStim(
-    win=win,
-    name='train2_ex1', 
-    image='materials/demo_imgs/[MULTI - SIMPLE] example 02.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
+    name='merge_test_sep', 
+    image='materials/merge_sort/imgs/white_BG.png', mask=None,
+    ori=0.0, pos=(0, -0.15), size=(1.5,0.005),
     color=[1,1,1], colorSpace='rgb', opacity=1.0,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-11.0)
-train2_bg1 = visual.ImageStim(
+merge_test = visual.ImageStim(
     win=win,
-    name='train2_bg1', 
-    image='materials/demo_imgs/white_BG.png', mask=None,
-    ori=0.0, pos=(0.4, 0.3), size=(0.7, 0.3),
-    color=[255,255,255], colorSpace='rgb', opacity=1.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-12.0)
-train2_bg2 = visual.ImageStim(
-    win=win,
-    name='train2_bg2', 
-    image='materials/demo_imgs/white_BG.png', mask=None,
-    ori=0.0, pos=(0.4, -0.2), size=(0.7, 0.5),
-    color='white', colorSpace='rgb', opacity=None,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-13.0)
-
-# Initialize components for Routine "Performance_2"
-Performance_2Clock = core.Clock()
-perf2_num = visual.TextStim(win=win, name='perf2_num',
-    text='Test example 1 (this could be removed)',
-    font='Open Sans',
-    pos=(-0.4, 0.45), height=0.02, wrapWidth=None, ori=0.0, 
-    color='white', colorSpace='rgb', opacity=None, 
-    languageStyle='LTR',
-    depth=0.0);
-perf2_txt1 = visual.TextStim(win=win, name='perf2_txt1',
-    text='Revised instructions for user operation.',
-    font='Open Sans',
-    pos=(0.4, 0.1), height=0.03, wrapWidth=None, ori=0.0, 
-    color='white', colorSpace='rgb', opacity=None, 
-    languageStyle='LTR',
-    depth=-1.0);
-perf2_btn5 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf2_btn5')
-perf2_btn5.buttonClock = core.Clock()
-perf2_ex5 = visual.ImageStim(
-    win=win,
-    name='perf2_ex5', 
-    image='materials/demo_imgs/[MULTI - SIMPLE] example 19.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-3.0)
-perf2_btn4 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf2_btn4')
-perf2_btn4.buttonClock = core.Clock()
-perf2_ex4 = visual.ImageStim(
-    win=win,
-    name='perf2_ex4', 
-    image='materials/demo_imgs/[MULTI - SIMPLE] example 17.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-5.0)
-perf2_btn3 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf2_btn3')
-perf2_btn3.buttonClock = core.Clock()
-perf2_ex3 = visual.ImageStim(
-    win=win,
-    name='perf2_ex3', 
-    image='materials/demo_imgs/[MULTI - SIMPLE] example 05.png', mask=None,
-    ori=0.0, pos=(-0.4,0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-7.0)
-perf2_btn2 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf2_btn2')
-perf2_btn2.buttonClock = core.Clock()
-perf2_ex2 = visual.ImageStim(
-    win=win,
-    name='perf2_ex2', 
-    image='materials/demo_imgs/[MULTI - SIMPLE] example 04.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-9.0)
-perf2_btn1 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=1.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf2_btn1')
-perf2_btn1.buttonClock = core.Clock()
-perf2_ex1 = visual.ImageStim(
-    win=win,
-    name='perf2_ex1', 
-    image='materials/demo_imgs/[MULTI - SIMPLE] example 02.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
+    name='merge_test', 
+    image='sin', mask=None,
+    ori=0.0, pos=(0, 0.2), size=(0.8, 0.4),
     color=[1,1,1], colorSpace='rgb', opacity=1.0,
     flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-11.0)
-perf2_bg1 = visual.ImageStim(
-    win=win,
-    name='perf2_bg1', 
-    image='materials/demo_imgs/white_BG.png', mask=None,
-    ori=0.0, pos=(0.4, 0.3), size=(0.7, 0.3),
-    color=[255,255,255], colorSpace='rgb', opacity=1.0,
-    flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-12.0)
-perf2_bg2 = visual.ImageStim(
+merge_test_scale = visual.ImageStim(
     win=win,
-    name='perf2_bg2', 
-    image='materials/demo_imgs/white_BG.png', mask=None,
-    ori=0.0, pos=(0.4, -0.2), size=(0.7, 0.5),
-    color='white', colorSpace='rgb', opacity=None,
+    name='merge_test_scale', 
+    image='sin', mask=None,
+    ori=0.0, pos=(-0.65, 0.15), size=(0.3, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-13.0)
-
-# Initialize components for Routine "Performance_3"
-Performance_3Clock = core.Clock()
-perf3_num = visual.TextStim(win=win, name='perf3_num',
-    text='Test example 1 (this could be removed)',
+merge_test_btn = visual.TextBox2(
+     win, text='Submit', font='Open Sans',
+     pos=(0.5, -0.35),     letterHeight=0.05,
+     size=[0.24,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='merge_test_btn',
+     autoLog=False,
+)
+merge_test_mouse = event.Mouse(win=win)
+x, y = [None, None]
+merge_test_mouse.mouseClock = core.Clock()
+merge_test_timer = visual.TextStim(win=win, name='merge_test_timer',
+    text=None,
     font='Open Sans',
-    pos=(-0.4, 0.45), height=0.02, wrapWidth=None, ori=0.0, 
+    pos=(0.65, -0.05), height=0.03, wrapWidth=None, ori=0.0, 
+    color='orange', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-17.0);
+
+# Initialize components for Routine "SORT_INTRO"
+SORT_INTROClock = core.Clock()
+intro_text_3 = visual.TextStim(win=win, name='intro_text_3',
+    text='BOB: CLIKKKK ... SOOO GOOooD to see you!\n\n1. You need to arrange a PILE of fruits that is most likely UNORDERED\n\n2. The PURPLE DIAMOND arranges fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT\n\nLEARN the PURPLE DIAMOND operation in steps and master it. ',
+    font='Open Sans',
+    pos=(0, -0.15), height=0.03, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
-perf3_txt1 = visual.TextStim(win=win, name='perf3_txt1',
-    text='Revised instructions for user operation.',
-    font='Open Sans',
-    pos=(0.4, 0.1), height=0.03, wrapWidth=None, ori=0.0, 
-    color='white', colorSpace='rgb', opacity=None, 
-    languageStyle='LTR',
-    depth=-1.0);
-perf3_btn5 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf3_btn5')
-perf3_btn5.buttonClock = core.Clock()
-perf3_ex5 = visual.ImageStim(
+bob_2 = visual.ImageStim(
     win=win,
-    name='perf3_ex5', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 20.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
+    name='bob_2', 
+    image='materials/merge_sort/imgs/bob.png', mask=None,
+    ori=0.0, pos=(0.25, 0.25), size=(0.2, 0.2),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-1.0)
+sort_example = visual.ImageStim(
+    win=win,
+    name='sort_example', 
+    image='materials/merge_sort/imgs/sort_train/sort_train_example.png', mask=None,
+    ori=0.0, pos=(-0.3, 0.25), size=(0.7, 0.4),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-2.0)
+door_4 = visual.ImageStim(
+    win=win,
+    name='door_4', 
+    image='materials/merge_sort/imgs/door.png', mask=None,
+    ori=0.0, pos=(0.45, 0.25), size=(0.15, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-3.0)
-perf3_btn4 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf3_btn4')
-perf3_btn4.buttonClock = core.Clock()
-perf3_ex4 = visual.ImageStim(
+sort_intro_btn = visual.TextBox2(
+     win, text='Continue', font='Open Sans',
+     pos=(0, -0.4),     letterHeight=0.05,
+     size=[0.28,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='sort_intro_btn',
+     autoLog=False,
+)
+sort_intro_mouse = event.Mouse(win=win)
+x, y = [None, None]
+sort_intro_mouse.mouseClock = core.Clock()
+
+# Initialize components for Routine "SORT_TRAIN"
+SORT_TRAINClock = core.Clock()
+# Set experiment start values for variable component sort_train_compare_limit
+sort_train_compare_limit = ''
+sort_train_compare_limitContainer = []
+# Set experiment start values for variable component sort_train_ans
+sort_train_ans = ''
+sort_train_ansContainer = []
+# Set experiment start values for variable component sort_train_trace
+sort_train_trace = ''
+sort_train_traceContainer = []
+# Set experiment start values for variable component sort_train_compareN
+sort_train_compareN = ''
+sort_train_compareNContainer = []
+# Set experiment start values for variable component sort_train_labels
+sort_train_labels = ''
+sort_train_labelsContainer = []
+# Set experiment start values for variable component sort_train_path_base
+sort_train_path_base = ''
+sort_train_path_baseContainer = []
+# Set experiment start values for variable component sort_train_input
+sort_train_input = ''
+sort_train_inputContainer = []
+sort_train_scale_instr = visual.TextStim(win=win, name='sort_train_scale_instr',
+    text='',
+    font='Open Sans',
+    pos=(-0.65,0.45), height=0.02, wrapWidth=0.3, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-7.0);
+sort_train_ans_instr = visual.TextStim(win=win, name='sort_train_ans_instr',
+    text='Put fruits into the PACKAGE by entering their labels as  X,X,X,X,X,X,X,X, ... ,X',
+    font='Open Sans',
+    pos=(-0.25, -0.25), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-8.0);
+sort_train_instr = visual.TextStim(win=win, name='sort_train_instr',
+    text='1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. You are given a PILE of fruits that is most likely UNORDERED\n\n3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT',
+    font='Open Sans',
+    pos=(0.65, 0.2), height=0.025, wrapWidth=0.4, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-9.0);
+sort_train_scale_right = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.55, 0.4),     letterHeight=0.03,
+     size=(0.1,0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='sort_train_scale_right',
+     autoLog=False,
+)
+sort_train_scale_left = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.75, 0.4),     letterHeight=0.03,
+     size=(0.1, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='sort_train_scale_left',
+     autoLog=False,
+)
+sort_train_compare = visual.TextBox2(
+     win, text='Compare', font='Open Sans',
+     pos=(-0.65, -0.02),     letterHeight=0.03,
+     size=(0.16,0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='sort_train_compare',
+     autoLog=False,
+)
+sort_train_res = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.25, -0.3),     letterHeight=0.05,
+     size=(0.7,0.1), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='sort_train_res',
+     autoLog=False,
+)
+sort_train_sep = visual.ImageStim(
     win=win,
-    name='perf3_ex4', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 17.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-5.0)
-perf3_btn3 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf3_btn3')
-perf3_btn3.buttonClock = core.Clock()
-perf3_ex3 = visual.ImageStim(
-    win=win,
-    name='perf3_ex3', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 16.png', mask=None,
-    ori=0.0, pos=(-0.4,0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-7.0)
-perf3_btn2 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=0.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf3_btn2')
-perf3_btn2.buttonClock = core.Clock()
-perf3_ex2 = visual.ImageStim(
-    win=win,
-    name='perf3_ex2', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 09.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
-    color=[1,1,1], colorSpace='rgb', opacity=0.0,
-    flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-9.0)
-perf3_btn1 = visual.ButtonStim(win, 
-   text='Next', font='Arvo',
-   pos=(-0.4, -0.45),
-   letterHeight=0.05,
-   size=[0.2,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=1.0,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='perf3_btn1')
-perf3_btn1.buttonClock = core.Clock()
-perf3_ex1 = visual.ImageStim(
-    win=win,
-    name='perf3_ex1', 
-    image='materials/demo_imgs/[SINGLE - SIMPLE] example 07.png', mask=None,
-    ori=0.0, pos=(-0.4, 0.0), size=[0.7,0.7],
+    name='sort_train_sep', 
+    image='materials/merge_sort/imgs/white_BG.png', mask=None,
+    ori=0.0, pos=(0, -0.15), size=(1.5,0.005),
     color=[1,1,1], colorSpace='rgb', opacity=1.0,
     flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-11.0)
-perf3_bg1 = visual.ImageStim(
+    texRes=128.0, interpolate=True, depth=-14.0)
+sort_train_board = visual.ImageStim(
     win=win,
-    name='perf3_bg1', 
-    image='materials/demo_imgs/white_BG.png', mask=None,
-    ori=0.0, pos=(0.4, 0.3), size=(0.7, 0.3),
-    color=[255,255,255], colorSpace='rgb', opacity=1.0,
+    name='sort_train_board', 
+    image='sin', mask=None,
+    ori=0.0, pos=(0, 0.2), size=(0.8, 0.5),
+    color=[1,1,1], colorSpace='rgb', opacity=1.0,
     flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-12.0)
-perf3_bg2 = visual.ImageStim(
+    texRes=128.0, interpolate=True, depth=-15.0)
+sort_train_scale = visual.ImageStim(
     win=win,
-    name='perf3_bg2', 
-    image='materials/demo_imgs/white_BG.png', mask=None,
-    ori=0.0, pos=(0.4, -0.2), size=(0.7, 0.5),
-    color='white', colorSpace='rgb', opacity=None,
+    name='sort_train_scale', 
+    image='sin', mask=None,
+    ori=0.0, pos=(-0.65, 0.15), size=(0.3, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-16.0)
+sort_train_ex_1 = visual.ImageStim(
+    win=win,
+    name='sort_train_ex_1', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-17.0)
+sort_train_ex_2 = visual.ImageStim(
+    win=win,
+    name='sort_train_ex_2', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-18.0)
+sort_train_ex_3 = visual.ImageStim(
+    win=win,
+    name='sort_train_ex_3', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-19.0)
+sort_train_ex_4 = visual.ImageStim(
+    win=win,
+    name='sort_train_ex_4', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-20.0)
+sort_train_ex_5 = visual.ImageStim(
+    win=win,
+    name='sort_train_ex_5', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-21.0)
+sort_train_ex_6 = visual.ImageStim(
+    win=win,
+    name='sort_train_ex_6', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-22.0)
+sort_train_ex_7 = visual.ImageStim(
+    win=win,
+    name='sort_train_ex_7', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06,0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-23.0)
+sort_train_ex_8 = visual.ImageStim(
+    win=win,
+    name='sort_train_ex_8', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-24.0)
+sort_train_ex_9 = visual.ImageStim(
+    win=win,
+    name='sort_train_ex_9', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-25.0)
+sort_train_ex_10 = visual.ImageStim(
+    win=win,
+    name='sort_train_ex_10', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-26.0)
+sort_train_ex_11 = visual.ImageStim(
+    win=win,
+    name='sort_train_ex_11', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-27.0)
+sort_train_ex_12 = visual.ImageStim(
+    win=win,
+    name='sort_train_ex_12', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-28.0)
+sort_train_btn = visual.TextBox2(
+     win, text='Submit', font='Open Sans',
+     pos=(0.5, -0.35),     letterHeight=0.05,
+     size=[0.24,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='sort_train_btn',
+     autoLog=False,
+)
+sort_train_mouse = event.Mouse(win=win)
+x, y = [None, None]
+sort_train_mouse.mouseClock = core.Clock()
+sort_train_timer = visual.TextStim(win=win, name='sort_train_timer',
+    text=None,
+    font='Open Sans',
+    pos=(0.65, -0.05), height=0.03, wrapWidth=None, ori=0.0, 
+    color='orange', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-31.0);
+sort_train_hint = visual.TextStim(win=win, name='sort_train_hint',
+    text=None,
+    font='Open Sans',
+    pos=(0.5, -0.25), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-32.0);
+
+# Initialize components for Routine "SORT_EXPL"
+SORT_EXPLClock = core.Clock()
+# Set experiment start values for variable component sort_expl_trace
+sort_expl_trace = ''
+sort_expl_traceContainer = []
+# Set experiment start values for variable component sort_expl_labels
+sort_expl_labels = ''
+sort_expl_labelsContainer = []
+# Set experiment start values for variable component sort_expl_compareN
+sort_expl_compareN = ''
+sort_expl_compareNContainer = []
+# Set experiment start values for variable component sort_expl_path_base
+sort_expl_path_base = ''
+sort_expl_path_baseContainer = []
+# Set experiment start values for variable component sort_expl_input
+sort_expl_input = ''
+sort_expl_inputContainer = []
+sort_expl_scale_instr = visual.TextStim(win=win, name='sort_expl_scale_instr',
+    text='',
+    font='Open Sans',
+    pos=(-0.65,0.45), height=0.02, wrapWidth=0.3, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-5.0);
+sort_expl_feedback_1 = visual.TextStim(win=win, name='sort_expl_feedback_1',
+    text=None,
+    font='Open Sans',
+    pos=(-0.25, -0.18), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-6.0);
+sort_expl_feedback_2 = visual.TextStim(win=win, name='sort_expl_feedback_2',
+    text=None,
+    font='Open Sans',
+    pos=(-0.25, -0.25), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-7.0);
+sort_expl_instr = visual.TextStim(win=win, name='sort_expl_instr',
+    text='1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. READ the feedback and CHECK the provided answer with yours\n\n3. CONTINUE if you are ready',
+    font='Open Sans',
+    pos=(0.65, 0.2), height=0.025, wrapWidth=0.4, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-8.0);
+sort_expl_scale_right = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.55, 0.4),     letterHeight=0.03,
+     size=(0.1,0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='sort_expl_scale_right',
+     autoLog=False,
+)
+sort_expl_scale_left = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.75, 0.4),     letterHeight=0.03,
+     size=(0.1, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='sort_expl_scale_left',
+     autoLog=False,
+)
+sort_expl_compare = visual.TextBox2(
+     win, text='Compare', font='Open Sans',
+     pos=(-0.65, -0.02),     letterHeight=0.03,
+     size=(0.16,0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='sort_expl_compare',
+     autoLog=False,
+)
+sort_expl_res = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.25, -0.3),     letterHeight=0.05,
+     size=(0.7,0.1), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='sort_expl_res',
+     autoLog=False,
+)
+sort_expl_sep = visual.ImageStim(
+    win=win,
+    name='sort_expl_sep', 
+    image='materials/merge_sort/imgs/white_BG.png', mask=None,
+    ori=0.0, pos=(0, -0.15), size=(1.5,0.005),
+    color=[1,1,1], colorSpace='rgb', opacity=1.0,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-13.0)
-
-# Initialize components for Routine "Debriefing"
-DebriefingClock = core.Clock()
-debrf_info = visual.TextStim(win=win, name='debrf_info',
-    text='Thank you for participating in this experiment.',
+sort_expl_board = visual.ImageStim(
+    win=win,
+    name='sort_expl_board', 
+    image='sin', mask=None,
+    ori=0.0, pos=(0, 0.2), size=(0.8, 0.5),
+    color=[1,1,1], colorSpace='rgb', opacity=1.0,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-14.0)
+sort_expl_scale = visual.ImageStim(
+    win=win,
+    name='sort_expl_scale', 
+    image='sin', mask=None,
+    ori=0.0, pos=(-0.65, 0.15), size=(0.3, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-15.0)
+sort_expl_ex_1 = visual.ImageStim(
+    win=win,
+    name='sort_expl_ex_1', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-16.0)
+sort_expl_ex_2 = visual.ImageStim(
+    win=win,
+    name='sort_expl_ex_2', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-17.0)
+sort_expl_ex_3 = visual.ImageStim(
+    win=win,
+    name='sort_expl_ex_3', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-18.0)
+sort_expl_ex_4 = visual.ImageStim(
+    win=win,
+    name='sort_expl_ex_4', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-19.0)
+sort_expl_ex_5 = visual.ImageStim(
+    win=win,
+    name='sort_expl_ex_5', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-20.0)
+sort_expl_ex_6 = visual.ImageStim(
+    win=win,
+    name='sort_expl_ex_6', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-21.0)
+sort_expl_ex_7 = visual.ImageStim(
+    win=win,
+    name='sort_expl_ex_7', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06,0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-22.0)
+sort_expl_ex_8 = visual.ImageStim(
+    win=win,
+    name='sort_expl_ex_8', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-23.0)
+sort_expl_ex_9 = visual.ImageStim(
+    win=win,
+    name='sort_expl_ex_9', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-24.0)
+sort_expl_ex_10 = visual.ImageStim(
+    win=win,
+    name='sort_expl_ex_10', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-25.0)
+sort_expl_ex_11 = visual.ImageStim(
+    win=win,
+    name='sort_expl_ex_11', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-26.0)
+sort_expl_ex_12 = visual.ImageStim(
+    win=win,
+    name='sort_expl_ex_12', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-27.0)
+sort_expl_btn = visual.TextBox2(
+     win, text='Continue', font='Open Sans',
+     pos=(0.5, -0.35),     letterHeight=0.05,
+     size=[0.28,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='sort_expl_btn',
+     autoLog=False,
+)
+sort_expl_mouse = event.Mouse(win=win)
+x, y = [None, None]
+sort_expl_mouse.mouseClock = core.Clock()
+sort_expl_timer = visual.TextStim(win=win, name='sort_expl_timer',
+    text=None,
     font='Open Sans',
-    pos=(0, 0.2), height=0.05, wrapWidth=None, ori=0.0, 
+    pos=(0.65, -0.05), height=0.03, wrapWidth=None, ori=0.0, 
+    color='orange', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-30.0);
+sort_expl_hint = visual.TextStim(win=win, name='sort_expl_hint',
+    text=None,
+    font='Open Sans',
+    pos=(0.5, -0.25), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-31.0);
+
+# Initialize components for Routine "SORT_TEST_INTRO"
+SORT_TEST_INTROClock = core.Clock()
+intro_text_7 = visual.TextStim(win=win, name='intro_text_7',
+    text='BOB: CLIKKKK ... Now is time to apply the knowledge you learned about the PURPLE DIAMOND\n\n1. You need to arrange a PILE of fruits that is most likely UNORDERED\n\n2. The PURPLE DIAMOND arranges fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT',
+    font='Open Sans',
+    pos=(0, -0.15), height=0.03, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
-debrf_btn = visual.ButtonStim(win, 
-   text='Finish', font='Arvo',
-   pos=(0.0,-0.45),
-   letterHeight=0.05,
-   size=[0.3,0.1], borderWidth=0.0,
-   fillColor='white', borderColor=None,
-   color='black', colorSpace='rgb',
-   opacity=None,
-   bold=True, italic=False,
-   padding=None,
-   anchor='center',
-   name='debrf_btn')
-debrf_btn.buttonClock = core.Clock()
+bob_4 = visual.ImageStim(
+    win=win,
+    name='bob_4', 
+    image='materials/merge_sort/imgs/bob.png', mask=None,
+    ori=0.0, pos=(0.25, 0.25), size=(0.2, 0.2),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-1.0)
+sort_example_2 = visual.ImageStim(
+    win=win,
+    name='sort_example_2', 
+    image='materials/merge_sort/imgs/sort_train/sort_test_example.png', mask=None,
+    ori=0.0, pos=(-0.3, 0.25), size=(0.7, 0.4),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-2.0)
+door_7 = visual.ImageStim(
+    win=win,
+    name='door_7', 
+    image='materials/merge_sort/imgs/door.png', mask=None,
+    ori=0.0, pos=(0.45, 0.25), size=(0.15, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-3.0)
+sort_test_intro_btn = visual.TextBox2(
+     win, text='Continue', font='Open Sans',
+     pos=(0, -0.4),     letterHeight=0.05,
+     size=[0.28,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='sort_test_intro_btn',
+     autoLog=False,
+)
+sort_test_intro_mouse = event.Mouse(win=win)
+x, y = [None, None]
+sort_test_intro_mouse.mouseClock = core.Clock()
+
+# Initialize components for Routine "SORT_TEST"
+SORT_TESTClock = core.Clock()
+# Set experiment start values for variable component sort_test_ans
+sort_test_ans = ''
+sort_test_ansContainer = []
+# Set experiment start values for variable component sort_test_trace
+sort_test_trace = ''
+sort_test_traceContainer = []
+# Set experiment start values for variable component sort_test_compareN
+sort_test_compareN = ''
+sort_test_compareNContainer = []
+# Set experiment start values for variable component sort_test_labels
+sort_test_labels = ''
+sort_test_labelsContainer = []
+# Set experiment start values for variable component sort_test_path_base
+sort_test_path_base = ''
+sort_test_path_baseContainer = []
+# Set experiment start values for variable component sort_test_input
+sort_test_input = ''
+sort_test_inputContainer = []
+sort_test_scale_instr = visual.TextStim(win=win, name='sort_test_scale_instr',
+    text='',
+    font='Open Sans',
+    pos=(-0.65,0.45), height=0.02, wrapWidth=0.3, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-6.0);
+sort_test_ans_instr = visual.TextStim(win=win, name='sort_test_ans_instr',
+    text='Put fruits into the PACKAGE by entering their labels as  X,X,X,X,X,X,X,X, ... ,X',
+    font='Open Sans',
+    pos=(-0.25, -0.25), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-7.0);
+sort_test_instr = visual.TextStim(win=win, name='sort_test_instr',
+    text='1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. You are given a PILE of fruits that is most likely UNORDERED\n\n3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT',
+    font='Open Sans',
+    pos=(0.65, 0.2), height=0.025, wrapWidth=0.4, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-8.0);
+sort_test_scale_right = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.55, 0.4),     letterHeight=0.03,
+     size=(0.1,0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='sort_test_scale_right',
+     autoLog=False,
+)
+sort_test_scale_left = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.75, 0.4),     letterHeight=0.03,
+     size=(0.1, 0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='sort_test_scale_left',
+     autoLog=False,
+)
+sort_test_compare = visual.TextBox2(
+     win, text='Compare', font='Open Sans',
+     pos=(-0.65, -0.02),     letterHeight=0.03,
+     size=(0.16,0.07), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='sort_test_compare',
+     autoLog=False,
+)
+sort_test_res = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(-0.25, -0.3),     letterHeight=0.05,
+     size=(0.7,0.1), borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='top-center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=True,
+     name='sort_test_res',
+     autoLog=False,
+)
+sort_test_sep = visual.ImageStim(
+    win=win,
+    name='sort_test_sep', 
+    image='materials/merge_sort/imgs/white_BG.png', mask=None,
+    ori=0.0, pos=(0, -0.15), size=(1.5,0.005),
+    color=[1,1,1], colorSpace='rgb', opacity=1.0,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-13.0)
+sort_test_board = visual.ImageStim(
+    win=win,
+    name='sort_test_board', 
+    image='sin', mask=None,
+    ori=0.0, pos=(0, 0.2), size=(0.8, 0.5),
+    color=[1,1,1], colorSpace='rgb', opacity=1.0,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-14.0)
+sort_test_scale = visual.ImageStim(
+    win=win,
+    name='sort_test_scale', 
+    image='sin', mask=None,
+    ori=0.0, pos=(-0.65, 0.15), size=(0.3, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-15.0)
+sort_test_ex_1 = visual.ImageStim(
+    win=win,
+    name='sort_test_ex_1', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-16.0)
+sort_test_ex_2 = visual.ImageStim(
+    win=win,
+    name='sort_test_ex_2', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-17.0)
+sort_test_ex_3 = visual.ImageStim(
+    win=win,
+    name='sort_test_ex_3', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-18.0)
+sort_test_ex_4 = visual.ImageStim(
+    win=win,
+    name='sort_test_ex_4', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-19.0)
+sort_test_ex_5 = visual.ImageStim(
+    win=win,
+    name='sort_test_ex_5', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-20.0)
+sort_test_ex_6 = visual.ImageStim(
+    win=win,
+    name='sort_test_ex_6', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-21.0)
+sort_test_ex_7 = visual.ImageStim(
+    win=win,
+    name='sort_test_ex_7', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06,0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-22.0)
+sort_test_ex_8 = visual.ImageStim(
+    win=win,
+    name='sort_test_ex_8', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-23.0)
+sort_test_ex_9 = visual.ImageStim(
+    win=win,
+    name='sort_test_ex_9', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-24.0)
+sort_test_ex_10 = visual.ImageStim(
+    win=win,
+    name='sort_test_ex_10', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-25.0)
+sort_test_ex_11 = visual.ImageStim(
+    win=win,
+    name='sort_test_ex_11', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-26.0)
+sort_test_ex_12 = visual.ImageStim(
+    win=win,
+    name='sort_test_ex_12', 
+    image=None, mask=None,
+    ori=0.0, pos=[0,0], size=(0.06, 0.08),
+    color=[1,1,1], colorSpace='rgb', opacity=None,
+    flipHoriz=False, flipVert=False,
+    texRes=128.0, interpolate=True, depth=-27.0)
+sort_test_btn = visual.TextBox2(
+     win, text='Submit', font='Open Sans',
+     pos=(0.5, -0.35),     letterHeight=0.05,
+     size=[0.24,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='sort_test_btn',
+     autoLog=False,
+)
+sort_test_mouse = event.Mouse(win=win)
+x, y = [None, None]
+sort_test_mouse.mouseClock = core.Clock()
+sort_test_timer = visual.TextStim(win=win, name='sort_test_timer',
+    text=None,
+    font='Open Sans',
+    pos=(0.65, -0.05), height=0.03, wrapWidth=None, ori=0.0, 
+    color='orange', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-31.0);
+
+# Initialize components for Routine "DEBRIEF"
+DEBRIEFClock = core.Clock()
+intro_text_5 = visual.TextStim(win=win, name='intro_text_5',
+    text='This is the end of the experiment!\n\nThank you very much for your time and effort!',
+    font='Open Sans',
+    pos=(0, 0), height=0.03, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=0.0);
+debrief_btn = visual.TextBox2(
+     win, text='End', font='Open Sans',
+     pos=(0, -0.4),     letterHeight=0.05,
+     size=[0.15,0.1], borderWidth=2.0,
+     color='black', colorSpace='rgb',
+     opacity=None,
+     bold=True, italic=False,
+     lineSpacing=1.0,
+     padding=None,
+     anchor='center',
+     fillColor='white', borderColor=None,
+     flipHoriz=False, flipVert=False,
+     editable=False,
+     name='debrief_btn',
+     autoLog=False,
+)
+debrief_mouse = event.Mouse(win=win)
+x, y = [None, None]
+debrief_mouse.mouseClock = core.Clock()
 
 # Create some handy timers
 globalClock = core.Clock()  # to track the time since experiment started
 routineTimer = core.CountdownTimer()  # to track time remaining of each (non-slip) routine 
 
-# ------Prepare to start Routine "Intro"-------
+# ------Prepare to start Routine "INTRO"-------
 continueRoutine = True
-routineTimer.add(300.500000)
+routineTimer.add(120.000000)
 # update component parameters for each repeat
+# setup some python lists for storing info about the intro_mouse
+intro_mouse.clicked_name = []
+gotValidClick = False  # until a click is received
 # keep track of which components have finished
-IntroComponents = [intro_text, intro_btn]
-for thisComponent in IntroComponents:
+INTROComponents = [intro_text, alice, bob, door_1, door_2, intro_btn, intro_mouse]
+for thisComponent in INTROComponents:
     thisComponent.tStart = None
     thisComponent.tStop = None
     thisComponent.tStartRefresh = None
@@ -1032,14 +2110,14 @@ for thisComponent in IntroComponents:
 # reset timers
 t = 0
 _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-IntroClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+INTROClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
 
-# -------Run Routine "Intro"-------
+# -------Run Routine "INTRO"-------
 while continueRoutine and routineTimer.getTime() > 0:
     # get current time
-    t = IntroClock.getTime()
-    tThisFlip = win.getFutureFlipTime(clock=IntroClock)
+    t = INTROClock.getTime()
+    tThisFlip = win.getFutureFlipTime(clock=INTROClock)
     tThisFlipGlobal = win.getFutureFlipTime(clock=None)
     frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
     # update/draw components on each frame
@@ -1054,12 +2132,80 @@ while continueRoutine and routineTimer.getTime() > 0:
         intro_text.setAutoDraw(True)
     if intro_text.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > intro_text.tStartRefresh + 300.0-frameTolerance:
+        if tThisFlipGlobal > intro_text.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
             intro_text.tStop = t  # not accounting for scr refresh
             intro_text.frameNStop = frameN  # exact frame index
             win.timeOnFlip(intro_text, 'tStopRefresh')  # time at next scr refresh
             intro_text.setAutoDraw(False)
+    
+    # *alice* updates
+    if alice.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        alice.frameNStart = frameN  # exact frame index
+        alice.tStart = t  # local t and not account for scr refresh
+        alice.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(alice, 'tStartRefresh')  # time at next scr refresh
+        alice.setAutoDraw(True)
+    if alice.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > alice.tStartRefresh + 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            alice.tStop = t  # not accounting for scr refresh
+            alice.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(alice, 'tStopRefresh')  # time at next scr refresh
+            alice.setAutoDraw(False)
+    
+    # *bob* updates
+    if bob.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        bob.frameNStart = frameN  # exact frame index
+        bob.tStart = t  # local t and not account for scr refresh
+        bob.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(bob, 'tStartRefresh')  # time at next scr refresh
+        bob.setAutoDraw(True)
+    if bob.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > bob.tStartRefresh + 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            bob.tStop = t  # not accounting for scr refresh
+            bob.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(bob, 'tStopRefresh')  # time at next scr refresh
+            bob.setAutoDraw(False)
+    
+    # *door_1* updates
+    if door_1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        door_1.frameNStart = frameN  # exact frame index
+        door_1.tStart = t  # local t and not account for scr refresh
+        door_1.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(door_1, 'tStartRefresh')  # time at next scr refresh
+        door_1.setAutoDraw(True)
+    if door_1.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > door_1.tStartRefresh + 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            door_1.tStop = t  # not accounting for scr refresh
+            door_1.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(door_1, 'tStopRefresh')  # time at next scr refresh
+            door_1.setAutoDraw(False)
+    
+    # *door_2* updates
+    if door_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        door_2.frameNStart = frameN  # exact frame index
+        door_2.tStart = t  # local t and not account for scr refresh
+        door_2.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(door_2, 'tStartRefresh')  # time at next scr refresh
+        door_2.setAutoDraw(True)
+    if door_2.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > door_2.tStartRefresh + 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            door_2.tStop = t  # not accounting for scr refresh
+            door_2.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(door_2, 'tStopRefresh')  # time at next scr refresh
+            door_2.setAutoDraw(False)
     
     # *intro_btn* updates
     if intro_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
@@ -1070,30 +2216,44 @@ while continueRoutine and routineTimer.getTime() > 0:
         win.timeOnFlip(intro_btn, 'tStartRefresh')  # time at next scr refresh
         intro_btn.setAutoDraw(True)
     if intro_btn.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > intro_btn.tStartRefresh + 300.0-frameTolerance:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
             # keep track of stop time/frame for later
             intro_btn.tStop = t  # not accounting for scr refresh
             intro_btn.frameNStop = frameN  # exact frame index
             win.timeOnFlip(intro_btn, 'tStopRefresh')  # time at next scr refresh
             intro_btn.setAutoDraw(False)
-    if intro_btn.status == STARTED:
-        # check whether intro_btn has been pressed
-        if intro_btn.isClicked:
-            if not intro_btn.wasClicked:
-                intro_btn.timesOn.append(intro_btn.buttonClock.getTime()) # store time of first click
-                intro_btn.timesOff.append(intro_btn.buttonClock.getTime()) # store time clicked until
-            else:
-                intro_btn.timesOff[-1] = intro_btn.buttonClock.getTime() # update time clicked until
-            if not intro_btn.wasClicked:
-                continueRoutine = False  # end routine when intro_btn is clicked
-                None
-            intro_btn.wasClicked = True  # if intro_btn is still clicked next frame, it is not a new click
-        else:
-            intro_btn.wasClicked = False  # if intro_btn is clicked next frame, it is a new click
-    else:
-        intro_btn.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        intro_btn.wasClicked = False  # if intro_btn is clicked next frame, it is a new click
+    # *intro_mouse* updates
+    if intro_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
+        # keep track of start time/frame for later
+        intro_mouse.frameNStart = frameN  # exact frame index
+        intro_mouse.tStart = t  # local t and not account for scr refresh
+        intro_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(intro_mouse, 'tStartRefresh')  # time at next scr refresh
+        intro_mouse.status = STARTED
+        intro_mouse.mouseClock.reset()
+        prevButtonState = intro_mouse.getPressed()  # if button is down already this ISN'T a new click
+    if intro_mouse.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            intro_mouse.tStop = t  # not accounting for scr refresh
+            intro_mouse.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(intro_mouse, 'tStopRefresh')  # time at next scr refresh
+            intro_mouse.status = FINISHED
+    if intro_mouse.status == STARTED:  # only update if started and not finished!
+        buttons = intro_mouse.getPressed()
+        if buttons != prevButtonState:  # button state changed?
+            prevButtonState = buttons
+            if sum(buttons) > 0:  # state changed to a new click
+                # check if the mouse was inside our 'clickable' objects
+                gotValidClick = False
+                for obj in [intro_btn]:
+                    if obj.contains(intro_mouse):
+                        gotValidClick = True
+                        intro_mouse.clicked_name.append(obj.name)
+                if gotValidClick:  # abort routine on response
+                    continueRoutine = False
     
     # check for quit (typically the Esc key)
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -1103,7 +2263,7 @@ while continueRoutine and routineTimer.getTime() > 0:
     if not continueRoutine:  # a component has requested a forced-end of Routine
         break
     continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in IntroComponents:
+    for thisComponent in INTROComponents:
         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
             continueRoutine = True
             break  # at least one component has not yet finished
@@ -1112,29 +2272,58 @@ while continueRoutine and routineTimer.getTime() > 0:
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
         win.flip()
 
-# -------Ending Routine "Intro"-------
-for thisComponent in IntroComponents:
+# -------Ending Routine "INTRO"-------
+for thisComponent in INTROComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('intro_text.started', intro_text.tStartRefresh)
-thisExp.addData('intro_text.stopped', intro_text.tStopRefresh)
-thisExp.addData('intro_btn.started', intro_btn.tStartRefresh)
-thisExp.addData('intro_btn.stopped', intro_btn.tStopRefresh)
-thisExp.addData('intro_btn.numClicks', intro_btn.numClicks)
-if intro_btn.numClicks:
-   thisExp.addData('intro_btn.timesOn', intro_btn.timesOn)
-   thisExp.addData('intro_btn.timesOff', intro_btn.timesOff)
-else:
-   thisExp.addData('intro_btn.timesOn', "")
-   thisExp.addData('intro_btn.timesOff', "")
+# store data for thisExp (ExperimentHandler)
+x, y = intro_mouse.getPos()
+buttons = intro_mouse.getPressed()
+if sum(buttons):
+    # check if the mouse was inside our 'clickable' objects
+    gotValidClick = False
+    for obj in [intro_btn]:
+        if obj.contains(intro_mouse):
+            gotValidClick = True
+            intro_mouse.clicked_name.append(obj.name)
+thisExp.addData('intro_mouse.x', x)
+thisExp.addData('intro_mouse.y', y)
+thisExp.addData('intro_mouse.leftButton', buttons[0])
+thisExp.addData('intro_mouse.midButton', buttons[1])
+thisExp.addData('intro_mouse.rightButton', buttons[2])
+if len(intro_mouse.clicked_name):
+    thisExp.addData('intro_mouse.clicked_name', intro_mouse.clicked_name[0])
+thisExp.nextEntry()
 
-# ------Prepare to start Routine "Briefing"-------
+# ------Prepare to start Routine "BACKGROUND"-------
 continueRoutine = True
-routineTimer.add(300.000000)
+routineTimer.add(120.000000)
 # update component parameters for each repeat
+demographic_gender = ""  # Set routine start values for demographic_gender
+demographic_education = ""  # Set routine start values for demographic_education
+demographic_age = ""  # Set routine start values for demographic_age
+background_instr.setText('Please select most the fitting choice for each of the following questions')
+gender.setText('What is your gender at birth?')
+age.setText('What is your age?')
+education.setText('What is the highest degree or level of school you have completed?')
+background_education_bachelor.setFillColor('white')
+age_selected = None
+education_selected = None
+gender_selected = None
+    
+gender_groups = [background_gender_female, background_gender_male]
+age_groups = [background_age_18_24, background_age_25_34, background_age_35_44, background_age_45_54, background_age_55_64, background_age_65]
+education_groups = [background_education_before_high_school, background_education_high_school, background_education_college, background_education_bachelor, background_education_graudate, backgrond_education_doctorate, background_education_other]
+
+all_groups = gender_groups + age_groups + education_groups
+for g in all_groups:
+    g.fillColor = white
+# setup some python lists for storing info about the background_mouse
+background_mouse.clicked_name = []
+gotValidClick = False  # until a click is received
 # keep track of which components have finished
-BriefingComponents = [gen_info, brf_btn]
-for thisComponent in BriefingComponents:
+BACKGROUNDComponents = [background_instr, gender, background_gender_female, background_gender_male, age, background_age_18_24, background_age_25_34, background_age_35_44, background_age_45_54, background_age_55_64, background_age_65, education, background_education_before_high_school, background_education_high_school, background_education_college, background_education_bachelor, background_education_graudate, backgrond_education_doctorate, background_education_other, background_btn, background_mouse]
+for thisComponent in BACKGROUNDComponents:
     thisComponent.tStart = None
     thisComponent.tStop = None
     thisComponent.tStartRefresh = None
@@ -1144,68 +2333,403 @@ for thisComponent in BriefingComponents:
 # reset timers
 t = 0
 _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-BriefingClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+BACKGROUNDClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
 
-# -------Run Routine "Briefing"-------
+# -------Run Routine "BACKGROUND"-------
 while continueRoutine and routineTimer.getTime() > 0:
     # get current time
-    t = BriefingClock.getTime()
-    tThisFlip = win.getFutureFlipTime(clock=BriefingClock)
+    t = BACKGROUNDClock.getTime()
+    tThisFlip = win.getFutureFlipTime(clock=BACKGROUNDClock)
     tThisFlipGlobal = win.getFutureFlipTime(clock=None)
     frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
     # update/draw components on each frame
     
-    # *gen_info* updates
-    if gen_info.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+    # *background_instr* updates
+    if background_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        gen_info.frameNStart = frameN  # exact frame index
-        gen_info.tStart = t  # local t and not account for scr refresh
-        gen_info.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(gen_info, 'tStartRefresh')  # time at next scr refresh
-        gen_info.setAutoDraw(True)
-    if gen_info.status == STARTED:
+        background_instr.frameNStart = frameN  # exact frame index
+        background_instr.tStart = t  # local t and not account for scr refresh
+        background_instr.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_instr, 'tStartRefresh')  # time at next scr refresh
+        background_instr.setAutoDraw(True)
+    if background_instr.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > gen_info.tStartRefresh + 300.0-frameTolerance:
+        if tThisFlipGlobal > background_instr.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
-            gen_info.tStop = t  # not accounting for scr refresh
-            gen_info.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(gen_info, 'tStopRefresh')  # time at next scr refresh
-            gen_info.setAutoDraw(False)
+            background_instr.tStop = t  # not accounting for scr refresh
+            background_instr.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_instr, 'tStopRefresh')  # time at next scr refresh
+            background_instr.setAutoDraw(False)
     
-    # *brf_btn* updates
-    if brf_btn.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+    # *gender* updates
+    if gender.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        brf_btn.frameNStart = frameN  # exact frame index
-        brf_btn.tStart = t  # local t and not account for scr refresh
-        brf_btn.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(brf_btn, 'tStartRefresh')  # time at next scr refresh
-        brf_btn.setAutoDraw(True)
-    if brf_btn.status == STARTED:
+        gender.frameNStart = frameN  # exact frame index
+        gender.tStart = t  # local t and not account for scr refresh
+        gender.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(gender, 'tStartRefresh')  # time at next scr refresh
+        gender.setAutoDraw(True)
+    if gender.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > brf_btn.tStartRefresh + 300.0-frameTolerance:
+        if tThisFlipGlobal > gender.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
-            brf_btn.tStop = t  # not accounting for scr refresh
-            brf_btn.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(brf_btn, 'tStopRefresh')  # time at next scr refresh
-            brf_btn.setAutoDraw(False)
-    if brf_btn.status == STARTED:
-        # check whether brf_btn has been pressed
-        if brf_btn.isClicked:
-            if not brf_btn.wasClicked:
-                brf_btn.timesOn.append(brf_btn.buttonClock.getTime()) # store time of first click
-                brf_btn.timesOff.append(brf_btn.buttonClock.getTime()) # store time clicked until
-            else:
-                brf_btn.timesOff[-1] = brf_btn.buttonClock.getTime() # update time clicked until
-            if not brf_btn.wasClicked:
-                continueRoutine = False  # end routine when brf_btn is clicked
-                None
-            brf_btn.wasClicked = True  # if brf_btn is still clicked next frame, it is not a new click
-        else:
-            brf_btn.wasClicked = False  # if brf_btn is clicked next frame, it is a new click
-    else:
-        brf_btn.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        brf_btn.wasClicked = False  # if brf_btn is clicked next frame, it is a new click
+            gender.tStop = t  # not accounting for scr refresh
+            gender.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(gender, 'tStopRefresh')  # time at next scr refresh
+            gender.setAutoDraw(False)
+    
+    # *background_gender_female* updates
+    if background_gender_female.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_gender_female.frameNStart = frameN  # exact frame index
+        background_gender_female.tStart = t  # local t and not account for scr refresh
+        background_gender_female.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_gender_female, 'tStartRefresh')  # time at next scr refresh
+        background_gender_female.setAutoDraw(True)
+    if background_gender_female.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_gender_female.tStop = t  # not accounting for scr refresh
+            background_gender_female.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_gender_female, 'tStopRefresh')  # time at next scr refresh
+            background_gender_female.setAutoDraw(False)
+    
+    # *background_gender_male* updates
+    if background_gender_male.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_gender_male.frameNStart = frameN  # exact frame index
+        background_gender_male.tStart = t  # local t and not account for scr refresh
+        background_gender_male.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_gender_male, 'tStartRefresh')  # time at next scr refresh
+        background_gender_male.setAutoDraw(True)
+    if background_gender_male.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_gender_male.tStop = t  # not accounting for scr refresh
+            background_gender_male.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_gender_male, 'tStopRefresh')  # time at next scr refresh
+            background_gender_male.setAutoDraw(False)
+    
+    # *age* updates
+    if age.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        age.frameNStart = frameN  # exact frame index
+        age.tStart = t  # local t and not account for scr refresh
+        age.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(age, 'tStartRefresh')  # time at next scr refresh
+        age.setAutoDraw(True)
+    if age.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > age.tStartRefresh + 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            age.tStop = t  # not accounting for scr refresh
+            age.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(age, 'tStopRefresh')  # time at next scr refresh
+            age.setAutoDraw(False)
+    
+    # *background_age_18_24* updates
+    if background_age_18_24.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_age_18_24.frameNStart = frameN  # exact frame index
+        background_age_18_24.tStart = t  # local t and not account for scr refresh
+        background_age_18_24.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_age_18_24, 'tStartRefresh')  # time at next scr refresh
+        background_age_18_24.setAutoDraw(True)
+    if background_age_18_24.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_age_18_24.tStop = t  # not accounting for scr refresh
+            background_age_18_24.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_age_18_24, 'tStopRefresh')  # time at next scr refresh
+            background_age_18_24.setAutoDraw(False)
+    
+    # *background_age_25_34* updates
+    if background_age_25_34.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_age_25_34.frameNStart = frameN  # exact frame index
+        background_age_25_34.tStart = t  # local t and not account for scr refresh
+        background_age_25_34.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_age_25_34, 'tStartRefresh')  # time at next scr refresh
+        background_age_25_34.setAutoDraw(True)
+    if background_age_25_34.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_age_25_34.tStop = t  # not accounting for scr refresh
+            background_age_25_34.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_age_25_34, 'tStopRefresh')  # time at next scr refresh
+            background_age_25_34.setAutoDraw(False)
+    
+    # *background_age_35_44* updates
+    if background_age_35_44.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_age_35_44.frameNStart = frameN  # exact frame index
+        background_age_35_44.tStart = t  # local t and not account for scr refresh
+        background_age_35_44.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_age_35_44, 'tStartRefresh')  # time at next scr refresh
+        background_age_35_44.setAutoDraw(True)
+    if background_age_35_44.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_age_35_44.tStop = t  # not accounting for scr refresh
+            background_age_35_44.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_age_35_44, 'tStopRefresh')  # time at next scr refresh
+            background_age_35_44.setAutoDraw(False)
+    
+    # *background_age_45_54* updates
+    if background_age_45_54.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_age_45_54.frameNStart = frameN  # exact frame index
+        background_age_45_54.tStart = t  # local t and not account for scr refresh
+        background_age_45_54.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_age_45_54, 'tStartRefresh')  # time at next scr refresh
+        background_age_45_54.setAutoDraw(True)
+    if background_age_45_54.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_age_45_54.tStop = t  # not accounting for scr refresh
+            background_age_45_54.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_age_45_54, 'tStopRefresh')  # time at next scr refresh
+            background_age_45_54.setAutoDraw(False)
+    
+    # *background_age_55_64* updates
+    if background_age_55_64.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_age_55_64.frameNStart = frameN  # exact frame index
+        background_age_55_64.tStart = t  # local t and not account for scr refresh
+        background_age_55_64.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_age_55_64, 'tStartRefresh')  # time at next scr refresh
+        background_age_55_64.setAutoDraw(True)
+    if background_age_55_64.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_age_55_64.tStop = t  # not accounting for scr refresh
+            background_age_55_64.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_age_55_64, 'tStopRefresh')  # time at next scr refresh
+            background_age_55_64.setAutoDraw(False)
+    
+    # *background_age_65* updates
+    if background_age_65.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_age_65.frameNStart = frameN  # exact frame index
+        background_age_65.tStart = t  # local t and not account for scr refresh
+        background_age_65.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_age_65, 'tStartRefresh')  # time at next scr refresh
+        background_age_65.setAutoDraw(True)
+    if background_age_65.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_age_65.tStop = t  # not accounting for scr refresh
+            background_age_65.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_age_65, 'tStopRefresh')  # time at next scr refresh
+            background_age_65.setAutoDraw(False)
+    
+    # *education* updates
+    if education.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        education.frameNStart = frameN  # exact frame index
+        education.tStart = t  # local t and not account for scr refresh
+        education.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(education, 'tStartRefresh')  # time at next scr refresh
+        education.setAutoDraw(True)
+    if education.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > education.tStartRefresh + 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            education.tStop = t  # not accounting for scr refresh
+            education.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(education, 'tStopRefresh')  # time at next scr refresh
+            education.setAutoDraw(False)
+    
+    # *background_education_before_high_school* updates
+    if background_education_before_high_school.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_education_before_high_school.frameNStart = frameN  # exact frame index
+        background_education_before_high_school.tStart = t  # local t and not account for scr refresh
+        background_education_before_high_school.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_education_before_high_school, 'tStartRefresh')  # time at next scr refresh
+        background_education_before_high_school.setAutoDraw(True)
+    if background_education_before_high_school.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_education_before_high_school.tStop = t  # not accounting for scr refresh
+            background_education_before_high_school.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_education_before_high_school, 'tStopRefresh')  # time at next scr refresh
+            background_education_before_high_school.setAutoDraw(False)
+    
+    # *background_education_high_school* updates
+    if background_education_high_school.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_education_high_school.frameNStart = frameN  # exact frame index
+        background_education_high_school.tStart = t  # local t and not account for scr refresh
+        background_education_high_school.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_education_high_school, 'tStartRefresh')  # time at next scr refresh
+        background_education_high_school.setAutoDraw(True)
+    if background_education_high_school.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_education_high_school.tStop = t  # not accounting for scr refresh
+            background_education_high_school.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_education_high_school, 'tStopRefresh')  # time at next scr refresh
+            background_education_high_school.setAutoDraw(False)
+    
+    # *background_education_college* updates
+    if background_education_college.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_education_college.frameNStart = frameN  # exact frame index
+        background_education_college.tStart = t  # local t and not account for scr refresh
+        background_education_college.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_education_college, 'tStartRefresh')  # time at next scr refresh
+        background_education_college.setAutoDraw(True)
+    if background_education_college.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_education_college.tStop = t  # not accounting for scr refresh
+            background_education_college.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_education_college, 'tStopRefresh')  # time at next scr refresh
+            background_education_college.setAutoDraw(False)
+    
+    # *background_education_bachelor* updates
+    if background_education_bachelor.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_education_bachelor.frameNStart = frameN  # exact frame index
+        background_education_bachelor.tStart = t  # local t and not account for scr refresh
+        background_education_bachelor.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_education_bachelor, 'tStartRefresh')  # time at next scr refresh
+        background_education_bachelor.setAutoDraw(True)
+    if background_education_bachelor.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_education_bachelor.tStop = t  # not accounting for scr refresh
+            background_education_bachelor.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_education_bachelor, 'tStopRefresh')  # time at next scr refresh
+            background_education_bachelor.setAutoDraw(False)
+    
+    # *background_education_graudate* updates
+    if background_education_graudate.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_education_graudate.frameNStart = frameN  # exact frame index
+        background_education_graudate.tStart = t  # local t and not account for scr refresh
+        background_education_graudate.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_education_graudate, 'tStartRefresh')  # time at next scr refresh
+        background_education_graudate.setAutoDraw(True)
+    if background_education_graudate.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_education_graudate.tStop = t  # not accounting for scr refresh
+            background_education_graudate.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_education_graudate, 'tStopRefresh')  # time at next scr refresh
+            background_education_graudate.setAutoDraw(False)
+    
+    # *backgrond_education_doctorate* updates
+    if backgrond_education_doctorate.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        backgrond_education_doctorate.frameNStart = frameN  # exact frame index
+        backgrond_education_doctorate.tStart = t  # local t and not account for scr refresh
+        backgrond_education_doctorate.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(backgrond_education_doctorate, 'tStartRefresh')  # time at next scr refresh
+        backgrond_education_doctorate.setAutoDraw(True)
+    if backgrond_education_doctorate.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            backgrond_education_doctorate.tStop = t  # not accounting for scr refresh
+            backgrond_education_doctorate.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(backgrond_education_doctorate, 'tStopRefresh')  # time at next scr refresh
+            backgrond_education_doctorate.setAutoDraw(False)
+    
+    # *background_education_other* updates
+    if background_education_other.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        # keep track of start time/frame for later
+        background_education_other.frameNStart = frameN  # exact frame index
+        background_education_other.tStart = t  # local t and not account for scr refresh
+        background_education_other.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_education_other, 'tStartRefresh')  # time at next scr refresh
+        background_education_other.setAutoDraw(True)
+    if background_education_other.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_education_other.tStop = t  # not accounting for scr refresh
+            background_education_other.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_education_other, 'tStopRefresh')  # time at next scr refresh
+            background_education_other.setAutoDraw(False)
+    gender_selected = checkBGSelection(background_mouse,gender_groups,gender_selected)
+    age_selected = checkBGSelection(background_mouse,age_groups,age_selected)
+    education_selected = checkBGSelection(background_mouse,education_groups,education_selected)
+    
+    if age_selected != None and education_selected != None and gender_selected != None:
+        if background_btn.size[0] == 0 and background_btn.size[1] == 0:
+            background_btn.size = (0.28, 0.1)
+        if background_btn.pos[0] == 5 and background_btn.pos[1] == 5:
+            background_btn.pos = (0, -0.4)
+        if age_selected != None :
+            demographic_age = age_selected.text
+        if education_selected != None:
+            demographic_education = education_selected.text
+        if gender_selected != None:
+            demographic_gender = gender_selected.text
+    
+    # *background_btn* updates
+    if background_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+        # keep track of start time/frame for later
+        background_btn.frameNStart = frameN  # exact frame index
+        background_btn.tStart = t  # local t and not account for scr refresh
+        background_btn.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_btn, 'tStartRefresh')  # time at next scr refresh
+        background_btn.setAutoDraw(True)
+    if background_btn.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_btn.tStop = t  # not accounting for scr refresh
+            background_btn.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_btn, 'tStopRefresh')  # time at next scr refresh
+            background_btn.setAutoDraw(False)
+    # *background_mouse* updates
+    if background_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
+        # keep track of start time/frame for later
+        background_mouse.frameNStart = frameN  # exact frame index
+        background_mouse.tStart = t  # local t and not account for scr refresh
+        background_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(background_mouse, 'tStartRefresh')  # time at next scr refresh
+        background_mouse.status = STARTED
+        background_mouse.mouseClock.reset()
+        prevButtonState = background_mouse.getPressed()  # if button is down already this ISN'T a new click
+    if background_mouse.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            background_mouse.tStop = t  # not accounting for scr refresh
+            background_mouse.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(background_mouse, 'tStopRefresh')  # time at next scr refresh
+            background_mouse.status = FINISHED
+    if background_mouse.status == STARTED:  # only update if started and not finished!
+        buttons = background_mouse.getPressed()
+        if buttons != prevButtonState:  # button state changed?
+            prevButtonState = buttons
+            if sum(buttons) > 0:  # state changed to a new click
+                # check if the mouse was inside our 'clickable' objects
+                gotValidClick = False
+                for obj in [background_btn]:
+                    if obj.contains(background_mouse):
+                        gotValidClick = True
+                        background_mouse.clicked_name.append(obj.name)
+                if gotValidClick:  # abort routine on response
+                    continueRoutine = False
     
     # check for quit (typically the Esc key)
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -1215,7 +2739,7 @@ while continueRoutine and routineTimer.getTime() > 0:
     if not continueRoutine:  # a component has requested a forced-end of Routine
         break
     continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in BriefingComponents:
+    for thisComponent in BACKGROUNDComponents:
         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
             continueRoutine = True
             break  # at least one component has not yet finished
@@ -1224,29 +2748,42 @@ while continueRoutine and routineTimer.getTime() > 0:
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
         win.flip()
 
-# -------Ending Routine "Briefing"-------
-for thisComponent in BriefingComponents:
+# -------Ending Routine "BACKGROUND"-------
+for thisComponent in BACKGROUNDComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('gen_info.started', gen_info.tStartRefresh)
-thisExp.addData('gen_info.stopped', gen_info.tStopRefresh)
-thisExp.addData('brf_btn.started', brf_btn.tStartRefresh)
-thisExp.addData('brf_btn.stopped', brf_btn.tStopRefresh)
-thisExp.addData('brf_btn.numClicks', brf_btn.numClicks)
-if brf_btn.numClicks:
-   thisExp.addData('brf_btn.timesOn', brf_btn.timesOn)
-   thisExp.addData('brf_btn.timesOff', brf_btn.timesOff)
-else:
-   thisExp.addData('brf_btn.timesOn', "")
-   thisExp.addData('brf_btn.timesOff', "")
+thisExp.addData('demographic_gender.routineEndVal', demographic_gender)  # Save end routine value
+thisExp.addData('demographic_education.routineEndVal', demographic_education)  # Save end routine value
+thisExp.addData('demographic_age.routineEndVal', demographic_age)  # Save end routine value
+# store data for thisExp (ExperimentHandler)
+x, y = background_mouse.getPos()
+buttons = background_mouse.getPressed()
+if sum(buttons):
+    # check if the mouse was inside our 'clickable' objects
+    gotValidClick = False
+    for obj in [background_btn]:
+        if obj.contains(background_mouse):
+            gotValidClick = True
+            background_mouse.clicked_name.append(obj.name)
+thisExp.addData('background_mouse.x', x)
+thisExp.addData('background_mouse.y', y)
+thisExp.addData('background_mouse.leftButton', buttons[0])
+thisExp.addData('background_mouse.midButton', buttons[1])
+thisExp.addData('background_mouse.rightButton', buttons[2])
+if len(background_mouse.clicked_name):
+    thisExp.addData('background_mouse.clicked_name', background_mouse.clicked_name[0])
+thisExp.nextEntry()
 
-# ------Prepare to start Routine "Raven_Matrices"-------
+# ------Prepare to start Routine "MERGE_INTRO"-------
 continueRoutine = True
-routineTimer.add(600.500000)
+routineTimer.add(120.000000)
 # update component parameters for each repeat
+# setup some python lists for storing info about the merge_intro_mouse
+merge_intro_mouse.clicked_name = []
+gotValidClick = False  # until a click is received
 # keep track of which components have finished
-Raven_MatricesComponents = [rv_txt1, rv_btn1]
-for thisComponent in Raven_MatricesComponents:
+MERGE_INTROComponents = [intro_text_2, alice_2, merge_example, door_3, merge_intro_btn, merge_intro_mouse]
+for thisComponent in MERGE_INTROComponents:
     thisComponent.tStart = None
     thisComponent.tStop = None
     thisComponent.tStartRefresh = None
@@ -1256,68 +2793,133 @@ for thisComponent in Raven_MatricesComponents:
 # reset timers
 t = 0
 _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-Raven_MatricesClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+MERGE_INTROClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
 
-# -------Run Routine "Raven_Matrices"-------
+# -------Run Routine "MERGE_INTRO"-------
 while continueRoutine and routineTimer.getTime() > 0:
     # get current time
-    t = Raven_MatricesClock.getTime()
-    tThisFlip = win.getFutureFlipTime(clock=Raven_MatricesClock)
+    t = MERGE_INTROClock.getTime()
+    tThisFlip = win.getFutureFlipTime(clock=MERGE_INTROClock)
     tThisFlipGlobal = win.getFutureFlipTime(clock=None)
     frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
     # update/draw components on each frame
     
-    # *rv_txt1* updates
-    if rv_txt1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+    # *intro_text_2* updates
+    if intro_text_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        rv_txt1.frameNStart = frameN  # exact frame index
-        rv_txt1.tStart = t  # local t and not account for scr refresh
-        rv_txt1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(rv_txt1, 'tStartRefresh')  # time at next scr refresh
-        rv_txt1.setAutoDraw(True)
-    if rv_txt1.status == STARTED:
+        intro_text_2.frameNStart = frameN  # exact frame index
+        intro_text_2.tStart = t  # local t and not account for scr refresh
+        intro_text_2.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(intro_text_2, 'tStartRefresh')  # time at next scr refresh
+        intro_text_2.setAutoDraw(True)
+    if intro_text_2.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > rv_txt1.tStartRefresh + 600.0-frameTolerance:
+        if tThisFlipGlobal > intro_text_2.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
-            rv_txt1.tStop = t  # not accounting for scr refresh
-            rv_txt1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(rv_txt1, 'tStopRefresh')  # time at next scr refresh
-            rv_txt1.setAutoDraw(False)
+            intro_text_2.tStop = t  # not accounting for scr refresh
+            intro_text_2.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(intro_text_2, 'tStopRefresh')  # time at next scr refresh
+            intro_text_2.setAutoDraw(False)
     
-    # *rv_btn1* updates
-    if rv_btn1.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+    # *alice_2* updates
+    if alice_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        rv_btn1.frameNStart = frameN  # exact frame index
-        rv_btn1.tStart = t  # local t and not account for scr refresh
-        rv_btn1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(rv_btn1, 'tStartRefresh')  # time at next scr refresh
-        rv_btn1.setAutoDraw(True)
-    if rv_btn1.status == STARTED:
+        alice_2.frameNStart = frameN  # exact frame index
+        alice_2.tStart = t  # local t and not account for scr refresh
+        alice_2.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(alice_2, 'tStartRefresh')  # time at next scr refresh
+        alice_2.setAutoDraw(True)
+    if alice_2.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > rv_btn1.tStartRefresh + 600.0-frameTolerance:
+        if tThisFlipGlobal > alice_2.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
-            rv_btn1.tStop = t  # not accounting for scr refresh
-            rv_btn1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(rv_btn1, 'tStopRefresh')  # time at next scr refresh
-            rv_btn1.setAutoDraw(False)
-    if rv_btn1.status == STARTED:
-        # check whether rv_btn1 has been pressed
-        if rv_btn1.isClicked:
-            if not rv_btn1.wasClicked:
-                rv_btn1.timesOn.append(rv_btn1.buttonClock.getTime()) # store time of first click
-                rv_btn1.timesOff.append(rv_btn1.buttonClock.getTime()) # store time clicked until
-            else:
-                rv_btn1.timesOff[-1] = rv_btn1.buttonClock.getTime() # update time clicked until
-            if not rv_btn1.wasClicked:
-                continueRoutine = False  # end routine when rv_btn1 is clicked
-                None
-            rv_btn1.wasClicked = True  # if rv_btn1 is still clicked next frame, it is not a new click
-        else:
-            rv_btn1.wasClicked = False  # if rv_btn1 is clicked next frame, it is a new click
-    else:
-        rv_btn1.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        rv_btn1.wasClicked = False  # if rv_btn1 is clicked next frame, it is a new click
+            alice_2.tStop = t  # not accounting for scr refresh
+            alice_2.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(alice_2, 'tStopRefresh')  # time at next scr refresh
+            alice_2.setAutoDraw(False)
+    
+    # *merge_example* updates
+    if merge_example.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        merge_example.frameNStart = frameN  # exact frame index
+        merge_example.tStart = t  # local t and not account for scr refresh
+        merge_example.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(merge_example, 'tStartRefresh')  # time at next scr refresh
+        merge_example.setAutoDraw(True)
+    if merge_example.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > merge_example.tStartRefresh + 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            merge_example.tStop = t  # not accounting for scr refresh
+            merge_example.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(merge_example, 'tStopRefresh')  # time at next scr refresh
+            merge_example.setAutoDraw(False)
+    
+    # *door_3* updates
+    if door_3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        door_3.frameNStart = frameN  # exact frame index
+        door_3.tStart = t  # local t and not account for scr refresh
+        door_3.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(door_3, 'tStartRefresh')  # time at next scr refresh
+        door_3.setAutoDraw(True)
+    if door_3.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > door_3.tStartRefresh + 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            door_3.tStop = t  # not accounting for scr refresh
+            door_3.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(door_3, 'tStopRefresh')  # time at next scr refresh
+            door_3.setAutoDraw(False)
+    
+    # *merge_intro_btn* updates
+    if merge_intro_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+        # keep track of start time/frame for later
+        merge_intro_btn.frameNStart = frameN  # exact frame index
+        merge_intro_btn.tStart = t  # local t and not account for scr refresh
+        merge_intro_btn.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(merge_intro_btn, 'tStartRefresh')  # time at next scr refresh
+        merge_intro_btn.setAutoDraw(True)
+    if merge_intro_btn.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            merge_intro_btn.tStop = t  # not accounting for scr refresh
+            merge_intro_btn.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(merge_intro_btn, 'tStopRefresh')  # time at next scr refresh
+            merge_intro_btn.setAutoDraw(False)
+    # *merge_intro_mouse* updates
+    if merge_intro_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
+        # keep track of start time/frame for later
+        merge_intro_mouse.frameNStart = frameN  # exact frame index
+        merge_intro_mouse.tStart = t  # local t and not account for scr refresh
+        merge_intro_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(merge_intro_mouse, 'tStartRefresh')  # time at next scr refresh
+        merge_intro_mouse.status = STARTED
+        merge_intro_mouse.mouseClock.reset()
+        prevButtonState = merge_intro_mouse.getPressed()  # if button is down already this ISN'T a new click
+    if merge_intro_mouse.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            merge_intro_mouse.tStop = t  # not accounting for scr refresh
+            merge_intro_mouse.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(merge_intro_mouse, 'tStopRefresh')  # time at next scr refresh
+            merge_intro_mouse.status = FINISHED
+    if merge_intro_mouse.status == STARTED:  # only update if started and not finished!
+        buttons = merge_intro_mouse.getPressed()
+        if buttons != prevButtonState:  # button state changed?
+            prevButtonState = buttons
+            if sum(buttons) > 0:  # state changed to a new click
+                # check if the mouse was inside our 'clickable' objects
+                gotValidClick = False
+                for obj in [merge_intro_btn]:
+                    if obj.contains(merge_intro_mouse):
+                        gotValidClick = True
+                        merge_intro_mouse.clicked_name.append(obj.name)
+                if gotValidClick:  # abort routine on response
+                    continueRoutine = False
     
     # check for quit (typically the Esc key)
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -1327,7 +2929,7 @@ while continueRoutine and routineTimer.getTime() > 0:
     if not continueRoutine:  # a component has requested a forced-end of Routine
         break
     continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in Raven_MatricesComponents:
+    for thisComponent in MERGE_INTROComponents:
         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
             continueRoutine = True
             break  # at least one component has not yet finished
@@ -1336,774 +2938,718 @@ while continueRoutine and routineTimer.getTime() > 0:
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
         win.flip()
 
-# -------Ending Routine "Raven_Matrices"-------
-for thisComponent in Raven_MatricesComponents:
+# -------Ending Routine "MERGE_INTRO"-------
+for thisComponent in MERGE_INTROComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('rv_txt1.started', rv_txt1.tStartRefresh)
-thisExp.addData('rv_txt1.stopped', rv_txt1.tStopRefresh)
-thisExp.addData('rv_btn1.started', rv_btn1.tStartRefresh)
-thisExp.addData('rv_btn1.stopped', rv_btn1.tStopRefresh)
-thisExp.addData('rv_btn1.numClicks', rv_btn1.numClicks)
-if rv_btn1.numClicks:
-   thisExp.addData('rv_btn1.timesOn', rv_btn1.timesOn)
-   thisExp.addData('rv_btn1.timesOff', rv_btn1.timesOff)
-else:
-   thisExp.addData('rv_btn1.timesOn', "")
-   thisExp.addData('rv_btn1.timesOff', "")
+# store data for thisExp (ExperimentHandler)
+x, y = merge_intro_mouse.getPos()
+buttons = merge_intro_mouse.getPressed()
+if sum(buttons):
+    # check if the mouse was inside our 'clickable' objects
+    gotValidClick = False
+    for obj in [merge_intro_btn]:
+        if obj.contains(merge_intro_mouse):
+            gotValidClick = True
+            merge_intro_mouse.clicked_name.append(obj.name)
+thisExp.addData('merge_intro_mouse.x', x)
+thisExp.addData('merge_intro_mouse.y', y)
+thisExp.addData('merge_intro_mouse.leftButton', buttons[0])
+thisExp.addData('merge_intro_mouse.midButton', buttons[1])
+thisExp.addData('merge_intro_mouse.rightButton', buttons[2])
+if len(merge_intro_mouse.clicked_name):
+    thisExp.addData('merge_intro_mouse.clicked_name', merge_intro_mouse.clicked_name[0])
+thisExp.nextEntry()
 
-# ------Prepare to start Routine "Instructions_1"-------
-continueRoutine = True
-routineTimer.add(300.500000)
-# update component parameters for each repeat
-# keep track of which components have finished
-Instructions_1Components = [instr1_txt1, instr1_btn3, instr1_ex3, instr1_btn2, instr1_ex2, instr1_btn1, instr1_ex1]
-for thisComponent in Instructions_1Components:
-    thisComponent.tStart = None
-    thisComponent.tStop = None
-    thisComponent.tStartRefresh = None
-    thisComponent.tStopRefresh = None
-    if hasattr(thisComponent, 'status'):
-        thisComponent.status = NOT_STARTED
-# reset timers
-t = 0
-_timeToFirstFrame = win.getFutureFlipTime(clock="now")
-Instructions_1Clock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
-frameN = -1
+# set up handler to look after randomisation of conditions etc
+TRAIN_1 = data.TrialHandler(nReps=1.0, method='sequential', 
+    extraInfo=expInfo, originPath=-1,
+    trialList=data.importConditions('materials/merge_train_cond.csv'),
+    seed=None, name='TRAIN_1')
+thisExp.addLoop(TRAIN_1)  # add the loop to the experiment
+thisTRAIN_1 = TRAIN_1.trialList[0]  # so we can initialise stimuli with some values
+# abbreviate parameter names if possible (e.g. rgb = thisTRAIN_1.rgb)
+if thisTRAIN_1 != None:
+    for paramName in thisTRAIN_1:
+        exec('{} = thisTRAIN_1[paramName]'.format(paramName))
 
-# -------Run Routine "Instructions_1"-------
-while continueRoutine and routineTimer.getTime() > 0:
-    # get current time
-    t = Instructions_1Clock.getTime()
-    tThisFlip = win.getFutureFlipTime(clock=Instructions_1Clock)
-    tThisFlipGlobal = win.getFutureFlipTime(clock=None)
-    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-    # update/draw components on each frame
+for thisTRAIN_1 in TRAIN_1:
+    currentLoop = TRAIN_1
+    # abbreviate parameter names if possible (e.g. rgb = thisTRAIN_1.rgb)
+    if thisTRAIN_1 != None:
+        for paramName in thisTRAIN_1:
+            exec('{} = thisTRAIN_1[paramName]'.format(paramName))
     
-    # *instr1_txt1* updates
-    if instr1_txt1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        instr1_txt1.frameNStart = frameN  # exact frame index
-        instr1_txt1.tStart = t  # local t and not account for scr refresh
-        instr1_txt1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr1_txt1, 'tStartRefresh')  # time at next scr refresh
-        instr1_txt1.setAutoDraw(True)
-    if instr1_txt1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr1_txt1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            instr1_txt1.tStop = t  # not accounting for scr refresh
-            instr1_txt1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr1_txt1, 'tStopRefresh')  # time at next scr refresh
-            instr1_txt1.setAutoDraw(False)
+    # ------Prepare to start Routine "MERGE_TRAIN"-------
+    continueRoutine = True
+    routineTimer.add(60.000000)
+    # update component parameters for each repeat
+    mc_order = []  # Set routine start values for mc_order
+    merge_train_labels = labels  # Set routine start values for merge_train_labels
+    thisExp.addData('merge_train_labels.routineStartVal', merge_train_labels)  # Save exp start value
+    merge_train_compareN = 0  # Set routine start values for merge_train_compareN
+    merge_train_mc_path_2 = mc_path_2  # Set routine start values for merge_train_mc_path_2
+    merge_train_mc_path_1 = mc_path_1  # Set routine start values for merge_train_mc_path_1
+    merge_train_input = input  # Set routine start values for merge_train_input
+    merge_train_scale_instr.setColor('white', colorSpace='rgb')
+    merge_train_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes')
+    merge_train.setImage(img_path)
+    merge_train_mc_1.setImage('materials/merge_sort/imgs/white_BG.png')
+    merge_train_mc_2.setImage('materials/merge_sort/imgs/white_BG.png')
+    merge_train_scale.setImage(scaleEqPath)
+    # setup some python lists for storing info about the merge_train_mouse
+    merge_train_mouse.clicked_name = []
+    gotValidClick = False  # until a click is received
+    # keep track of which components have finished
+    MERGE_TRAINComponents = [merge_train_scale_instr, merge_ans_instr, merge_train_instr, merge_train_scale_right, merge_train_scale_left, merge_train_compare, merge_train_sep, merge_train, merge_train_mc_1, merge_train_mc_2, merge_train_scale, merge_train_btn_1, merge_train_btn_2, merge_train_mouse, merge_train_timer]
+    for thisComponent in MERGE_TRAINComponents:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    MERGE_TRAINClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+    frameN = -1
     
-    # *instr1_btn3* updates
-    if instr1_btn3.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        instr1_btn3.frameNStart = frameN  # exact frame index
-        instr1_btn3.tStart = t  # local t and not account for scr refresh
-        instr1_btn3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr1_btn3, 'tStartRefresh')  # time at next scr refresh
-        instr1_btn3.setAutoDraw(True)
-    if instr1_btn3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr1_btn3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            instr1_btn3.tStop = t  # not accounting for scr refresh
-            instr1_btn3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr1_btn3, 'tStopRefresh')  # time at next scr refresh
-            instr1_btn3.setAutoDraw(False)
-    if instr1_btn3.status == STARTED:
-        # check whether instr1_btn3 has been pressed
-        if instr1_btn3.isClicked:
-            if not instr1_btn3.wasClicked:
-                instr1_btn3.timesOn.append(instr1_btn3.buttonClock.getTime()) # store time of first click
-                instr1_btn3.timesOff.append(instr1_btn3.buttonClock.getTime()) # store time clicked until
-            else:
-                instr1_btn3.timesOff[-1] = instr1_btn3.buttonClock.getTime() # update time clicked until
-            if not instr1_btn3.wasClicked:
-                continueRoutine = False  # end routine when instr1_btn3 is clicked
+    # -------Run Routine "MERGE_TRAIN"-------
+    while continueRoutine and routineTimer.getTime() > 0:
+        # get current time
+        t = MERGE_TRAINClock.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=MERGE_TRAINClock)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # *merge_train_scale_instr* updates
+        if merge_train_scale_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_scale_instr.frameNStart = frameN  # exact frame index
+            merge_train_scale_instr.tStart = t  # local t and not account for scr refresh
+            merge_train_scale_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_scale_instr, 'tStartRefresh')  # time at next scr refresh
+            merge_train_scale_instr.setAutoDraw(True)
+        if merge_train_scale_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_train_scale_instr.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_scale_instr.tStop = t  # not accounting for scr refresh
+                merge_train_scale_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_scale_instr, 'tStopRefresh')  # time at next scr refresh
+                merge_train_scale_instr.setAutoDraw(False)
+        
+        # *merge_ans_instr* updates
+        if merge_ans_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_ans_instr.frameNStart = frameN  # exact frame index
+            merge_ans_instr.tStart = t  # local t and not account for scr refresh
+            merge_ans_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_ans_instr, 'tStartRefresh')  # time at next scr refresh
+            merge_ans_instr.setAutoDraw(True)
+        if merge_ans_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_ans_instr.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_ans_instr.tStop = t  # not accounting for scr refresh
+                merge_ans_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_ans_instr, 'tStopRefresh')  # time at next scr refresh
+                merge_ans_instr.setAutoDraw(False)
+        
+        # *merge_train_instr* updates
+        if merge_train_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_instr.frameNStart = frameN  # exact frame index
+            merge_train_instr.tStart = t  # local t and not account for scr refresh
+            merge_train_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_instr, 'tStartRefresh')  # time at next scr refresh
+            merge_train_instr.setAutoDraw(True)
+        if merge_train_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_train_instr.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_instr.tStop = t  # not accounting for scr refresh
+                merge_train_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_instr, 'tStopRefresh')  # time at next scr refresh
+                merge_train_instr.setAutoDraw(False)
+        
+        # *merge_train_scale_right* updates
+        if merge_train_scale_right.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_scale_right.frameNStart = frameN  # exact frame index
+            merge_train_scale_right.tStart = t  # local t and not account for scr refresh
+            merge_train_scale_right.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_scale_right, 'tStartRefresh')  # time at next scr refresh
+            merge_train_scale_right.setAutoDraw(True)
+        if merge_train_scale_right.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_train_scale_right.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_scale_right.tStop = t  # not accounting for scr refresh
+                merge_train_scale_right.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_scale_right, 'tStopRefresh')  # time at next scr refresh
+                merge_train_scale_right.setAutoDraw(False)
+        
+        # *merge_train_scale_left* updates
+        if merge_train_scale_left.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_scale_left.frameNStart = frameN  # exact frame index
+            merge_train_scale_left.tStart = t  # local t and not account for scr refresh
+            merge_train_scale_left.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_scale_left, 'tStartRefresh')  # time at next scr refresh
+            merge_train_scale_left.setAutoDraw(True)
+        if merge_train_scale_left.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_train_scale_left.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_scale_left.tStop = t  # not accounting for scr refresh
+                merge_train_scale_left.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_scale_left, 'tStopRefresh')  # time at next scr refresh
+                merge_train_scale_left.setAutoDraw(False)
+        
+        # *merge_train_compare* updates
+        if merge_train_compare.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_compare.frameNStart = frameN  # exact frame index
+            merge_train_compare.tStart = t  # local t and not account for scr refresh
+            merge_train_compare.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_compare, 'tStartRefresh')  # time at next scr refresh
+            merge_train_compare.setAutoDraw(True)
+        if merge_train_compare.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_train_compare.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_compare.tStop = t  # not accounting for scr refresh
+                merge_train_compare.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_compare, 'tStopRefresh')  # time at next scr refresh
+                merge_train_compare.setAutoDraw(False)
+        
+        # *merge_train_sep* updates
+        if merge_train_sep.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_sep.frameNStart = frameN  # exact frame index
+            merge_train_sep.tStart = t  # local t and not account for scr refresh
+            merge_train_sep.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_sep, 'tStartRefresh')  # time at next scr refresh
+            merge_train_sep.setAutoDraw(True)
+        if merge_train_sep.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_train_sep.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_sep.tStop = t  # not accounting for scr refresh
+                merge_train_sep.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_sep, 'tStopRefresh')  # time at next scr refresh
+                merge_train_sep.setAutoDraw(False)
+        
+        # *merge_train* updates
+        if merge_train.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train.frameNStart = frameN  # exact frame index
+            merge_train.tStart = t  # local t and not account for scr refresh
+            merge_train.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train, 'tStartRefresh')  # time at next scr refresh
+            merge_train.setAutoDraw(True)
+        if merge_train.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_train.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train.tStop = t  # not accounting for scr refresh
+                merge_train.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train, 'tStopRefresh')  # time at next scr refresh
+                merge_train.setAutoDraw(False)
+        
+        # *merge_train_mc_1* updates
+        if merge_train_mc_1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_mc_1.frameNStart = frameN  # exact frame index
+            merge_train_mc_1.tStart = t  # local t and not account for scr refresh
+            merge_train_mc_1.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_mc_1, 'tStartRefresh')  # time at next scr refresh
+            merge_train_mc_1.setAutoDraw(True)
+        if merge_train_mc_1.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_train_mc_1.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_mc_1.tStop = t  # not accounting for scr refresh
+                merge_train_mc_1.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_mc_1, 'tStopRefresh')  # time at next scr refresh
+                merge_train_mc_1.setAutoDraw(False)
+        
+        # *merge_train_mc_2* updates
+        if merge_train_mc_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_mc_2.frameNStart = frameN  # exact frame index
+            merge_train_mc_2.tStart = t  # local t and not account for scr refresh
+            merge_train_mc_2.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_mc_2, 'tStartRefresh')  # time at next scr refresh
+            merge_train_mc_2.setAutoDraw(True)
+        if merge_train_mc_2.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_train_mc_2.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_mc_2.tStop = t  # not accounting for scr refresh
+                merge_train_mc_2.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_mc_2, 'tStopRefresh')  # time at next scr refresh
+                merge_train_mc_2.setAutoDraw(False)
+        
+        # *merge_train_scale* updates
+        if merge_train_scale.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_scale.frameNStart = frameN  # exact frame index
+            merge_train_scale.tStart = t  # local t and not account for scr refresh
+            merge_train_scale.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_scale, 'tStartRefresh')  # time at next scr refresh
+            merge_train_scale.setAutoDraw(True)
+        if merge_train_scale.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_train_scale.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_scale.tStop = t  # not accounting for scr refresh
+                merge_train_scale.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_scale, 'tStopRefresh')  # time at next scr refresh
+                merge_train_scale.setAutoDraw(False)
+        if mc_order == []:
+            mc_order = getCorrectMCOrder(TRAIN_1.thisTrialN,merge_train_mc_path_1,merge_train_mc_path_2,merge_train_mc_1,merge_train_mc_2)
+        
+        if merge_train_mouse.isPressedIn(merge_train_compare):
+            merge_train_compareN = merge_train_compareN + compare(merge_train_scale,merge_train_input,merge_train_labels,merge_train_scale_instr,merge_train_scale_left,merge_train_scale_right)
+        
+        merge_train_timer.text = timerWarning(mergeTrainTimeL,t) 
+        
+        # *merge_train_btn_1* updates
+        if merge_train_btn_1.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_btn_1.frameNStart = frameN  # exact frame index
+            merge_train_btn_1.tStart = t  # local t and not account for scr refresh
+            merge_train_btn_1.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_btn_1, 'tStartRefresh')  # time at next scr refresh
+            merge_train_btn_1.setAutoDraw(True)
+        if merge_train_btn_1.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_btn_1.tStop = t  # not accounting for scr refresh
+                merge_train_btn_1.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_btn_1, 'tStopRefresh')  # time at next scr refresh
+                merge_train_btn_1.setAutoDraw(False)
+        
+        # *merge_train_btn_2* updates
+        if merge_train_btn_2.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_btn_2.frameNStart = frameN  # exact frame index
+            merge_train_btn_2.tStart = t  # local t and not account for scr refresh
+            merge_train_btn_2.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_btn_2, 'tStartRefresh')  # time at next scr refresh
+            merge_train_btn_2.setAutoDraw(True)
+        if merge_train_btn_2.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_btn_2.tStop = t  # not accounting for scr refresh
+                merge_train_btn_2.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_btn_2, 'tStopRefresh')  # time at next scr refresh
+                merge_train_btn_2.setAutoDraw(False)
+        # *merge_train_mouse* updates
+        if merge_train_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_mouse.frameNStart = frameN  # exact frame index
+            merge_train_mouse.tStart = t  # local t and not account for scr refresh
+            merge_train_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_mouse, 'tStartRefresh')  # time at next scr refresh
+            merge_train_mouse.status = STARTED
+            merge_train_mouse.mouseClock.reset()
+            prevButtonState = merge_train_mouse.getPressed()  # if button is down already this ISN'T a new click
+        if merge_train_mouse.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_mouse.tStop = t  # not accounting for scr refresh
+                merge_train_mouse.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_mouse, 'tStopRefresh')  # time at next scr refresh
+                merge_train_mouse.status = FINISHED
+        if merge_train_mouse.status == STARTED:  # only update if started and not finished!
+            buttons = merge_train_mouse.getPressed()
+            if buttons != prevButtonState:  # button state changed?
+                prevButtonState = buttons
+                if sum(buttons) > 0:  # state changed to a new click
+                    # check if the mouse was inside our 'clickable' objects
+                    gotValidClick = False
+                    for obj in [merge_train_btn_1,merge_train_btn_2]:
+                        if obj.contains(merge_train_mouse):
+                            gotValidClick = True
+                            merge_train_mouse.clicked_name.append(obj.name)
+                    if gotValidClick:  # abort routine on response
+                        continueRoutine = False
+        
+        # *merge_train_timer* updates
+        if merge_train_timer.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_train_timer.frameNStart = frameN  # exact frame index
+            merge_train_timer.tStart = t  # local t and not account for scr refresh
+            merge_train_timer.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_train_timer, 'tStartRefresh')  # time at next scr refresh
+            merge_train_timer.setAutoDraw(True)
+        if merge_train_timer.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_train_timer.tStop = t  # not accounting for scr refresh
+                merge_train_timer.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_train_timer, 'tStopRefresh')  # time at next scr refresh
+                merge_train_timer.setAutoDraw(False)
+        
+        # check for quit (typically the Esc key)
+        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+            core.quit()
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in MERGE_TRAINComponents:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
-                if 'instr1_btn3' in btn_locks and btn_locks['instr1_btn3']:
-                                    btn_locks['instr1_btn3'] = LOCK_OFF
-                                    time.sleep(0.1)
-                                    continueRoutine = False
-            instr1_btn3.wasClicked = True  # if instr1_btn3 is still clicked next frame, it is not a new click
-        else:
-            instr1_btn3.wasClicked = False  # if instr1_btn3 is clicked next frame, it is a new click
-    else:
-        instr1_btn3.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        instr1_btn3.wasClicked = False  # if instr1_btn3 is clicked next frame, it is a new click
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
     
-    # *instr1_ex3* updates
-    if instr1_ex3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        instr1_ex3.frameNStart = frameN  # exact frame index
-        instr1_ex3.tStart = t  # local t and not account for scr refresh
-        instr1_ex3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr1_ex3, 'tStartRefresh')  # time at next scr refresh
-        instr1_ex3.setAutoDraw(True)
-    if instr1_ex3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr1_ex3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            instr1_ex3.tStop = t  # not accounting for scr refresh
-            instr1_ex3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr1_ex3, 'tStopRefresh')  # time at next scr refresh
-            instr1_ex3.setAutoDraw(False)
+    # -------Ending Routine "MERGE_TRAIN"-------
+    for thisComponent in MERGE_TRAINComponents:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    thisExp.addData('mc_order.routineEndVal', mc_order)  # Save end routine value
+    thisExp.addData('merge_train_compareN.routineEndVal', merge_train_compareN)  # Save end routine value
+    thisExp.addData('merge_train_mc_path_2.routineEndVal', merge_train_mc_path_2)  # Save end routine value
+    thisExp.addData('merge_train_mc_path_1.routineEndVal', merge_train_mc_path_1)  # Save end routine value
+    thisExp.addData('merge_train_input.routineEndVal', merge_train_input)  # Save end routine value
+    TRAIN_1.addData('merge_train_scale_right.text',merge_train_scale_right.text)
+    merge_train_scale_right.reset()
+    TRAIN_1.addData('merge_train_scale_left.text',merge_train_scale_left.text)
+    merge_train_scale_left.reset()
+    TRAIN_1.addData('merge_train.started', merge_train.tStartRefresh)
+    TRAIN_1.addData('merge_train.stopped', merge_train.tStopRefresh)
+    # store data for TRAIN_1 (TrialHandler)
+    x, y = merge_train_mouse.getPos()
+    buttons = merge_train_mouse.getPressed()
+    if sum(buttons):
+        # check if the mouse was inside our 'clickable' objects
+        gotValidClick = False
+        for obj in [merge_train_btn_1,merge_train_btn_2]:
+            if obj.contains(merge_train_mouse):
+                gotValidClick = True
+                merge_train_mouse.clicked_name.append(obj.name)
+    TRAIN_1.addData('merge_train_mouse.x', x)
+    TRAIN_1.addData('merge_train_mouse.y', y)
+    TRAIN_1.addData('merge_train_mouse.leftButton', buttons[0])
+    TRAIN_1.addData('merge_train_mouse.midButton', buttons[1])
+    TRAIN_1.addData('merge_train_mouse.rightButton', buttons[2])
+    if len(merge_train_mouse.clicked_name):
+        TRAIN_1.addData('merge_train_mouse.clicked_name', merge_train_mouse.clicked_name[0])
     
-    # *instr1_btn2* updates
-    if instr1_btn2.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        instr1_btn2.frameNStart = frameN  # exact frame index
-        instr1_btn2.tStart = t  # local t and not account for scr refresh
-        instr1_btn2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr1_btn2, 'tStartRefresh')  # time at next scr refresh
-        instr1_btn2.setAutoDraw(True)
-    if instr1_btn2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr1_btn2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            instr1_btn2.tStop = t  # not accounting for scr refresh
-            instr1_btn2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr1_btn2, 'tStopRefresh')  # time at next scr refresh
-            instr1_btn2.setAutoDraw(False)
-    if instr1_btn2.status == STARTED:
-        # check whether instr1_btn2 has been pressed
-        if instr1_btn2.isClicked:
-            if not instr1_btn2.wasClicked:
-                instr1_btn2.timesOn.append(instr1_btn2.buttonClock.getTime()) # store time of first click
-                instr1_btn2.timesOff.append(instr1_btn2.buttonClock.getTime()) # store time clicked until
-            else:
-                instr1_btn2.timesOff[-1] = instr1_btn2.buttonClock.getTime() # update time clicked until
-            if not instr1_btn2.wasClicked:
-                if 'instr1_btn2' in btn_locks and btn_locks['instr1_btn2']:
-                                    instr1_ex2.setOpacity(0.0)
-                                    instr1_btn2.setOpacity(0.0)
-                                    instr1_ex3.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    instr1_btn3.setOpacity(1.0)
-                
-                                    btn_locks['instr1_btn3'] = LOCK_ON
-                                    btn_locks['instr1_btn2'] = LOCK_OFF
-            instr1_btn2.wasClicked = True  # if instr1_btn2 is still clicked next frame, it is not a new click
-        else:
-            instr1_btn2.wasClicked = False  # if instr1_btn2 is clicked next frame, it is a new click
-    else:
-        instr1_btn2.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        instr1_btn2.wasClicked = False  # if instr1_btn2 is clicked next frame, it is a new click
+    # ------Prepare to start Routine "MERGE_EXPL"-------
+    continueRoutine = True
+    routineTimer.add(30.000000)
+    # update component parameters for each repeat
+    merge_expl_1.setImage('materials/merge_sort/imgs/white_BG.png')
+    merge_expl_2.setImage('materials/merge_sort/imgs/white_BG.png')
+    merge_expl_mc_1.setImage('materials/merge_sort/imgs/white_BG.png')
+    merge_expl_mc_2.setImage('materials/merge_sort/imgs/white_BG.png')
+    submitted = 2
+    if "merge_train_btn_1" in merge_train_mouse.clicked_name:
+        submitted = 0
+    elif "merge_train_btn_2" in merge_train_mouse.clicked_name:
+        submitted= 1
+    showMergeExpl(submitted,merge_expl_feedback_1,merge_expl_feedback_2,merge_expl_mc_1,merge_expl_mc_2,merge_train_mc_path_1,merge_train_mc_path_2,merge_expl_1,merge_expl_2)
+    # setup some python lists for storing info about the merge_expl_mouse
+    merge_expl_mouse.clicked_name = []
+    gotValidClick = False  # until a click is received
+    # keep track of which components have finished
+    MERGE_EXPLComponents = [merge_expl_instr, merge_expl_feedback_1, merge_expl_feedback_2, merge_expl_sep, merge_expl_1, merge_expl_2, merge_expl_mc_1, merge_expl_mc_2, merge_expl_btn, merge_expl_mouse, merge_expl_timer]
+    for thisComponent in MERGE_EXPLComponents:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    MERGE_EXPLClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+    frameN = -1
     
-    # *instr1_ex2* updates
-    if instr1_ex2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        instr1_ex2.frameNStart = frameN  # exact frame index
-        instr1_ex2.tStart = t  # local t and not account for scr refresh
-        instr1_ex2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr1_ex2, 'tStartRefresh')  # time at next scr refresh
-        instr1_ex2.setAutoDraw(True)
-    if instr1_ex2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr1_ex2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            instr1_ex2.tStop = t  # not accounting for scr refresh
-            instr1_ex2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr1_ex2, 'tStopRefresh')  # time at next scr refresh
-            instr1_ex2.setAutoDraw(False)
-    
-    # *instr1_btn1* updates
-    if instr1_btn1.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        instr1_btn1.frameNStart = frameN  # exact frame index
-        instr1_btn1.tStart = t  # local t and not account for scr refresh
-        instr1_btn1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr1_btn1, 'tStartRefresh')  # time at next scr refresh
-        instr1_btn1.setAutoDraw(True)
-    if instr1_btn1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr1_btn1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            instr1_btn1.tStop = t  # not accounting for scr refresh
-            instr1_btn1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr1_btn1, 'tStopRefresh')  # time at next scr refresh
-            instr1_btn1.setAutoDraw(False)
-    if instr1_btn1.status == STARTED:
-        # check whether instr1_btn1 has been pressed
-        if instr1_btn1.isClicked:
-            if not instr1_btn1.wasClicked:
-                instr1_btn1.timesOn.append(instr1_btn1.buttonClock.getTime()) # store time of first click
-                instr1_btn1.timesOff.append(instr1_btn1.buttonClock.getTime()) # store time clicked until
-            else:
-                instr1_btn1.timesOff[-1] = instr1_btn1.buttonClock.getTime() # update time clicked until
-            if not instr1_btn1.wasClicked:
-                if 'instr1_btn1' not in btn_locks:
-                                    instr1_ex1.setOpacity(0.0)
-                                    instr1_btn1.setOpacity(0.0)
-                                    instr1_ex2.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    instr1_btn2.setOpacity(1.0)
-                
-                                    btn_locks['instr1_btn2'] = LOCK_ON
-                                    btn_locks['instr1_btn1'] = LOCK_OFF
-            instr1_btn1.wasClicked = True  # if instr1_btn1 is still clicked next frame, it is not a new click
-        else:
-            instr1_btn1.wasClicked = False  # if instr1_btn1 is clicked next frame, it is a new click
-    else:
-        instr1_btn1.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        instr1_btn1.wasClicked = False  # if instr1_btn1 is clicked next frame, it is a new click
-    
-    # *instr1_ex1* updates
-    if instr1_ex1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        instr1_ex1.frameNStart = frameN  # exact frame index
-        instr1_ex1.tStart = t  # local t and not account for scr refresh
-        instr1_ex1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr1_ex1, 'tStartRefresh')  # time at next scr refresh
-        instr1_ex1.setAutoDraw(True)
-    if instr1_ex1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr1_ex1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            instr1_ex1.tStop = t  # not accounting for scr refresh
-            instr1_ex1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr1_ex1, 'tStopRefresh')  # time at next scr refresh
-            instr1_ex1.setAutoDraw(False)
-    
-    # check for quit (typically the Esc key)
-    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-        core.quit()
-    
-    # check if all components have finished
-    if not continueRoutine:  # a component has requested a forced-end of Routine
-        break
-    continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in Instructions_1Components:
-        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-            continueRoutine = True
-            break  # at least one component has not yet finished
-    
-    # refresh the screen
-    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-        win.flip()
-
-# -------Ending Routine "Instructions_1"-------
-for thisComponent in Instructions_1Components:
-    if hasattr(thisComponent, "setAutoDraw"):
-        thisComponent.setAutoDraw(False)
-thisExp.addData('instr1_txt1.started', instr1_txt1.tStartRefresh)
-thisExp.addData('instr1_txt1.stopped', instr1_txt1.tStopRefresh)
-thisExp.addData('instr1_btn3.started', instr1_btn3.tStartRefresh)
-thisExp.addData('instr1_btn3.stopped', instr1_btn3.tStopRefresh)
-thisExp.addData('instr1_btn3.numClicks', instr1_btn3.numClicks)
-if instr1_btn3.numClicks:
-   thisExp.addData('instr1_btn3.timesOn', instr1_btn3.timesOn)
-   thisExp.addData('instr1_btn3.timesOff', instr1_btn3.timesOff)
-else:
-   thisExp.addData('instr1_btn3.timesOn', "")
-   thisExp.addData('instr1_btn3.timesOff', "")
-thisExp.addData('instr1_ex3.started', instr1_ex3.tStartRefresh)
-thisExp.addData('instr1_ex3.stopped', instr1_ex3.tStopRefresh)
-thisExp.addData('instr1_btn2.started', instr1_btn2.tStartRefresh)
-thisExp.addData('instr1_btn2.stopped', instr1_btn2.tStopRefresh)
-thisExp.addData('instr1_btn2.numClicks', instr1_btn2.numClicks)
-if instr1_btn2.numClicks:
-   thisExp.addData('instr1_btn2.timesOn', instr1_btn2.timesOn)
-   thisExp.addData('instr1_btn2.timesOff', instr1_btn2.timesOff)
-else:
-   thisExp.addData('instr1_btn2.timesOn', "")
-   thisExp.addData('instr1_btn2.timesOff', "")
-thisExp.addData('instr1_ex2.started', instr1_ex2.tStartRefresh)
-thisExp.addData('instr1_ex2.stopped', instr1_ex2.tStopRefresh)
-thisExp.addData('instr1_btn1.started', instr1_btn1.tStartRefresh)
-thisExp.addData('instr1_btn1.stopped', instr1_btn1.tStopRefresh)
-thisExp.addData('instr1_btn1.numClicks', instr1_btn1.numClicks)
-if instr1_btn1.numClicks:
-   thisExp.addData('instr1_btn1.timesOn', instr1_btn1.timesOn)
-   thisExp.addData('instr1_btn1.timesOff', instr1_btn1.timesOff)
-else:
-   thisExp.addData('instr1_btn1.timesOn', "")
-   thisExp.addData('instr1_btn1.timesOff', "")
-thisExp.addData('instr1_ex1.started', instr1_ex1.tStartRefresh)
-thisExp.addData('instr1_ex1.stopped', instr1_ex1.tStopRefresh)
-
-# ------Prepare to start Routine "Training_1"-------
-continueRoutine = True
-routineTimer.add(300.500000)
-# update component parameters for each repeat
-# keep track of which components have finished
-Training_1Components = [train1_num, train1_txt1, train1_btn5, train1_ex5, train1_btn4, train1_ex4, train1_btn3, train1_ex3, train1_btn2, train1_ex2, train1_btn1, train1_ex1, train1_bg1, train1_bg2]
-for thisComponent in Training_1Components:
-    thisComponent.tStart = None
-    thisComponent.tStop = None
-    thisComponent.tStartRefresh = None
-    thisComponent.tStopRefresh = None
-    if hasattr(thisComponent, 'status'):
-        thisComponent.status = NOT_STARTED
-# reset timers
-t = 0
-_timeToFirstFrame = win.getFutureFlipTime(clock="now")
-Training_1Clock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
-frameN = -1
-
-# -------Run Routine "Training_1"-------
-while continueRoutine and routineTimer.getTime() > 0:
-    # get current time
-    t = Training_1Clock.getTime()
-    tThisFlip = win.getFutureFlipTime(clock=Training_1Clock)
-    tThisFlipGlobal = win.getFutureFlipTime(clock=None)
-    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-    # update/draw components on each frame
-    
-    # *train1_num* updates
-    if train1_num.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train1_num.frameNStart = frameN  # exact frame index
-        train1_num.tStart = t  # local t and not account for scr refresh
-        train1_num.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_num, 'tStartRefresh')  # time at next scr refresh
-        train1_num.setAutoDraw(True)
-    if train1_num.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_num.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_num.tStop = t  # not accounting for scr refresh
-            train1_num.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_num, 'tStopRefresh')  # time at next scr refresh
-            train1_num.setAutoDraw(False)
-    
-    # *train1_txt1* updates
-    if train1_txt1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train1_txt1.frameNStart = frameN  # exact frame index
-        train1_txt1.tStart = t  # local t and not account for scr refresh
-        train1_txt1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_txt1, 'tStartRefresh')  # time at next scr refresh
-        train1_txt1.setAutoDraw(True)
-    if train1_txt1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_txt1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_txt1.tStop = t  # not accounting for scr refresh
-            train1_txt1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_txt1, 'tStopRefresh')  # time at next scr refresh
-            train1_txt1.setAutoDraw(False)
-    
-    # *train1_btn5* updates
-    if train1_btn5.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        train1_btn5.frameNStart = frameN  # exact frame index
-        train1_btn5.tStart = t  # local t and not account for scr refresh
-        train1_btn5.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_btn5, 'tStartRefresh')  # time at next scr refresh
-        train1_btn5.setAutoDraw(True)
-    if train1_btn5.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_btn5.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_btn5.tStop = t  # not accounting for scr refresh
-            train1_btn5.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_btn5, 'tStopRefresh')  # time at next scr refresh
-            train1_btn5.setAutoDraw(False)
-    if train1_btn5.status == STARTED:
-        # check whether train1_btn5 has been pressed
-        if train1_btn5.isClicked:
-            if not train1_btn5.wasClicked:
-                train1_btn5.timesOn.append(train1_btn5.buttonClock.getTime()) # store time of first click
-                train1_btn5.timesOff.append(train1_btn5.buttonClock.getTime()) # store time clicked until
-            else:
-                train1_btn5.timesOff[-1] = train1_btn5.buttonClock.getTime() # update time clicked until
-            if not train1_btn5.wasClicked:
-                continueRoutine = False  # end routine when train1_btn5 is clicked
+    # -------Run Routine "MERGE_EXPL"-------
+    while continueRoutine and routineTimer.getTime() > 0:
+        # get current time
+        t = MERGE_EXPLClock.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=MERGE_EXPLClock)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # *merge_expl_instr* updates
+        if merge_expl_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_expl_instr.frameNStart = frameN  # exact frame index
+            merge_expl_instr.tStart = t  # local t and not account for scr refresh
+            merge_expl_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_expl_instr, 'tStartRefresh')  # time at next scr refresh
+            merge_expl_instr.setAutoDraw(True)
+        if merge_expl_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_expl_instr.tStartRefresh + 30.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_expl_instr.tStop = t  # not accounting for scr refresh
+                merge_expl_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_expl_instr, 'tStopRefresh')  # time at next scr refresh
+                merge_expl_instr.setAutoDraw(False)
+        
+        # *merge_expl_feedback_1* updates
+        if merge_expl_feedback_1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_expl_feedback_1.frameNStart = frameN  # exact frame index
+            merge_expl_feedback_1.tStart = t  # local t and not account for scr refresh
+            merge_expl_feedback_1.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_expl_feedback_1, 'tStartRefresh')  # time at next scr refresh
+            merge_expl_feedback_1.setAutoDraw(True)
+        if merge_expl_feedback_1.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_expl_feedback_1.tStartRefresh + 30.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_expl_feedback_1.tStop = t  # not accounting for scr refresh
+                merge_expl_feedback_1.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_expl_feedback_1, 'tStopRefresh')  # time at next scr refresh
+                merge_expl_feedback_1.setAutoDraw(False)
+        
+        # *merge_expl_feedback_2* updates
+        if merge_expl_feedback_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_expl_feedback_2.frameNStart = frameN  # exact frame index
+            merge_expl_feedback_2.tStart = t  # local t and not account for scr refresh
+            merge_expl_feedback_2.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_expl_feedback_2, 'tStartRefresh')  # time at next scr refresh
+            merge_expl_feedback_2.setAutoDraw(True)
+        if merge_expl_feedback_2.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_expl_feedback_2.tStartRefresh + 30.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_expl_feedback_2.tStop = t  # not accounting for scr refresh
+                merge_expl_feedback_2.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_expl_feedback_2, 'tStopRefresh')  # time at next scr refresh
+                merge_expl_feedback_2.setAutoDraw(False)
+        
+        # *merge_expl_sep* updates
+        if merge_expl_sep.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_expl_sep.frameNStart = frameN  # exact frame index
+            merge_expl_sep.tStart = t  # local t and not account for scr refresh
+            merge_expl_sep.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_expl_sep, 'tStartRefresh')  # time at next scr refresh
+            merge_expl_sep.setAutoDraw(True)
+        if merge_expl_sep.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_expl_sep.tStartRefresh + 30.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_expl_sep.tStop = t  # not accounting for scr refresh
+                merge_expl_sep.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_expl_sep, 'tStopRefresh')  # time at next scr refresh
+                merge_expl_sep.setAutoDraw(False)
+        
+        # *merge_expl_1* updates
+        if merge_expl_1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_expl_1.frameNStart = frameN  # exact frame index
+            merge_expl_1.tStart = t  # local t and not account for scr refresh
+            merge_expl_1.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_expl_1, 'tStartRefresh')  # time at next scr refresh
+            merge_expl_1.setAutoDraw(True)
+        if merge_expl_1.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_expl_1.tStartRefresh + 30.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_expl_1.tStop = t  # not accounting for scr refresh
+                merge_expl_1.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_expl_1, 'tStopRefresh')  # time at next scr refresh
+                merge_expl_1.setAutoDraw(False)
+        
+        # *merge_expl_2* updates
+        if merge_expl_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_expl_2.frameNStart = frameN  # exact frame index
+            merge_expl_2.tStart = t  # local t and not account for scr refresh
+            merge_expl_2.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_expl_2, 'tStartRefresh')  # time at next scr refresh
+            merge_expl_2.setAutoDraw(True)
+        if merge_expl_2.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_expl_2.tStartRefresh + 30.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_expl_2.tStop = t  # not accounting for scr refresh
+                merge_expl_2.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_expl_2, 'tStopRefresh')  # time at next scr refresh
+                merge_expl_2.setAutoDraw(False)
+        
+        # *merge_expl_mc_1* updates
+        if merge_expl_mc_1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_expl_mc_1.frameNStart = frameN  # exact frame index
+            merge_expl_mc_1.tStart = t  # local t and not account for scr refresh
+            merge_expl_mc_1.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_expl_mc_1, 'tStartRefresh')  # time at next scr refresh
+            merge_expl_mc_1.setAutoDraw(True)
+        if merge_expl_mc_1.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_expl_mc_1.tStartRefresh + 30.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_expl_mc_1.tStop = t  # not accounting for scr refresh
+                merge_expl_mc_1.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_expl_mc_1, 'tStopRefresh')  # time at next scr refresh
+                merge_expl_mc_1.setAutoDraw(False)
+        
+        # *merge_expl_mc_2* updates
+        if merge_expl_mc_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_expl_mc_2.frameNStart = frameN  # exact frame index
+            merge_expl_mc_2.tStart = t  # local t and not account for scr refresh
+            merge_expl_mc_2.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_expl_mc_2, 'tStartRefresh')  # time at next scr refresh
+            merge_expl_mc_2.setAutoDraw(True)
+        if merge_expl_mc_2.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_expl_mc_2.tStartRefresh + 30.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_expl_mc_2.tStop = t  # not accounting for scr refresh
+                merge_expl_mc_2.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_expl_mc_2, 'tStopRefresh')  # time at next scr refresh
+                merge_expl_mc_2.setAutoDraw(False)
+        merge_expl_timer.text = timerWarning(mergeExplTimeL,t) 
+        
+        # *merge_expl_btn* updates
+        if merge_expl_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            merge_expl_btn.frameNStart = frameN  # exact frame index
+            merge_expl_btn.tStart = t  # local t and not account for scr refresh
+            merge_expl_btn.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_expl_btn, 'tStartRefresh')  # time at next scr refresh
+            merge_expl_btn.setAutoDraw(True)
+        if merge_expl_btn.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 30.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_expl_btn.tStop = t  # not accounting for scr refresh
+                merge_expl_btn.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_expl_btn, 'tStopRefresh')  # time at next scr refresh
+                merge_expl_btn.setAutoDraw(False)
+        # *merge_expl_mouse* updates
+        if merge_expl_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            merge_expl_mouse.frameNStart = frameN  # exact frame index
+            merge_expl_mouse.tStart = t  # local t and not account for scr refresh
+            merge_expl_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_expl_mouse, 'tStartRefresh')  # time at next scr refresh
+            merge_expl_mouse.status = STARTED
+            merge_expl_mouse.mouseClock.reset()
+            prevButtonState = merge_expl_mouse.getPressed()  # if button is down already this ISN'T a new click
+        if merge_expl_mouse.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 30.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_expl_mouse.tStop = t  # not accounting for scr refresh
+                merge_expl_mouse.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_expl_mouse, 'tStopRefresh')  # time at next scr refresh
+                merge_expl_mouse.status = FINISHED
+        if merge_expl_mouse.status == STARTED:  # only update if started and not finished!
+            buttons = merge_expl_mouse.getPressed()
+            if buttons != prevButtonState:  # button state changed?
+                prevButtonState = buttons
+                if sum(buttons) > 0:  # state changed to a new click
+                    # check if the mouse was inside our 'clickable' objects
+                    gotValidClick = False
+                    for obj in [merge_expl_btn]:
+                        if obj.contains(merge_expl_mouse):
+                            gotValidClick = True
+                            merge_expl_mouse.clicked_name.append(obj.name)
+                    if gotValidClick:  # abort routine on response
+                        continueRoutine = False
+        
+        # *merge_expl_timer* updates
+        if merge_expl_timer.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_expl_timer.frameNStart = frameN  # exact frame index
+            merge_expl_timer.tStart = t  # local t and not account for scr refresh
+            merge_expl_timer.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_expl_timer, 'tStartRefresh')  # time at next scr refresh
+            merge_expl_timer.setAutoDraw(True)
+        if merge_expl_timer.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 30.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_expl_timer.tStop = t  # not accounting for scr refresh
+                merge_expl_timer.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_expl_timer, 'tStopRefresh')  # time at next scr refresh
+                merge_expl_timer.setAutoDraw(False)
+        
+        # check for quit (typically the Esc key)
+        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+            core.quit()
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in MERGE_EXPLComponents:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
-                if 'train1_btn5' in btn_locks and btn_locks['train1_btn5']:
-                                    btn_locks['train1_btn5'] = LOCK_OFF
-                                    time.sleep(0.1)
-                                    continueRoutine = False
-            train1_btn5.wasClicked = True  # if train1_btn5 is still clicked next frame, it is not a new click
-        else:
-            train1_btn5.wasClicked = False  # if train1_btn5 is clicked next frame, it is a new click
-    else:
-        train1_btn5.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        train1_btn5.wasClicked = False  # if train1_btn5 is clicked next frame, it is a new click
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
     
-    # *train1_ex5* updates
-    if train1_ex5.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train1_ex5.frameNStart = frameN  # exact frame index
-        train1_ex5.tStart = t  # local t and not account for scr refresh
-        train1_ex5.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_ex5, 'tStartRefresh')  # time at next scr refresh
-        train1_ex5.setAutoDraw(True)
-    if train1_ex5.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_ex5.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_ex5.tStop = t  # not accounting for scr refresh
-            train1_ex5.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_ex5, 'tStopRefresh')  # time at next scr refresh
-            train1_ex5.setAutoDraw(False)
+    # -------Ending Routine "MERGE_EXPL"-------
+    for thisComponent in MERGE_EXPLComponents:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    TRAIN_1.addData('merge_expl_mc_1.started', merge_expl_mc_1.tStartRefresh)
+    TRAIN_1.addData('merge_expl_mc_1.stopped', merge_expl_mc_1.tStopRefresh)
+    TRAIN_1.addData('merge_expl_mc_2.started', merge_expl_mc_2.tStartRefresh)
+    TRAIN_1.addData('merge_expl_mc_2.stopped', merge_expl_mc_2.tStopRefresh)
+    # store data for TRAIN_1 (TrialHandler)
+    x, y = merge_expl_mouse.getPos()
+    buttons = merge_expl_mouse.getPressed()
+    if sum(buttons):
+        # check if the mouse was inside our 'clickable' objects
+        gotValidClick = False
+        for obj in [merge_expl_btn]:
+            if obj.contains(merge_expl_mouse):
+                gotValidClick = True
+                merge_expl_mouse.clicked_name.append(obj.name)
+    TRAIN_1.addData('merge_expl_mouse.x', x)
+    TRAIN_1.addData('merge_expl_mouse.y', y)
+    TRAIN_1.addData('merge_expl_mouse.leftButton', buttons[0])
+    TRAIN_1.addData('merge_expl_mouse.midButton', buttons[1])
+    TRAIN_1.addData('merge_expl_mouse.rightButton', buttons[2])
+    if len(merge_expl_mouse.clicked_name):
+        TRAIN_1.addData('merge_expl_mouse.clicked_name', merge_expl_mouse.clicked_name[0])
+    thisExp.nextEntry()
     
-    # *train1_btn4* updates
-    if train1_btn4.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        train1_btn4.frameNStart = frameN  # exact frame index
-        train1_btn4.tStart = t  # local t and not account for scr refresh
-        train1_btn4.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_btn4, 'tStartRefresh')  # time at next scr refresh
-        train1_btn4.setAutoDraw(True)
-    if train1_btn4.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_btn4.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_btn4.tStop = t  # not accounting for scr refresh
-            train1_btn4.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_btn4, 'tStopRefresh')  # time at next scr refresh
-            train1_btn4.setAutoDraw(False)
-    if train1_btn4.status == STARTED:
-        # check whether train1_btn4 has been pressed
-        if train1_btn4.isClicked:
-            if not train1_btn4.wasClicked:
-                train1_btn4.timesOn.append(train1_btn4.buttonClock.getTime()) # store time of first click
-                train1_btn4.timesOff.append(train1_btn4.buttonClock.getTime()) # store time clicked until
-            else:
-                train1_btn4.timesOff[-1] = train1_btn4.buttonClock.getTime() # update time clicked until
-            if not train1_btn4.wasClicked:
-                if 'train1_btn4' in btn_locks and btn_locks['train1_btn4']:
-                                    train1_ex4.setOpacity(0.0)
-                                    train1_btn4.setOpacity(0.0)
-                                    train1_ex5.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    train1_btn5.setOpacity(1.0)
-                
-                                    btn_locks['train1_btn5'] = LOCK_ON
-                                    btn_locks['train1_btn4'] = LOCK_OFF
-                                    train1_num.setText('Training example 5 (this could be removed)')
-            train1_btn4.wasClicked = True  # if train1_btn4 is still clicked next frame, it is not a new click
-        else:
-            train1_btn4.wasClicked = False  # if train1_btn4 is clicked next frame, it is a new click
-    else:
-        train1_btn4.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        train1_btn4.wasClicked = False  # if train1_btn4 is clicked next frame, it is a new click
-    
-    # *train1_ex4* updates
-    if train1_ex4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train1_ex4.frameNStart = frameN  # exact frame index
-        train1_ex4.tStart = t  # local t and not account for scr refresh
-        train1_ex4.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_ex4, 'tStartRefresh')  # time at next scr refresh
-        train1_ex4.setAutoDraw(True)
-    if train1_ex4.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_ex4.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_ex4.tStop = t  # not accounting for scr refresh
-            train1_ex4.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_ex4, 'tStopRefresh')  # time at next scr refresh
-            train1_ex4.setAutoDraw(False)
-    
-    # *train1_btn3* updates
-    if train1_btn3.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        train1_btn3.frameNStart = frameN  # exact frame index
-        train1_btn3.tStart = t  # local t and not account for scr refresh
-        train1_btn3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_btn3, 'tStartRefresh')  # time at next scr refresh
-        train1_btn3.setAutoDraw(True)
-    if train1_btn3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_btn3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_btn3.tStop = t  # not accounting for scr refresh
-            train1_btn3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_btn3, 'tStopRefresh')  # time at next scr refresh
-            train1_btn3.setAutoDraw(False)
-    if train1_btn3.status == STARTED:
-        # check whether train1_btn3 has been pressed
-        if train1_btn3.isClicked:
-            if not train1_btn3.wasClicked:
-                train1_btn3.timesOn.append(train1_btn3.buttonClock.getTime()) # store time of first click
-                train1_btn3.timesOff.append(train1_btn3.buttonClock.getTime()) # store time clicked until
-            else:
-                train1_btn3.timesOff[-1] = train1_btn3.buttonClock.getTime() # update time clicked until
-            if not train1_btn3.wasClicked:
-                if 'train1_btn3' in btn_locks and btn_locks['train1_btn3']:
-                                    train1_ex3.setOpacity(0.0)
-                                    train1_btn3.setOpacity(0.0)
-                                    train1_ex4.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    train1_btn4.setOpacity(1.0)
-                
-                                    btn_locks['train1_btn4'] = LOCK_ON
-                                    btn_locks['train1_btn3'] = LOCK_OFF
-                                    train1_num.setText('Training example 4 (this could be removed)')
-            train1_btn3.wasClicked = True  # if train1_btn3 is still clicked next frame, it is not a new click
-        else:
-            train1_btn3.wasClicked = False  # if train1_btn3 is clicked next frame, it is a new click
-    else:
-        train1_btn3.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        train1_btn3.wasClicked = False  # if train1_btn3 is clicked next frame, it is a new click
-    
-    # *train1_ex3* updates
-    if train1_ex3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train1_ex3.frameNStart = frameN  # exact frame index
-        train1_ex3.tStart = t  # local t and not account for scr refresh
-        train1_ex3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_ex3, 'tStartRefresh')  # time at next scr refresh
-        train1_ex3.setAutoDraw(True)
-    if train1_ex3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_ex3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_ex3.tStop = t  # not accounting for scr refresh
-            train1_ex3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_ex3, 'tStopRefresh')  # time at next scr refresh
-            train1_ex3.setAutoDraw(False)
-    
-    # *train1_btn2* updates
-    if train1_btn2.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        train1_btn2.frameNStart = frameN  # exact frame index
-        train1_btn2.tStart = t  # local t and not account for scr refresh
-        train1_btn2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_btn2, 'tStartRefresh')  # time at next scr refresh
-        train1_btn2.setAutoDraw(True)
-    if train1_btn2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_btn2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_btn2.tStop = t  # not accounting for scr refresh
-            train1_btn2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_btn2, 'tStopRefresh')  # time at next scr refresh
-            train1_btn2.setAutoDraw(False)
-    if train1_btn2.status == STARTED:
-        # check whether train1_btn2 has been pressed
-        if train1_btn2.isClicked:
-            if not train1_btn2.wasClicked:
-                train1_btn2.timesOn.append(train1_btn2.buttonClock.getTime()) # store time of first click
-                train1_btn2.timesOff.append(train1_btn2.buttonClock.getTime()) # store time clicked until
-            else:
-                train1_btn2.timesOff[-1] = train1_btn2.buttonClock.getTime() # update time clicked until
-            if not train1_btn2.wasClicked:
-                if 'train1_btn2' in btn_locks and btn_locks['train1_btn2']:
-                                    train1_ex2.setOpacity(0.0)
-                                    train1_btn2.setOpacity(0.0)
-                                    train1_ex3.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    train1_btn3.setOpacity(1.0)
-                
-                                    btn_locks['train1_btn3'] = LOCK_ON
-                                    btn_locks['train1_btn2'] = LOCK_OFF
-                                    train1_num.setText('Training example 3 (this could be removed)')
-            train1_btn2.wasClicked = True  # if train1_btn2 is still clicked next frame, it is not a new click
-        else:
-            train1_btn2.wasClicked = False  # if train1_btn2 is clicked next frame, it is a new click
-    else:
-        train1_btn2.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        train1_btn2.wasClicked = False  # if train1_btn2 is clicked next frame, it is a new click
-    
-    # *train1_ex2* updates
-    if train1_ex2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train1_ex2.frameNStart = frameN  # exact frame index
-        train1_ex2.tStart = t  # local t and not account for scr refresh
-        train1_ex2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_ex2, 'tStartRefresh')  # time at next scr refresh
-        train1_ex2.setAutoDraw(True)
-    if train1_ex2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_ex2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_ex2.tStop = t  # not accounting for scr refresh
-            train1_ex2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_ex2, 'tStopRefresh')  # time at next scr refresh
-            train1_ex2.setAutoDraw(False)
-    
-    # *train1_btn1* updates
-    if train1_btn1.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        train1_btn1.frameNStart = frameN  # exact frame index
-        train1_btn1.tStart = t  # local t and not account for scr refresh
-        train1_btn1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_btn1, 'tStartRefresh')  # time at next scr refresh
-        train1_btn1.setAutoDraw(True)
-    if train1_btn1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_btn1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_btn1.tStop = t  # not accounting for scr refresh
-            train1_btn1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_btn1, 'tStopRefresh')  # time at next scr refresh
-            train1_btn1.setAutoDraw(False)
-    if train1_btn1.status == STARTED:
-        # check whether train1_btn1 has been pressed
-        if train1_btn1.isClicked:
-            if not train1_btn1.wasClicked:
-                train1_btn1.timesOn.append(train1_btn1.buttonClock.getTime()) # store time of first click
-                train1_btn1.timesOff.append(train1_btn1.buttonClock.getTime()) # store time clicked until
-            else:
-                train1_btn1.timesOff[-1] = train1_btn1.buttonClock.getTime() # update time clicked until
-            if not train1_btn1.wasClicked:
-                if 'train1_btn1' not in btn_locks:
-                                    train1_ex1.setOpacity(0.0)
-                                    train1_btn1.setOpacity(0.0)
-                                    train1_ex2.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    train1_btn2.setOpacity(1.0)
-                
-                                    btn_locks['train1_btn2'] = LOCK_ON
-                                    btn_locks['train1_btn1'] = LOCK_OFF
-                                    train1_num.setText('Training example 2 (this could be removed)')
-            train1_btn1.wasClicked = True  # if train1_btn1 is still clicked next frame, it is not a new click
-        else:
-            train1_btn1.wasClicked = False  # if train1_btn1 is clicked next frame, it is a new click
-    else:
-        train1_btn1.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        train1_btn1.wasClicked = False  # if train1_btn1 is clicked next frame, it is a new click
-    
-    # *train1_ex1* updates
-    if train1_ex1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train1_ex1.frameNStart = frameN  # exact frame index
-        train1_ex1.tStart = t  # local t and not account for scr refresh
-        train1_ex1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_ex1, 'tStartRefresh')  # time at next scr refresh
-        train1_ex1.setAutoDraw(True)
-    if train1_ex1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_ex1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_ex1.tStop = t  # not accounting for scr refresh
-            train1_ex1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_ex1, 'tStopRefresh')  # time at next scr refresh
-            train1_ex1.setAutoDraw(False)
-    
-    # *train1_bg1* updates
-    if train1_bg1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train1_bg1.frameNStart = frameN  # exact frame index
-        train1_bg1.tStart = t  # local t and not account for scr refresh
-        train1_bg1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_bg1, 'tStartRefresh')  # time at next scr refresh
-        train1_bg1.setAutoDraw(True)
-    if train1_bg1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_bg1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_bg1.tStop = t  # not accounting for scr refresh
-            train1_bg1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_bg1, 'tStopRefresh')  # time at next scr refresh
-            train1_bg1.setAutoDraw(False)
-    
-    # *train1_bg2* updates
-    if train1_bg2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train1_bg2.frameNStart = frameN  # exact frame index
-        train1_bg2.tStart = t  # local t and not account for scr refresh
-        train1_bg2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train1_bg2, 'tStartRefresh')  # time at next scr refresh
-        train1_bg2.setAutoDraw(True)
-    if train1_bg2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train1_bg2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train1_bg2.tStop = t  # not accounting for scr refresh
-            train1_bg2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train1_bg2, 'tStopRefresh')  # time at next scr refresh
-            train1_bg2.setAutoDraw(False)
-    
-    # check for quit (typically the Esc key)
-    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-        core.quit()
-    
-    # check if all components have finished
-    if not continueRoutine:  # a component has requested a forced-end of Routine
-        break
-    continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in Training_1Components:
-        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-            continueRoutine = True
-            break  # at least one component has not yet finished
-    
-    # refresh the screen
-    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-        win.flip()
+# completed 1.0 repeats of 'TRAIN_1'
 
-# -------Ending Routine "Training_1"-------
-for thisComponent in Training_1Components:
-    if hasattr(thisComponent, "setAutoDraw"):
-        thisComponent.setAutoDraw(False)
-thisExp.addData('train1_num.started', train1_num.tStartRefresh)
-thisExp.addData('train1_num.stopped', train1_num.tStopRefresh)
-thisExp.addData('train1_txt1.started', train1_txt1.tStartRefresh)
-thisExp.addData('train1_txt1.stopped', train1_txt1.tStopRefresh)
-thisExp.addData('train1_btn5.started', train1_btn5.tStartRefresh)
-thisExp.addData('train1_btn5.stopped', train1_btn5.tStopRefresh)
-thisExp.addData('train1_btn5.numClicks', train1_btn5.numClicks)
-if train1_btn5.numClicks:
-   thisExp.addData('train1_btn5.timesOn', train1_btn5.timesOn)
-   thisExp.addData('train1_btn5.timesOff', train1_btn5.timesOff)
-else:
-   thisExp.addData('train1_btn5.timesOn', "")
-   thisExp.addData('train1_btn5.timesOff', "")
-thisExp.addData('train1_ex5.started', train1_ex5.tStartRefresh)
-thisExp.addData('train1_ex5.stopped', train1_ex5.tStopRefresh)
-thisExp.addData('train1_btn4.started', train1_btn4.tStartRefresh)
-thisExp.addData('train1_btn4.stopped', train1_btn4.tStopRefresh)
-thisExp.addData('train1_btn4.numClicks', train1_btn4.numClicks)
-if train1_btn4.numClicks:
-   thisExp.addData('train1_btn4.timesOn', train1_btn4.timesOn)
-   thisExp.addData('train1_btn4.timesOff', train1_btn4.timesOff)
-else:
-   thisExp.addData('train1_btn4.timesOn', "")
-   thisExp.addData('train1_btn4.timesOff', "")
-thisExp.addData('train1_ex4.started', train1_ex4.tStartRefresh)
-thisExp.addData('train1_ex4.stopped', train1_ex4.tStopRefresh)
-thisExp.addData('train1_btn3.started', train1_btn3.tStartRefresh)
-thisExp.addData('train1_btn3.stopped', train1_btn3.tStopRefresh)
-thisExp.addData('train1_btn3.numClicks', train1_btn3.numClicks)
-if train1_btn3.numClicks:
-   thisExp.addData('train1_btn3.timesOn', train1_btn3.timesOn)
-   thisExp.addData('train1_btn3.timesOff', train1_btn3.timesOff)
-else:
-   thisExp.addData('train1_btn3.timesOn', "")
-   thisExp.addData('train1_btn3.timesOff', "")
-thisExp.addData('train1_ex3.started', train1_ex3.tStartRefresh)
-thisExp.addData('train1_ex3.stopped', train1_ex3.tStopRefresh)
-thisExp.addData('train1_btn2.started', train1_btn2.tStartRefresh)
-thisExp.addData('train1_btn2.stopped', train1_btn2.tStopRefresh)
-thisExp.addData('train1_btn2.numClicks', train1_btn2.numClicks)
-if train1_btn2.numClicks:
-   thisExp.addData('train1_btn2.timesOn', train1_btn2.timesOn)
-   thisExp.addData('train1_btn2.timesOff', train1_btn2.timesOff)
-else:
-   thisExp.addData('train1_btn2.timesOn', "")
-   thisExp.addData('train1_btn2.timesOff', "")
-thisExp.addData('train1_ex2.started', train1_ex2.tStartRefresh)
-thisExp.addData('train1_ex2.stopped', train1_ex2.tStopRefresh)
-thisExp.addData('train1_btn1.started', train1_btn1.tStartRefresh)
-thisExp.addData('train1_btn1.stopped', train1_btn1.tStopRefresh)
-thisExp.addData('train1_btn1.numClicks', train1_btn1.numClicks)
-if train1_btn1.numClicks:
-   thisExp.addData('train1_btn1.timesOn', train1_btn1.timesOn)
-   thisExp.addData('train1_btn1.timesOff', train1_btn1.timesOff)
-else:
-   thisExp.addData('train1_btn1.timesOn', "")
-   thisExp.addData('train1_btn1.timesOff', "")
-thisExp.addData('train1_ex1.started', train1_ex1.tStartRefresh)
-thisExp.addData('train1_ex1.stopped', train1_ex1.tStopRefresh)
-thisExp.addData('train1_bg1.started', train1_bg1.tStartRefresh)
-thisExp.addData('train1_bg1.stopped', train1_bg1.tStopRefresh)
-thisExp.addData('train1_bg2.started', train1_bg2.tStartRefresh)
-thisExp.addData('train1_bg2.stopped', train1_bg2.tStopRefresh)
 
-# ------Prepare to start Routine "Performance_1"-------
+# ------Prepare to start Routine "MERGE_TEST_INTRO"-------
 continueRoutine = True
-routineTimer.add(300.500000)
+routineTimer.add(120.000000)
 # update component parameters for each repeat
+# setup some python lists for storing info about the merge_test_intro_mouse
+merge_test_intro_mouse.clicked_name = []
+gotValidClick = False  # until a click is received
 # keep track of which components have finished
-Performance_1Components = [perf1_num, perf1_txt1, perf1_btn5, perf1_ex5, perf1_btn4, perf1_ex4, perf1_btn3, perf1_ex3, perf1_btn2, perf1_ex2, perf1_btn1, perf1_ex1, perf1_bg1, perf1_bg2]
-for thisComponent in Performance_1Components:
+MERGE_TEST_INTROComponents = [intro_text_6, alice_4, merge_example_2, door_6, merge_test_intro_btn, merge_test_intro_mouse]
+for thisComponent in MERGE_TEST_INTROComponents:
     thisComponent.tStart = None
     thisComponent.tStop = None
     thisComponent.tStartRefresh = None
@@ -2113,469 +3659,540 @@ for thisComponent in Performance_1Components:
 # reset timers
 t = 0
 _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-Performance_1Clock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+MERGE_TEST_INTROClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
 
-# -------Run Routine "Performance_1"-------
+# -------Run Routine "MERGE_TEST_INTRO"-------
 while continueRoutine and routineTimer.getTime() > 0:
     # get current time
-    t = Performance_1Clock.getTime()
-    tThisFlip = win.getFutureFlipTime(clock=Performance_1Clock)
+    t = MERGE_TEST_INTROClock.getTime()
+    tThisFlip = win.getFutureFlipTime(clock=MERGE_TEST_INTROClock)
     tThisFlipGlobal = win.getFutureFlipTime(clock=None)
     frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
     # update/draw components on each frame
     
-    # *perf1_num* updates
-    if perf1_num.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+    # *intro_text_6* updates
+    if intro_text_6.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        perf1_num.frameNStart = frameN  # exact frame index
-        perf1_num.tStart = t  # local t and not account for scr refresh
-        perf1_num.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_num, 'tStartRefresh')  # time at next scr refresh
-        perf1_num.setAutoDraw(True)
-    if perf1_num.status == STARTED:
+        intro_text_6.frameNStart = frameN  # exact frame index
+        intro_text_6.tStart = t  # local t and not account for scr refresh
+        intro_text_6.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(intro_text_6, 'tStartRefresh')  # time at next scr refresh
+        intro_text_6.setAutoDraw(True)
+    if intro_text_6.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_num.tStartRefresh + 300.0-frameTolerance:
+        if tThisFlipGlobal > intro_text_6.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
-            perf1_num.tStop = t  # not accounting for scr refresh
-            perf1_num.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_num, 'tStopRefresh')  # time at next scr refresh
-            perf1_num.setAutoDraw(False)
+            intro_text_6.tStop = t  # not accounting for scr refresh
+            intro_text_6.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(intro_text_6, 'tStopRefresh')  # time at next scr refresh
+            intro_text_6.setAutoDraw(False)
     
-    # *perf1_txt1* updates
-    if perf1_txt1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+    # *alice_4* updates
+    if alice_4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        perf1_txt1.frameNStart = frameN  # exact frame index
-        perf1_txt1.tStart = t  # local t and not account for scr refresh
-        perf1_txt1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_txt1, 'tStartRefresh')  # time at next scr refresh
-        perf1_txt1.setAutoDraw(True)
-    if perf1_txt1.status == STARTED:
+        alice_4.frameNStart = frameN  # exact frame index
+        alice_4.tStart = t  # local t and not account for scr refresh
+        alice_4.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(alice_4, 'tStartRefresh')  # time at next scr refresh
+        alice_4.setAutoDraw(True)
+    if alice_4.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_txt1.tStartRefresh + 300.0-frameTolerance:
+        if tThisFlipGlobal > alice_4.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
-            perf1_txt1.tStop = t  # not accounting for scr refresh
-            perf1_txt1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_txt1, 'tStopRefresh')  # time at next scr refresh
-            perf1_txt1.setAutoDraw(False)
+            alice_4.tStop = t  # not accounting for scr refresh
+            alice_4.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(alice_4, 'tStopRefresh')  # time at next scr refresh
+            alice_4.setAutoDraw(False)
     
-    # *perf1_btn5* updates
-    if perf1_btn5.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+    # *merge_example_2* updates
+    if merge_example_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        perf1_btn5.frameNStart = frameN  # exact frame index
-        perf1_btn5.tStart = t  # local t and not account for scr refresh
-        perf1_btn5.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_btn5, 'tStartRefresh')  # time at next scr refresh
-        perf1_btn5.setAutoDraw(True)
-    if perf1_btn5.status == STARTED:
+        merge_example_2.frameNStart = frameN  # exact frame index
+        merge_example_2.tStart = t  # local t and not account for scr refresh
+        merge_example_2.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(merge_example_2, 'tStartRefresh')  # time at next scr refresh
+        merge_example_2.setAutoDraw(True)
+    if merge_example_2.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_btn5.tStartRefresh + 300.0-frameTolerance:
+        if tThisFlipGlobal > merge_example_2.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
-            perf1_btn5.tStop = t  # not accounting for scr refresh
-            perf1_btn5.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_btn5, 'tStopRefresh')  # time at next scr refresh
-            perf1_btn5.setAutoDraw(False)
-    if perf1_btn5.status == STARTED:
-        # check whether perf1_btn5 has been pressed
-        if perf1_btn5.isClicked:
-            if not perf1_btn5.wasClicked:
-                perf1_btn5.timesOn.append(perf1_btn5.buttonClock.getTime()) # store time of first click
-                perf1_btn5.timesOff.append(perf1_btn5.buttonClock.getTime()) # store time clicked until
-            else:
-                perf1_btn5.timesOff[-1] = perf1_btn5.buttonClock.getTime() # update time clicked until
-            if not perf1_btn5.wasClicked:
-                continueRoutine = False  # end routine when perf1_btn5 is clicked
+            merge_example_2.tStop = t  # not accounting for scr refresh
+            merge_example_2.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(merge_example_2, 'tStopRefresh')  # time at next scr refresh
+            merge_example_2.setAutoDraw(False)
+    
+    # *door_6* updates
+    if door_6.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        door_6.frameNStart = frameN  # exact frame index
+        door_6.tStart = t  # local t and not account for scr refresh
+        door_6.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(door_6, 'tStartRefresh')  # time at next scr refresh
+        door_6.setAutoDraw(True)
+    if door_6.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > door_6.tStartRefresh + 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            door_6.tStop = t  # not accounting for scr refresh
+            door_6.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(door_6, 'tStopRefresh')  # time at next scr refresh
+            door_6.setAutoDraw(False)
+    
+    # *merge_test_intro_btn* updates
+    if merge_test_intro_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+        # keep track of start time/frame for later
+        merge_test_intro_btn.frameNStart = frameN  # exact frame index
+        merge_test_intro_btn.tStart = t  # local t and not account for scr refresh
+        merge_test_intro_btn.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(merge_test_intro_btn, 'tStartRefresh')  # time at next scr refresh
+        merge_test_intro_btn.setAutoDraw(True)
+    if merge_test_intro_btn.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            merge_test_intro_btn.tStop = t  # not accounting for scr refresh
+            merge_test_intro_btn.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(merge_test_intro_btn, 'tStopRefresh')  # time at next scr refresh
+            merge_test_intro_btn.setAutoDraw(False)
+    # *merge_test_intro_mouse* updates
+    if merge_test_intro_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
+        # keep track of start time/frame for later
+        merge_test_intro_mouse.frameNStart = frameN  # exact frame index
+        merge_test_intro_mouse.tStart = t  # local t and not account for scr refresh
+        merge_test_intro_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(merge_test_intro_mouse, 'tStartRefresh')  # time at next scr refresh
+        merge_test_intro_mouse.status = STARTED
+        merge_test_intro_mouse.mouseClock.reset()
+        prevButtonState = merge_test_intro_mouse.getPressed()  # if button is down already this ISN'T a new click
+    if merge_test_intro_mouse.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            merge_test_intro_mouse.tStop = t  # not accounting for scr refresh
+            merge_test_intro_mouse.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(merge_test_intro_mouse, 'tStopRefresh')  # time at next scr refresh
+            merge_test_intro_mouse.status = FINISHED
+    if merge_test_intro_mouse.status == STARTED:  # only update if started and not finished!
+        buttons = merge_test_intro_mouse.getPressed()
+        if buttons != prevButtonState:  # button state changed?
+            prevButtonState = buttons
+            if sum(buttons) > 0:  # state changed to a new click
+                # check if the mouse was inside our 'clickable' objects
+                gotValidClick = False
+                for obj in [merge_test_intro_btn]:
+                    if obj.contains(merge_test_intro_mouse):
+                        gotValidClick = True
+                        merge_test_intro_mouse.clicked_name.append(obj.name)
+                if gotValidClick:  # abort routine on response
+                    continueRoutine = False
+    
+    # check for quit (typically the Esc key)
+    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+        core.quit()
+    
+    # check if all components have finished
+    if not continueRoutine:  # a component has requested a forced-end of Routine
+        break
+    continueRoutine = False  # will revert to True if at least one component still running
+    for thisComponent in MERGE_TEST_INTROComponents:
+        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+            continueRoutine = True
+            break  # at least one component has not yet finished
+    
+    # refresh the screen
+    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+        win.flip()
+
+# -------Ending Routine "MERGE_TEST_INTRO"-------
+for thisComponent in MERGE_TEST_INTROComponents:
+    if hasattr(thisComponent, "setAutoDraw"):
+        thisComponent.setAutoDraw(False)
+thisExp.addData('merge_example_2.started', merge_example_2.tStartRefresh)
+thisExp.addData('merge_example_2.stopped', merge_example_2.tStopRefresh)
+# store data for thisExp (ExperimentHandler)
+x, y = merge_test_intro_mouse.getPos()
+buttons = merge_test_intro_mouse.getPressed()
+if sum(buttons):
+    # check if the mouse was inside our 'clickable' objects
+    gotValidClick = False
+    for obj in [merge_test_intro_btn]:
+        if obj.contains(merge_test_intro_mouse):
+            gotValidClick = True
+            merge_test_intro_mouse.clicked_name.append(obj.name)
+thisExp.addData('merge_test_intro_mouse.x', x)
+thisExp.addData('merge_test_intro_mouse.y', y)
+thisExp.addData('merge_test_intro_mouse.leftButton', buttons[0])
+thisExp.addData('merge_test_intro_mouse.midButton', buttons[1])
+thisExp.addData('merge_test_intro_mouse.rightButton', buttons[2])
+if len(merge_test_intro_mouse.clicked_name):
+    thisExp.addData('merge_test_intro_mouse.clicked_name', merge_test_intro_mouse.clicked_name[0])
+thisExp.nextEntry()
+
+# set up handler to look after randomisation of conditions etc
+TEST_1 = data.TrialHandler(nReps=1.0, method='sequential', 
+    extraInfo=expInfo, originPath=-1,
+    trialList=data.importConditions('materials/merge_test_cond.csv'),
+    seed=None, name='TEST_1')
+thisExp.addLoop(TEST_1)  # add the loop to the experiment
+thisTEST_1 = TEST_1.trialList[0]  # so we can initialise stimuli with some values
+# abbreviate parameter names if possible (e.g. rgb = thisTEST_1.rgb)
+if thisTEST_1 != None:
+    for paramName in thisTEST_1:
+        exec('{} = thisTEST_1[paramName]'.format(paramName))
+
+for thisTEST_1 in TEST_1:
+    currentLoop = TEST_1
+    # abbreviate parameter names if possible (e.g. rgb = thisTEST_1.rgb)
+    if thisTEST_1 != None:
+        for paramName in thisTEST_1:
+            exec('{} = thisTEST_1[paramName]'.format(paramName))
+    
+    # ------Prepare to start Routine "MERGE_TEST"-------
+    continueRoutine = True
+    routineTimer.add(90.000000)
+    # update component parameters for each repeat
+    merge_test_ans = ""  # Set routine start values for merge_test_ans
+    merge_test_labels = labels  # Set routine start values for merge_test_labels
+    thisExp.addData('merge_test_labels.routineStartVal', merge_test_labels)  # Save exp start value
+    merge_test_compareN = 0  # Set routine start values for merge_test_compareN
+    merge_test_input = input  # Set routine start values for merge_test_input
+    merge_test_scale_instr.setColor('white', colorSpace='rgb')
+    merge_test_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes')
+    merge_test.setImage(img_path)
+    merge_test_scale.setImage(scaleEqPath)
+    # setup some python lists for storing info about the merge_test_mouse
+    merge_test_mouse.clicked_name = []
+    gotValidClick = False  # until a click is received
+    # keep track of which components have finished
+    MERGE_TESTComponents = [merge_test_scale_instr, merge_test_ans_instr, merge_test_instr, merge_test_scale_right, merge_test_scale_left, merge_test_compare, merge_test_res, merge_test_sep, merge_test, merge_test_scale, merge_test_btn, merge_test_mouse, merge_test_timer]
+    for thisComponent in MERGE_TESTComponents:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    MERGE_TESTClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+    frameN = -1
+    
+    # -------Run Routine "MERGE_TEST"-------
+    while continueRoutine and routineTimer.getTime() > 0:
+        # get current time
+        t = MERGE_TESTClock.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=MERGE_TESTClock)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # *merge_test_scale_instr* updates
+        if merge_test_scale_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test_scale_instr.frameNStart = frameN  # exact frame index
+            merge_test_scale_instr.tStart = t  # local t and not account for scr refresh
+            merge_test_scale_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test_scale_instr, 'tStartRefresh')  # time at next scr refresh
+            merge_test_scale_instr.setAutoDraw(True)
+        if merge_test_scale_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_test_scale_instr.tStartRefresh + 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test_scale_instr.tStop = t  # not accounting for scr refresh
+                merge_test_scale_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test_scale_instr, 'tStopRefresh')  # time at next scr refresh
+                merge_test_scale_instr.setAutoDraw(False)
+        
+        # *merge_test_ans_instr* updates
+        if merge_test_ans_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test_ans_instr.frameNStart = frameN  # exact frame index
+            merge_test_ans_instr.tStart = t  # local t and not account for scr refresh
+            merge_test_ans_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test_ans_instr, 'tStartRefresh')  # time at next scr refresh
+            merge_test_ans_instr.setAutoDraw(True)
+        if merge_test_ans_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_test_ans_instr.tStartRefresh + 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test_ans_instr.tStop = t  # not accounting for scr refresh
+                merge_test_ans_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test_ans_instr, 'tStopRefresh')  # time at next scr refresh
+                merge_test_ans_instr.setAutoDraw(False)
+        
+        # *merge_test_instr* updates
+        if merge_test_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test_instr.frameNStart = frameN  # exact frame index
+            merge_test_instr.tStart = t  # local t and not account for scr refresh
+            merge_test_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test_instr, 'tStartRefresh')  # time at next scr refresh
+            merge_test_instr.setAutoDraw(True)
+        if merge_test_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_test_instr.tStartRefresh + 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test_instr.tStop = t  # not accounting for scr refresh
+                merge_test_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test_instr, 'tStopRefresh')  # time at next scr refresh
+                merge_test_instr.setAutoDraw(False)
+        
+        # *merge_test_scale_right* updates
+        if merge_test_scale_right.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test_scale_right.frameNStart = frameN  # exact frame index
+            merge_test_scale_right.tStart = t  # local t and not account for scr refresh
+            merge_test_scale_right.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test_scale_right, 'tStartRefresh')  # time at next scr refresh
+            merge_test_scale_right.setAutoDraw(True)
+        if merge_test_scale_right.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_test_scale_right.tStartRefresh + 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test_scale_right.tStop = t  # not accounting for scr refresh
+                merge_test_scale_right.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test_scale_right, 'tStopRefresh')  # time at next scr refresh
+                merge_test_scale_right.setAutoDraw(False)
+        
+        # *merge_test_scale_left* updates
+        if merge_test_scale_left.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test_scale_left.frameNStart = frameN  # exact frame index
+            merge_test_scale_left.tStart = t  # local t and not account for scr refresh
+            merge_test_scale_left.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test_scale_left, 'tStartRefresh')  # time at next scr refresh
+            merge_test_scale_left.setAutoDraw(True)
+        if merge_test_scale_left.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_test_scale_left.tStartRefresh + 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test_scale_left.tStop = t  # not accounting for scr refresh
+                merge_test_scale_left.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test_scale_left, 'tStopRefresh')  # time at next scr refresh
+                merge_test_scale_left.setAutoDraw(False)
+        
+        # *merge_test_compare* updates
+        if merge_test_compare.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test_compare.frameNStart = frameN  # exact frame index
+            merge_test_compare.tStart = t  # local t and not account for scr refresh
+            merge_test_compare.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test_compare, 'tStartRefresh')  # time at next scr refresh
+            merge_test_compare.setAutoDraw(True)
+        if merge_test_compare.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_test_compare.tStartRefresh + 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test_compare.tStop = t  # not accounting for scr refresh
+                merge_test_compare.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test_compare, 'tStopRefresh')  # time at next scr refresh
+                merge_test_compare.setAutoDraw(False)
+        
+        # *merge_test_res* updates
+        if merge_test_res.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test_res.frameNStart = frameN  # exact frame index
+            merge_test_res.tStart = t  # local t and not account for scr refresh
+            merge_test_res.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test_res, 'tStartRefresh')  # time at next scr refresh
+            merge_test_res.setAutoDraw(True)
+        if merge_test_res.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_test_res.tStartRefresh + 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test_res.tStop = t  # not accounting for scr refresh
+                merge_test_res.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test_res, 'tStopRefresh')  # time at next scr refresh
+                merge_test_res.setAutoDraw(False)
+        
+        # *merge_test_sep* updates
+        if merge_test_sep.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test_sep.frameNStart = frameN  # exact frame index
+            merge_test_sep.tStart = t  # local t and not account for scr refresh
+            merge_test_sep.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test_sep, 'tStartRefresh')  # time at next scr refresh
+            merge_test_sep.setAutoDraw(True)
+        if merge_test_sep.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_test_sep.tStartRefresh + 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test_sep.tStop = t  # not accounting for scr refresh
+                merge_test_sep.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test_sep, 'tStopRefresh')  # time at next scr refresh
+                merge_test_sep.setAutoDraw(False)
+        
+        # *merge_test* updates
+        if merge_test.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test.frameNStart = frameN  # exact frame index
+            merge_test.tStart = t  # local t and not account for scr refresh
+            merge_test.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test, 'tStartRefresh')  # time at next scr refresh
+            merge_test.setAutoDraw(True)
+        if merge_test.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_test.tStartRefresh + 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test.tStop = t  # not accounting for scr refresh
+                merge_test.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test, 'tStopRefresh')  # time at next scr refresh
+                merge_test.setAutoDraw(False)
+        
+        # *merge_test_scale* updates
+        if merge_test_scale.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test_scale.frameNStart = frameN  # exact frame index
+            merge_test_scale.tStart = t  # local t and not account for scr refresh
+            merge_test_scale.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test_scale, 'tStartRefresh')  # time at next scr refresh
+            merge_test_scale.setAutoDraw(True)
+        if merge_test_scale.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > merge_test_scale.tStartRefresh + 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test_scale.tStop = t  # not accounting for scr refresh
+                merge_test_scale.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test_scale, 'tStopRefresh')  # time at next scr refresh
+                merge_test_scale.setAutoDraw(False)
+        if merge_test_mouse.isPressedIn(merge_test_compare):
+            merge_test_compareN = merge_test_compareN + compare(merge_test_scale,merge_test_input,merge_test_labels,merge_test_scale_instr,merge_test_scale_left,merge_test_scale_right)
+        
+        merge_test_timer.text = timerWarning(mergeTestTimeL,t) 
+        
+        merge_test_ans = merge_test_res.text
+        
+        # *merge_test_btn* updates
+        if merge_test_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test_btn.frameNStart = frameN  # exact frame index
+            merge_test_btn.tStart = t  # local t and not account for scr refresh
+            merge_test_btn.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test_btn, 'tStartRefresh')  # time at next scr refresh
+            merge_test_btn.setAutoDraw(True)
+        if merge_test_btn.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test_btn.tStop = t  # not accounting for scr refresh
+                merge_test_btn.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test_btn, 'tStopRefresh')  # time at next scr refresh
+                merge_test_btn.setAutoDraw(False)
+        # *merge_test_mouse* updates
+        if merge_test_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test_mouse.frameNStart = frameN  # exact frame index
+            merge_test_mouse.tStart = t  # local t and not account for scr refresh
+            merge_test_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test_mouse, 'tStartRefresh')  # time at next scr refresh
+            merge_test_mouse.status = STARTED
+            merge_test_mouse.mouseClock.reset()
+            prevButtonState = merge_test_mouse.getPressed()  # if button is down already this ISN'T a new click
+        if merge_test_mouse.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test_mouse.tStop = t  # not accounting for scr refresh
+                merge_test_mouse.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test_mouse, 'tStopRefresh')  # time at next scr refresh
+                merge_test_mouse.status = FINISHED
+        if merge_test_mouse.status == STARTED:  # only update if started and not finished!
+            buttons = merge_test_mouse.getPressed()
+            if buttons != prevButtonState:  # button state changed?
+                prevButtonState = buttons
+                if sum(buttons) > 0:  # state changed to a new click
+                    # check if the mouse was inside our 'clickable' objects
+                    gotValidClick = False
+                    for obj in [merge_test_btn]:
+                        if obj.contains(merge_test_mouse):
+                            gotValidClick = True
+                            merge_test_mouse.clicked_name.append(obj.name)
+                    if gotValidClick:  # abort routine on response
+                        continueRoutine = False
+        
+        # *merge_test_timer* updates
+        if merge_test_timer.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            merge_test_timer.frameNStart = frameN  # exact frame index
+            merge_test_timer.tStart = t  # local t and not account for scr refresh
+            merge_test_timer.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(merge_test_timer, 'tStartRefresh')  # time at next scr refresh
+            merge_test_timer.setAutoDraw(True)
+        if merge_test_timer.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 90.0-frameTolerance:
+                # keep track of stop time/frame for later
+                merge_test_timer.tStop = t  # not accounting for scr refresh
+                merge_test_timer.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(merge_test_timer, 'tStopRefresh')  # time at next scr refresh
+                merge_test_timer.setAutoDraw(False)
+        
+        # check for quit (typically the Esc key)
+        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+            core.quit()
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in MERGE_TESTComponents:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
-                if 'perf1_btn5' in btn_locks and btn_locks['perf1_btn5']:
-                                    btn_locks['perf1_btn5'] = LOCK_OFF
-                                    time.sleep(0.1)
-                                    continueRoutine = False
-            perf1_btn5.wasClicked = True  # if perf1_btn5 is still clicked next frame, it is not a new click
-        else:
-            perf1_btn5.wasClicked = False  # if perf1_btn5 is clicked next frame, it is a new click
-    else:
-        perf1_btn5.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf1_btn5.wasClicked = False  # if perf1_btn5 is clicked next frame, it is a new click
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
     
-    # *perf1_ex5* updates
-    if perf1_ex5.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf1_ex5.frameNStart = frameN  # exact frame index
-        perf1_ex5.tStart = t  # local t and not account for scr refresh
-        perf1_ex5.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_ex5, 'tStartRefresh')  # time at next scr refresh
-        perf1_ex5.setAutoDraw(True)
-    if perf1_ex5.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_ex5.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf1_ex5.tStop = t  # not accounting for scr refresh
-            perf1_ex5.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_ex5, 'tStopRefresh')  # time at next scr refresh
-            perf1_ex5.setAutoDraw(False)
+    # -------Ending Routine "MERGE_TEST"-------
+    for thisComponent in MERGE_TESTComponents:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    thisExp.addData('merge_test_ans.routineEndVal', merge_test_ans)  # Save end routine value
+    thisExp.addData('merge_test_compareN.routineEndVal', merge_test_compareN)  # Save end routine value
+    thisExp.addData('merge_test_input.routineEndVal', merge_test_input)  # Save end routine value
+    TEST_1.addData('merge_test_scale_right.text',merge_test_scale_right.text)
+    merge_test_scale_right.reset()
+    TEST_1.addData('merge_test_scale_left.text',merge_test_scale_left.text)
+    merge_test_scale_left.reset()
+    TEST_1.addData('merge_test_res.text',merge_test_res.text)
+    merge_test_res.reset()
+    TEST_1.addData('merge_test.started', merge_test.tStartRefresh)
+    TEST_1.addData('merge_test.stopped', merge_test.tStopRefresh)
+    # store data for TEST_1 (TrialHandler)
+    x, y = merge_test_mouse.getPos()
+    buttons = merge_test_mouse.getPressed()
+    if sum(buttons):
+        # check if the mouse was inside our 'clickable' objects
+        gotValidClick = False
+        for obj in [merge_test_btn]:
+            if obj.contains(merge_test_mouse):
+                gotValidClick = True
+                merge_test_mouse.clicked_name.append(obj.name)
+    TEST_1.addData('merge_test_mouse.x', x)
+    TEST_1.addData('merge_test_mouse.y', y)
+    TEST_1.addData('merge_test_mouse.leftButton', buttons[0])
+    TEST_1.addData('merge_test_mouse.midButton', buttons[1])
+    TEST_1.addData('merge_test_mouse.rightButton', buttons[2])
+    if len(merge_test_mouse.clicked_name):
+        TEST_1.addData('merge_test_mouse.clicked_name', merge_test_mouse.clicked_name[0])
+    thisExp.nextEntry()
     
-    # *perf1_btn4* updates
-    if perf1_btn4.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        perf1_btn4.frameNStart = frameN  # exact frame index
-        perf1_btn4.tStart = t  # local t and not account for scr refresh
-        perf1_btn4.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_btn4, 'tStartRefresh')  # time at next scr refresh
-        perf1_btn4.setAutoDraw(True)
-    if perf1_btn4.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_btn4.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf1_btn4.tStop = t  # not accounting for scr refresh
-            perf1_btn4.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_btn4, 'tStopRefresh')  # time at next scr refresh
-            perf1_btn4.setAutoDraw(False)
-    if perf1_btn4.status == STARTED:
-        # check whether perf1_btn4 has been pressed
-        if perf1_btn4.isClicked:
-            if not perf1_btn4.wasClicked:
-                perf1_btn4.timesOn.append(perf1_btn4.buttonClock.getTime()) # store time of first click
-                perf1_btn4.timesOff.append(perf1_btn4.buttonClock.getTime()) # store time clicked until
-            else:
-                perf1_btn4.timesOff[-1] = perf1_btn4.buttonClock.getTime() # update time clicked until
-            if not perf1_btn4.wasClicked:
-                if 'perf1_btn4' in btn_locks and btn_locks['perf1_btn4']:
-                                    perf1_ex4.setOpacity(0.0)
-                                    perf1_btn4.setOpacity(0.0)
-                                    perf1_ex5.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    perf1_btn5.setOpacity(1.0)
-                
-                                    btn_locks['perf1_btn5'] = LOCK_ON
-                                    btn_locks['perf1_btn4'] = LOCK_OFF
-                                    perf1_num.setText('Test example 5 (this could be removed)')
-            perf1_btn4.wasClicked = True  # if perf1_btn4 is still clicked next frame, it is not a new click
-        else:
-            perf1_btn4.wasClicked = False  # if perf1_btn4 is clicked next frame, it is a new click
-    else:
-        perf1_btn4.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf1_btn4.wasClicked = False  # if perf1_btn4 is clicked next frame, it is a new click
-    
-    # *perf1_ex4* updates
-    if perf1_ex4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf1_ex4.frameNStart = frameN  # exact frame index
-        perf1_ex4.tStart = t  # local t and not account for scr refresh
-        perf1_ex4.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_ex4, 'tStartRefresh')  # time at next scr refresh
-        perf1_ex4.setAutoDraw(True)
-    if perf1_ex4.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_ex4.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf1_ex4.tStop = t  # not accounting for scr refresh
-            perf1_ex4.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_ex4, 'tStopRefresh')  # time at next scr refresh
-            perf1_ex4.setAutoDraw(False)
-    
-    # *perf1_btn3* updates
-    if perf1_btn3.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        perf1_btn3.frameNStart = frameN  # exact frame index
-        perf1_btn3.tStart = t  # local t and not account for scr refresh
-        perf1_btn3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_btn3, 'tStartRefresh')  # time at next scr refresh
-        perf1_btn3.setAutoDraw(True)
-    if perf1_btn3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_btn3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf1_btn3.tStop = t  # not accounting for scr refresh
-            perf1_btn3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_btn3, 'tStopRefresh')  # time at next scr refresh
-            perf1_btn3.setAutoDraw(False)
-    if perf1_btn3.status == STARTED:
-        # check whether perf1_btn3 has been pressed
-        if perf1_btn3.isClicked:
-            if not perf1_btn3.wasClicked:
-                perf1_btn3.timesOn.append(perf1_btn3.buttonClock.getTime()) # store time of first click
-                perf1_btn3.timesOff.append(perf1_btn3.buttonClock.getTime()) # store time clicked until
-            else:
-                perf1_btn3.timesOff[-1] = perf1_btn3.buttonClock.getTime() # update time clicked until
-            if not perf1_btn3.wasClicked:
-                if 'perf1_btn3' in btn_locks and btn_locks['perf1_btn3']:
-                                    perf1_ex3.setOpacity(0.0)
-                                    perf1_btn3.setOpacity(0.0)
-                                    perf1_ex4.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    perf1_btn4.setOpacity(1.0)
-                
-                                    btn_locks['perf1_btn4'] = LOCK_ON
-                                    btn_locks['perf1_btn3'] = LOCK_OFF
-                                    perf1_num.setText('Test example 4 (this could be removed)')
-            perf1_btn3.wasClicked = True  # if perf1_btn3 is still clicked next frame, it is not a new click
-        else:
-            perf1_btn3.wasClicked = False  # if perf1_btn3 is clicked next frame, it is a new click
-    else:
-        perf1_btn3.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf1_btn3.wasClicked = False  # if perf1_btn3 is clicked next frame, it is a new click
-    
-    # *perf1_ex3* updates
-    if perf1_ex3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf1_ex3.frameNStart = frameN  # exact frame index
-        perf1_ex3.tStart = t  # local t and not account for scr refresh
-        perf1_ex3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_ex3, 'tStartRefresh')  # time at next scr refresh
-        perf1_ex3.setAutoDraw(True)
-    if perf1_ex3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_ex3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf1_ex3.tStop = t  # not accounting for scr refresh
-            perf1_ex3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_ex3, 'tStopRefresh')  # time at next scr refresh
-            perf1_ex3.setAutoDraw(False)
-    
-    # *perf1_btn2* updates
-    if perf1_btn2.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        perf1_btn2.frameNStart = frameN  # exact frame index
-        perf1_btn2.tStart = t  # local t and not account for scr refresh
-        perf1_btn2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_btn2, 'tStartRefresh')  # time at next scr refresh
-        perf1_btn2.setAutoDraw(True)
-    if perf1_btn2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_btn2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf1_btn2.tStop = t  # not accounting for scr refresh
-            perf1_btn2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_btn2, 'tStopRefresh')  # time at next scr refresh
-            perf1_btn2.setAutoDraw(False)
-    if perf1_btn2.status == STARTED:
-        # check whether perf1_btn2 has been pressed
-        if perf1_btn2.isClicked:
-            if not perf1_btn2.wasClicked:
-                perf1_btn2.timesOn.append(perf1_btn2.buttonClock.getTime()) # store time of first click
-                perf1_btn2.timesOff.append(perf1_btn2.buttonClock.getTime()) # store time clicked until
-            else:
-                perf1_btn2.timesOff[-1] = perf1_btn2.buttonClock.getTime() # update time clicked until
-            if not perf1_btn2.wasClicked:
-                if 'perf1_btn2' in btn_locks and btn_locks['perf1_btn2']:
-                                    perf1_ex2.setOpacity(0.0)
-                                    perf1_btn2.setOpacity(0.0)
-                                    perf1_ex3.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    perf1_btn3.setOpacity(1.0)
-                
-                                    btn_locks['perf1_btn3'] = LOCK_ON
-                                    btn_locks['perf1_btn2'] = LOCK_OFF
-                                    perf1_num.setText('Test example 3 (this could be removed)')
-            perf1_btn2.wasClicked = True  # if perf1_btn2 is still clicked next frame, it is not a new click
-        else:
-            perf1_btn2.wasClicked = False  # if perf1_btn2 is clicked next frame, it is a new click
-    else:
-        perf1_btn2.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf1_btn2.wasClicked = False  # if perf1_btn2 is clicked next frame, it is a new click
-    
-    # *perf1_ex2* updates
-    if perf1_ex2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf1_ex2.frameNStart = frameN  # exact frame index
-        perf1_ex2.tStart = t  # local t and not account for scr refresh
-        perf1_ex2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_ex2, 'tStartRefresh')  # time at next scr refresh
-        perf1_ex2.setAutoDraw(True)
-    if perf1_ex2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_ex2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf1_ex2.tStop = t  # not accounting for scr refresh
-            perf1_ex2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_ex2, 'tStopRefresh')  # time at next scr refresh
-            perf1_ex2.setAutoDraw(False)
-    
-    # *perf1_btn1* updates
-    if perf1_btn1.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        perf1_btn1.frameNStart = frameN  # exact frame index
-        perf1_btn1.tStart = t  # local t and not account for scr refresh
-        perf1_btn1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_btn1, 'tStartRefresh')  # time at next scr refresh
-        perf1_btn1.setAutoDraw(True)
-    if perf1_btn1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_btn1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf1_btn1.tStop = t  # not accounting for scr refresh
-            perf1_btn1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_btn1, 'tStopRefresh')  # time at next scr refresh
-            perf1_btn1.setAutoDraw(False)
-    if perf1_btn1.status == STARTED:
-        # check whether perf1_btn1 has been pressed
-        if perf1_btn1.isClicked:
-            if not perf1_btn1.wasClicked:
-                perf1_btn1.timesOn.append(perf1_btn1.buttonClock.getTime()) # store time of first click
-                perf1_btn1.timesOff.append(perf1_btn1.buttonClock.getTime()) # store time clicked until
-            else:
-                perf1_btn1.timesOff[-1] = perf1_btn1.buttonClock.getTime() # update time clicked until
-            if not perf1_btn1.wasClicked:
-                if 'perf1_btn1' not in btn_locks:
-                                    perf1_ex1.setOpacity(0.0)
-                                    perf1_btn1.setOpacity(0.0)
-                                    perf1_ex2.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    perf1_btn2.setOpacity(1.0)
-                
-                                    btn_locks['perf1_btn2'] = LOCK_ON
-                                    btn_locks['perf1_btn1'] = LOCK_OFF
-                                    perf1_num.setText('Test example 2 (this could be removed)')
-            perf1_btn1.wasClicked = True  # if perf1_btn1 is still clicked next frame, it is not a new click
-        else:
-            perf1_btn1.wasClicked = False  # if perf1_btn1 is clicked next frame, it is a new click
-    else:
-        perf1_btn1.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf1_btn1.wasClicked = False  # if perf1_btn1 is clicked next frame, it is a new click
-    
-    # *perf1_ex1* updates
-    if perf1_ex1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf1_ex1.frameNStart = frameN  # exact frame index
-        perf1_ex1.tStart = t  # local t and not account for scr refresh
-        perf1_ex1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_ex1, 'tStartRefresh')  # time at next scr refresh
-        perf1_ex1.setAutoDraw(True)
-    if perf1_ex1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_ex1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf1_ex1.tStop = t  # not accounting for scr refresh
-            perf1_ex1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_ex1, 'tStopRefresh')  # time at next scr refresh
-            perf1_ex1.setAutoDraw(False)
-    
-    # *perf1_bg1* updates
-    if perf1_bg1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf1_bg1.frameNStart = frameN  # exact frame index
-        perf1_bg1.tStart = t  # local t and not account for scr refresh
-        perf1_bg1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_bg1, 'tStartRefresh')  # time at next scr refresh
-        perf1_bg1.setAutoDraw(True)
-    if perf1_bg1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_bg1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf1_bg1.tStop = t  # not accounting for scr refresh
-            perf1_bg1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_bg1, 'tStopRefresh')  # time at next scr refresh
-            perf1_bg1.setAutoDraw(False)
-    
-    # *perf1_bg2* updates
-    if perf1_bg2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf1_bg2.frameNStart = frameN  # exact frame index
-        perf1_bg2.tStart = t  # local t and not account for scr refresh
-        perf1_bg2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf1_bg2, 'tStartRefresh')  # time at next scr refresh
-        perf1_bg2.setAutoDraw(True)
-    if perf1_bg2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf1_bg2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf1_bg2.tStop = t  # not accounting for scr refresh
-            perf1_bg2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf1_bg2, 'tStopRefresh')  # time at next scr refresh
-            perf1_bg2.setAutoDraw(False)
-    
-    # check for quit (typically the Esc key)
-    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-        core.quit()
-    
-    # check if all components have finished
-    if not continueRoutine:  # a component has requested a forced-end of Routine
-        break
-    continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in Performance_1Components:
-        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-            continueRoutine = True
-            break  # at least one component has not yet finished
-    
-    # refresh the screen
-    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-        win.flip()
+# completed 1.0 repeats of 'TEST_1'
 
-# -------Ending Routine "Performance_1"-------
-for thisComponent in Performance_1Components:
-    if hasattr(thisComponent, "setAutoDraw"):
-        thisComponent.setAutoDraw(False)
-thisExp.addData('perf1_num.started', perf1_num.tStartRefresh)
-thisExp.addData('perf1_num.stopped', perf1_num.tStopRefresh)
-thisExp.addData('perf1_txt1.started', perf1_txt1.tStartRefresh)
-thisExp.addData('perf1_txt1.stopped', perf1_txt1.tStopRefresh)
-thisExp.addData('perf1_btn5.started', perf1_btn5.tStartRefresh)
-thisExp.addData('perf1_btn5.stopped', perf1_btn5.tStopRefresh)
-thisExp.addData('perf1_btn5.numClicks', perf1_btn5.numClicks)
-if perf1_btn5.numClicks:
-   thisExp.addData('perf1_btn5.timesOn', perf1_btn5.timesOn)
-   thisExp.addData('perf1_btn5.timesOff', perf1_btn5.timesOff)
-else:
-   thisExp.addData('perf1_btn5.timesOn', "")
-   thisExp.addData('perf1_btn5.timesOff', "")
-thisExp.addData('perf1_ex5.started', perf1_ex5.tStartRefresh)
-thisExp.addData('perf1_ex5.stopped', perf1_ex5.tStopRefresh)
-thisExp.addData('perf1_btn4.started', perf1_btn4.tStartRefresh)
-thisExp.addData('perf1_btn4.stopped', perf1_btn4.tStopRefresh)
-thisExp.addData('perf1_btn4.numClicks', perf1_btn4.numClicks)
-if perf1_btn4.numClicks:
-   thisExp.addData('perf1_btn4.timesOn', perf1_btn4.timesOn)
-   thisExp.addData('perf1_btn4.timesOff', perf1_btn4.timesOff)
-else:
-   thisExp.addData('perf1_btn4.timesOn', "")
-   thisExp.addData('perf1_btn4.timesOff', "")
-thisExp.addData('perf1_ex4.started', perf1_ex4.tStartRefresh)
-thisExp.addData('perf1_ex4.stopped', perf1_ex4.tStopRefresh)
-thisExp.addData('perf1_btn3.started', perf1_btn3.tStartRefresh)
-thisExp.addData('perf1_btn3.stopped', perf1_btn3.tStopRefresh)
-thisExp.addData('perf1_btn3.numClicks', perf1_btn3.numClicks)
-if perf1_btn3.numClicks:
-   thisExp.addData('perf1_btn3.timesOn', perf1_btn3.timesOn)
-   thisExp.addData('perf1_btn3.timesOff', perf1_btn3.timesOff)
-else:
-   thisExp.addData('perf1_btn3.timesOn', "")
-   thisExp.addData('perf1_btn3.timesOff', "")
-thisExp.addData('perf1_ex3.started', perf1_ex3.tStartRefresh)
-thisExp.addData('perf1_ex3.stopped', perf1_ex3.tStopRefresh)
-thisExp.addData('perf1_btn2.started', perf1_btn2.tStartRefresh)
-thisExp.addData('perf1_btn2.stopped', perf1_btn2.tStopRefresh)
-thisExp.addData('perf1_btn2.numClicks', perf1_btn2.numClicks)
-if perf1_btn2.numClicks:
-   thisExp.addData('perf1_btn2.timesOn', perf1_btn2.timesOn)
-   thisExp.addData('perf1_btn2.timesOff', perf1_btn2.timesOff)
-else:
-   thisExp.addData('perf1_btn2.timesOn', "")
-   thisExp.addData('perf1_btn2.timesOff', "")
-thisExp.addData('perf1_ex2.started', perf1_ex2.tStartRefresh)
-thisExp.addData('perf1_ex2.stopped', perf1_ex2.tStopRefresh)
-thisExp.addData('perf1_btn1.started', perf1_btn1.tStartRefresh)
-thisExp.addData('perf1_btn1.stopped', perf1_btn1.tStopRefresh)
-thisExp.addData('perf1_btn1.numClicks', perf1_btn1.numClicks)
-if perf1_btn1.numClicks:
-   thisExp.addData('perf1_btn1.timesOn', perf1_btn1.timesOn)
-   thisExp.addData('perf1_btn1.timesOff', perf1_btn1.timesOff)
-else:
-   thisExp.addData('perf1_btn1.timesOn', "")
-   thisExp.addData('perf1_btn1.timesOff', "")
-thisExp.addData('perf1_ex1.started', perf1_ex1.tStartRefresh)
-thisExp.addData('perf1_ex1.stopped', perf1_ex1.tStopRefresh)
-thisExp.addData('perf1_bg1.started', perf1_bg1.tStartRefresh)
-thisExp.addData('perf1_bg1.stopped', perf1_bg1.tStopRefresh)
-thisExp.addData('perf1_bg2.started', perf1_bg2.tStartRefresh)
-thisExp.addData('perf1_bg2.stopped', perf1_bg2.tStopRefresh)
 
-# ------Prepare to start Routine "Instructions_2"-------
+# ------Prepare to start Routine "SORT_INTRO"-------
 continueRoutine = True
-routineTimer.add(300.500000)
+routineTimer.add(120.000000)
 # update component parameters for each repeat
+# setup some python lists for storing info about the sort_intro_mouse
+sort_intro_mouse.clicked_name = []
+gotValidClick = False  # until a click is received
 # keep track of which components have finished
-Instructions_2Components = [instr2_txt1, instr2_btn3, instr2_ex3, instr2_btn2, instr2_ex2, instr2_btn1, instr2_ex1]
-for thisComponent in Instructions_2Components:
+SORT_INTROComponents = [intro_text_3, bob_2, sort_example, door_4, sort_intro_btn, sort_intro_mouse]
+for thisComponent in SORT_INTROComponents:
     thisComponent.tStart = None
     thisComponent.tStop = None
     thisComponent.tStartRefresh = None
@@ -2585,742 +4202,1430 @@ for thisComponent in Instructions_2Components:
 # reset timers
 t = 0
 _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-Instructions_2Clock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+SORT_INTROClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
 
-# -------Run Routine "Instructions_2"-------
+# -------Run Routine "SORT_INTRO"-------
 while continueRoutine and routineTimer.getTime() > 0:
     # get current time
-    t = Instructions_2Clock.getTime()
-    tThisFlip = win.getFutureFlipTime(clock=Instructions_2Clock)
+    t = SORT_INTROClock.getTime()
+    tThisFlip = win.getFutureFlipTime(clock=SORT_INTROClock)
     tThisFlipGlobal = win.getFutureFlipTime(clock=None)
     frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
     # update/draw components on each frame
     
-    # *instr2_txt1* updates
-    if instr2_txt1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+    # *intro_text_3* updates
+    if intro_text_3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        instr2_txt1.frameNStart = frameN  # exact frame index
-        instr2_txt1.tStart = t  # local t and not account for scr refresh
-        instr2_txt1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr2_txt1, 'tStartRefresh')  # time at next scr refresh
-        instr2_txt1.setAutoDraw(True)
-    if instr2_txt1.status == STARTED:
+        intro_text_3.frameNStart = frameN  # exact frame index
+        intro_text_3.tStart = t  # local t and not account for scr refresh
+        intro_text_3.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(intro_text_3, 'tStartRefresh')  # time at next scr refresh
+        intro_text_3.setAutoDraw(True)
+    if intro_text_3.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr2_txt1.tStartRefresh + 300.0-frameTolerance:
+        if tThisFlipGlobal > intro_text_3.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
-            instr2_txt1.tStop = t  # not accounting for scr refresh
-            instr2_txt1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr2_txt1, 'tStopRefresh')  # time at next scr refresh
-            instr2_txt1.setAutoDraw(False)
+            intro_text_3.tStop = t  # not accounting for scr refresh
+            intro_text_3.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(intro_text_3, 'tStopRefresh')  # time at next scr refresh
+            intro_text_3.setAutoDraw(False)
     
-    # *instr2_btn3* updates
-    if instr2_btn3.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+    # *bob_2* updates
+    if bob_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        instr2_btn3.frameNStart = frameN  # exact frame index
-        instr2_btn3.tStart = t  # local t and not account for scr refresh
-        instr2_btn3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr2_btn3, 'tStartRefresh')  # time at next scr refresh
-        instr2_btn3.setAutoDraw(True)
-    if instr2_btn3.status == STARTED:
+        bob_2.frameNStart = frameN  # exact frame index
+        bob_2.tStart = t  # local t and not account for scr refresh
+        bob_2.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(bob_2, 'tStartRefresh')  # time at next scr refresh
+        bob_2.setAutoDraw(True)
+    if bob_2.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr2_btn3.tStartRefresh + 300.0-frameTolerance:
+        if tThisFlipGlobal > bob_2.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
-            instr2_btn3.tStop = t  # not accounting for scr refresh
-            instr2_btn3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr2_btn3, 'tStopRefresh')  # time at next scr refresh
-            instr2_btn3.setAutoDraw(False)
-    if instr2_btn3.status == STARTED:
-        # check whether instr2_btn3 has been pressed
-        if instr2_btn3.isClicked:
-            if not instr2_btn3.wasClicked:
-                instr2_btn3.timesOn.append(instr2_btn3.buttonClock.getTime()) # store time of first click
-                instr2_btn3.timesOff.append(instr2_btn3.buttonClock.getTime()) # store time clicked until
-            else:
-                instr2_btn3.timesOff[-1] = instr2_btn3.buttonClock.getTime() # update time clicked until
-            if not instr2_btn3.wasClicked:
-                continueRoutine = False  # end routine when instr2_btn3 is clicked
+            bob_2.tStop = t  # not accounting for scr refresh
+            bob_2.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(bob_2, 'tStopRefresh')  # time at next scr refresh
+            bob_2.setAutoDraw(False)
+    
+    # *sort_example* updates
+    if sort_example.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        sort_example.frameNStart = frameN  # exact frame index
+        sort_example.tStart = t  # local t and not account for scr refresh
+        sort_example.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(sort_example, 'tStartRefresh')  # time at next scr refresh
+        sort_example.setAutoDraw(True)
+    if sort_example.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > sort_example.tStartRefresh + 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            sort_example.tStop = t  # not accounting for scr refresh
+            sort_example.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(sort_example, 'tStopRefresh')  # time at next scr refresh
+            sort_example.setAutoDraw(False)
+    
+    # *door_4* updates
+    if door_4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        door_4.frameNStart = frameN  # exact frame index
+        door_4.tStart = t  # local t and not account for scr refresh
+        door_4.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(door_4, 'tStartRefresh')  # time at next scr refresh
+        door_4.setAutoDraw(True)
+    if door_4.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > door_4.tStartRefresh + 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            door_4.tStop = t  # not accounting for scr refresh
+            door_4.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(door_4, 'tStopRefresh')  # time at next scr refresh
+            door_4.setAutoDraw(False)
+    
+    # *sort_intro_btn* updates
+    if sort_intro_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+        # keep track of start time/frame for later
+        sort_intro_btn.frameNStart = frameN  # exact frame index
+        sort_intro_btn.tStart = t  # local t and not account for scr refresh
+        sort_intro_btn.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(sort_intro_btn, 'tStartRefresh')  # time at next scr refresh
+        sort_intro_btn.setAutoDraw(True)
+    if sort_intro_btn.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            sort_intro_btn.tStop = t  # not accounting for scr refresh
+            sort_intro_btn.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(sort_intro_btn, 'tStopRefresh')  # time at next scr refresh
+            sort_intro_btn.setAutoDraw(False)
+    # *sort_intro_mouse* updates
+    if sort_intro_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
+        # keep track of start time/frame for later
+        sort_intro_mouse.frameNStart = frameN  # exact frame index
+        sort_intro_mouse.tStart = t  # local t and not account for scr refresh
+        sort_intro_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(sort_intro_mouse, 'tStartRefresh')  # time at next scr refresh
+        sort_intro_mouse.status = STARTED
+        sort_intro_mouse.mouseClock.reset()
+        prevButtonState = sort_intro_mouse.getPressed()  # if button is down already this ISN'T a new click
+    if sort_intro_mouse.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            sort_intro_mouse.tStop = t  # not accounting for scr refresh
+            sort_intro_mouse.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(sort_intro_mouse, 'tStopRefresh')  # time at next scr refresh
+            sort_intro_mouse.status = FINISHED
+    if sort_intro_mouse.status == STARTED:  # only update if started and not finished!
+        buttons = sort_intro_mouse.getPressed()
+        if buttons != prevButtonState:  # button state changed?
+            prevButtonState = buttons
+            if sum(buttons) > 0:  # state changed to a new click
+                # check if the mouse was inside our 'clickable' objects
+                gotValidClick = False
+                for obj in [sort_intro_btn]:
+                    if obj.contains(sort_intro_mouse):
+                        gotValidClick = True
+                        sort_intro_mouse.clicked_name.append(obj.name)
+                if gotValidClick:  # abort routine on response
+                    continueRoutine = False
+    
+    # check for quit (typically the Esc key)
+    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+        core.quit()
+    
+    # check if all components have finished
+    if not continueRoutine:  # a component has requested a forced-end of Routine
+        break
+    continueRoutine = False  # will revert to True if at least one component still running
+    for thisComponent in SORT_INTROComponents:
+        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+            continueRoutine = True
+            break  # at least one component has not yet finished
+    
+    # refresh the screen
+    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+        win.flip()
+
+# -------Ending Routine "SORT_INTRO"-------
+for thisComponent in SORT_INTROComponents:
+    if hasattr(thisComponent, "setAutoDraw"):
+        thisComponent.setAutoDraw(False)
+thisExp.addData('sort_example.started', sort_example.tStartRefresh)
+thisExp.addData('sort_example.stopped', sort_example.tStopRefresh)
+# store data for thisExp (ExperimentHandler)
+x, y = sort_intro_mouse.getPos()
+buttons = sort_intro_mouse.getPressed()
+if sum(buttons):
+    # check if the mouse was inside our 'clickable' objects
+    gotValidClick = False
+    for obj in [sort_intro_btn]:
+        if obj.contains(sort_intro_mouse):
+            gotValidClick = True
+            sort_intro_mouse.clicked_name.append(obj.name)
+thisExp.addData('sort_intro_mouse.x', x)
+thisExp.addData('sort_intro_mouse.y', y)
+thisExp.addData('sort_intro_mouse.leftButton', buttons[0])
+thisExp.addData('sort_intro_mouse.midButton', buttons[1])
+thisExp.addData('sort_intro_mouse.rightButton', buttons[2])
+if len(sort_intro_mouse.clicked_name):
+    thisExp.addData('sort_intro_mouse.clicked_name', sort_intro_mouse.clicked_name[0])
+thisExp.nextEntry()
+
+# set up handler to look after randomisation of conditions etc
+TRAIN_2 = data.TrialHandler(nReps=1.0, method='sequential', 
+    extraInfo=expInfo, originPath=-1,
+    trialList=data.importConditions('materials/sort_train_cond.csv'),
+    seed=None, name='TRAIN_2')
+thisExp.addLoop(TRAIN_2)  # add the loop to the experiment
+thisTRAIN_2 = TRAIN_2.trialList[0]  # so we can initialise stimuli with some values
+# abbreviate parameter names if possible (e.g. rgb = thisTRAIN_2.rgb)
+if thisTRAIN_2 != None:
+    for paramName in thisTRAIN_2:
+        exec('{} = thisTRAIN_2[paramName]'.format(paramName))
+
+for thisTRAIN_2 in TRAIN_2:
+    currentLoop = TRAIN_2
+    # abbreviate parameter names if possible (e.g. rgb = thisTRAIN_2.rgb)
+    if thisTRAIN_2 != None:
+        for paramName in thisTRAIN_2:
+            exec('{} = thisTRAIN_2[paramName]'.format(paramName))
+    
+    # ------Prepare to start Routine "SORT_TRAIN"-------
+    continueRoutine = True
+    routineTimer.add(240.000000)
+    # update component parameters for each repeat
+    sort_train_compare_limit = ms_compare  # Set routine start values for sort_train_compare_limit
+    sort_train_ans = ""  # Set routine start values for sort_train_ans
+    sort_train_trace = []  # Set routine start values for sort_train_trace
+    sort_train_compareN = 0  # Set routine start values for sort_train_compareN
+    sort_train_labels = labels  # Set routine start values for sort_train_labels
+    thisExp.addData('sort_train_labels.routineStartVal', sort_train_labels)  # Save exp start value
+    sort_train_path_base = img_path_base  # Set routine start values for sort_train_path_base
+    sort_train_input = input  # Set routine start values for sort_train_input
+    thisExp.addData('sort_train_input.routineStartVal', sort_train_input)  # Save exp start value
+    sort_train_scale_instr.setColor('white', colorSpace='rgb')
+    sort_train_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes')
+    sort_train_board.setImage('materials/merge_sort/imgs/purple_diamond.png')
+    sort_train_scale.setImage(scaleEqPath)
+    sort_train_ex_1.setPos((-0.25, 0.3))
+    sort_train_ex_2.setPos((-0.2, 0.3))
+    sort_train_ex_3.setPos((-0.15, 0.3))
+    sort_train_ex_4.setPos((-0.1, 0.3))
+    sort_train_ex_5.setPos((-0.05, 0.3))
+    sort_train_ex_6.setPos((0.0, 0.3))
+    sort_train_ex_7.setPos((0.05, 0.3))
+    sort_train_ex_8.setPos((0.1,0.3))
+    sort_train_ex_9.setPos((0.15, 0.3))
+    sort_train_ex_10.setPos((0.20, 0.3))
+    sort_train_ex_11.setPos((0.25, 0.3))
+    sort_train_ex_12.setPos((0.30, 0.3))
+    # setup some python lists for storing info about the sort_train_mouse
+    sort_train_mouse.clicked_name = []
+    gotValidClick = False  # until a click is received
+    sort_train_hint.setText('')
+    items = []
+    frameCnt = 0
+    tracePos = []
+    sort_train_hint.text = "Bob uses "+ str(sort_train_compare_limit) + " comparisons\n" + "You have used: 0"
+    
+    movingItem = None
+    (x, y) = sort_train_board.pos
+    (w,h) = sort_train_board.size
+    top = y+h/2
+    bot = y-h/2
+    left = x-w/2
+    right = x+w/2
+    # keep track of which components have finished
+    SORT_TRAINComponents = [sort_train_scale_instr, sort_train_ans_instr, sort_train_instr, sort_train_scale_right, sort_train_scale_left, sort_train_compare, sort_train_res, sort_train_sep, sort_train_board, sort_train_scale, sort_train_ex_1, sort_train_ex_2, sort_train_ex_3, sort_train_ex_4, sort_train_ex_5, sort_train_ex_6, sort_train_ex_7, sort_train_ex_8, sort_train_ex_9, sort_train_ex_10, sort_train_ex_11, sort_train_ex_12, sort_train_btn, sort_train_mouse, sort_train_timer, sort_train_hint]
+    for thisComponent in SORT_TRAINComponents:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    SORT_TRAINClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+    frameN = -1
+    
+    # -------Run Routine "SORT_TRAIN"-------
+    while continueRoutine and routineTimer.getTime() > 0:
+        # get current time
+        t = SORT_TRAINClock.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=SORT_TRAINClock)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # *sort_train_scale_instr* updates
+        if sort_train_scale_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_scale_instr.frameNStart = frameN  # exact frame index
+            sort_train_scale_instr.tStart = t  # local t and not account for scr refresh
+            sort_train_scale_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_scale_instr, 'tStartRefresh')  # time at next scr refresh
+            sort_train_scale_instr.setAutoDraw(True)
+        if sort_train_scale_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_scale_instr.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_scale_instr.tStop = t  # not accounting for scr refresh
+                sort_train_scale_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_scale_instr, 'tStopRefresh')  # time at next scr refresh
+                sort_train_scale_instr.setAutoDraw(False)
+        
+        # *sort_train_ans_instr* updates
+        if sort_train_ans_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ans_instr.frameNStart = frameN  # exact frame index
+            sort_train_ans_instr.tStart = t  # local t and not account for scr refresh
+            sort_train_ans_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ans_instr, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ans_instr.setAutoDraw(True)
+        if sort_train_ans_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ans_instr.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ans_instr.tStop = t  # not accounting for scr refresh
+                sort_train_ans_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ans_instr, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ans_instr.setAutoDraw(False)
+        
+        # *sort_train_instr* updates
+        if sort_train_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_instr.frameNStart = frameN  # exact frame index
+            sort_train_instr.tStart = t  # local t and not account for scr refresh
+            sort_train_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_instr, 'tStartRefresh')  # time at next scr refresh
+            sort_train_instr.setAutoDraw(True)
+        if sort_train_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_instr.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_instr.tStop = t  # not accounting for scr refresh
+                sort_train_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_instr, 'tStopRefresh')  # time at next scr refresh
+                sort_train_instr.setAutoDraw(False)
+        
+        # *sort_train_scale_right* updates
+        if sort_train_scale_right.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_scale_right.frameNStart = frameN  # exact frame index
+            sort_train_scale_right.tStart = t  # local t and not account for scr refresh
+            sort_train_scale_right.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_scale_right, 'tStartRefresh')  # time at next scr refresh
+            sort_train_scale_right.setAutoDraw(True)
+        if sort_train_scale_right.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_scale_right.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_scale_right.tStop = t  # not accounting for scr refresh
+                sort_train_scale_right.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_scale_right, 'tStopRefresh')  # time at next scr refresh
+                sort_train_scale_right.setAutoDraw(False)
+        
+        # *sort_train_scale_left* updates
+        if sort_train_scale_left.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_scale_left.frameNStart = frameN  # exact frame index
+            sort_train_scale_left.tStart = t  # local t and not account for scr refresh
+            sort_train_scale_left.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_scale_left, 'tStartRefresh')  # time at next scr refresh
+            sort_train_scale_left.setAutoDraw(True)
+        if sort_train_scale_left.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_scale_left.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_scale_left.tStop = t  # not accounting for scr refresh
+                sort_train_scale_left.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_scale_left, 'tStopRefresh')  # time at next scr refresh
+                sort_train_scale_left.setAutoDraw(False)
+        
+        # *sort_train_compare* updates
+        if sort_train_compare.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_compare.frameNStart = frameN  # exact frame index
+            sort_train_compare.tStart = t  # local t and not account for scr refresh
+            sort_train_compare.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_compare, 'tStartRefresh')  # time at next scr refresh
+            sort_train_compare.setAutoDraw(True)
+        if sort_train_compare.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_compare.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_compare.tStop = t  # not accounting for scr refresh
+                sort_train_compare.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_compare, 'tStopRefresh')  # time at next scr refresh
+                sort_train_compare.setAutoDraw(False)
+        
+        # *sort_train_res* updates
+        if sort_train_res.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_res.frameNStart = frameN  # exact frame index
+            sort_train_res.tStart = t  # local t and not account for scr refresh
+            sort_train_res.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_res, 'tStartRefresh')  # time at next scr refresh
+            sort_train_res.setAutoDraw(True)
+        if sort_train_res.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_res.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_res.tStop = t  # not accounting for scr refresh
+                sort_train_res.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_res, 'tStopRefresh')  # time at next scr refresh
+                sort_train_res.setAutoDraw(False)
+        
+        # *sort_train_sep* updates
+        if sort_train_sep.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_sep.frameNStart = frameN  # exact frame index
+            sort_train_sep.tStart = t  # local t and not account for scr refresh
+            sort_train_sep.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_sep, 'tStartRefresh')  # time at next scr refresh
+            sort_train_sep.setAutoDraw(True)
+        if sort_train_sep.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_sep.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_sep.tStop = t  # not accounting for scr refresh
+                sort_train_sep.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_sep, 'tStopRefresh')  # time at next scr refresh
+                sort_train_sep.setAutoDraw(False)
+        
+        # *sort_train_board* updates
+        if sort_train_board.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_board.frameNStart = frameN  # exact frame index
+            sort_train_board.tStart = t  # local t and not account for scr refresh
+            sort_train_board.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_board, 'tStartRefresh')  # time at next scr refresh
+            sort_train_board.setAutoDraw(True)
+        if sort_train_board.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_board.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_board.tStop = t  # not accounting for scr refresh
+                sort_train_board.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_board, 'tStopRefresh')  # time at next scr refresh
+                sort_train_board.setAutoDraw(False)
+        
+        # *sort_train_scale* updates
+        if sort_train_scale.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_scale.frameNStart = frameN  # exact frame index
+            sort_train_scale.tStart = t  # local t and not account for scr refresh
+            sort_train_scale.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_scale, 'tStartRefresh')  # time at next scr refresh
+            sort_train_scale.setAutoDraw(True)
+        if sort_train_scale.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_scale.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_scale.tStop = t  # not accounting for scr refresh
+                sort_train_scale.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_scale, 'tStopRefresh')  # time at next scr refresh
+                sort_train_scale.setAutoDraw(False)
+        
+        # *sort_train_ex_1* updates
+        if sort_train_ex_1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ex_1.frameNStart = frameN  # exact frame index
+            sort_train_ex_1.tStart = t  # local t and not account for scr refresh
+            sort_train_ex_1.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ex_1, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ex_1.setAutoDraw(True)
+        if sort_train_ex_1.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ex_1.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ex_1.tStop = t  # not accounting for scr refresh
+                sort_train_ex_1.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ex_1, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ex_1.setAutoDraw(False)
+        
+        # *sort_train_ex_2* updates
+        if sort_train_ex_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ex_2.frameNStart = frameN  # exact frame index
+            sort_train_ex_2.tStart = t  # local t and not account for scr refresh
+            sort_train_ex_2.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ex_2, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ex_2.setAutoDraw(True)
+        if sort_train_ex_2.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ex_2.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ex_2.tStop = t  # not accounting for scr refresh
+                sort_train_ex_2.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ex_2, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ex_2.setAutoDraw(False)
+        
+        # *sort_train_ex_3* updates
+        if sort_train_ex_3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ex_3.frameNStart = frameN  # exact frame index
+            sort_train_ex_3.tStart = t  # local t and not account for scr refresh
+            sort_train_ex_3.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ex_3, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ex_3.setAutoDraw(True)
+        if sort_train_ex_3.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ex_3.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ex_3.tStop = t  # not accounting for scr refresh
+                sort_train_ex_3.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ex_3, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ex_3.setAutoDraw(False)
+        
+        # *sort_train_ex_4* updates
+        if sort_train_ex_4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ex_4.frameNStart = frameN  # exact frame index
+            sort_train_ex_4.tStart = t  # local t and not account for scr refresh
+            sort_train_ex_4.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ex_4, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ex_4.setAutoDraw(True)
+        if sort_train_ex_4.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ex_4.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ex_4.tStop = t  # not accounting for scr refresh
+                sort_train_ex_4.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ex_4, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ex_4.setAutoDraw(False)
+        
+        # *sort_train_ex_5* updates
+        if sort_train_ex_5.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ex_5.frameNStart = frameN  # exact frame index
+            sort_train_ex_5.tStart = t  # local t and not account for scr refresh
+            sort_train_ex_5.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ex_5, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ex_5.setAutoDraw(True)
+        if sort_train_ex_5.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ex_5.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ex_5.tStop = t  # not accounting for scr refresh
+                sort_train_ex_5.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ex_5, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ex_5.setAutoDraw(False)
+        
+        # *sort_train_ex_6* updates
+        if sort_train_ex_6.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ex_6.frameNStart = frameN  # exact frame index
+            sort_train_ex_6.tStart = t  # local t and not account for scr refresh
+            sort_train_ex_6.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ex_6, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ex_6.setAutoDraw(True)
+        if sort_train_ex_6.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ex_6.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ex_6.tStop = t  # not accounting for scr refresh
+                sort_train_ex_6.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ex_6, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ex_6.setAutoDraw(False)
+        
+        # *sort_train_ex_7* updates
+        if sort_train_ex_7.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ex_7.frameNStart = frameN  # exact frame index
+            sort_train_ex_7.tStart = t  # local t and not account for scr refresh
+            sort_train_ex_7.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ex_7, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ex_7.setAutoDraw(True)
+        if sort_train_ex_7.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ex_7.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ex_7.tStop = t  # not accounting for scr refresh
+                sort_train_ex_7.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ex_7, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ex_7.setAutoDraw(False)
+        
+        # *sort_train_ex_8* updates
+        if sort_train_ex_8.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ex_8.frameNStart = frameN  # exact frame index
+            sort_train_ex_8.tStart = t  # local t and not account for scr refresh
+            sort_train_ex_8.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ex_8, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ex_8.setAutoDraw(True)
+        if sort_train_ex_8.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ex_8.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ex_8.tStop = t  # not accounting for scr refresh
+                sort_train_ex_8.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ex_8, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ex_8.setAutoDraw(False)
+        
+        # *sort_train_ex_9* updates
+        if sort_train_ex_9.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ex_9.frameNStart = frameN  # exact frame index
+            sort_train_ex_9.tStart = t  # local t and not account for scr refresh
+            sort_train_ex_9.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ex_9, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ex_9.setAutoDraw(True)
+        if sort_train_ex_9.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ex_9.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ex_9.tStop = t  # not accounting for scr refresh
+                sort_train_ex_9.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ex_9, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ex_9.setAutoDraw(False)
+        
+        # *sort_train_ex_10* updates
+        if sort_train_ex_10.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ex_10.frameNStart = frameN  # exact frame index
+            sort_train_ex_10.tStart = t  # local t and not account for scr refresh
+            sort_train_ex_10.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ex_10, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ex_10.setAutoDraw(True)
+        if sort_train_ex_10.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ex_10.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ex_10.tStop = t  # not accounting for scr refresh
+                sort_train_ex_10.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ex_10, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ex_10.setAutoDraw(False)
+        
+        # *sort_train_ex_11* updates
+        if sort_train_ex_11.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ex_11.frameNStart = frameN  # exact frame index
+            sort_train_ex_11.tStart = t  # local t and not account for scr refresh
+            sort_train_ex_11.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ex_11, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ex_11.setAutoDraw(True)
+        if sort_train_ex_11.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ex_11.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ex_11.tStop = t  # not accounting for scr refresh
+                sort_train_ex_11.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ex_11, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ex_11.setAutoDraw(False)
+        
+        # *sort_train_ex_12* updates
+        if sort_train_ex_12.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_ex_12.frameNStart = frameN  # exact frame index
+            sort_train_ex_12.tStart = t  # local t and not account for scr refresh
+            sort_train_ex_12.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_ex_12, 'tStartRefresh')  # time at next scr refresh
+            sort_train_ex_12.setAutoDraw(True)
+        if sort_train_ex_12.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_train_ex_12.tStartRefresh + 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_ex_12.tStop = t  # not accounting for scr refresh
+                sort_train_ex_12.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_ex_12, 'tStopRefresh')  # time at next scr refresh
+                sort_train_ex_12.setAutoDraw(False)
+        
+        # *sort_train_btn* updates
+        if sort_train_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_btn.frameNStart = frameN  # exact frame index
+            sort_train_btn.tStart = t  # local t and not account for scr refresh
+            sort_train_btn.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_btn, 'tStartRefresh')  # time at next scr refresh
+            sort_train_btn.setAutoDraw(True)
+        if sort_train_btn.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_btn.tStop = t  # not accounting for scr refresh
+                sort_train_btn.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_btn, 'tStopRefresh')  # time at next scr refresh
+                sort_train_btn.setAutoDraw(False)
+        # *sort_train_mouse* updates
+        if sort_train_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_mouse.frameNStart = frameN  # exact frame index
+            sort_train_mouse.tStart = t  # local t and not account for scr refresh
+            sort_train_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_mouse, 'tStartRefresh')  # time at next scr refresh
+            sort_train_mouse.status = STARTED
+            sort_train_mouse.mouseClock.reset()
+            prevButtonState = sort_train_mouse.getPressed()  # if button is down already this ISN'T a new click
+        if sort_train_mouse.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_mouse.tStop = t  # not accounting for scr refresh
+                sort_train_mouse.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_mouse, 'tStopRefresh')  # time at next scr refresh
+                sort_train_mouse.status = FINISHED
+        if sort_train_mouse.status == STARTED:  # only update if started and not finished!
+            buttons = sort_train_mouse.getPressed()
+            if buttons != prevButtonState:  # button state changed?
+                prevButtonState = buttons
+                if sum(buttons) > 0:  # state changed to a new click
+                    # check if the mouse was inside our 'clickable' objects
+                    gotValidClick = False
+                    for obj in [sort_train_btn]:
+                        if obj.contains(sort_train_mouse):
+                            gotValidClick = True
+                            sort_train_mouse.clicked_name.append(obj.name)
+                    if gotValidClick:  # abort routine on response
+                        continueRoutine = False
+        
+        # *sort_train_timer* updates
+        if sort_train_timer.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_timer.frameNStart = frameN  # exact frame index
+            sort_train_timer.tStart = t  # local t and not account for scr refresh
+            sort_train_timer.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_timer, 'tStartRefresh')  # time at next scr refresh
+            sort_train_timer.setAutoDraw(True)
+        if sort_train_timer.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_timer.tStop = t  # not accounting for scr refresh
+                sort_train_timer.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_timer, 'tStopRefresh')  # time at next scr refresh
+                sort_train_timer.setAutoDraw(False)
+        
+        # *sort_train_hint* updates
+        if sort_train_hint.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_train_hint.frameNStart = frameN  # exact frame index
+            sort_train_hint.tStart = t  # local t and not account for scr refresh
+            sort_train_hint.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_train_hint, 'tStartRefresh')  # time at next scr refresh
+            sort_train_hint.setAutoDraw(True)
+        if sort_train_hint.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 240.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_train_hint.tStop = t  # not accounting for scr refresh
+                sort_train_hint.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_train_hint, 'tStopRefresh')  # time at next scr refresh
+                sort_train_hint.setAutoDraw(False)
+        frameCnt = frameCnt + 1
+        
+        if items == []:
+            items = enableImageComponents(SORT_TRAINComponents,sort_train_labels,sort_train_path_base)
+        
+        movingItem = moveItem(sort_train_mouse, movingItem)
+        
+        if frameCnt % traceSaveAtFrame == 0:
+            newTracePos = []
+            for i in items:
+                newTracePos.append([i.name.split('_')[-1],i.pos[0],i.pos[1]])
+            hasMoved = updateTrace(tracePos,newTracePos)
+            if hasMoved != []:
+                for j in hasMoved:
+                    sort_train_trace.append(j)
+            tracePos = newTracePos
+        
+        if sort_train_mouse.isPressedIn(sort_train_compare):
+            sort_train_compareN = sort_train_compareN + compare(sort_train_scale,sort_train_input,sort_train_labels,sort_train_scale_instr,sort_train_scale_left,sort_train_scale_right)
+            sort_train_hint.text = "Bob uses "+ str(sort_train_compare_limit) + " comparisons\n" + "You have used: " + str(sort_train_compareN)
+            
+        sort_train_ans = sort_train_res.text
+        sort_train_timer.text = timerWarning(sortTrainTimeL,t)
+        
+        # check for quit (typically the Esc key)
+        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+            core.quit()
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in SORT_TRAINComponents:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
-                if 'instr2_btn3' in btn_locks and btn_locks['instr2_btn3']:
-                                    btn_locks['instr2_btn3'] = LOCK_OFF
-                                    time.sleep(0.1)
-                                    continueRoutine = False
-            instr2_btn3.wasClicked = True  # if instr2_btn3 is still clicked next frame, it is not a new click
-        else:
-            instr2_btn3.wasClicked = False  # if instr2_btn3 is clicked next frame, it is a new click
-    else:
-        instr2_btn3.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        instr2_btn3.wasClicked = False  # if instr2_btn3 is clicked next frame, it is a new click
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
     
-    # *instr2_ex3* updates
-    if instr2_ex3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        instr2_ex3.frameNStart = frameN  # exact frame index
-        instr2_ex3.tStart = t  # local t and not account for scr refresh
-        instr2_ex3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr2_ex3, 'tStartRefresh')  # time at next scr refresh
-        instr2_ex3.setAutoDraw(True)
-    if instr2_ex3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr2_ex3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            instr2_ex3.tStop = t  # not accounting for scr refresh
-            instr2_ex3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr2_ex3, 'tStopRefresh')  # time at next scr refresh
-            instr2_ex3.setAutoDraw(False)
+    # -------Ending Routine "SORT_TRAIN"-------
+    for thisComponent in SORT_TRAINComponents:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    thisExp.addData('sort_train_ans.routineEndVal', sort_train_ans)  # Save end routine value
+    thisExp.addData('sort_train_trace.routineEndVal', sort_train_trace)  # Save end routine value
+    thisExp.addData('sort_train_compareN.routineEndVal', sort_train_compareN)  # Save end routine value
+    TRAIN_2.addData('sort_train_scale_right.text',sort_train_scale_right.text)
+    sort_train_scale_right.reset()
+    TRAIN_2.addData('sort_train_scale_left.text',sort_train_scale_left.text)
+    sort_train_scale_left.reset()
+    TRAIN_2.addData('sort_train_res.text',sort_train_res.text)
+    sort_train_res.reset()
+    TRAIN_2.addData('sort_train_ex_1.started', sort_train_ex_1.tStartRefresh)
+    TRAIN_2.addData('sort_train_ex_1.stopped', sort_train_ex_1.tStopRefresh)
+    # store data for TRAIN_2 (TrialHandler)
+    x, y = sort_train_mouse.getPos()
+    buttons = sort_train_mouse.getPressed()
+    if sum(buttons):
+        # check if the mouse was inside our 'clickable' objects
+        gotValidClick = False
+        for obj in [sort_train_btn]:
+            if obj.contains(sort_train_mouse):
+                gotValidClick = True
+                sort_train_mouse.clicked_name.append(obj.name)
+    TRAIN_2.addData('sort_train_mouse.x', x)
+    TRAIN_2.addData('sort_train_mouse.y', y)
+    TRAIN_2.addData('sort_train_mouse.leftButton', buttons[0])
+    TRAIN_2.addData('sort_train_mouse.midButton', buttons[1])
+    TRAIN_2.addData('sort_train_mouse.rightButton', buttons[2])
+    if len(sort_train_mouse.clicked_name):
+        TRAIN_2.addData('sort_train_mouse.clicked_name', sort_train_mouse.clicked_name[0])
     
-    # *instr2_btn2* updates
-    if instr2_btn2.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        instr2_btn2.frameNStart = frameN  # exact frame index
-        instr2_btn2.tStart = t  # local t and not account for scr refresh
-        instr2_btn2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr2_btn2, 'tStartRefresh')  # time at next scr refresh
-        instr2_btn2.setAutoDraw(True)
-    if instr2_btn2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr2_btn2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            instr2_btn2.tStop = t  # not accounting for scr refresh
-            instr2_btn2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr2_btn2, 'tStopRefresh')  # time at next scr refresh
-            instr2_btn2.setAutoDraw(False)
-    if instr2_btn2.status == STARTED:
-        # check whether instr2_btn2 has been pressed
-        if instr2_btn2.isClicked:
-            if not instr2_btn2.wasClicked:
-                instr2_btn2.timesOn.append(instr2_btn2.buttonClock.getTime()) # store time of first click
-                instr2_btn2.timesOff.append(instr2_btn2.buttonClock.getTime()) # store time clicked until
-            else:
-                instr2_btn2.timesOff[-1] = instr2_btn2.buttonClock.getTime() # update time clicked until
-            if not instr2_btn2.wasClicked:
-                if 'instr2_btn2' in btn_locks and btn_locks['instr2_btn2']:
-                                    instr2_ex2.setOpacity(0.0)
-                                    instr2_btn2.setOpacity(0.0)
-                                    instr2_ex3.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    instr2_btn3.setOpacity(1.0)
+    # ------Prepare to start Routine "SORT_EXPL"-------
+    continueRoutine = True
+    routineTimer.add(60.000000)
+    # update component parameters for each repeat
+    sort_expl_trace = []  # Set routine start values for sort_expl_trace
+    sort_expl_labels = labels  # Set routine start values for sort_expl_labels
+    thisExp.addData('sort_expl_labels.routineStartVal', sort_expl_labels)  # Save exp start value
+    sort_expl_compareN = 0  # Set routine start values for sort_expl_compareN
+    sort_expl_path_base = img_path_base  # Set routine start values for sort_expl_path_base
+    sort_expl_input = input  # Set routine start values for sort_expl_input
+    thisExp.addData('sort_expl_input.routineStartVal', sort_expl_input)  # Save exp start value
+    sort_expl_scale_instr.setColor('white', colorSpace='rgb')
+    sort_expl_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes')
+    sort_expl_feedback_1.setColor('white', colorSpace='rgb')
+    sort_expl_feedback_1.setText('')
+    sort_expl_feedback_2.setColor('white', colorSpace='rgb')
+    sort_expl_feedback_2.setText('')
+    sort_expl_res.setText('')
+    sort_expl_board.setImage('materials/merge_sort/imgs/purple_diamond.png')
+    sort_expl_scale.setImage(scaleEqPath)
+    sort_expl_ex_1.setPos((-0.25, 0.3))
+    sort_expl_ex_2.setPos((-0.2, 0.3))
+    sort_expl_ex_3.setPos((-0.15, 0.3))
+    sort_expl_ex_4.setPos((-0.1, 0.3))
+    sort_expl_ex_5.setPos((-0.05, 0.3))
+    sort_expl_ex_6.setPos((0.0, 0.3))
+    sort_expl_ex_7.setPos((0.05, 0.3))
+    sort_expl_ex_8.setPos((0.1,0.3))
+    sort_expl_ex_9.setPos((0.15, 0.3))
+    sort_expl_ex_10.setPos((0.20, 0.3))
+    sort_expl_ex_11.setPos((0.25, 0.3))
+    sort_expl_ex_12.setPos((0.30, 0.3))
+    # setup some python lists for storing info about the sort_expl_mouse
+    sort_expl_mouse.clicked_name = []
+    gotValidClick = False  # until a click is received
+    sort_expl_hint.setText('')
+    positions = []
+    for u in items:
+        positions.append(u.pos)
+        
+    items = []
+    frameCnt = 0
+    tracePos = []
+    movingItem = None
+    
+    sort_expl_hint.text = "Bob uses "+ str(sort_train_compare_limit) + " comparisons\n" + "You have used: " + str(sort_train_compareN+sort_expl_compareN)
+    sort_expl_res.text = sort_train_ans
+    checkSortTrainAns(sort_expl_input,sort_expl_labels,sort_expl_res.text,sort_expl_feedback_1,sort_expl_feedback_2)
+    
+    (x, y) = sort_expl_board.pos
+    (w,h) = sort_expl_board.size
+    top = y+h/2
+    bot = y-h/2
+    left = x-w/2
+    right = x+w/2
+    # keep track of which components have finished
+    SORT_EXPLComponents = [sort_expl_scale_instr, sort_expl_feedback_1, sort_expl_feedback_2, sort_expl_instr, sort_expl_scale_right, sort_expl_scale_left, sort_expl_compare, sort_expl_res, sort_expl_sep, sort_expl_board, sort_expl_scale, sort_expl_ex_1, sort_expl_ex_2, sort_expl_ex_3, sort_expl_ex_4, sort_expl_ex_5, sort_expl_ex_6, sort_expl_ex_7, sort_expl_ex_8, sort_expl_ex_9, sort_expl_ex_10, sort_expl_ex_11, sort_expl_ex_12, sort_expl_btn, sort_expl_mouse, sort_expl_timer, sort_expl_hint]
+    for thisComponent in SORT_EXPLComponents:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    SORT_EXPLClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+    frameN = -1
+    
+    # -------Run Routine "SORT_EXPL"-------
+    while continueRoutine and routineTimer.getTime() > 0:
+        # get current time
+        t = SORT_EXPLClock.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=SORT_EXPLClock)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # *sort_expl_scale_instr* updates
+        if sort_expl_scale_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_scale_instr.frameNStart = frameN  # exact frame index
+            sort_expl_scale_instr.tStart = t  # local t and not account for scr refresh
+            sort_expl_scale_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_scale_instr, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_scale_instr.setAutoDraw(True)
+        if sort_expl_scale_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_scale_instr.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_scale_instr.tStop = t  # not accounting for scr refresh
+                sort_expl_scale_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_scale_instr, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_scale_instr.setAutoDraw(False)
+        
+        # *sort_expl_feedback_1* updates
+        if sort_expl_feedback_1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_feedback_1.frameNStart = frameN  # exact frame index
+            sort_expl_feedback_1.tStart = t  # local t and not account for scr refresh
+            sort_expl_feedback_1.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_feedback_1, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_feedback_1.setAutoDraw(True)
+        if sort_expl_feedback_1.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_feedback_1.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_feedback_1.tStop = t  # not accounting for scr refresh
+                sort_expl_feedback_1.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_feedback_1, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_feedback_1.setAutoDraw(False)
+        
+        # *sort_expl_feedback_2* updates
+        if sort_expl_feedback_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_feedback_2.frameNStart = frameN  # exact frame index
+            sort_expl_feedback_2.tStart = t  # local t and not account for scr refresh
+            sort_expl_feedback_2.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_feedback_2, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_feedback_2.setAutoDraw(True)
+        if sort_expl_feedback_2.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_feedback_2.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_feedback_2.tStop = t  # not accounting for scr refresh
+                sort_expl_feedback_2.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_feedback_2, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_feedback_2.setAutoDraw(False)
+        
+        # *sort_expl_instr* updates
+        if sort_expl_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_instr.frameNStart = frameN  # exact frame index
+            sort_expl_instr.tStart = t  # local t and not account for scr refresh
+            sort_expl_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_instr, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_instr.setAutoDraw(True)
+        if sort_expl_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_instr.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_instr.tStop = t  # not accounting for scr refresh
+                sort_expl_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_instr, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_instr.setAutoDraw(False)
+        
+        # *sort_expl_scale_right* updates
+        if sort_expl_scale_right.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_scale_right.frameNStart = frameN  # exact frame index
+            sort_expl_scale_right.tStart = t  # local t and not account for scr refresh
+            sort_expl_scale_right.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_scale_right, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_scale_right.setAutoDraw(True)
+        if sort_expl_scale_right.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_scale_right.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_scale_right.tStop = t  # not accounting for scr refresh
+                sort_expl_scale_right.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_scale_right, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_scale_right.setAutoDraw(False)
+        
+        # *sort_expl_scale_left* updates
+        if sort_expl_scale_left.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_scale_left.frameNStart = frameN  # exact frame index
+            sort_expl_scale_left.tStart = t  # local t and not account for scr refresh
+            sort_expl_scale_left.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_scale_left, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_scale_left.setAutoDraw(True)
+        if sort_expl_scale_left.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_scale_left.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_scale_left.tStop = t  # not accounting for scr refresh
+                sort_expl_scale_left.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_scale_left, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_scale_left.setAutoDraw(False)
+        
+        # *sort_expl_compare* updates
+        if sort_expl_compare.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_compare.frameNStart = frameN  # exact frame index
+            sort_expl_compare.tStart = t  # local t and not account for scr refresh
+            sort_expl_compare.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_compare, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_compare.setAutoDraw(True)
+        if sort_expl_compare.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_compare.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_compare.tStop = t  # not accounting for scr refresh
+                sort_expl_compare.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_compare, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_compare.setAutoDraw(False)
+        
+        # *sort_expl_res* updates
+        if sort_expl_res.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_res.frameNStart = frameN  # exact frame index
+            sort_expl_res.tStart = t  # local t and not account for scr refresh
+            sort_expl_res.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_res, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_res.setAutoDraw(True)
+        if sort_expl_res.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_res.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_res.tStop = t  # not accounting for scr refresh
+                sort_expl_res.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_res, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_res.setAutoDraw(False)
+        
+        # *sort_expl_sep* updates
+        if sort_expl_sep.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_sep.frameNStart = frameN  # exact frame index
+            sort_expl_sep.tStart = t  # local t and not account for scr refresh
+            sort_expl_sep.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_sep, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_sep.setAutoDraw(True)
+        if sort_expl_sep.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_sep.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_sep.tStop = t  # not accounting for scr refresh
+                sort_expl_sep.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_sep, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_sep.setAutoDraw(False)
+        
+        # *sort_expl_board* updates
+        if sort_expl_board.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_board.frameNStart = frameN  # exact frame index
+            sort_expl_board.tStart = t  # local t and not account for scr refresh
+            sort_expl_board.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_board, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_board.setAutoDraw(True)
+        if sort_expl_board.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_board.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_board.tStop = t  # not accounting for scr refresh
+                sort_expl_board.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_board, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_board.setAutoDraw(False)
+        
+        # *sort_expl_scale* updates
+        if sort_expl_scale.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_scale.frameNStart = frameN  # exact frame index
+            sort_expl_scale.tStart = t  # local t and not account for scr refresh
+            sort_expl_scale.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_scale, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_scale.setAutoDraw(True)
+        if sort_expl_scale.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_scale.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_scale.tStop = t  # not accounting for scr refresh
+                sort_expl_scale.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_scale, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_scale.setAutoDraw(False)
+        
+        # *sort_expl_ex_1* updates
+        if sort_expl_ex_1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_ex_1.frameNStart = frameN  # exact frame index
+            sort_expl_ex_1.tStart = t  # local t and not account for scr refresh
+            sort_expl_ex_1.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_ex_1, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_ex_1.setAutoDraw(True)
+        if sort_expl_ex_1.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_ex_1.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_ex_1.tStop = t  # not accounting for scr refresh
+                sort_expl_ex_1.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_ex_1, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_ex_1.setAutoDraw(False)
+        
+        # *sort_expl_ex_2* updates
+        if sort_expl_ex_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_ex_2.frameNStart = frameN  # exact frame index
+            sort_expl_ex_2.tStart = t  # local t and not account for scr refresh
+            sort_expl_ex_2.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_ex_2, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_ex_2.setAutoDraw(True)
+        if sort_expl_ex_2.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_ex_2.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_ex_2.tStop = t  # not accounting for scr refresh
+                sort_expl_ex_2.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_ex_2, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_ex_2.setAutoDraw(False)
+        
+        # *sort_expl_ex_3* updates
+        if sort_expl_ex_3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_ex_3.frameNStart = frameN  # exact frame index
+            sort_expl_ex_3.tStart = t  # local t and not account for scr refresh
+            sort_expl_ex_3.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_ex_3, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_ex_3.setAutoDraw(True)
+        if sort_expl_ex_3.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_ex_3.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_ex_3.tStop = t  # not accounting for scr refresh
+                sort_expl_ex_3.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_ex_3, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_ex_3.setAutoDraw(False)
+        
+        # *sort_expl_ex_4* updates
+        if sort_expl_ex_4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_ex_4.frameNStart = frameN  # exact frame index
+            sort_expl_ex_4.tStart = t  # local t and not account for scr refresh
+            sort_expl_ex_4.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_ex_4, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_ex_4.setAutoDraw(True)
+        if sort_expl_ex_4.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_ex_4.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_ex_4.tStop = t  # not accounting for scr refresh
+                sort_expl_ex_4.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_ex_4, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_ex_4.setAutoDraw(False)
+        
+        # *sort_expl_ex_5* updates
+        if sort_expl_ex_5.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_ex_5.frameNStart = frameN  # exact frame index
+            sort_expl_ex_5.tStart = t  # local t and not account for scr refresh
+            sort_expl_ex_5.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_ex_5, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_ex_5.setAutoDraw(True)
+        if sort_expl_ex_5.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_ex_5.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_ex_5.tStop = t  # not accounting for scr refresh
+                sort_expl_ex_5.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_ex_5, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_ex_5.setAutoDraw(False)
+        
+        # *sort_expl_ex_6* updates
+        if sort_expl_ex_6.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_ex_6.frameNStart = frameN  # exact frame index
+            sort_expl_ex_6.tStart = t  # local t and not account for scr refresh
+            sort_expl_ex_6.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_ex_6, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_ex_6.setAutoDraw(True)
+        if sort_expl_ex_6.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_ex_6.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_ex_6.tStop = t  # not accounting for scr refresh
+                sort_expl_ex_6.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_ex_6, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_ex_6.setAutoDraw(False)
+        
+        # *sort_expl_ex_7* updates
+        if sort_expl_ex_7.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_ex_7.frameNStart = frameN  # exact frame index
+            sort_expl_ex_7.tStart = t  # local t and not account for scr refresh
+            sort_expl_ex_7.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_ex_7, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_ex_7.setAutoDraw(True)
+        if sort_expl_ex_7.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_ex_7.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_ex_7.tStop = t  # not accounting for scr refresh
+                sort_expl_ex_7.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_ex_7, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_ex_7.setAutoDraw(False)
+        
+        # *sort_expl_ex_8* updates
+        if sort_expl_ex_8.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_ex_8.frameNStart = frameN  # exact frame index
+            sort_expl_ex_8.tStart = t  # local t and not account for scr refresh
+            sort_expl_ex_8.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_ex_8, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_ex_8.setAutoDraw(True)
+        if sort_expl_ex_8.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_ex_8.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_ex_8.tStop = t  # not accounting for scr refresh
+                sort_expl_ex_8.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_ex_8, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_ex_8.setAutoDraw(False)
+        
+        # *sort_expl_ex_9* updates
+        if sort_expl_ex_9.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_ex_9.frameNStart = frameN  # exact frame index
+            sort_expl_ex_9.tStart = t  # local t and not account for scr refresh
+            sort_expl_ex_9.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_ex_9, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_ex_9.setAutoDraw(True)
+        if sort_expl_ex_9.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_ex_9.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_ex_9.tStop = t  # not accounting for scr refresh
+                sort_expl_ex_9.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_ex_9, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_ex_9.setAutoDraw(False)
+        
+        # *sort_expl_ex_10* updates
+        if sort_expl_ex_10.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_ex_10.frameNStart = frameN  # exact frame index
+            sort_expl_ex_10.tStart = t  # local t and not account for scr refresh
+            sort_expl_ex_10.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_ex_10, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_ex_10.setAutoDraw(True)
+        if sort_expl_ex_10.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_ex_10.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_ex_10.tStop = t  # not accounting for scr refresh
+                sort_expl_ex_10.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_ex_10, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_ex_10.setAutoDraw(False)
+        
+        # *sort_expl_ex_11* updates
+        if sort_expl_ex_11.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_ex_11.frameNStart = frameN  # exact frame index
+            sort_expl_ex_11.tStart = t  # local t and not account for scr refresh
+            sort_expl_ex_11.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_ex_11, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_ex_11.setAutoDraw(True)
+        if sort_expl_ex_11.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_ex_11.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_ex_11.tStop = t  # not accounting for scr refresh
+                sort_expl_ex_11.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_ex_11, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_ex_11.setAutoDraw(False)
+        
+        # *sort_expl_ex_12* updates
+        if sort_expl_ex_12.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_ex_12.frameNStart = frameN  # exact frame index
+            sort_expl_ex_12.tStart = t  # local t and not account for scr refresh
+            sort_expl_ex_12.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_ex_12, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_ex_12.setAutoDraw(True)
+        if sort_expl_ex_12.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_expl_ex_12.tStartRefresh + 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_ex_12.tStop = t  # not accounting for scr refresh
+                sort_expl_ex_12.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_ex_12, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_ex_12.setAutoDraw(False)
+        
+        # *sort_expl_btn* updates
+        if sort_expl_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_btn.frameNStart = frameN  # exact frame index
+            sort_expl_btn.tStart = t  # local t and not account for scr refresh
+            sort_expl_btn.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_btn, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_btn.setAutoDraw(True)
+        if sort_expl_btn.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_btn.tStop = t  # not accounting for scr refresh
+                sort_expl_btn.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_btn, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_btn.setAutoDraw(False)
+        # *sort_expl_mouse* updates
+        if sort_expl_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_mouse.frameNStart = frameN  # exact frame index
+            sort_expl_mouse.tStart = t  # local t and not account for scr refresh
+            sort_expl_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_mouse, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_mouse.status = STARTED
+            sort_expl_mouse.mouseClock.reset()
+            prevButtonState = sort_expl_mouse.getPressed()  # if button is down already this ISN'T a new click
+        if sort_expl_mouse.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_mouse.tStop = t  # not accounting for scr refresh
+                sort_expl_mouse.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_mouse, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_mouse.status = FINISHED
+        if sort_expl_mouse.status == STARTED:  # only update if started and not finished!
+            buttons = sort_expl_mouse.getPressed()
+            if buttons != prevButtonState:  # button state changed?
+                prevButtonState = buttons
+                if sum(buttons) > 0:  # state changed to a new click
+                    # check if the mouse was inside our 'clickable' objects
+                    gotValidClick = False
+                    for obj in [sort_expl_btn]:
+                        if obj.contains(sort_expl_mouse):
+                            gotValidClick = True
+                            sort_expl_mouse.clicked_name.append(obj.name)
+                    if gotValidClick:  # abort routine on response
+                        continueRoutine = False
+        
+        # *sort_expl_timer* updates
+        if sort_expl_timer.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_timer.frameNStart = frameN  # exact frame index
+            sort_expl_timer.tStart = t  # local t and not account for scr refresh
+            sort_expl_timer.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_timer, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_timer.setAutoDraw(True)
+        if sort_expl_timer.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_timer.tStop = t  # not accounting for scr refresh
+                sort_expl_timer.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_timer, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_timer.setAutoDraw(False)
+        
+        # *sort_expl_hint* updates
+        if sort_expl_hint.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_expl_hint.frameNStart = frameN  # exact frame index
+            sort_expl_hint.tStart = t  # local t and not account for scr refresh
+            sort_expl_hint.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_expl_hint, 'tStartRefresh')  # time at next scr refresh
+            sort_expl_hint.setAutoDraw(True)
+        if sort_expl_hint.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 60.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_expl_hint.tStop = t  # not accounting for scr refresh
+                sort_expl_hint.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_expl_hint, 'tStopRefresh')  # time at next scr refresh
+                sort_expl_hint.setAutoDraw(False)
+        if items == []:
+            items = enableImageComponents(SORT_EXPLComponents,sort_expl_labels,sort_expl_path_base)
+            for i in range(len(items)):
+                items[i].pos = positions[i]
                 
-                                    btn_locks['instr2_btn3'] = LOCK_ON
-                                    btn_locks['instr2_btn2'] = LOCK_OFF
-            instr2_btn2.wasClicked = True  # if instr2_btn2 is still clicked next frame, it is not a new click
-        else:
-            instr2_btn2.wasClicked = False  # if instr2_btn2 is clicked next frame, it is a new click
-    else:
-        instr2_btn2.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        instr2_btn2.wasClicked = False  # if instr2_btn2 is clicked next frame, it is a new click
-    
-    # *instr2_ex2* updates
-    if instr2_ex2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        instr2_ex2.frameNStart = frameN  # exact frame index
-        instr2_ex2.tStart = t  # local t and not account for scr refresh
-        instr2_ex2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr2_ex2, 'tStartRefresh')  # time at next scr refresh
-        instr2_ex2.setAutoDraw(True)
-    if instr2_ex2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr2_ex2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            instr2_ex2.tStop = t  # not accounting for scr refresh
-            instr2_ex2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr2_ex2, 'tStopRefresh')  # time at next scr refresh
-            instr2_ex2.setAutoDraw(False)
-    
-    # *instr2_btn1* updates
-    if instr2_btn1.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        instr2_btn1.frameNStart = frameN  # exact frame index
-        instr2_btn1.tStart = t  # local t and not account for scr refresh
-        instr2_btn1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr2_btn1, 'tStartRefresh')  # time at next scr refresh
-        instr2_btn1.setAutoDraw(True)
-    if instr2_btn1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr2_btn1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            instr2_btn1.tStop = t  # not accounting for scr refresh
-            instr2_btn1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr2_btn1, 'tStopRefresh')  # time at next scr refresh
-            instr2_btn1.setAutoDraw(False)
-    if instr2_btn1.status == STARTED:
-        # check whether instr2_btn1 has been pressed
-        if instr2_btn1.isClicked:
-            if not instr2_btn1.wasClicked:
-                instr2_btn1.timesOn.append(instr2_btn1.buttonClock.getTime()) # store time of first click
-                instr2_btn1.timesOff.append(instr2_btn1.buttonClock.getTime()) # store time clicked until
-            else:
-                instr2_btn1.timesOff[-1] = instr2_btn1.buttonClock.getTime() # update time clicked until
-            if not instr2_btn1.wasClicked:
-                if 'instr2_btn1' not in btn_locks:
-                                    instr2_ex1.setOpacity(0.0)
-                                    instr2_btn1.setOpacity(0.0)
-                                    instr2_ex2.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    instr2_btn2.setOpacity(1.0)
-                
-                                    btn_locks['instr2_btn2'] = LOCK_ON
-                                    btn_locks['instr2_btn1'] = LOCK_OFF
-            instr2_btn1.wasClicked = True  # if instr2_btn1 is still clicked next frame, it is not a new click
-        else:
-            instr2_btn1.wasClicked = False  # if instr2_btn1 is clicked next frame, it is a new click
-    else:
-        instr2_btn1.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        instr2_btn1.wasClicked = False  # if instr2_btn1 is clicked next frame, it is a new click
-    
-    # *instr2_ex1* updates
-    if instr2_ex1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        instr2_ex1.frameNStart = frameN  # exact frame index
-        instr2_ex1.tStart = t  # local t and not account for scr refresh
-        instr2_ex1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(instr2_ex1, 'tStartRefresh')  # time at next scr refresh
-        instr2_ex1.setAutoDraw(True)
-    if instr2_ex1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > instr2_ex1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            instr2_ex1.tStop = t  # not accounting for scr refresh
-            instr2_ex1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(instr2_ex1, 'tStopRefresh')  # time at next scr refresh
-            instr2_ex1.setAutoDraw(False)
-    
-    # check for quit (typically the Esc key)
-    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-        core.quit()
-    
-    # check if all components have finished
-    if not continueRoutine:  # a component has requested a forced-end of Routine
-        break
-    continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in Instructions_2Components:
-        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-            continueRoutine = True
-            break  # at least one component has not yet finished
-    
-    # refresh the screen
-    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-        win.flip()
-
-# -------Ending Routine "Instructions_2"-------
-for thisComponent in Instructions_2Components:
-    if hasattr(thisComponent, "setAutoDraw"):
-        thisComponent.setAutoDraw(False)
-thisExp.addData('instr2_txt1.started', instr2_txt1.tStartRefresh)
-thisExp.addData('instr2_txt1.stopped', instr2_txt1.tStopRefresh)
-thisExp.addData('instr2_btn3.started', instr2_btn3.tStartRefresh)
-thisExp.addData('instr2_btn3.stopped', instr2_btn3.tStopRefresh)
-thisExp.addData('instr2_btn3.numClicks', instr2_btn3.numClicks)
-if instr2_btn3.numClicks:
-   thisExp.addData('instr2_btn3.timesOn', instr2_btn3.timesOn)
-   thisExp.addData('instr2_btn3.timesOff', instr2_btn3.timesOff)
-else:
-   thisExp.addData('instr2_btn3.timesOn', "")
-   thisExp.addData('instr2_btn3.timesOff', "")
-thisExp.addData('instr2_ex3.started', instr2_ex3.tStartRefresh)
-thisExp.addData('instr2_ex3.stopped', instr2_ex3.tStopRefresh)
-thisExp.addData('instr2_btn2.started', instr2_btn2.tStartRefresh)
-thisExp.addData('instr2_btn2.stopped', instr2_btn2.tStopRefresh)
-thisExp.addData('instr2_btn2.numClicks', instr2_btn2.numClicks)
-if instr2_btn2.numClicks:
-   thisExp.addData('instr2_btn2.timesOn', instr2_btn2.timesOn)
-   thisExp.addData('instr2_btn2.timesOff', instr2_btn2.timesOff)
-else:
-   thisExp.addData('instr2_btn2.timesOn', "")
-   thisExp.addData('instr2_btn2.timesOff', "")
-thisExp.addData('instr2_ex2.started', instr2_ex2.tStartRefresh)
-thisExp.addData('instr2_ex2.stopped', instr2_ex2.tStopRefresh)
-thisExp.addData('instr2_btn1.started', instr2_btn1.tStartRefresh)
-thisExp.addData('instr2_btn1.stopped', instr2_btn1.tStopRefresh)
-thisExp.addData('instr2_btn1.numClicks', instr2_btn1.numClicks)
-if instr2_btn1.numClicks:
-   thisExp.addData('instr2_btn1.timesOn', instr2_btn1.timesOn)
-   thisExp.addData('instr2_btn1.timesOff', instr2_btn1.timesOff)
-else:
-   thisExp.addData('instr2_btn1.timesOn', "")
-   thisExp.addData('instr2_btn1.timesOff', "")
-thisExp.addData('instr2_ex1.started', instr2_ex1.tStartRefresh)
-thisExp.addData('instr2_ex1.stopped', instr2_ex1.tStopRefresh)
-
-# ------Prepare to start Routine "Training_2"-------
-continueRoutine = True
-routineTimer.add(300.500000)
-# update component parameters for each repeat
-# keep track of which components have finished
-Training_2Components = [train2_num, train2_txt1, train2_btn5, train2_ex5, train2_btn4, train2_ex4, train2_btn3, train2_ex3, train2_btn2, train2_ex2, train2_btn1, train2_ex1, train2_bg1, train2_bg2]
-for thisComponent in Training_2Components:
-    thisComponent.tStart = None
-    thisComponent.tStop = None
-    thisComponent.tStartRefresh = None
-    thisComponent.tStopRefresh = None
-    if hasattr(thisComponent, 'status'):
-        thisComponent.status = NOT_STARTED
-# reset timers
-t = 0
-_timeToFirstFrame = win.getFutureFlipTime(clock="now")
-Training_2Clock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
-frameN = -1
-
-# -------Run Routine "Training_2"-------
-while continueRoutine and routineTimer.getTime() > 0:
-    # get current time
-    t = Training_2Clock.getTime()
-    tThisFlip = win.getFutureFlipTime(clock=Training_2Clock)
-    tThisFlipGlobal = win.getFutureFlipTime(clock=None)
-    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-    # update/draw components on each frame
-    
-    # *train2_num* updates
-    if train2_num.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train2_num.frameNStart = frameN  # exact frame index
-        train2_num.tStart = t  # local t and not account for scr refresh
-        train2_num.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_num, 'tStartRefresh')  # time at next scr refresh
-        train2_num.setAutoDraw(True)
-    if train2_num.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_num.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_num.tStop = t  # not accounting for scr refresh
-            train2_num.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_num, 'tStopRefresh')  # time at next scr refresh
-            train2_num.setAutoDraw(False)
-    
-    # *train2_txt1* updates
-    if train2_txt1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train2_txt1.frameNStart = frameN  # exact frame index
-        train2_txt1.tStart = t  # local t and not account for scr refresh
-        train2_txt1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_txt1, 'tStartRefresh')  # time at next scr refresh
-        train2_txt1.setAutoDraw(True)
-    if train2_txt1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_txt1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_txt1.tStop = t  # not accounting for scr refresh
-            train2_txt1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_txt1, 'tStopRefresh')  # time at next scr refresh
-            train2_txt1.setAutoDraw(False)
-    
-    # *train2_btn5* updates
-    if train2_btn5.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        train2_btn5.frameNStart = frameN  # exact frame index
-        train2_btn5.tStart = t  # local t and not account for scr refresh
-        train2_btn5.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_btn5, 'tStartRefresh')  # time at next scr refresh
-        train2_btn5.setAutoDraw(True)
-    if train2_btn5.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_btn5.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_btn5.tStop = t  # not accounting for scr refresh
-            train2_btn5.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_btn5, 'tStopRefresh')  # time at next scr refresh
-            train2_btn5.setAutoDraw(False)
-    if train2_btn5.status == STARTED:
-        # check whether train2_btn5 has been pressed
-        if train2_btn5.isClicked:
-            if not train2_btn5.wasClicked:
-                train2_btn5.timesOn.append(train2_btn5.buttonClock.getTime()) # store time of first click
-                train2_btn5.timesOff.append(train2_btn5.buttonClock.getTime()) # store time clicked until
-            else:
-                train2_btn5.timesOff[-1] = train2_btn5.buttonClock.getTime() # update time clicked until
-            if not train2_btn5.wasClicked:
-                continueRoutine = False  # end routine when train2_btn5 is clicked
+        movingItem = moveItem(sort_expl_mouse, movingItem)
+        
+        if frameCnt % traceSaveAtFrame == 0:
+            newTracePos = []
+            for i in items:
+                newTracePos.append([i.name.split('_')[-1],i.pos[0],i.pos[1]])
+            hasMoved = updateTrace(tracePos,newTracePos)
+            if hasMoved != []:
+                for j in hasMoved:
+                    sort_expl_trace.append(j)
+            tracePos = newTracePos
+        
+        if sort_expl_mouse.isPressedIn(sort_expl_compare):
+            sort_expl_compareN = sort_expl_compareN + compare(sort_expl_scale,sort_expl_input,sort_expl_labels,sort_expl_scale_instr,sort_expl_scale_left,sort_expl_scale_right)
+            sort_expl_hint.text = "Bob uses "+ str(sort_train_compare_limit) + " comparisons\n" + "You have used: " + str(sort_train_compareN+sort_expl_compareN)
+            
+        sort_expl_timer.text = timerWarning(sortExplTimeL,t)
+        
+        # check for quit (typically the Esc key)
+        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+            core.quit()
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in SORT_EXPLComponents:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
-                if 'train2_btn5' in btn_locks and btn_locks['train2_btn5']:
-                                    btn_locks['train2_btn5'] = LOCK_OFF
-                                    time.sleep(0.1)
-                                    continueRoutine = False
-            train2_btn5.wasClicked = True  # if train2_btn5 is still clicked next frame, it is not a new click
-        else:
-            train2_btn5.wasClicked = False  # if train2_btn5 is clicked next frame, it is a new click
-    else:
-        train2_btn5.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        train2_btn5.wasClicked = False  # if train2_btn5 is clicked next frame, it is a new click
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
     
-    # *train2_ex5* updates
-    if train2_ex5.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train2_ex5.frameNStart = frameN  # exact frame index
-        train2_ex5.tStart = t  # local t and not account for scr refresh
-        train2_ex5.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_ex5, 'tStartRefresh')  # time at next scr refresh
-        train2_ex5.setAutoDraw(True)
-    if train2_ex5.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_ex5.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_ex5.tStop = t  # not accounting for scr refresh
-            train2_ex5.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_ex5, 'tStopRefresh')  # time at next scr refresh
-            train2_ex5.setAutoDraw(False)
+    # -------Ending Routine "SORT_EXPL"-------
+    for thisComponent in SORT_EXPLComponents:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    thisExp.addData('sort_expl_trace.routineEndVal', sort_expl_trace)  # Save end routine value
+    thisExp.addData('sort_expl_compareN.routineEndVal', sort_expl_compareN)  # Save end routine value
+    TRAIN_2.addData('sort_expl_feedback_1.started', sort_expl_feedback_1.tStartRefresh)
+    TRAIN_2.addData('sort_expl_feedback_1.stopped', sort_expl_feedback_1.tStopRefresh)
+    TRAIN_2.addData('sort_expl_feedback_2.started', sort_expl_feedback_2.tStartRefresh)
+    TRAIN_2.addData('sort_expl_feedback_2.stopped', sort_expl_feedback_2.tStopRefresh)
+    TRAIN_2.addData('sort_expl_scale_right.text',sort_expl_scale_right.text)
+    sort_expl_scale_right.reset()
+    TRAIN_2.addData('sort_expl_scale_left.text',sort_expl_scale_left.text)
+    sort_expl_scale_left.reset()
+    # store data for TRAIN_2 (TrialHandler)
+    x, y = sort_expl_mouse.getPos()
+    buttons = sort_expl_mouse.getPressed()
+    if sum(buttons):
+        # check if the mouse was inside our 'clickable' objects
+        gotValidClick = False
+        for obj in [sort_expl_btn]:
+            if obj.contains(sort_expl_mouse):
+                gotValidClick = True
+                sort_expl_mouse.clicked_name.append(obj.name)
+    TRAIN_2.addData('sort_expl_mouse.x', x)
+    TRAIN_2.addData('sort_expl_mouse.y', y)
+    TRAIN_2.addData('sort_expl_mouse.leftButton', buttons[0])
+    TRAIN_2.addData('sort_expl_mouse.midButton', buttons[1])
+    TRAIN_2.addData('sort_expl_mouse.rightButton', buttons[2])
+    if len(sort_expl_mouse.clicked_name):
+        TRAIN_2.addData('sort_expl_mouse.clicked_name', sort_expl_mouse.clicked_name[0])
+    thisExp.nextEntry()
     
-    # *train2_btn4* updates
-    if train2_btn4.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        train2_btn4.frameNStart = frameN  # exact frame index
-        train2_btn4.tStart = t  # local t and not account for scr refresh
-        train2_btn4.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_btn4, 'tStartRefresh')  # time at next scr refresh
-        train2_btn4.setAutoDraw(True)
-    if train2_btn4.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_btn4.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_btn4.tStop = t  # not accounting for scr refresh
-            train2_btn4.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_btn4, 'tStopRefresh')  # time at next scr refresh
-            train2_btn4.setAutoDraw(False)
-    if train2_btn4.status == STARTED:
-        # check whether train2_btn4 has been pressed
-        if train2_btn4.isClicked:
-            if not train2_btn4.wasClicked:
-                train2_btn4.timesOn.append(train2_btn4.buttonClock.getTime()) # store time of first click
-                train2_btn4.timesOff.append(train2_btn4.buttonClock.getTime()) # store time clicked until
-            else:
-                train2_btn4.timesOff[-1] = train2_btn4.buttonClock.getTime() # update time clicked until
-            if not train2_btn4.wasClicked:
-                if 'train2_btn4' in btn_locks and btn_locks['train2_btn4']:
-                                    train2_ex4.setOpacity(0.0)
-                                    train2_btn4.setOpacity(0.0)
-                                    train2_ex5.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    train2_btn5.setOpacity(1.0)
-                
-                                    btn_locks['train2_btn5'] = LOCK_ON
-                                    btn_locks['train2_btn4'] = LOCK_OFF
-                                    train2_num.setText('Training example 5')
-            train2_btn4.wasClicked = True  # if train2_btn4 is still clicked next frame, it is not a new click
-        else:
-            train2_btn4.wasClicked = False  # if train2_btn4 is clicked next frame, it is a new click
-    else:
-        train2_btn4.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        train2_btn4.wasClicked = False  # if train2_btn4 is clicked next frame, it is a new click
-    
-    # *train2_ex4* updates
-    if train2_ex4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train2_ex4.frameNStart = frameN  # exact frame index
-        train2_ex4.tStart = t  # local t and not account for scr refresh
-        train2_ex4.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_ex4, 'tStartRefresh')  # time at next scr refresh
-        train2_ex4.setAutoDraw(True)
-    if train2_ex4.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_ex4.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_ex4.tStop = t  # not accounting for scr refresh
-            train2_ex4.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_ex4, 'tStopRefresh')  # time at next scr refresh
-            train2_ex4.setAutoDraw(False)
-    
-    # *train2_btn3* updates
-    if train2_btn3.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        train2_btn3.frameNStart = frameN  # exact frame index
-        train2_btn3.tStart = t  # local t and not account for scr refresh
-        train2_btn3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_btn3, 'tStartRefresh')  # time at next scr refresh
-        train2_btn3.setAutoDraw(True)
-    if train2_btn3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_btn3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_btn3.tStop = t  # not accounting for scr refresh
-            train2_btn3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_btn3, 'tStopRefresh')  # time at next scr refresh
-            train2_btn3.setAutoDraw(False)
-    if train2_btn3.status == STARTED:
-        # check whether train2_btn3 has been pressed
-        if train2_btn3.isClicked:
-            if not train2_btn3.wasClicked:
-                train2_btn3.timesOn.append(train2_btn3.buttonClock.getTime()) # store time of first click
-                train2_btn3.timesOff.append(train2_btn3.buttonClock.getTime()) # store time clicked until
-            else:
-                train2_btn3.timesOff[-1] = train2_btn3.buttonClock.getTime() # update time clicked until
-            if not train2_btn3.wasClicked:
-                if 'train2_btn3' in btn_locks and btn_locks['train2_btn3']:
-                                    train2_ex3.setOpacity(0.0)
-                                    train2_btn3.setOpacity(0.0)
-                                    train2_ex4.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    train2_btn4.setOpacity(1.0)
-                
-                                    btn_locks['train2_btn4'] = LOCK_ON
-                                    btn_locks['train2_btn3'] = LOCK_OFF
-                                    train2_num.setText('Training example 4')
-            train2_btn3.wasClicked = True  # if train2_btn3 is still clicked next frame, it is not a new click
-        else:
-            train2_btn3.wasClicked = False  # if train2_btn3 is clicked next frame, it is a new click
-    else:
-        train2_btn3.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        train2_btn3.wasClicked = False  # if train2_btn3 is clicked next frame, it is a new click
-    
-    # *train2_ex3* updates
-    if train2_ex3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train2_ex3.frameNStart = frameN  # exact frame index
-        train2_ex3.tStart = t  # local t and not account for scr refresh
-        train2_ex3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_ex3, 'tStartRefresh')  # time at next scr refresh
-        train2_ex3.setAutoDraw(True)
-    if train2_ex3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_ex3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_ex3.tStop = t  # not accounting for scr refresh
-            train2_ex3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_ex3, 'tStopRefresh')  # time at next scr refresh
-            train2_ex3.setAutoDraw(False)
-    
-    # *train2_btn2* updates
-    if train2_btn2.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        train2_btn2.frameNStart = frameN  # exact frame index
-        train2_btn2.tStart = t  # local t and not account for scr refresh
-        train2_btn2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_btn2, 'tStartRefresh')  # time at next scr refresh
-        train2_btn2.setAutoDraw(True)
-    if train2_btn2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_btn2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_btn2.tStop = t  # not accounting for scr refresh
-            train2_btn2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_btn2, 'tStopRefresh')  # time at next scr refresh
-            train2_btn2.setAutoDraw(False)
-    if train2_btn2.status == STARTED:
-        # check whether train2_btn2 has been pressed
-        if train2_btn2.isClicked:
-            if not train2_btn2.wasClicked:
-                train2_btn2.timesOn.append(train2_btn2.buttonClock.getTime()) # store time of first click
-                train2_btn2.timesOff.append(train2_btn2.buttonClock.getTime()) # store time clicked until
-            else:
-                train2_btn2.timesOff[-1] = train2_btn2.buttonClock.getTime() # update time clicked until
-            if not train2_btn2.wasClicked:
-                if 'train2_btn2' in btn_locks and btn_locks['train2_btn2']:
-                                    train2_ex2.setOpacity(0.0)
-                                    train2_btn2.setOpacity(0.0)
-                                    train2_ex3.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    train2_btn3.setOpacity(1.0)
-                
-                                    btn_locks['train2_btn3'] = LOCK_ON
-                                    btn_locks['train2_btn2'] = LOCK_OFF
-                                    train2_num.setText('Training example 3')
-            train2_btn2.wasClicked = True  # if train2_btn2 is still clicked next frame, it is not a new click
-        else:
-            train2_btn2.wasClicked = False  # if train2_btn2 is clicked next frame, it is a new click
-    else:
-        train2_btn2.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        train2_btn2.wasClicked = False  # if train2_btn2 is clicked next frame, it is a new click
-    
-    # *train2_ex2* updates
-    if train2_ex2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train2_ex2.frameNStart = frameN  # exact frame index
-        train2_ex2.tStart = t  # local t and not account for scr refresh
-        train2_ex2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_ex2, 'tStartRefresh')  # time at next scr refresh
-        train2_ex2.setAutoDraw(True)
-    if train2_ex2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_ex2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_ex2.tStop = t  # not accounting for scr refresh
-            train2_ex2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_ex2, 'tStopRefresh')  # time at next scr refresh
-            train2_ex2.setAutoDraw(False)
-    
-    # *train2_btn1* updates
-    if train2_btn1.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        train2_btn1.frameNStart = frameN  # exact frame index
-        train2_btn1.tStart = t  # local t and not account for scr refresh
-        train2_btn1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_btn1, 'tStartRefresh')  # time at next scr refresh
-        train2_btn1.setAutoDraw(True)
-    if train2_btn1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_btn1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_btn1.tStop = t  # not accounting for scr refresh
-            train2_btn1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_btn1, 'tStopRefresh')  # time at next scr refresh
-            train2_btn1.setAutoDraw(False)
-    if train2_btn1.status == STARTED:
-        # check whether train2_btn1 has been pressed
-        if train2_btn1.isClicked:
-            if not train2_btn1.wasClicked:
-                train2_btn1.timesOn.append(train2_btn1.buttonClock.getTime()) # store time of first click
-                train2_btn1.timesOff.append(train2_btn1.buttonClock.getTime()) # store time clicked until
-            else:
-                train2_btn1.timesOff[-1] = train2_btn1.buttonClock.getTime() # update time clicked until
-            if not train2_btn1.wasClicked:
-                if 'train2_btn1' not in btn_locks:
-                                    train2_ex1.setOpacity(0.0)
-                                    train2_btn1.setOpacity(0.0)
-                                    train2_ex2.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    train2_btn2.setOpacity(1.0)
-                
-                                    btn_locks['train2_btn2'] = LOCK_ON
-                                    btn_locks['train2_btn1'] = LOCK_OFF
-                                    train2_num.setText('Training example 2')
-            train2_btn1.wasClicked = True  # if train2_btn1 is still clicked next frame, it is not a new click
-        else:
-            train2_btn1.wasClicked = False  # if train2_btn1 is clicked next frame, it is a new click
-    else:
-        train2_btn1.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        train2_btn1.wasClicked = False  # if train2_btn1 is clicked next frame, it is a new click
-    
-    # *train2_ex1* updates
-    if train2_ex1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train2_ex1.frameNStart = frameN  # exact frame index
-        train2_ex1.tStart = t  # local t and not account for scr refresh
-        train2_ex1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_ex1, 'tStartRefresh')  # time at next scr refresh
-        train2_ex1.setAutoDraw(True)
-    if train2_ex1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_ex1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_ex1.tStop = t  # not accounting for scr refresh
-            train2_ex1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_ex1, 'tStopRefresh')  # time at next scr refresh
-            train2_ex1.setAutoDraw(False)
-    
-    # *train2_bg1* updates
-    if train2_bg1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train2_bg1.frameNStart = frameN  # exact frame index
-        train2_bg1.tStart = t  # local t and not account for scr refresh
-        train2_bg1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_bg1, 'tStartRefresh')  # time at next scr refresh
-        train2_bg1.setAutoDraw(True)
-    if train2_bg1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_bg1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_bg1.tStop = t  # not accounting for scr refresh
-            train2_bg1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_bg1, 'tStopRefresh')  # time at next scr refresh
-            train2_bg1.setAutoDraw(False)
-    
-    # *train2_bg2* updates
-    if train2_bg2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        train2_bg2.frameNStart = frameN  # exact frame index
-        train2_bg2.tStart = t  # local t and not account for scr refresh
-        train2_bg2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(train2_bg2, 'tStartRefresh')  # time at next scr refresh
-        train2_bg2.setAutoDraw(True)
-    if train2_bg2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > train2_bg2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            train2_bg2.tStop = t  # not accounting for scr refresh
-            train2_bg2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(train2_bg2, 'tStopRefresh')  # time at next scr refresh
-            train2_bg2.setAutoDraw(False)
-    
-    # check for quit (typically the Esc key)
-    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-        core.quit()
-    
-    # check if all components have finished
-    if not continueRoutine:  # a component has requested a forced-end of Routine
-        break
-    continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in Training_2Components:
-        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-            continueRoutine = True
-            break  # at least one component has not yet finished
-    
-    # refresh the screen
-    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-        win.flip()
+# completed 1.0 repeats of 'TRAIN_2'
 
-# -------Ending Routine "Training_2"-------
-for thisComponent in Training_2Components:
-    if hasattr(thisComponent, "setAutoDraw"):
-        thisComponent.setAutoDraw(False)
-thisExp.addData('train2_num.started', train2_num.tStartRefresh)
-thisExp.addData('train2_num.stopped', train2_num.tStopRefresh)
-thisExp.addData('train2_txt1.started', train2_txt1.tStartRefresh)
-thisExp.addData('train2_txt1.stopped', train2_txt1.tStopRefresh)
-thisExp.addData('train2_btn5.started', train2_btn5.tStartRefresh)
-thisExp.addData('train2_btn5.stopped', train2_btn5.tStopRefresh)
-thisExp.addData('train2_btn5.numClicks', train2_btn5.numClicks)
-if train2_btn5.numClicks:
-   thisExp.addData('train2_btn5.timesOn', train2_btn5.timesOn)
-   thisExp.addData('train2_btn5.timesOff', train2_btn5.timesOff)
-else:
-   thisExp.addData('train2_btn5.timesOn', "")
-   thisExp.addData('train2_btn5.timesOff', "")
-thisExp.addData('train2_ex5.started', train2_ex5.tStartRefresh)
-thisExp.addData('train2_ex5.stopped', train2_ex5.tStopRefresh)
-thisExp.addData('train2_btn4.started', train2_btn4.tStartRefresh)
-thisExp.addData('train2_btn4.stopped', train2_btn4.tStopRefresh)
-thisExp.addData('train2_btn4.numClicks', train2_btn4.numClicks)
-if train2_btn4.numClicks:
-   thisExp.addData('train2_btn4.timesOn', train2_btn4.timesOn)
-   thisExp.addData('train2_btn4.timesOff', train2_btn4.timesOff)
-else:
-   thisExp.addData('train2_btn4.timesOn', "")
-   thisExp.addData('train2_btn4.timesOff', "")
-thisExp.addData('train2_ex4.started', train2_ex4.tStartRefresh)
-thisExp.addData('train2_ex4.stopped', train2_ex4.tStopRefresh)
-thisExp.addData('train2_btn3.started', train2_btn3.tStartRefresh)
-thisExp.addData('train2_btn3.stopped', train2_btn3.tStopRefresh)
-thisExp.addData('train2_btn3.numClicks', train2_btn3.numClicks)
-if train2_btn3.numClicks:
-   thisExp.addData('train2_btn3.timesOn', train2_btn3.timesOn)
-   thisExp.addData('train2_btn3.timesOff', train2_btn3.timesOff)
-else:
-   thisExp.addData('train2_btn3.timesOn', "")
-   thisExp.addData('train2_btn3.timesOff', "")
-thisExp.addData('train2_ex3.started', train2_ex3.tStartRefresh)
-thisExp.addData('train2_ex3.stopped', train2_ex3.tStopRefresh)
-thisExp.addData('train2_btn2.started', train2_btn2.tStartRefresh)
-thisExp.addData('train2_btn2.stopped', train2_btn2.tStopRefresh)
-thisExp.addData('train2_btn2.numClicks', train2_btn2.numClicks)
-if train2_btn2.numClicks:
-   thisExp.addData('train2_btn2.timesOn', train2_btn2.timesOn)
-   thisExp.addData('train2_btn2.timesOff', train2_btn2.timesOff)
-else:
-   thisExp.addData('train2_btn2.timesOn', "")
-   thisExp.addData('train2_btn2.timesOff', "")
-thisExp.addData('train2_ex2.started', train2_ex2.tStartRefresh)
-thisExp.addData('train2_ex2.stopped', train2_ex2.tStopRefresh)
-thisExp.addData('train2_btn1.started', train2_btn1.tStartRefresh)
-thisExp.addData('train2_btn1.stopped', train2_btn1.tStopRefresh)
-thisExp.addData('train2_btn1.numClicks', train2_btn1.numClicks)
-if train2_btn1.numClicks:
-   thisExp.addData('train2_btn1.timesOn', train2_btn1.timesOn)
-   thisExp.addData('train2_btn1.timesOff', train2_btn1.timesOff)
-else:
-   thisExp.addData('train2_btn1.timesOn', "")
-   thisExp.addData('train2_btn1.timesOff', "")
-thisExp.addData('train2_ex1.started', train2_ex1.tStartRefresh)
-thisExp.addData('train2_ex1.stopped', train2_ex1.tStopRefresh)
-thisExp.addData('train2_bg1.started', train2_bg1.tStartRefresh)
-thisExp.addData('train2_bg1.stopped', train2_bg1.tStopRefresh)
-thisExp.addData('train2_bg2.started', train2_bg2.tStartRefresh)
-thisExp.addData('train2_bg2.stopped', train2_bg2.tStopRefresh)
 
-# ------Prepare to start Routine "Performance_2"-------
+# ------Prepare to start Routine "SORT_TEST_INTRO"-------
 continueRoutine = True
-routineTimer.add(300.500000)
+routineTimer.add(120.000000)
 # update component parameters for each repeat
+# setup some python lists for storing info about the sort_test_intro_mouse
+sort_test_intro_mouse.clicked_name = []
+gotValidClick = False  # until a click is received
 # keep track of which components have finished
-Performance_2Components = [perf2_num, perf2_txt1, perf2_btn5, perf2_ex5, perf2_btn4, perf2_ex4, perf2_btn3, perf2_ex3, perf2_btn2, perf2_ex2, perf2_btn1, perf2_ex1, perf2_bg1, perf2_bg2]
-for thisComponent in Performance_2Components:
+SORT_TEST_INTROComponents = [intro_text_7, bob_4, sort_example_2, door_7, sort_test_intro_btn, sort_test_intro_mouse]
+for thisComponent in SORT_TEST_INTROComponents:
     thisComponent.tStart = None
     thisComponent.tStop = None
     thisComponent.tStartRefresh = None
@@ -3330,469 +5635,785 @@ for thisComponent in Performance_2Components:
 # reset timers
 t = 0
 _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-Performance_2Clock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+SORT_TEST_INTROClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
 
-# -------Run Routine "Performance_2"-------
+# -------Run Routine "SORT_TEST_INTRO"-------
 while continueRoutine and routineTimer.getTime() > 0:
     # get current time
-    t = Performance_2Clock.getTime()
-    tThisFlip = win.getFutureFlipTime(clock=Performance_2Clock)
+    t = SORT_TEST_INTROClock.getTime()
+    tThisFlip = win.getFutureFlipTime(clock=SORT_TEST_INTROClock)
     tThisFlipGlobal = win.getFutureFlipTime(clock=None)
     frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
     # update/draw components on each frame
     
-    # *perf2_num* updates
-    if perf2_num.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+    # *intro_text_7* updates
+    if intro_text_7.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        perf2_num.frameNStart = frameN  # exact frame index
-        perf2_num.tStart = t  # local t and not account for scr refresh
-        perf2_num.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_num, 'tStartRefresh')  # time at next scr refresh
-        perf2_num.setAutoDraw(True)
-    if perf2_num.status == STARTED:
+        intro_text_7.frameNStart = frameN  # exact frame index
+        intro_text_7.tStart = t  # local t and not account for scr refresh
+        intro_text_7.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(intro_text_7, 'tStartRefresh')  # time at next scr refresh
+        intro_text_7.setAutoDraw(True)
+    if intro_text_7.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_num.tStartRefresh + 300.0-frameTolerance:
+        if tThisFlipGlobal > intro_text_7.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
-            perf2_num.tStop = t  # not accounting for scr refresh
-            perf2_num.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_num, 'tStopRefresh')  # time at next scr refresh
-            perf2_num.setAutoDraw(False)
+            intro_text_7.tStop = t  # not accounting for scr refresh
+            intro_text_7.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(intro_text_7, 'tStopRefresh')  # time at next scr refresh
+            intro_text_7.setAutoDraw(False)
     
-    # *perf2_txt1* updates
-    if perf2_txt1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+    # *bob_4* updates
+    if bob_4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        perf2_txt1.frameNStart = frameN  # exact frame index
-        perf2_txt1.tStart = t  # local t and not account for scr refresh
-        perf2_txt1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_txt1, 'tStartRefresh')  # time at next scr refresh
-        perf2_txt1.setAutoDraw(True)
-    if perf2_txt1.status == STARTED:
+        bob_4.frameNStart = frameN  # exact frame index
+        bob_4.tStart = t  # local t and not account for scr refresh
+        bob_4.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(bob_4, 'tStartRefresh')  # time at next scr refresh
+        bob_4.setAutoDraw(True)
+    if bob_4.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_txt1.tStartRefresh + 300.0-frameTolerance:
+        if tThisFlipGlobal > bob_4.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
-            perf2_txt1.tStop = t  # not accounting for scr refresh
-            perf2_txt1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_txt1, 'tStopRefresh')  # time at next scr refresh
-            perf2_txt1.setAutoDraw(False)
+            bob_4.tStop = t  # not accounting for scr refresh
+            bob_4.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(bob_4, 'tStopRefresh')  # time at next scr refresh
+            bob_4.setAutoDraw(False)
     
-    # *perf2_btn5* updates
-    if perf2_btn5.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+    # *sort_example_2* updates
+    if sort_example_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        perf2_btn5.frameNStart = frameN  # exact frame index
-        perf2_btn5.tStart = t  # local t and not account for scr refresh
-        perf2_btn5.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_btn5, 'tStartRefresh')  # time at next scr refresh
-        perf2_btn5.setAutoDraw(True)
-    if perf2_btn5.status == STARTED:
+        sort_example_2.frameNStart = frameN  # exact frame index
+        sort_example_2.tStart = t  # local t and not account for scr refresh
+        sort_example_2.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(sort_example_2, 'tStartRefresh')  # time at next scr refresh
+        sort_example_2.setAutoDraw(True)
+    if sort_example_2.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_btn5.tStartRefresh + 300.0-frameTolerance:
+        if tThisFlipGlobal > sort_example_2.tStartRefresh + 120.0-frameTolerance:
             # keep track of stop time/frame for later
-            perf2_btn5.tStop = t  # not accounting for scr refresh
-            perf2_btn5.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_btn5, 'tStopRefresh')  # time at next scr refresh
-            perf2_btn5.setAutoDraw(False)
-    if perf2_btn5.status == STARTED:
-        # check whether perf2_btn5 has been pressed
-        if perf2_btn5.isClicked:
-            if not perf2_btn5.wasClicked:
-                perf2_btn5.timesOn.append(perf2_btn5.buttonClock.getTime()) # store time of first click
-                perf2_btn5.timesOff.append(perf2_btn5.buttonClock.getTime()) # store time clicked until
-            else:
-                perf2_btn5.timesOff[-1] = perf2_btn5.buttonClock.getTime() # update time clicked until
-            if not perf2_btn5.wasClicked:
-                continueRoutine = False  # end routine when perf2_btn5 is clicked
+            sort_example_2.tStop = t  # not accounting for scr refresh
+            sort_example_2.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(sort_example_2, 'tStopRefresh')  # time at next scr refresh
+            sort_example_2.setAutoDraw(False)
+    
+    # *door_7* updates
+    if door_7.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        door_7.frameNStart = frameN  # exact frame index
+        door_7.tStart = t  # local t and not account for scr refresh
+        door_7.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(door_7, 'tStartRefresh')  # time at next scr refresh
+        door_7.setAutoDraw(True)
+    if door_7.status == STARTED:
+        # is it time to stop? (based on global clock, using actual start)
+        if tThisFlipGlobal > door_7.tStartRefresh + 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            door_7.tStop = t  # not accounting for scr refresh
+            door_7.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(door_7, 'tStopRefresh')  # time at next scr refresh
+            door_7.setAutoDraw(False)
+    
+    # *sort_test_intro_btn* updates
+    if sort_test_intro_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+        # keep track of start time/frame for later
+        sort_test_intro_btn.frameNStart = frameN  # exact frame index
+        sort_test_intro_btn.tStart = t  # local t and not account for scr refresh
+        sort_test_intro_btn.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(sort_test_intro_btn, 'tStartRefresh')  # time at next scr refresh
+        sort_test_intro_btn.setAutoDraw(True)
+    if sort_test_intro_btn.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            sort_test_intro_btn.tStop = t  # not accounting for scr refresh
+            sort_test_intro_btn.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(sort_test_intro_btn, 'tStopRefresh')  # time at next scr refresh
+            sort_test_intro_btn.setAutoDraw(False)
+    # *sort_test_intro_mouse* updates
+    if sort_test_intro_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
+        # keep track of start time/frame for later
+        sort_test_intro_mouse.frameNStart = frameN  # exact frame index
+        sort_test_intro_mouse.tStart = t  # local t and not account for scr refresh
+        sort_test_intro_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(sort_test_intro_mouse, 'tStartRefresh')  # time at next scr refresh
+        sort_test_intro_mouse.status = STARTED
+        sort_test_intro_mouse.mouseClock.reset()
+        prevButtonState = sort_test_intro_mouse.getPressed()  # if button is down already this ISN'T a new click
+    if sort_test_intro_mouse.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 120.0-frameTolerance:
+            # keep track of stop time/frame for later
+            sort_test_intro_mouse.tStop = t  # not accounting for scr refresh
+            sort_test_intro_mouse.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(sort_test_intro_mouse, 'tStopRefresh')  # time at next scr refresh
+            sort_test_intro_mouse.status = FINISHED
+    if sort_test_intro_mouse.status == STARTED:  # only update if started and not finished!
+        buttons = sort_test_intro_mouse.getPressed()
+        if buttons != prevButtonState:  # button state changed?
+            prevButtonState = buttons
+            if sum(buttons) > 0:  # state changed to a new click
+                # check if the mouse was inside our 'clickable' objects
+                gotValidClick = False
+                for obj in [sort_test_intro_btn]:
+                    if obj.contains(sort_test_intro_mouse):
+                        gotValidClick = True
+                        sort_test_intro_mouse.clicked_name.append(obj.name)
+                if gotValidClick:  # abort routine on response
+                    continueRoutine = False
+    
+    # check for quit (typically the Esc key)
+    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+        core.quit()
+    
+    # check if all components have finished
+    if not continueRoutine:  # a component has requested a forced-end of Routine
+        break
+    continueRoutine = False  # will revert to True if at least one component still running
+    for thisComponent in SORT_TEST_INTROComponents:
+        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+            continueRoutine = True
+            break  # at least one component has not yet finished
+    
+    # refresh the screen
+    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+        win.flip()
+
+# -------Ending Routine "SORT_TEST_INTRO"-------
+for thisComponent in SORT_TEST_INTROComponents:
+    if hasattr(thisComponent, "setAutoDraw"):
+        thisComponent.setAutoDraw(False)
+thisExp.addData('sort_example_2.started', sort_example_2.tStartRefresh)
+thisExp.addData('sort_example_2.stopped', sort_example_2.tStopRefresh)
+repeats = makeScreenShot()
+# store data for thisExp (ExperimentHandler)
+x, y = sort_test_intro_mouse.getPos()
+buttons = sort_test_intro_mouse.getPressed()
+if sum(buttons):
+    # check if the mouse was inside our 'clickable' objects
+    gotValidClick = False
+    for obj in [sort_test_intro_btn]:
+        if obj.contains(sort_test_intro_mouse):
+            gotValidClick = True
+            sort_test_intro_mouse.clicked_name.append(obj.name)
+thisExp.addData('sort_test_intro_mouse.x', x)
+thisExp.addData('sort_test_intro_mouse.y', y)
+thisExp.addData('sort_test_intro_mouse.leftButton', buttons[0])
+thisExp.addData('sort_test_intro_mouse.midButton', buttons[1])
+thisExp.addData('sort_test_intro_mouse.rightButton', buttons[2])
+if len(sort_test_intro_mouse.clicked_name):
+    thisExp.addData('sort_test_intro_mouse.clicked_name', sort_test_intro_mouse.clicked_name[0])
+thisExp.nextEntry()
+
+# set up handler to look after randomisation of conditions etc
+TEST_2 = data.TrialHandler(nReps=1.0, method='sequential', 
+    extraInfo=expInfo, originPath=-1,
+    trialList=data.importConditions('materials/sort_test_cond.csv'),
+    seed=None, name='TEST_2')
+thisExp.addLoop(TEST_2)  # add the loop to the experiment
+thisTEST_2 = TEST_2.trialList[0]  # so we can initialise stimuli with some values
+# abbreviate parameter names if possible (e.g. rgb = thisTEST_2.rgb)
+if thisTEST_2 != None:
+    for paramName in thisTEST_2:
+        exec('{} = thisTEST_2[paramName]'.format(paramName))
+
+for thisTEST_2 in TEST_2:
+    currentLoop = TEST_2
+    # abbreviate parameter names if possible (e.g. rgb = thisTEST_2.rgb)
+    if thisTEST_2 != None:
+        for paramName in thisTEST_2:
+            exec('{} = thisTEST_2[paramName]'.format(paramName))
+    
+    # ------Prepare to start Routine "SORT_TEST"-------
+    continueRoutine = True
+    routineTimer.add(300.000000)
+    # update component parameters for each repeat
+    sort_test_ans = ""  # Set routine start values for sort_test_ans
+    sort_test_trace = []  # Set routine start values for sort_test_trace
+    sort_test_compareN = 0  # Set routine start values for sort_test_compareN
+    sort_test_labels = labels  # Set routine start values for sort_test_labels
+    thisExp.addData('sort_test_labels.routineStartVal', sort_test_labels)  # Save exp start value
+    sort_test_path_base = img_path_base  # Set routine start values for sort_test_path_base
+    sort_test_input = input  # Set routine start values for sort_test_input
+    thisExp.addData('sort_test_input.routineStartVal', sort_test_input)  # Save exp start value
+    sort_test_scale_instr.setColor('white', colorSpace='rgb')
+    sort_test_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes')
+    sort_test_board.setImage('materials/merge_sort/imgs/purple_diamond.png')
+    sort_test_scale.setImage(scaleEqPath)
+    sort_test_ex_1.setPos((-0.25, 0.3))
+    sort_test_ex_2.setPos((-0.2, 0.3))
+    sort_test_ex_3.setPos((-0.15, 0.3))
+    sort_test_ex_4.setPos((-0.1, 0.3))
+    sort_test_ex_5.setPos((-0.05, 0.3))
+    sort_test_ex_6.setPos((0.0, 0.3))
+    sort_test_ex_7.setPos((0.05, 0.3))
+    sort_test_ex_8.setPos((0.1,0.3))
+    sort_test_ex_9.setPos((0.15, 0.3))
+    sort_test_ex_10.setPos((0.20, 0.3))
+    sort_test_ex_11.setPos((0.25, 0.3))
+    sort_test_ex_12.setPos((0.30, 0.3))
+    items = []
+    frameCnt = 0
+    tracePos = []
+    movingItem = None
+    
+    (x, y) = sort_test_board.pos
+    (w,h) = sort_test_board.size
+    top = y+h/2
+    bot = y-h/2
+    left = x-w/2
+    right = x+w/2
+    # setup some python lists for storing info about the sort_test_mouse
+    sort_test_mouse.clicked_name = []
+    gotValidClick = False  # until a click is received
+    # keep track of which components have finished
+    SORT_TESTComponents = [sort_test_scale_instr, sort_test_ans_instr, sort_test_instr, sort_test_scale_right, sort_test_scale_left, sort_test_compare, sort_test_res, sort_test_sep, sort_test_board, sort_test_scale, sort_test_ex_1, sort_test_ex_2, sort_test_ex_3, sort_test_ex_4, sort_test_ex_5, sort_test_ex_6, sort_test_ex_7, sort_test_ex_8, sort_test_ex_9, sort_test_ex_10, sort_test_ex_11, sort_test_ex_12, sort_test_btn, sort_test_mouse, sort_test_timer]
+    for thisComponent in SORT_TESTComponents:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    SORT_TESTClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+    frameN = -1
+    
+    # -------Run Routine "SORT_TEST"-------
+    while continueRoutine and routineTimer.getTime() > 0:
+        # get current time
+        t = SORT_TESTClock.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=SORT_TESTClock)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # *sort_test_scale_instr* updates
+        if sort_test_scale_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_scale_instr.frameNStart = frameN  # exact frame index
+            sort_test_scale_instr.tStart = t  # local t and not account for scr refresh
+            sort_test_scale_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_scale_instr, 'tStartRefresh')  # time at next scr refresh
+            sort_test_scale_instr.setAutoDraw(True)
+        if sort_test_scale_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_scale_instr.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_scale_instr.tStop = t  # not accounting for scr refresh
+                sort_test_scale_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_scale_instr, 'tStopRefresh')  # time at next scr refresh
+                sort_test_scale_instr.setAutoDraw(False)
+        
+        # *sort_test_ans_instr* updates
+        if sort_test_ans_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ans_instr.frameNStart = frameN  # exact frame index
+            sort_test_ans_instr.tStart = t  # local t and not account for scr refresh
+            sort_test_ans_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ans_instr, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ans_instr.setAutoDraw(True)
+        if sort_test_ans_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ans_instr.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ans_instr.tStop = t  # not accounting for scr refresh
+                sort_test_ans_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ans_instr, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ans_instr.setAutoDraw(False)
+        
+        # *sort_test_instr* updates
+        if sort_test_instr.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_instr.frameNStart = frameN  # exact frame index
+            sort_test_instr.tStart = t  # local t and not account for scr refresh
+            sort_test_instr.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_instr, 'tStartRefresh')  # time at next scr refresh
+            sort_test_instr.setAutoDraw(True)
+        if sort_test_instr.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_instr.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_instr.tStop = t  # not accounting for scr refresh
+                sort_test_instr.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_instr, 'tStopRefresh')  # time at next scr refresh
+                sort_test_instr.setAutoDraw(False)
+        
+        # *sort_test_scale_right* updates
+        if sort_test_scale_right.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_scale_right.frameNStart = frameN  # exact frame index
+            sort_test_scale_right.tStart = t  # local t and not account for scr refresh
+            sort_test_scale_right.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_scale_right, 'tStartRefresh')  # time at next scr refresh
+            sort_test_scale_right.setAutoDraw(True)
+        if sort_test_scale_right.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_scale_right.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_scale_right.tStop = t  # not accounting for scr refresh
+                sort_test_scale_right.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_scale_right, 'tStopRefresh')  # time at next scr refresh
+                sort_test_scale_right.setAutoDraw(False)
+        
+        # *sort_test_scale_left* updates
+        if sort_test_scale_left.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_scale_left.frameNStart = frameN  # exact frame index
+            sort_test_scale_left.tStart = t  # local t and not account for scr refresh
+            sort_test_scale_left.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_scale_left, 'tStartRefresh')  # time at next scr refresh
+            sort_test_scale_left.setAutoDraw(True)
+        if sort_test_scale_left.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_scale_left.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_scale_left.tStop = t  # not accounting for scr refresh
+                sort_test_scale_left.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_scale_left, 'tStopRefresh')  # time at next scr refresh
+                sort_test_scale_left.setAutoDraw(False)
+        
+        # *sort_test_compare* updates
+        if sort_test_compare.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_compare.frameNStart = frameN  # exact frame index
+            sort_test_compare.tStart = t  # local t and not account for scr refresh
+            sort_test_compare.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_compare, 'tStartRefresh')  # time at next scr refresh
+            sort_test_compare.setAutoDraw(True)
+        if sort_test_compare.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_compare.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_compare.tStop = t  # not accounting for scr refresh
+                sort_test_compare.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_compare, 'tStopRefresh')  # time at next scr refresh
+                sort_test_compare.setAutoDraw(False)
+        
+        # *sort_test_res* updates
+        if sort_test_res.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_res.frameNStart = frameN  # exact frame index
+            sort_test_res.tStart = t  # local t and not account for scr refresh
+            sort_test_res.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_res, 'tStartRefresh')  # time at next scr refresh
+            sort_test_res.setAutoDraw(True)
+        if sort_test_res.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_res.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_res.tStop = t  # not accounting for scr refresh
+                sort_test_res.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_res, 'tStopRefresh')  # time at next scr refresh
+                sort_test_res.setAutoDraw(False)
+        
+        # *sort_test_sep* updates
+        if sort_test_sep.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_sep.frameNStart = frameN  # exact frame index
+            sort_test_sep.tStart = t  # local t and not account for scr refresh
+            sort_test_sep.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_sep, 'tStartRefresh')  # time at next scr refresh
+            sort_test_sep.setAutoDraw(True)
+        if sort_test_sep.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_sep.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_sep.tStop = t  # not accounting for scr refresh
+                sort_test_sep.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_sep, 'tStopRefresh')  # time at next scr refresh
+                sort_test_sep.setAutoDraw(False)
+        
+        # *sort_test_board* updates
+        if sort_test_board.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_board.frameNStart = frameN  # exact frame index
+            sort_test_board.tStart = t  # local t and not account for scr refresh
+            sort_test_board.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_board, 'tStartRefresh')  # time at next scr refresh
+            sort_test_board.setAutoDraw(True)
+        if sort_test_board.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_board.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_board.tStop = t  # not accounting for scr refresh
+                sort_test_board.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_board, 'tStopRefresh')  # time at next scr refresh
+                sort_test_board.setAutoDraw(False)
+        
+        # *sort_test_scale* updates
+        if sort_test_scale.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_scale.frameNStart = frameN  # exact frame index
+            sort_test_scale.tStart = t  # local t and not account for scr refresh
+            sort_test_scale.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_scale, 'tStartRefresh')  # time at next scr refresh
+            sort_test_scale.setAutoDraw(True)
+        if sort_test_scale.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_scale.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_scale.tStop = t  # not accounting for scr refresh
+                sort_test_scale.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_scale, 'tStopRefresh')  # time at next scr refresh
+                sort_test_scale.setAutoDraw(False)
+        
+        # *sort_test_ex_1* updates
+        if sort_test_ex_1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ex_1.frameNStart = frameN  # exact frame index
+            sort_test_ex_1.tStart = t  # local t and not account for scr refresh
+            sort_test_ex_1.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ex_1, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ex_1.setAutoDraw(True)
+        if sort_test_ex_1.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ex_1.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ex_1.tStop = t  # not accounting for scr refresh
+                sort_test_ex_1.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ex_1, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ex_1.setAutoDraw(False)
+        
+        # *sort_test_ex_2* updates
+        if sort_test_ex_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ex_2.frameNStart = frameN  # exact frame index
+            sort_test_ex_2.tStart = t  # local t and not account for scr refresh
+            sort_test_ex_2.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ex_2, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ex_2.setAutoDraw(True)
+        if sort_test_ex_2.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ex_2.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ex_2.tStop = t  # not accounting for scr refresh
+                sort_test_ex_2.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ex_2, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ex_2.setAutoDraw(False)
+        
+        # *sort_test_ex_3* updates
+        if sort_test_ex_3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ex_3.frameNStart = frameN  # exact frame index
+            sort_test_ex_3.tStart = t  # local t and not account for scr refresh
+            sort_test_ex_3.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ex_3, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ex_3.setAutoDraw(True)
+        if sort_test_ex_3.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ex_3.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ex_3.tStop = t  # not accounting for scr refresh
+                sort_test_ex_3.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ex_3, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ex_3.setAutoDraw(False)
+        
+        # *sort_test_ex_4* updates
+        if sort_test_ex_4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ex_4.frameNStart = frameN  # exact frame index
+            sort_test_ex_4.tStart = t  # local t and not account for scr refresh
+            sort_test_ex_4.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ex_4, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ex_4.setAutoDraw(True)
+        if sort_test_ex_4.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ex_4.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ex_4.tStop = t  # not accounting for scr refresh
+                sort_test_ex_4.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ex_4, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ex_4.setAutoDraw(False)
+        
+        # *sort_test_ex_5* updates
+        if sort_test_ex_5.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ex_5.frameNStart = frameN  # exact frame index
+            sort_test_ex_5.tStart = t  # local t and not account for scr refresh
+            sort_test_ex_5.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ex_5, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ex_5.setAutoDraw(True)
+        if sort_test_ex_5.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ex_5.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ex_5.tStop = t  # not accounting for scr refresh
+                sort_test_ex_5.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ex_5, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ex_5.setAutoDraw(False)
+        
+        # *sort_test_ex_6* updates
+        if sort_test_ex_6.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ex_6.frameNStart = frameN  # exact frame index
+            sort_test_ex_6.tStart = t  # local t and not account for scr refresh
+            sort_test_ex_6.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ex_6, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ex_6.setAutoDraw(True)
+        if sort_test_ex_6.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ex_6.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ex_6.tStop = t  # not accounting for scr refresh
+                sort_test_ex_6.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ex_6, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ex_6.setAutoDraw(False)
+        
+        # *sort_test_ex_7* updates
+        if sort_test_ex_7.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ex_7.frameNStart = frameN  # exact frame index
+            sort_test_ex_7.tStart = t  # local t and not account for scr refresh
+            sort_test_ex_7.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ex_7, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ex_7.setAutoDraw(True)
+        if sort_test_ex_7.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ex_7.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ex_7.tStop = t  # not accounting for scr refresh
+                sort_test_ex_7.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ex_7, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ex_7.setAutoDraw(False)
+        
+        # *sort_test_ex_8* updates
+        if sort_test_ex_8.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ex_8.frameNStart = frameN  # exact frame index
+            sort_test_ex_8.tStart = t  # local t and not account for scr refresh
+            sort_test_ex_8.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ex_8, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ex_8.setAutoDraw(True)
+        if sort_test_ex_8.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ex_8.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ex_8.tStop = t  # not accounting for scr refresh
+                sort_test_ex_8.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ex_8, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ex_8.setAutoDraw(False)
+        
+        # *sort_test_ex_9* updates
+        if sort_test_ex_9.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ex_9.frameNStart = frameN  # exact frame index
+            sort_test_ex_9.tStart = t  # local t and not account for scr refresh
+            sort_test_ex_9.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ex_9, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ex_9.setAutoDraw(True)
+        if sort_test_ex_9.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ex_9.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ex_9.tStop = t  # not accounting for scr refresh
+                sort_test_ex_9.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ex_9, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ex_9.setAutoDraw(False)
+        
+        # *sort_test_ex_10* updates
+        if sort_test_ex_10.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ex_10.frameNStart = frameN  # exact frame index
+            sort_test_ex_10.tStart = t  # local t and not account for scr refresh
+            sort_test_ex_10.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ex_10, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ex_10.setAutoDraw(True)
+        if sort_test_ex_10.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ex_10.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ex_10.tStop = t  # not accounting for scr refresh
+                sort_test_ex_10.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ex_10, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ex_10.setAutoDraw(False)
+        
+        # *sort_test_ex_11* updates
+        if sort_test_ex_11.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ex_11.frameNStart = frameN  # exact frame index
+            sort_test_ex_11.tStart = t  # local t and not account for scr refresh
+            sort_test_ex_11.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ex_11, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ex_11.setAutoDraw(True)
+        if sort_test_ex_11.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ex_11.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ex_11.tStop = t  # not accounting for scr refresh
+                sort_test_ex_11.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ex_11, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ex_11.setAutoDraw(False)
+        
+        # *sort_test_ex_12* updates
+        if sort_test_ex_12.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_ex_12.frameNStart = frameN  # exact frame index
+            sort_test_ex_12.tStart = t  # local t and not account for scr refresh
+            sort_test_ex_12.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_ex_12, 'tStartRefresh')  # time at next scr refresh
+            sort_test_ex_12.setAutoDraw(True)
+        if sort_test_ex_12.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > sort_test_ex_12.tStartRefresh + 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_ex_12.tStop = t  # not accounting for scr refresh
+                sort_test_ex_12.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_ex_12, 'tStopRefresh')  # time at next scr refresh
+                sort_test_ex_12.setAutoDraw(False)
+        if items == []:
+            items = enableImageComponents(SORT_TESTComponents,sort_test_labels,sort_test_path_base)
+        
+        movingItem = moveItem(sort_test_mouse, movingItem)
+        
+        if frameCnt % traceSaveAtFrame == 0:
+            newTracePos = []
+            for i in items:
+                newTracePos.append([i.name.split('_')[-1],i.pos[0],i.pos[1]])
+            hasMoved = updateTrace(tracePos,newTracePos)
+            if hasMoved != []:
+                for j in hasMoved:
+                    sort_test_trace.append(j)
+            tracePos = newTracePos
+        
+        if sort_test_mouse.isPressedIn(sort_test_compare):
+            sort_test_compareN = sort_test_compareN + compare(sort_test_scale,sort_test_input,sort_test_labels,sort_test_scale_instr,sort_test_scale_left,sort_test_scale_right)
+            
+        sort_test_ans = sort_test_res.text
+        sort_test_timer.text = timerWarning(sortTestTimeL,t) 
+        
+        # *sort_test_btn* updates
+        if sort_test_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_btn.frameNStart = frameN  # exact frame index
+            sort_test_btn.tStart = t  # local t and not account for scr refresh
+            sort_test_btn.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_btn, 'tStartRefresh')  # time at next scr refresh
+            sort_test_btn.setAutoDraw(True)
+        if sort_test_btn.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_btn.tStop = t  # not accounting for scr refresh
+                sort_test_btn.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_btn, 'tStopRefresh')  # time at next scr refresh
+                sort_test_btn.setAutoDraw(False)
+        # *sort_test_mouse* updates
+        if sort_test_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_mouse.frameNStart = frameN  # exact frame index
+            sort_test_mouse.tStart = t  # local t and not account for scr refresh
+            sort_test_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_mouse, 'tStartRefresh')  # time at next scr refresh
+            sort_test_mouse.status = STARTED
+            sort_test_mouse.mouseClock.reset()
+            prevButtonState = sort_test_mouse.getPressed()  # if button is down already this ISN'T a new click
+        if sort_test_mouse.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_mouse.tStop = t  # not accounting for scr refresh
+                sort_test_mouse.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_mouse, 'tStopRefresh')  # time at next scr refresh
+                sort_test_mouse.status = FINISHED
+        if sort_test_mouse.status == STARTED:  # only update if started and not finished!
+            buttons = sort_test_mouse.getPressed()
+            if buttons != prevButtonState:  # button state changed?
+                prevButtonState = buttons
+                if sum(buttons) > 0:  # state changed to a new click
+                    # check if the mouse was inside our 'clickable' objects
+                    gotValidClick = False
+                    for obj in [sort_test_btn]:
+                        if obj.contains(sort_test_mouse):
+                            gotValidClick = True
+                            sort_test_mouse.clicked_name.append(obj.name)
+                    if gotValidClick:  # abort routine on response
+                        continueRoutine = False
+        
+        # *sort_test_timer* updates
+        if sort_test_timer.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            sort_test_timer.frameNStart = frameN  # exact frame index
+            sort_test_timer.tStart = t  # local t and not account for scr refresh
+            sort_test_timer.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(sort_test_timer, 'tStartRefresh')  # time at next scr refresh
+            sort_test_timer.setAutoDraw(True)
+        if sort_test_timer.status == STARTED:
+            # is it time to stop? (based on local clock)
+            if tThisFlip > 300.0-frameTolerance:
+                # keep track of stop time/frame for later
+                sort_test_timer.tStop = t  # not accounting for scr refresh
+                sort_test_timer.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(sort_test_timer, 'tStopRefresh')  # time at next scr refresh
+                sort_test_timer.setAutoDraw(False)
+        
+        # check for quit (typically the Esc key)
+        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+            core.quit()
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in SORT_TESTComponents:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
-                if 'perf2_btn5' in btn_locks and btn_locks['perf2_btn5']:
-                                    btn_locks['perf2_btn5'] = LOCK_OFF
-                                    time.sleep(0.1)
-                                    continueRoutine = False
-            perf2_btn5.wasClicked = True  # if perf2_btn5 is still clicked next frame, it is not a new click
-        else:
-            perf2_btn5.wasClicked = False  # if perf2_btn5 is clicked next frame, it is a new click
-    else:
-        perf2_btn5.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf2_btn5.wasClicked = False  # if perf2_btn5 is clicked next frame, it is a new click
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
     
-    # *perf2_ex5* updates
-    if perf2_ex5.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf2_ex5.frameNStart = frameN  # exact frame index
-        perf2_ex5.tStart = t  # local t and not account for scr refresh
-        perf2_ex5.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_ex5, 'tStartRefresh')  # time at next scr refresh
-        perf2_ex5.setAutoDraw(True)
-    if perf2_ex5.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_ex5.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf2_ex5.tStop = t  # not accounting for scr refresh
-            perf2_ex5.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_ex5, 'tStopRefresh')  # time at next scr refresh
-            perf2_ex5.setAutoDraw(False)
+    # -------Ending Routine "SORT_TEST"-------
+    for thisComponent in SORT_TESTComponents:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    thisExp.addData('sort_test_ans.routineEndVal', sort_test_ans)  # Save end routine value
+    thisExp.addData('sort_test_trace.routineEndVal', sort_test_trace)  # Save end routine value
+    thisExp.addData('sort_test_compareN.routineEndVal', sort_test_compareN)  # Save end routine value
+    TEST_2.addData('sort_test_scale_right.text',sort_test_scale_right.text)
+    sort_test_scale_right.reset()
+    TEST_2.addData('sort_test_scale_left.text',sort_test_scale_left.text)
+    sort_test_scale_left.reset()
+    TEST_2.addData('sort_test_res.text',sort_test_res.text)
+    sort_test_res.reset()
+    TEST_2.addData('sort_test_ex_1.started', sort_test_ex_1.tStartRefresh)
+    TEST_2.addData('sort_test_ex_1.stopped', sort_test_ex_1.tStopRefresh)
+    # store data for TEST_2 (TrialHandler)
+    x, y = sort_test_mouse.getPos()
+    buttons = sort_test_mouse.getPressed()
+    if sum(buttons):
+        # check if the mouse was inside our 'clickable' objects
+        gotValidClick = False
+        for obj in [sort_test_btn]:
+            if obj.contains(sort_test_mouse):
+                gotValidClick = True
+                sort_test_mouse.clicked_name.append(obj.name)
+    TEST_2.addData('sort_test_mouse.x', x)
+    TEST_2.addData('sort_test_mouse.y', y)
+    TEST_2.addData('sort_test_mouse.leftButton', buttons[0])
+    TEST_2.addData('sort_test_mouse.midButton', buttons[1])
+    TEST_2.addData('sort_test_mouse.rightButton', buttons[2])
+    if len(sort_test_mouse.clicked_name):
+        TEST_2.addData('sort_test_mouse.clicked_name', sort_test_mouse.clicked_name[0])
+    thisExp.nextEntry()
     
-    # *perf2_btn4* updates
-    if perf2_btn4.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        perf2_btn4.frameNStart = frameN  # exact frame index
-        perf2_btn4.tStart = t  # local t and not account for scr refresh
-        perf2_btn4.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_btn4, 'tStartRefresh')  # time at next scr refresh
-        perf2_btn4.setAutoDraw(True)
-    if perf2_btn4.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_btn4.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf2_btn4.tStop = t  # not accounting for scr refresh
-            perf2_btn4.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_btn4, 'tStopRefresh')  # time at next scr refresh
-            perf2_btn4.setAutoDraw(False)
-    if perf2_btn4.status == STARTED:
-        # check whether perf2_btn4 has been pressed
-        if perf2_btn4.isClicked:
-            if not perf2_btn4.wasClicked:
-                perf2_btn4.timesOn.append(perf2_btn4.buttonClock.getTime()) # store time of first click
-                perf2_btn4.timesOff.append(perf2_btn4.buttonClock.getTime()) # store time clicked until
-            else:
-                perf2_btn4.timesOff[-1] = perf2_btn4.buttonClock.getTime() # update time clicked until
-            if not perf2_btn4.wasClicked:
-                if 'perf2_btn4' in btn_locks and btn_locks['perf2_btn4']:
-                                    perf2_ex4.setOpacity(0.0)
-                                    perf2_btn4.setOpacity(0.0)
-                                    perf2_ex5.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    perf2_btn5.setOpacity(1.0)
-                
-                                    btn_locks['perf2_btn5'] = LOCK_ON
-                                    btn_locks['perf2_btn4'] = LOCK_OFF
-                                    perf2_num.setText('Test example 5 (this could be removed)')
-            perf2_btn4.wasClicked = True  # if perf2_btn4 is still clicked next frame, it is not a new click
-        else:
-            perf2_btn4.wasClicked = False  # if perf2_btn4 is clicked next frame, it is a new click
-    else:
-        perf2_btn4.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf2_btn4.wasClicked = False  # if perf2_btn4 is clicked next frame, it is a new click
-    
-    # *perf2_ex4* updates
-    if perf2_ex4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf2_ex4.frameNStart = frameN  # exact frame index
-        perf2_ex4.tStart = t  # local t and not account for scr refresh
-        perf2_ex4.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_ex4, 'tStartRefresh')  # time at next scr refresh
-        perf2_ex4.setAutoDraw(True)
-    if perf2_ex4.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_ex4.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf2_ex4.tStop = t  # not accounting for scr refresh
-            perf2_ex4.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_ex4, 'tStopRefresh')  # time at next scr refresh
-            perf2_ex4.setAutoDraw(False)
-    
-    # *perf2_btn3* updates
-    if perf2_btn3.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        perf2_btn3.frameNStart = frameN  # exact frame index
-        perf2_btn3.tStart = t  # local t and not account for scr refresh
-        perf2_btn3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_btn3, 'tStartRefresh')  # time at next scr refresh
-        perf2_btn3.setAutoDraw(True)
-    if perf2_btn3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_btn3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf2_btn3.tStop = t  # not accounting for scr refresh
-            perf2_btn3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_btn3, 'tStopRefresh')  # time at next scr refresh
-            perf2_btn3.setAutoDraw(False)
-    if perf2_btn3.status == STARTED:
-        # check whether perf2_btn3 has been pressed
-        if perf2_btn3.isClicked:
-            if not perf2_btn3.wasClicked:
-                perf2_btn3.timesOn.append(perf2_btn3.buttonClock.getTime()) # store time of first click
-                perf2_btn3.timesOff.append(perf2_btn3.buttonClock.getTime()) # store time clicked until
-            else:
-                perf2_btn3.timesOff[-1] = perf2_btn3.buttonClock.getTime() # update time clicked until
-            if not perf2_btn3.wasClicked:
-                if 'perf2_btn3' in btn_locks and btn_locks['perf2_btn3']:
-                                    perf2_ex3.setOpacity(0.0)
-                                    perf2_btn3.setOpacity(0.0)
-                                    perf2_ex4.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    perf2_btn4.setOpacity(1.0)
-                
-                                    btn_locks['perf2_btn4'] = LOCK_ON
-                                    btn_locks['perf2_btn3'] = LOCK_OFF
-                                    perf2_num.setText('Test example 4 (this could be removed)')
-            perf2_btn3.wasClicked = True  # if perf2_btn3 is still clicked next frame, it is not a new click
-        else:
-            perf2_btn3.wasClicked = False  # if perf2_btn3 is clicked next frame, it is a new click
-    else:
-        perf2_btn3.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf2_btn3.wasClicked = False  # if perf2_btn3 is clicked next frame, it is a new click
-    
-    # *perf2_ex3* updates
-    if perf2_ex3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf2_ex3.frameNStart = frameN  # exact frame index
-        perf2_ex3.tStart = t  # local t and not account for scr refresh
-        perf2_ex3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_ex3, 'tStartRefresh')  # time at next scr refresh
-        perf2_ex3.setAutoDraw(True)
-    if perf2_ex3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_ex3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf2_ex3.tStop = t  # not accounting for scr refresh
-            perf2_ex3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_ex3, 'tStopRefresh')  # time at next scr refresh
-            perf2_ex3.setAutoDraw(False)
-    
-    # *perf2_btn2* updates
-    if perf2_btn2.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        perf2_btn2.frameNStart = frameN  # exact frame index
-        perf2_btn2.tStart = t  # local t and not account for scr refresh
-        perf2_btn2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_btn2, 'tStartRefresh')  # time at next scr refresh
-        perf2_btn2.setAutoDraw(True)
-    if perf2_btn2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_btn2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf2_btn2.tStop = t  # not accounting for scr refresh
-            perf2_btn2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_btn2, 'tStopRefresh')  # time at next scr refresh
-            perf2_btn2.setAutoDraw(False)
-    if perf2_btn2.status == STARTED:
-        # check whether perf2_btn2 has been pressed
-        if perf2_btn2.isClicked:
-            if not perf2_btn2.wasClicked:
-                perf2_btn2.timesOn.append(perf2_btn2.buttonClock.getTime()) # store time of first click
-                perf2_btn2.timesOff.append(perf2_btn2.buttonClock.getTime()) # store time clicked until
-            else:
-                perf2_btn2.timesOff[-1] = perf2_btn2.buttonClock.getTime() # update time clicked until
-            if not perf2_btn2.wasClicked:
-                if 'perf2_btn2' in btn_locks and btn_locks['perf2_btn2']:
-                                    perf2_ex2.setOpacity(0.0)
-                                    perf2_btn2.setOpacity(0.0)
-                                    perf2_ex3.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    perf2_btn3.setOpacity(1.0)
-                
-                                    btn_locks['perf2_btn3'] = LOCK_ON
-                                    btn_locks['perf2_btn2'] = LOCK_OFF
-                                    perf2_num.setText('Test example 3 (this could be removed)')
-            perf2_btn2.wasClicked = True  # if perf2_btn2 is still clicked next frame, it is not a new click
-        else:
-            perf2_btn2.wasClicked = False  # if perf2_btn2 is clicked next frame, it is a new click
-    else:
-        perf2_btn2.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf2_btn2.wasClicked = False  # if perf2_btn2 is clicked next frame, it is a new click
-    
-    # *perf2_ex2* updates
-    if perf2_ex2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf2_ex2.frameNStart = frameN  # exact frame index
-        perf2_ex2.tStart = t  # local t and not account for scr refresh
-        perf2_ex2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_ex2, 'tStartRefresh')  # time at next scr refresh
-        perf2_ex2.setAutoDraw(True)
-    if perf2_ex2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_ex2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf2_ex2.tStop = t  # not accounting for scr refresh
-            perf2_ex2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_ex2, 'tStopRefresh')  # time at next scr refresh
-            perf2_ex2.setAutoDraw(False)
-    
-    # *perf2_btn1* updates
-    if perf2_btn1.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        perf2_btn1.frameNStart = frameN  # exact frame index
-        perf2_btn1.tStart = t  # local t and not account for scr refresh
-        perf2_btn1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_btn1, 'tStartRefresh')  # time at next scr refresh
-        perf2_btn1.setAutoDraw(True)
-    if perf2_btn1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_btn1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf2_btn1.tStop = t  # not accounting for scr refresh
-            perf2_btn1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_btn1, 'tStopRefresh')  # time at next scr refresh
-            perf2_btn1.setAutoDraw(False)
-    if perf2_btn1.status == STARTED:
-        # check whether perf2_btn1 has been pressed
-        if perf2_btn1.isClicked:
-            if not perf2_btn1.wasClicked:
-                perf2_btn1.timesOn.append(perf2_btn1.buttonClock.getTime()) # store time of first click
-                perf2_btn1.timesOff.append(perf2_btn1.buttonClock.getTime()) # store time clicked until
-            else:
-                perf2_btn1.timesOff[-1] = perf2_btn1.buttonClock.getTime() # update time clicked until
-            if not perf2_btn1.wasClicked:
-                if 'perf2_btn1' not in btn_locks:
-                                    perf2_ex1.setOpacity(0.0)
-                                    perf2_btn1.setOpacity(0.0)
-                                    perf2_ex2.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    perf2_btn2.setOpacity(1.0)
-                
-                                    btn_locks['perf2_btn2'] = LOCK_ON
-                                    btn_locks['perf2_btn1'] = LOCK_OFF
-                                    perf2_num.setText('Test example 2 (this could be removed)')
-            perf2_btn1.wasClicked = True  # if perf2_btn1 is still clicked next frame, it is not a new click
-        else:
-            perf2_btn1.wasClicked = False  # if perf2_btn1 is clicked next frame, it is a new click
-    else:
-        perf2_btn1.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf2_btn1.wasClicked = False  # if perf2_btn1 is clicked next frame, it is a new click
-    
-    # *perf2_ex1* updates
-    if perf2_ex1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf2_ex1.frameNStart = frameN  # exact frame index
-        perf2_ex1.tStart = t  # local t and not account for scr refresh
-        perf2_ex1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_ex1, 'tStartRefresh')  # time at next scr refresh
-        perf2_ex1.setAutoDraw(True)
-    if perf2_ex1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_ex1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf2_ex1.tStop = t  # not accounting for scr refresh
-            perf2_ex1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_ex1, 'tStopRefresh')  # time at next scr refresh
-            perf2_ex1.setAutoDraw(False)
-    
-    # *perf2_bg1* updates
-    if perf2_bg1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf2_bg1.frameNStart = frameN  # exact frame index
-        perf2_bg1.tStart = t  # local t and not account for scr refresh
-        perf2_bg1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_bg1, 'tStartRefresh')  # time at next scr refresh
-        perf2_bg1.setAutoDraw(True)
-    if perf2_bg1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_bg1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf2_bg1.tStop = t  # not accounting for scr refresh
-            perf2_bg1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_bg1, 'tStopRefresh')  # time at next scr refresh
-            perf2_bg1.setAutoDraw(False)
-    
-    # *perf2_bg2* updates
-    if perf2_bg2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf2_bg2.frameNStart = frameN  # exact frame index
-        perf2_bg2.tStart = t  # local t and not account for scr refresh
-        perf2_bg2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf2_bg2, 'tStartRefresh')  # time at next scr refresh
-        perf2_bg2.setAutoDraw(True)
-    if perf2_bg2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf2_bg2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf2_bg2.tStop = t  # not accounting for scr refresh
-            perf2_bg2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf2_bg2, 'tStopRefresh')  # time at next scr refresh
-            perf2_bg2.setAutoDraw(False)
-    
-    # check for quit (typically the Esc key)
-    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-        core.quit()
-    
-    # check if all components have finished
-    if not continueRoutine:  # a component has requested a forced-end of Routine
-        break
-    continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in Performance_2Components:
-        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-            continueRoutine = True
-            break  # at least one component has not yet finished
-    
-    # refresh the screen
-    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-        win.flip()
+# completed 1.0 repeats of 'TEST_2'
 
-# -------Ending Routine "Performance_2"-------
-for thisComponent in Performance_2Components:
-    if hasattr(thisComponent, "setAutoDraw"):
-        thisComponent.setAutoDraw(False)
-thisExp.addData('perf2_num.started', perf2_num.tStartRefresh)
-thisExp.addData('perf2_num.stopped', perf2_num.tStopRefresh)
-thisExp.addData('perf2_txt1.started', perf2_txt1.tStartRefresh)
-thisExp.addData('perf2_txt1.stopped', perf2_txt1.tStopRefresh)
-thisExp.addData('perf2_btn5.started', perf2_btn5.tStartRefresh)
-thisExp.addData('perf2_btn5.stopped', perf2_btn5.tStopRefresh)
-thisExp.addData('perf2_btn5.numClicks', perf2_btn5.numClicks)
-if perf2_btn5.numClicks:
-   thisExp.addData('perf2_btn5.timesOn', perf2_btn5.timesOn)
-   thisExp.addData('perf2_btn5.timesOff', perf2_btn5.timesOff)
-else:
-   thisExp.addData('perf2_btn5.timesOn', "")
-   thisExp.addData('perf2_btn5.timesOff', "")
-thisExp.addData('perf2_ex5.started', perf2_ex5.tStartRefresh)
-thisExp.addData('perf2_ex5.stopped', perf2_ex5.tStopRefresh)
-thisExp.addData('perf2_btn4.started', perf2_btn4.tStartRefresh)
-thisExp.addData('perf2_btn4.stopped', perf2_btn4.tStopRefresh)
-thisExp.addData('perf2_btn4.numClicks', perf2_btn4.numClicks)
-if perf2_btn4.numClicks:
-   thisExp.addData('perf2_btn4.timesOn', perf2_btn4.timesOn)
-   thisExp.addData('perf2_btn4.timesOff', perf2_btn4.timesOff)
-else:
-   thisExp.addData('perf2_btn4.timesOn', "")
-   thisExp.addData('perf2_btn4.timesOff', "")
-thisExp.addData('perf2_ex4.started', perf2_ex4.tStartRefresh)
-thisExp.addData('perf2_ex4.stopped', perf2_ex4.tStopRefresh)
-thisExp.addData('perf2_btn3.started', perf2_btn3.tStartRefresh)
-thisExp.addData('perf2_btn3.stopped', perf2_btn3.tStopRefresh)
-thisExp.addData('perf2_btn3.numClicks', perf2_btn3.numClicks)
-if perf2_btn3.numClicks:
-   thisExp.addData('perf2_btn3.timesOn', perf2_btn3.timesOn)
-   thisExp.addData('perf2_btn3.timesOff', perf2_btn3.timesOff)
-else:
-   thisExp.addData('perf2_btn3.timesOn', "")
-   thisExp.addData('perf2_btn3.timesOff', "")
-thisExp.addData('perf2_ex3.started', perf2_ex3.tStartRefresh)
-thisExp.addData('perf2_ex3.stopped', perf2_ex3.tStopRefresh)
-thisExp.addData('perf2_btn2.started', perf2_btn2.tStartRefresh)
-thisExp.addData('perf2_btn2.stopped', perf2_btn2.tStopRefresh)
-thisExp.addData('perf2_btn2.numClicks', perf2_btn2.numClicks)
-if perf2_btn2.numClicks:
-   thisExp.addData('perf2_btn2.timesOn', perf2_btn2.timesOn)
-   thisExp.addData('perf2_btn2.timesOff', perf2_btn2.timesOff)
-else:
-   thisExp.addData('perf2_btn2.timesOn', "")
-   thisExp.addData('perf2_btn2.timesOff', "")
-thisExp.addData('perf2_ex2.started', perf2_ex2.tStartRefresh)
-thisExp.addData('perf2_ex2.stopped', perf2_ex2.tStopRefresh)
-thisExp.addData('perf2_btn1.started', perf2_btn1.tStartRefresh)
-thisExp.addData('perf2_btn1.stopped', perf2_btn1.tStopRefresh)
-thisExp.addData('perf2_btn1.numClicks', perf2_btn1.numClicks)
-if perf2_btn1.numClicks:
-   thisExp.addData('perf2_btn1.timesOn', perf2_btn1.timesOn)
-   thisExp.addData('perf2_btn1.timesOff', perf2_btn1.timesOff)
-else:
-   thisExp.addData('perf2_btn1.timesOn', "")
-   thisExp.addData('perf2_btn1.timesOff', "")
-thisExp.addData('perf2_ex1.started', perf2_ex1.tStartRefresh)
-thisExp.addData('perf2_ex1.stopped', perf2_ex1.tStopRefresh)
-thisExp.addData('perf2_bg1.started', perf2_bg1.tStartRefresh)
-thisExp.addData('perf2_bg1.stopped', perf2_bg1.tStopRefresh)
-thisExp.addData('perf2_bg2.started', perf2_bg2.tStartRefresh)
-thisExp.addData('perf2_bg2.stopped', perf2_bg2.tStopRefresh)
 
-# ------Prepare to start Routine "Performance_3"-------
+# ------Prepare to start Routine "DEBRIEF"-------
 continueRoutine = True
-routineTimer.add(300.500000)
+routineTimer.add(10.000000)
 # update component parameters for each repeat
+# setup some python lists for storing info about the debrief_mouse
+debrief_mouse.clicked_name = []
+gotValidClick = False  # until a click is received
 # keep track of which components have finished
-Performance_3Components = [perf3_num, perf3_txt1, perf3_btn5, perf3_ex5, perf3_btn4, perf3_ex4, perf3_btn3, perf3_ex3, perf3_btn2, perf3_ex2, perf3_btn1, perf3_ex1, perf3_bg1, perf3_bg2]
-for thisComponent in Performance_3Components:
+DEBRIEFComponents = [intro_text_5, debrief_btn, debrief_mouse]
+for thisComponent in DEBRIEFComponents:
     thisComponent.tStart = None
     thisComponent.tStop = None
     thisComponent.tStartRefresh = None
@@ -3802,376 +6423,82 @@ for thisComponent in Performance_3Components:
 # reset timers
 t = 0
 _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-Performance_3Clock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+DEBRIEFClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
 
-# -------Run Routine "Performance_3"-------
+# -------Run Routine "DEBRIEF"-------
 while continueRoutine and routineTimer.getTime() > 0:
     # get current time
-    t = Performance_3Clock.getTime()
-    tThisFlip = win.getFutureFlipTime(clock=Performance_3Clock)
+    t = DEBRIEFClock.getTime()
+    tThisFlip = win.getFutureFlipTime(clock=DEBRIEFClock)
     tThisFlipGlobal = win.getFutureFlipTime(clock=None)
     frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
     # update/draw components on each frame
     
-    # *perf3_num* updates
-    if perf3_num.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+    # *intro_text_5* updates
+    if intro_text_5.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
-        perf3_num.frameNStart = frameN  # exact frame index
-        perf3_num.tStart = t  # local t and not account for scr refresh
-        perf3_num.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_num, 'tStartRefresh')  # time at next scr refresh
-        perf3_num.setAutoDraw(True)
-    if perf3_num.status == STARTED:
+        intro_text_5.frameNStart = frameN  # exact frame index
+        intro_text_5.tStart = t  # local t and not account for scr refresh
+        intro_text_5.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(intro_text_5, 'tStartRefresh')  # time at next scr refresh
+        intro_text_5.setAutoDraw(True)
+    if intro_text_5.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_num.tStartRefresh + 300.0-frameTolerance:
+        if tThisFlipGlobal > intro_text_5.tStartRefresh + 10.0-frameTolerance:
             # keep track of stop time/frame for later
-            perf3_num.tStop = t  # not accounting for scr refresh
-            perf3_num.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_num, 'tStopRefresh')  # time at next scr refresh
-            perf3_num.setAutoDraw(False)
+            intro_text_5.tStop = t  # not accounting for scr refresh
+            intro_text_5.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(intro_text_5, 'tStopRefresh')  # time at next scr refresh
+            intro_text_5.setAutoDraw(False)
     
-    # *perf3_txt1* updates
-    if perf3_txt1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+    # *debrief_btn* updates
+    if debrief_btn.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
         # keep track of start time/frame for later
-        perf3_txt1.frameNStart = frameN  # exact frame index
-        perf3_txt1.tStart = t  # local t and not account for scr refresh
-        perf3_txt1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_txt1, 'tStartRefresh')  # time at next scr refresh
-        perf3_txt1.setAutoDraw(True)
-    if perf3_txt1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_txt1.tStartRefresh + 300.0-frameTolerance:
+        debrief_btn.frameNStart = frameN  # exact frame index
+        debrief_btn.tStart = t  # local t and not account for scr refresh
+        debrief_btn.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(debrief_btn, 'tStartRefresh')  # time at next scr refresh
+        debrief_btn.setAutoDraw(True)
+    if debrief_btn.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 10.0-frameTolerance:
             # keep track of stop time/frame for later
-            perf3_txt1.tStop = t  # not accounting for scr refresh
-            perf3_txt1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_txt1, 'tStopRefresh')  # time at next scr refresh
-            perf3_txt1.setAutoDraw(False)
-    
-    # *perf3_btn5* updates
-    if perf3_btn5.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
+            debrief_btn.tStop = t  # not accounting for scr refresh
+            debrief_btn.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(debrief_btn, 'tStopRefresh')  # time at next scr refresh
+            debrief_btn.setAutoDraw(False)
+    # *debrief_mouse* updates
+    if debrief_mouse.status == NOT_STARTED and t >= 0.5-frameTolerance:
         # keep track of start time/frame for later
-        perf3_btn5.frameNStart = frameN  # exact frame index
-        perf3_btn5.tStart = t  # local t and not account for scr refresh
-        perf3_btn5.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_btn5, 'tStartRefresh')  # time at next scr refresh
-        perf3_btn5.setAutoDraw(True)
-    if perf3_btn5.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_btn5.tStartRefresh + 300.0-frameTolerance:
+        debrief_mouse.frameNStart = frameN  # exact frame index
+        debrief_mouse.tStart = t  # local t and not account for scr refresh
+        debrief_mouse.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(debrief_mouse, 'tStartRefresh')  # time at next scr refresh
+        debrief_mouse.status = STARTED
+        debrief_mouse.mouseClock.reset()
+        prevButtonState = debrief_mouse.getPressed()  # if button is down already this ISN'T a new click
+    if debrief_mouse.status == STARTED:
+        # is it time to stop? (based on local clock)
+        if tThisFlip > 10.0-frameTolerance:
             # keep track of stop time/frame for later
-            perf3_btn5.tStop = t  # not accounting for scr refresh
-            perf3_btn5.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_btn5, 'tStopRefresh')  # time at next scr refresh
-            perf3_btn5.setAutoDraw(False)
-    if perf3_btn5.status == STARTED:
-        # check whether perf3_btn5 has been pressed
-        if perf3_btn5.isClicked:
-            if not perf3_btn5.wasClicked:
-                perf3_btn5.timesOn.append(perf3_btn5.buttonClock.getTime()) # store time of first click
-                perf3_btn5.timesOff.append(perf3_btn5.buttonClock.getTime()) # store time clicked until
-            else:
-                perf3_btn5.timesOff[-1] = perf3_btn5.buttonClock.getTime() # update time clicked until
-            if not perf3_btn5.wasClicked:
-                continueRoutine = False  # end routine when perf3_btn5 is clicked
-                continueRoutine = True
-                if 'perf3_btn5' in btn_locks and btn_locks['perf3_btn5']:
-                                    btn_locks['perf3_btn5'] = LOCK_OFF
-                                    time.sleep(0.1)
-                                    continueRoutine = False
-            perf3_btn5.wasClicked = True  # if perf3_btn5 is still clicked next frame, it is not a new click
-        else:
-            perf3_btn5.wasClicked = False  # if perf3_btn5 is clicked next frame, it is a new click
-    else:
-        perf3_btn5.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf3_btn5.wasClicked = False  # if perf3_btn5 is clicked next frame, it is a new click
-    
-    # *perf3_ex5* updates
-    if perf3_ex5.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf3_ex5.frameNStart = frameN  # exact frame index
-        perf3_ex5.tStart = t  # local t and not account for scr refresh
-        perf3_ex5.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_ex5, 'tStartRefresh')  # time at next scr refresh
-        perf3_ex5.setAutoDraw(True)
-    if perf3_ex5.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_ex5.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf3_ex5.tStop = t  # not accounting for scr refresh
-            perf3_ex5.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_ex5, 'tStopRefresh')  # time at next scr refresh
-            perf3_ex5.setAutoDraw(False)
-    
-    # *perf3_btn4* updates
-    if perf3_btn4.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        perf3_btn4.frameNStart = frameN  # exact frame index
-        perf3_btn4.tStart = t  # local t and not account for scr refresh
-        perf3_btn4.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_btn4, 'tStartRefresh')  # time at next scr refresh
-        perf3_btn4.setAutoDraw(True)
-    if perf3_btn4.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_btn4.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf3_btn4.tStop = t  # not accounting for scr refresh
-            perf3_btn4.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_btn4, 'tStopRefresh')  # time at next scr refresh
-            perf3_btn4.setAutoDraw(False)
-    if perf3_btn4.status == STARTED:
-        # check whether perf3_btn4 has been pressed
-        if perf3_btn4.isClicked:
-            if not perf3_btn4.wasClicked:
-                perf3_btn4.timesOn.append(perf3_btn4.buttonClock.getTime()) # store time of first click
-                perf3_btn4.timesOff.append(perf3_btn4.buttonClock.getTime()) # store time clicked until
-            else:
-                perf3_btn4.timesOff[-1] = perf3_btn4.buttonClock.getTime() # update time clicked until
-            if not perf3_btn4.wasClicked:
-                if 'perf3_btn4' in btn_locks and btn_locks['perf3_btn4']:
-                                    perf3_ex4.setOpacity(0.0)
-                                    perf3_btn4.setOpacity(0.0)
-                                    perf3_ex5.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    perf3_btn5.setOpacity(1.0)
-                
-                                    btn_locks['perf3_btn5'] = LOCK_ON
-                                    btn_locks['perf3_btn4'] = LOCK_OFF
-                                    perf3_num.setText('Test example 5 (this could be removed)')
-            perf3_btn4.wasClicked = True  # if perf3_btn4 is still clicked next frame, it is not a new click
-        else:
-            perf3_btn4.wasClicked = False  # if perf3_btn4 is clicked next frame, it is a new click
-    else:
-        perf3_btn4.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf3_btn4.wasClicked = False  # if perf3_btn4 is clicked next frame, it is a new click
-    
-    # *perf3_ex4* updates
-    if perf3_ex4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf3_ex4.frameNStart = frameN  # exact frame index
-        perf3_ex4.tStart = t  # local t and not account for scr refresh
-        perf3_ex4.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_ex4, 'tStartRefresh')  # time at next scr refresh
-        perf3_ex4.setAutoDraw(True)
-    if perf3_ex4.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_ex4.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf3_ex4.tStop = t  # not accounting for scr refresh
-            perf3_ex4.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_ex4, 'tStopRefresh')  # time at next scr refresh
-            perf3_ex4.setAutoDraw(False)
-    
-    # *perf3_btn3* updates
-    if perf3_btn3.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        perf3_btn3.frameNStart = frameN  # exact frame index
-        perf3_btn3.tStart = t  # local t and not account for scr refresh
-        perf3_btn3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_btn3, 'tStartRefresh')  # time at next scr refresh
-        perf3_btn3.setAutoDraw(True)
-    if perf3_btn3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_btn3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf3_btn3.tStop = t  # not accounting for scr refresh
-            perf3_btn3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_btn3, 'tStopRefresh')  # time at next scr refresh
-            perf3_btn3.setAutoDraw(False)
-    if perf3_btn3.status == STARTED:
-        # check whether perf3_btn3 has been pressed
-        if perf3_btn3.isClicked:
-            if not perf3_btn3.wasClicked:
-                perf3_btn3.timesOn.append(perf3_btn3.buttonClock.getTime()) # store time of first click
-                perf3_btn3.timesOff.append(perf3_btn3.buttonClock.getTime()) # store time clicked until
-            else:
-                perf3_btn3.timesOff[-1] = perf3_btn3.buttonClock.getTime() # update time clicked until
-            if not perf3_btn3.wasClicked:
-                if 'perf3_btn3' in btn_locks and btn_locks['perf3_btn3']:
-                                    perf3_ex3.setOpacity(0.0)
-                                    perf3_btn3.setOpacity(0.0)
-                                    perf3_ex4.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    perf3_btn4.setOpacity(1.0)
-                
-                                    btn_locks['perf3_btn4'] = LOCK_ON
-                                    btn_locks['perf3_btn3'] = LOCK_OFF
-                                    perf3_num.setText('Test example 4 (this could be removed)')
-            perf3_btn3.wasClicked = True  # if perf3_btn3 is still clicked next frame, it is not a new click
-        else:
-            perf3_btn3.wasClicked = False  # if perf3_btn3 is clicked next frame, it is a new click
-    else:
-        perf3_btn3.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf3_btn3.wasClicked = False  # if perf3_btn3 is clicked next frame, it is a new click
-    
-    # *perf3_ex3* updates
-    if perf3_ex3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf3_ex3.frameNStart = frameN  # exact frame index
-        perf3_ex3.tStart = t  # local t and not account for scr refresh
-        perf3_ex3.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_ex3, 'tStartRefresh')  # time at next scr refresh
-        perf3_ex3.setAutoDraw(True)
-    if perf3_ex3.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_ex3.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf3_ex3.tStop = t  # not accounting for scr refresh
-            perf3_ex3.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_ex3, 'tStopRefresh')  # time at next scr refresh
-            perf3_ex3.setAutoDraw(False)
-    
-    # *perf3_btn2* updates
-    if perf3_btn2.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        perf3_btn2.frameNStart = frameN  # exact frame index
-        perf3_btn2.tStart = t  # local t and not account for scr refresh
-        perf3_btn2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_btn2, 'tStartRefresh')  # time at next scr refresh
-        perf3_btn2.setAutoDraw(True)
-    if perf3_btn2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_btn2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf3_btn2.tStop = t  # not accounting for scr refresh
-            perf3_btn2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_btn2, 'tStopRefresh')  # time at next scr refresh
-            perf3_btn2.setAutoDraw(False)
-    if perf3_btn2.status == STARTED:
-        # check whether perf3_btn2 has been pressed
-        if perf3_btn2.isClicked:
-            if not perf3_btn2.wasClicked:
-                perf3_btn2.timesOn.append(perf3_btn2.buttonClock.getTime()) # store time of first click
-                perf3_btn2.timesOff.append(perf3_btn2.buttonClock.getTime()) # store time clicked until
-            else:
-                perf3_btn2.timesOff[-1] = perf3_btn2.buttonClock.getTime() # update time clicked until
-            if not perf3_btn2.wasClicked:
-                if 'perf3_btn2' in btn_locks and btn_locks['perf3_btn2']:
-                                    perf3_ex2.setOpacity(0.0)
-                                    perf3_btn2.setOpacity(0.0)
-                                    perf3_ex3.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    perf3_btn3.setOpacity(1.0)
-                
-                                    btn_locks['perf3_btn3'] = LOCK_ON
-                                    btn_locks['perf3_btn2'] = LOCK_OFF
-                                    perf3_num.setText('Test example 3 (this could be removed)')
-            perf3_btn2.wasClicked = True  # if perf3_btn2 is still clicked next frame, it is not a new click
-        else:
-            perf3_btn2.wasClicked = False  # if perf3_btn2 is clicked next frame, it is a new click
-    else:
-        perf3_btn2.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf3_btn2.wasClicked = False  # if perf3_btn2 is clicked next frame, it is a new click
-    
-    # *perf3_ex2* updates
-    if perf3_ex2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf3_ex2.frameNStart = frameN  # exact frame index
-        perf3_ex2.tStart = t  # local t and not account for scr refresh
-        perf3_ex2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_ex2, 'tStartRefresh')  # time at next scr refresh
-        perf3_ex2.setAutoDraw(True)
-    if perf3_ex2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_ex2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf3_ex2.tStop = t  # not accounting for scr refresh
-            perf3_ex2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_ex2, 'tStopRefresh')  # time at next scr refresh
-            perf3_ex2.setAutoDraw(False)
-    
-    # *perf3_btn1* updates
-    if perf3_btn1.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
-        # keep track of start time/frame for later
-        perf3_btn1.frameNStart = frameN  # exact frame index
-        perf3_btn1.tStart = t  # local t and not account for scr refresh
-        perf3_btn1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_btn1, 'tStartRefresh')  # time at next scr refresh
-        perf3_btn1.setAutoDraw(True)
-    if perf3_btn1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_btn1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf3_btn1.tStop = t  # not accounting for scr refresh
-            perf3_btn1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_btn1, 'tStopRefresh')  # time at next scr refresh
-            perf3_btn1.setAutoDraw(False)
-    if perf3_btn1.status == STARTED:
-        # check whether perf3_btn1 has been pressed
-        if perf3_btn1.isClicked:
-            if not perf3_btn1.wasClicked:
-                perf3_btn1.timesOn.append(perf3_btn1.buttonClock.getTime()) # store time of first click
-                perf3_btn1.timesOff.append(perf3_btn1.buttonClock.getTime()) # store time clicked until
-            else:
-                perf3_btn1.timesOff[-1] = perf3_btn1.buttonClock.getTime() # update time clicked until
-            if not perf3_btn1.wasClicked:
-                if 'perf3_btn1' not in btn_locks:
-                                    perf3_ex1.setOpacity(0.0)
-                                    perf3_btn1.setOpacity(0.0)
-                                    perf3_ex2.setOpacity(1.0)
-                                    time.sleep(0.1)
-                                    perf3_btn2.setOpacity(1.0)
-                
-                                    btn_locks['perf3_btn2'] = LOCK_ON
-                                    btn_locks['perf3_btn1'] = LOCK_OFF
-                                    perf3_num.setText('Test example 2 (this could be removed)')
-            perf3_btn1.wasClicked = True  # if perf3_btn1 is still clicked next frame, it is not a new click
-        else:
-            perf3_btn1.wasClicked = False  # if perf3_btn1 is clicked next frame, it is a new click
-    else:
-        perf3_btn1.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        perf3_btn1.wasClicked = False  # if perf3_btn1 is clicked next frame, it is a new click
-    
-    # *perf3_ex1* updates
-    if perf3_ex1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf3_ex1.frameNStart = frameN  # exact frame index
-        perf3_ex1.tStart = t  # local t and not account for scr refresh
-        perf3_ex1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_ex1, 'tStartRefresh')  # time at next scr refresh
-        perf3_ex1.setAutoDraw(True)
-    if perf3_ex1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_ex1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf3_ex1.tStop = t  # not accounting for scr refresh
-            perf3_ex1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_ex1, 'tStopRefresh')  # time at next scr refresh
-            perf3_ex1.setAutoDraw(False)
-    
-    # *perf3_bg1* updates
-    if perf3_bg1.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf3_bg1.frameNStart = frameN  # exact frame index
-        perf3_bg1.tStart = t  # local t and not account for scr refresh
-        perf3_bg1.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_bg1, 'tStartRefresh')  # time at next scr refresh
-        perf3_bg1.setAutoDraw(True)
-    if perf3_bg1.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_bg1.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf3_bg1.tStop = t  # not accounting for scr refresh
-            perf3_bg1.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_bg1, 'tStopRefresh')  # time at next scr refresh
-            perf3_bg1.setAutoDraw(False)
-    
-    # *perf3_bg2* updates
-    if perf3_bg2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        perf3_bg2.frameNStart = frameN  # exact frame index
-        perf3_bg2.tStart = t  # local t and not account for scr refresh
-        perf3_bg2.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(perf3_bg2, 'tStartRefresh')  # time at next scr refresh
-        perf3_bg2.setAutoDraw(True)
-    if perf3_bg2.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > perf3_bg2.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            perf3_bg2.tStop = t  # not accounting for scr refresh
-            perf3_bg2.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(perf3_bg2, 'tStopRefresh')  # time at next scr refresh
-            perf3_bg2.setAutoDraw(False)
+            debrief_mouse.tStop = t  # not accounting for scr refresh
+            debrief_mouse.frameNStop = frameN  # exact frame index
+            win.timeOnFlip(debrief_mouse, 'tStopRefresh')  # time at next scr refresh
+            debrief_mouse.status = FINISHED
+    if debrief_mouse.status == STARTED:  # only update if started and not finished!
+        buttons = debrief_mouse.getPressed()
+        if buttons != prevButtonState:  # button state changed?
+            prevButtonState = buttons
+            if sum(buttons) > 0:  # state changed to a new click
+                # check if the mouse was inside our 'clickable' objects
+                gotValidClick = False
+                for obj in [debrief_btn]:
+                    if obj.contains(debrief_mouse):
+                        gotValidClick = True
+                        debrief_mouse.clicked_name.append(obj.name)
+                if gotValidClick:  # abort routine on response
+                    continueRoutine = False
     
     # check for quit (typically the Esc key)
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -4181,7 +6508,7 @@ while continueRoutine and routineTimer.getTime() > 0:
     if not continueRoutine:  # a component has requested a forced-end of Routine
         break
     continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in Performance_3Components:
+    for thisComponent in DEBRIEFComponents:
         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
             continueRoutine = True
             break  # at least one component has not yet finished
@@ -4190,185 +6517,30 @@ while continueRoutine and routineTimer.getTime() > 0:
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
         win.flip()
 
-# -------Ending Routine "Performance_3"-------
-for thisComponent in Performance_3Components:
+# -------Ending Routine "DEBRIEF"-------
+for thisComponent in DEBRIEFComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('perf3_num.started', perf3_num.tStartRefresh)
-thisExp.addData('perf3_num.stopped', perf3_num.tStopRefresh)
-thisExp.addData('perf3_txt1.started', perf3_txt1.tStartRefresh)
-thisExp.addData('perf3_txt1.stopped', perf3_txt1.tStopRefresh)
-thisExp.addData('perf3_btn5.started', perf3_btn5.tStartRefresh)
-thisExp.addData('perf3_btn5.stopped', perf3_btn5.tStopRefresh)
-thisExp.addData('perf3_btn5.numClicks', perf3_btn5.numClicks)
-if perf3_btn5.numClicks:
-   thisExp.addData('perf3_btn5.timesOn', perf3_btn5.timesOn)
-   thisExp.addData('perf3_btn5.timesOff', perf3_btn5.timesOff)
-else:
-   thisExp.addData('perf3_btn5.timesOn', "")
-   thisExp.addData('perf3_btn5.timesOff', "")
-thisExp.addData('perf3_ex5.started', perf3_ex5.tStartRefresh)
-thisExp.addData('perf3_ex5.stopped', perf3_ex5.tStopRefresh)
-thisExp.addData('perf3_btn4.started', perf3_btn4.tStartRefresh)
-thisExp.addData('perf3_btn4.stopped', perf3_btn4.tStopRefresh)
-thisExp.addData('perf3_btn4.numClicks', perf3_btn4.numClicks)
-if perf3_btn4.numClicks:
-   thisExp.addData('perf3_btn4.timesOn', perf3_btn4.timesOn)
-   thisExp.addData('perf3_btn4.timesOff', perf3_btn4.timesOff)
-else:
-   thisExp.addData('perf3_btn4.timesOn', "")
-   thisExp.addData('perf3_btn4.timesOff', "")
-thisExp.addData('perf3_ex4.started', perf3_ex4.tStartRefresh)
-thisExp.addData('perf3_ex4.stopped', perf3_ex4.tStopRefresh)
-thisExp.addData('perf3_btn3.started', perf3_btn3.tStartRefresh)
-thisExp.addData('perf3_btn3.stopped', perf3_btn3.tStopRefresh)
-thisExp.addData('perf3_btn3.numClicks', perf3_btn3.numClicks)
-if perf3_btn3.numClicks:
-   thisExp.addData('perf3_btn3.timesOn', perf3_btn3.timesOn)
-   thisExp.addData('perf3_btn3.timesOff', perf3_btn3.timesOff)
-else:
-   thisExp.addData('perf3_btn3.timesOn', "")
-   thisExp.addData('perf3_btn3.timesOff', "")
-thisExp.addData('perf3_ex3.started', perf3_ex3.tStartRefresh)
-thisExp.addData('perf3_ex3.stopped', perf3_ex3.tStopRefresh)
-thisExp.addData('perf3_btn2.started', perf3_btn2.tStartRefresh)
-thisExp.addData('perf3_btn2.stopped', perf3_btn2.tStopRefresh)
-thisExp.addData('perf3_btn2.numClicks', perf3_btn2.numClicks)
-if perf3_btn2.numClicks:
-   thisExp.addData('perf3_btn2.timesOn', perf3_btn2.timesOn)
-   thisExp.addData('perf3_btn2.timesOff', perf3_btn2.timesOff)
-else:
-   thisExp.addData('perf3_btn2.timesOn', "")
-   thisExp.addData('perf3_btn2.timesOff', "")
-thisExp.addData('perf3_ex2.started', perf3_ex2.tStartRefresh)
-thisExp.addData('perf3_ex2.stopped', perf3_ex2.tStopRefresh)
-thisExp.addData('perf3_btn1.started', perf3_btn1.tStartRefresh)
-thisExp.addData('perf3_btn1.stopped', perf3_btn1.tStopRefresh)
-thisExp.addData('perf3_btn1.numClicks', perf3_btn1.numClicks)
-if perf3_btn1.numClicks:
-   thisExp.addData('perf3_btn1.timesOn', perf3_btn1.timesOn)
-   thisExp.addData('perf3_btn1.timesOff', perf3_btn1.timesOff)
-else:
-   thisExp.addData('perf3_btn1.timesOn', "")
-   thisExp.addData('perf3_btn1.timesOff', "")
-thisExp.addData('perf3_ex1.started', perf3_ex1.tStartRefresh)
-thisExp.addData('perf3_ex1.stopped', perf3_ex1.tStopRefresh)
-thisExp.addData('perf3_bg1.started', perf3_bg1.tStartRefresh)
-thisExp.addData('perf3_bg1.stopped', perf3_bg1.tStopRefresh)
-thisExp.addData('perf3_bg2.started', perf3_bg2.tStartRefresh)
-thisExp.addData('perf3_bg2.stopped', perf3_bg2.tStopRefresh)
-
-# ------Prepare to start Routine "Debriefing"-------
-continueRoutine = True
-routineTimer.add(300.000000)
-# update component parameters for each repeat
-# keep track of which components have finished
-DebriefingComponents = [debrf_info, debrf_btn]
-for thisComponent in DebriefingComponents:
-    thisComponent.tStart = None
-    thisComponent.tStop = None
-    thisComponent.tStartRefresh = None
-    thisComponent.tStopRefresh = None
-    if hasattr(thisComponent, 'status'):
-        thisComponent.status = NOT_STARTED
-# reset timers
-t = 0
-_timeToFirstFrame = win.getFutureFlipTime(clock="now")
-DebriefingClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
-frameN = -1
-
-# -------Run Routine "Debriefing"-------
-while continueRoutine and routineTimer.getTime() > 0:
-    # get current time
-    t = DebriefingClock.getTime()
-    tThisFlip = win.getFutureFlipTime(clock=DebriefingClock)
-    tThisFlipGlobal = win.getFutureFlipTime(clock=None)
-    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-    # update/draw components on each frame
-    
-    # *debrf_info* updates
-    if debrf_info.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        debrf_info.frameNStart = frameN  # exact frame index
-        debrf_info.tStart = t  # local t and not account for scr refresh
-        debrf_info.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(debrf_info, 'tStartRefresh')  # time at next scr refresh
-        debrf_info.setAutoDraw(True)
-    if debrf_info.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > debrf_info.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            debrf_info.tStop = t  # not accounting for scr refresh
-            debrf_info.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(debrf_info, 'tStopRefresh')  # time at next scr refresh
-            debrf_info.setAutoDraw(False)
-    
-    # *debrf_btn* updates
-    if debrf_btn.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        debrf_btn.frameNStart = frameN  # exact frame index
-        debrf_btn.tStart = t  # local t and not account for scr refresh
-        debrf_btn.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(debrf_btn, 'tStartRefresh')  # time at next scr refresh
-        debrf_btn.setAutoDraw(True)
-    if debrf_btn.status == STARTED:
-        # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > debrf_btn.tStartRefresh + 300.0-frameTolerance:
-            # keep track of stop time/frame for later
-            debrf_btn.tStop = t  # not accounting for scr refresh
-            debrf_btn.frameNStop = frameN  # exact frame index
-            win.timeOnFlip(debrf_btn, 'tStopRefresh')  # time at next scr refresh
-            debrf_btn.setAutoDraw(False)
-    if debrf_btn.status == STARTED:
-        # check whether debrf_btn has been pressed
-        if debrf_btn.isClicked:
-            if not debrf_btn.wasClicked:
-                debrf_btn.timesOn.append(debrf_btn.buttonClock.getTime()) # store time of first click
-                debrf_btn.timesOff.append(debrf_btn.buttonClock.getTime()) # store time clicked until
-            else:
-                debrf_btn.timesOff[-1] = debrf_btn.buttonClock.getTime() # update time clicked until
-            if not debrf_btn.wasClicked:
-                continueRoutine = False  # end routine when debrf_btn is clicked
-                None
-            debrf_btn.wasClicked = True  # if debrf_btn is still clicked next frame, it is not a new click
-        else:
-            debrf_btn.wasClicked = False  # if debrf_btn is clicked next frame, it is a new click
-    else:
-        debrf_btn.buttonClock.reset() # keep clock at 0 if button hasn't started / has finished
-        debrf_btn.wasClicked = False  # if debrf_btn is clicked next frame, it is a new click
-    
-    # check for quit (typically the Esc key)
-    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-        core.quit()
-    
-    # check if all components have finished
-    if not continueRoutine:  # a component has requested a forced-end of Routine
-        break
-    continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in DebriefingComponents:
-        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-            continueRoutine = True
-            break  # at least one component has not yet finished
-    
-    # refresh the screen
-    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-        win.flip()
-
-# -------Ending Routine "Debriefing"-------
-for thisComponent in DebriefingComponents:
-    if hasattr(thisComponent, "setAutoDraw"):
-        thisComponent.setAutoDraw(False)
-thisExp.addData('debrf_info.started', debrf_info.tStartRefresh)
-thisExp.addData('debrf_info.stopped', debrf_info.tStopRefresh)
-thisExp.addData('debrf_btn.started', debrf_btn.tStartRefresh)
-thisExp.addData('debrf_btn.stopped', debrf_btn.tStopRefresh)
-thisExp.addData('debrf_btn.numClicks', debrf_btn.numClicks)
-if debrf_btn.numClicks:
-   thisExp.addData('debrf_btn.timesOn', debrf_btn.timesOn)
-   thisExp.addData('debrf_btn.timesOff', debrf_btn.timesOff)
-else:
-   thisExp.addData('debrf_btn.timesOn', "")
-   thisExp.addData('debrf_btn.timesOff', "")
+thisExp.addData('debrief_btn.started', debrief_btn.tStartRefresh)
+thisExp.addData('debrief_btn.stopped', debrief_btn.tStopRefresh)
+# store data for thisExp (ExperimentHandler)
+x, y = debrief_mouse.getPos()
+buttons = debrief_mouse.getPressed()
+if sum(buttons):
+    # check if the mouse was inside our 'clickable' objects
+    gotValidClick = False
+    for obj in [debrief_btn]:
+        if obj.contains(debrief_mouse):
+            gotValidClick = True
+            debrief_mouse.clicked_name.append(obj.name)
+thisExp.addData('debrief_mouse.x', x)
+thisExp.addData('debrief_mouse.y', y)
+thisExp.addData('debrief_mouse.leftButton', buttons[0])
+thisExp.addData('debrief_mouse.midButton', buttons[1])
+thisExp.addData('debrief_mouse.rightButton', buttons[2])
+if len(debrief_mouse.clicked_name):
+    thisExp.addData('debrief_mouse.clicked_name', debrief_mouse.clicked_name[0])
+thisExp.nextEntry()
 
 # Flip one final time so any remaining win.callOnFlip() 
 # and win.timeOnFlip() tasks get executed before quitting
