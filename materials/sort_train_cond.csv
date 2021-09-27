@@ -1,6 +1,4 @@
-img_path_base,input,labels
-materials/merge_sort/imgs/fruits/apple,"[7, 1, 6, 3, 4, 5, 2]","['D', 'G', 'B', 'F', 'A', 'E', 'C']"
-materials/merge_sort/imgs/fruits/melon,"[4, 6, 2, 7, 5, 3, 1]","['D', 'A', 'C', 'B', 'E', 'G', 'F']"
-materials/merge_sort/imgs/fruits/apple,"[6, 7, 2, 4, 5, 1, 3]","['A', 'D', 'B', 'C', 'E', 'G', 'F']"
-materials/merge_sort/imgs/fruits/banana,"[6, 2, 4, 7, 5, 3, 1]","['C', 'B', 'E', 'D', 'A', 'F', 'G']"
-materials/merge_sort/imgs/fruits/melon,"[8, 6, 4, 3, 2, 10, 9, 7, 1, 5]","['G', 'C', 'E', 'J', 'I', 'H', 'F', 'B', 'D', 'A']"
+img_path_base,input,labels,ms_compare
+materials/merge_sort/imgs/fruits/apple,"[6, 7, 2, 4, 5, 1, 3]","['A', 'D', 'B', 'C', 'E', 'G', 'F']",12
+materials/merge_sort/imgs/fruits/banana,"[6, 2, 4, 7, 5, 3, 1]","['C', 'B', 'E', 'D', 'A', 'F', 'G']",12
+materials/merge_sort/imgs/fruits/melon,"[8, 6, 4, 3, 2, 10, 9, 7, 1, 5]","['G', 'C', 'E', 'J', 'I', 'H', 'F', 'B', 'D', 'A']",21
