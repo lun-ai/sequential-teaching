@@ -6,3 +6,4 @@ env/
 node_modules
 *lastrun.py
 /*.png
+*legacy-browsers.js

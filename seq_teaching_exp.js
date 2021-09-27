@@ -31,11 +31,10 @@ let expName = 'seq_teaching_exp';  // from the Builder filename that created thi
 let expInfo = {'participant': '000', 'session': '001'};
 
 // Start code blocks for 'Before Experiment'
-var green, introTimeL, mergeExplTimeL, mergeTestTimeL, mergeTrainTimeL, red, repeats, scaleEqPath, scaleGtPath, scaleLtPath, sleepTime, sortExplTimeL, sortTestTimeL, sortTrainTimeL, traceSaveAtFrame, white;
 sleepTime = 0.2;
 green = [(- 0.0039), 1.0, (- 1.0)];
 red = [1.0, (- 0.2235), (- 0.4431)];
-white = [1.0, 1.0, 1.0];
+white = "white";
 repeats = 0;
 traceSaveAtFrame = 20;
 introTimeL = 120;
@@ -103,8 +102,13 @@ function comparePickedItems(scale, values, labels, leftInput, rightInput) {
     timeSleep(sleepTime);
 }
 
+var u;
 function timeSleep(T) {
-    setTimeout(() => {}, T*1000);
+    var u;
+    u = 0;
+    for (var i = 0, _pj_a = (10000 * T); (i < _pj_a); i += 1) {
+        u = (u + 1);
+    }
 }
 
 function compare(scale, listValues, labels, instr, scaleLeft, scaleRight) {
@@ -391,38 +395,38 @@ psychoJS.start({
   expName: expName,
   expInfo: expInfo,
   resources: [
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
-    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
-    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
-    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
-    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
     {'name': 'materials/merge_sort/imgs/sort_train/sort_test_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_test_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
-    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'}
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
+    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
+    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
+    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
+    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
+    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
+    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
+    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'}
   ]
 });
 
@@ -2808,19 +2812,14 @@ function INTRORoutineEachFrame(snapshot) {
       _mouseButtons = intro_mouse.getPressed();
       if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
         prevButtonState = _mouseButtons;
-        console.log(intro_mouse.pos);
         if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [intro_btn]) {
             if (intro_mouse.isPressedIn(obj)) {
-              gotValidClick = true;
               intro_mouse.clicked_name.push(obj.name)
+              continueRoutine = false;
             }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-            console.log("clcked to next");
           }
         }
       }
@@ -2904,6 +2903,11 @@ function BACKGROUNDRoutineBegin(snapshot) {
     gender_groups = [background_gender_female, background_gender_male];
     age_groups = [background_age_18_24, background_age_25_34, background_age_35_44, background_age_45_54, background_age_55_64, background_age_65];
     education_groups = [background_education_before_high_school, background_education_high_school, background_education_college, background_education_bachelor, background_education_graudate, backgrond_education_doctorate, background_education_other];
+    all_groups = ((gender_groups + age_groups) + education_groups);
+    for (var g, _pj_c = 0, _pj_a = all_groups, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+        g = _pj_a[_pj_c];
+        g.fillColor = white;
+    }
     
     // setup some python lists for storing info about the background_mouse
     background_mouse.clicked_name = [];
@@ -3273,7 +3277,7 @@ function BACKGROUNDRoutineEachFrame(snapshot) {
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [[background_btn]]) {
-            if (obj.includes(background_mouse)) {
+            if (obj.contains(background_mouse)) {
               gotValidClick = true;
               background_mouse.clicked_name.push(obj.name)
             }
@@ -3463,7 +3467,7 @@ function MERGE_INTRORoutineEachFrame(snapshot) {
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [[merge_intro_btn]]) {
-            if (obj.includes(merge_intro_mouse)) {
+            if (obj.contains(merge_intro_mouse)) {
               gotValidClick = true;
               merge_intro_mouse.clicked_name.push(obj.name)
             }
@@ -3933,7 +3937,7 @@ function MERGE_TRAINRoutineEachFrame(snapshot) {
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [[merge_train_btn_1,merge_train_btn_2]]) {
-            if (obj.includes(merge_train_mouse)) {
+            if (obj.contains(merge_train_mouse)) {
               gotValidClick = true;
               merge_train_mouse.clicked_name.push(obj.name)
             }
@@ -4237,7 +4241,7 @@ function MERGE_EXPLRoutineEachFrame(snapshot) {
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [[merge_expl_btn]]) {
-            if (obj.includes(merge_expl_mouse)) {
+            if (obj.contains(merge_expl_mouse)) {
               gotValidClick = true;
               merge_expl_mouse.clicked_name.push(obj.name)
             }
@@ -4441,7 +4445,7 @@ function MERGE_TEST_INTRORoutineEachFrame(snapshot) {
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [[merge_test_intro_btn]]) {
-            if (obj.includes(merge_test_intro_mouse)) {
+            if (obj.contains(merge_test_intro_mouse)) {
               gotValidClick = true;
               merge_test_intro_mouse.clicked_name.push(obj.name)
             }
@@ -4734,7 +4738,7 @@ function MERGE_TESTRoutineEachFrame(snapshot) {
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [[merge_test_btn]]) {
-            if (obj.includes(merge_test_mouse)) {
+            if (obj.contains(merge_test_mouse)) {
               gotValidClick = true;
               merge_test_mouse.clicked_name.push(obj.name)
             }
@@ -4944,7 +4948,7 @@ function SORT_INTRORoutineEachFrame(snapshot) {
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [[sort_intro_btn]]) {
-            if (obj.includes(sort_intro_mouse)) {
+            if (obj.contains(sort_intro_mouse)) {
               gotValidClick = true;
               sort_intro_mouse.clicked_name.push(obj.name)
             }
@@ -5447,7 +5451,7 @@ function SORT_TRAINRoutineEachFrame(snapshot) {
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [[sort_train_btn]]) {
-            if (obj.includes(sort_train_mouse)) {
+            if (obj.contains(sort_train_mouse)) {
               gotValidClick = true;
               sort_train_mouse.clicked_name.push(obj.name)
             }
@@ -6028,7 +6032,7 @@ function SORT_EXPLRoutineEachFrame(snapshot) {
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [[sort_expl_btn]]) {
-            if (obj.includes(sort_expl_mouse)) {
+            if (obj.contains(sort_expl_mouse)) {
               gotValidClick = true;
               sort_expl_mouse.clicked_name.push(obj.name)
             }
@@ -6278,7 +6282,7 @@ function SORT_TEST_INTRORoutineEachFrame(snapshot) {
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [[sort_test_intro_btn]]) {
-            if (obj.includes(sort_test_intro_mouse)) {
+            if (obj.contains(sort_test_intro_mouse)) {
               gotValidClick = true;
               sort_test_intro_mouse.clicked_name.push(obj.name)
             }
@@ -6796,7 +6800,7 @@ function SORT_TESTRoutineEachFrame(snapshot) {
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [[sort_test_btn]]) {
-            if (obj.includes(sort_test_mouse)) {
+            if (obj.contains(sort_test_mouse)) {
               gotValidClick = true;
               sort_test_mouse.clicked_name.push(obj.name)
             }
@@ -6961,7 +6965,7 @@ function DEBRIEFRoutineEachFrame(snapshot) {
           // check if the mouse was inside our 'clickable' objects
           gotValidClick = false;
           for (const obj of [[debrief_btn]]) {
-            if (obj.includes(debrief_mouse)) {
+            if (obj.contains(debrief_mouse)) {
               gotValidClick = true;
               debrief_mouse.clicked_name.push(obj.name)
             }
