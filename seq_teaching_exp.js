@@ -31,22 +31,40 @@ let expName = 'seq_teaching_exp';  // from the Builder filename that created thi
 let expInfo = {'participant': '000', 'session': '001'};
 
 // Start code blocks for 'Before Experiment'
-sleepTime = 0.2;
-green = [(- 0.0039), 1.0, (- 1.0)];
-red = [1.0, (- 0.2235), (- 0.4431)];
-white = "white";
-repeats = 0;
-traceSaveAtFrame = 20;
-introTimeL = 120;
-mergeTestTimeL = 90;
-mergeTrainTimeL = 60;
-mergeExplTimeL = 30;
-sortTestTimeL = 300;
-sortTrainTimeL = 240;
-sortExplTimeL = 60;
-scaleEqPath = "materials/merge_sort/imgs/scale_balanced.png";
-scaleLtPath = "materials/merge_sort/imgs/scale_right.png";
-scaleGtPath = "materials/merge_sort/imgs/scale_left.png";
+var _pj;
+
+function _pj_snippets(container) {
+    function in_es6(left, right) {
+        if (((right instanceof Array) || ((typeof right) === "string"))) {
+            return (right.indexOf(left) > (- 1));
+        } else {
+            if (((right instanceof Map) || (right instanceof Set) || (right instanceof WeakMap) || (right instanceof WeakSet))) {
+                return right.has(left);
+            } else {
+                return (left in right);
+            }
+        }
+    }
+    container["in_es6"] = in_es6;
+    return container;
+}
+_pj = {};
+_pj_snippets(_pj);
+const sleepTime = 0.2;
+const green = [(- 0.0039), 1.0, (- 1.0)];
+const red = [1.0, (- 0.2235), (- 0.4431)];
+const white = [1.0, 1.0, 1.0];
+const traceSaveAtFrame = 20;
+const introTimeL = 120;
+const mergeTestTimeL = 90;
+const mergeTrainTimeL = 60;
+const mergeExplTimeL = 30;
+const sortTestTimeL = 300;
+const sortTrainTimeL = 240;
+const sortExplTimeL = 60;
+const scaleEqPath = "materials/merge_sort/imgs/scale_balanced.png";
+const scaleLtPath = "materials/merge_sort/imgs/scale_right.png";
+const scaleGtPath = "materials/merge_sort/imgs/scale_left.png";
 
 function moveItem(mouse, grabbed) {
     var u, v;
@@ -67,77 +85,82 @@ function moveItem(mouse, grabbed) {
     return grabbed;
 }
 
+var leftIdx;
+var rightIdx;
 var leftValue;
 var rightValue;
-function comparePickedItems(scale, values, labels, leftInput, rightInput) {
+function comparePickedItems(values, labels, leftInput, rightInput) {
     var leftIdx, leftValue, rightIdx, rightValue;
     if (((leftInput.text.length === 0) || (leftInput.text.length === 0))) {
-        throw new ValueError();
+        return 1;
     } else {
         if (((leftInput.text.length > 1) || (leftInput.text.length > 1))) {
-            throw new TypeError();
-        }
-    }
-    try {
-        leftIdx = labels.index(leftInput.text);
-        rightIdx = labels.index(rightInput.text);
-    } catch(e) {
-        if ((e instanceof ValueError)) {
-            throw new IndexError();
+            return 2;
         } else {
-            throw e;
+            if (((_pj.in_es6("'"+leftInput.text + "'", labels) === false) || (_pj.in_es6("'"+rightInput.text + "'", labels)) === false)) {
+                return 3;
+            }
         }
     }
-    leftValue = values[leftIdx];
-    rightValue = values[rightIdx];
+    leftIdx = labels.indexOf("'"+leftInput.text + "'");
+    rightIdx = labels.indexOf("'"+rightInput.text + "'");
+    leftValue = parseInt(values[leftIdx]);
+    rightValue = parseInt(values[rightIdx]);
+    timeSleep(sleepTime);
     if ((leftValue > rightValue)) {
-        scale.image = scaleGtPath;
+        return 4;
     } else {
         if ((leftValue < rightValue)) {
-            scale.image = scaleLtPath;
+            return 5;
         } else {
-            scale.image = scaleEqPath;
+            return 6;
         }
     }
-    timeSleep(sleepTime);
 }
 
 var u;
 function timeSleep(T) {
     var u;
     u = 0;
-    for (var i = 0, _pj_a = (10000 * T); (i < _pj_a); i += 1) {
+    for (var i = 0, _pj_a = Number.parseInt((1000000 * T)); (i < _pj_a); i += 1) {
         u = (u + 1);
     }
 }
 
+var state;
 function compare(scale, listValues, labels, instr, scaleLeft, scaleRight) {
-    try {
-        comparePickedItems(scale, listValues, labels, scaleLeft, scaleRight);
+    var state;
+    state = comparePickedItems(listValues, labels, scaleLeft, scaleRight);
+    if ((state > 3)) {
         instr.text = "";
         instr.color = white;
+        if ((state === 4)) {
+            scale.image = scaleGtPath;
+        } else {
+            if ((state === 5)) {
+                scale.image = scaleLtPath;
+            } else {
+                scale.image = scaleEqPath;
+            }
+        }
         return 1;
-    } catch(e) {
-        if ((e instanceof ValueError)) {
+    } else {
+        if ((state === 1)) {
             instr.text = "Please provide labels in correct format for both LHS and RHS";
             instr.color = red;
-            return 0;
         } else {
-            if ((e instanceof IndexError)) {
-                instr.text = "Please enter an existing item";
+            if ((state === 2)) {
+                instr.text = "Please enter labels as single capitals";
                 instr.color = red;
-                return 0;
             } else {
-                if ((e instanceof TypeError)) {
-                    instr.text = "Please enter labels as single capitals";
+                if ((state === 3)) {
+                    instr.text = "Please enter an existing item";
                     instr.color = red;
-                    return 0;
-                } else {
-                    throw e;
                 }
             }
         }
     }
+    return 0;
 }
 
 var temp;
@@ -295,9 +318,9 @@ function checkBGSelection(m, groups, picked) {
         if (((m !== null) && m.isPressedIn(item))) {
             for (var others, _pj_f = 0, _pj_d = groups, _pj_e = _pj_d.length; (_pj_f < _pj_e); _pj_f += 1) {
                 others = _pj_d[_pj_f];
-                others.fillColor = white;
+                others.image = (("materials/imgs/" + others.name) + ".png");
             }
-            item.fillColor = green;
+            item.image = (("materials/imgs/" + item.name) + "_selected.png");
             timeSleep(sleepTime);
             return item;
         }
@@ -325,17 +348,12 @@ function updateTrace(itemPos, newItemPos) {
         for (var j, _pj_f = 0, _pj_d = newItemPos, _pj_e = _pj_d.length; (_pj_f < _pj_e); _pj_f += 1) {
             j = _pj_d[_pj_f];
             if (((i[0] === j[0]) && (! ((i[1] === j[1]) && (i[2] === j[2]))))) {
-                updated.append(j);
+                updated.push(j);
             }
         }
     }
     return updated;
 }
-
-function makeScreenShot() {
-    return (repeats + 1);
-}
-
 // schedule the experiment:
 psychoJS.schedule(psychoJS.gui.DlgFromDict({
   dictionary: expInfo,
@@ -395,38 +413,101 @@ psychoJS.start({
   expName: expName,
   expInfo: expInfo,
   resources: [
+    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
     {'name': 'materials/merge_sort/imgs/sort_train/sort_test_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_test_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
+    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
+    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
     {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
-    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
-    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
-    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
-    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
+    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
+    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
+    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
+    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
+    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
+    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
+    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
+    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
+    {'name': 'materials/imgs/end.png', 'path': 'materials/imgs/end.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
+    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
+    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
+    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
     {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
+    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
+    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/compare_selected.png', 'path': 'materials/merge_sort/imgs/compare_selected.png'},
+    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
+    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
+    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
+    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
+    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
+    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
+    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
+    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
+    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
+    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
+    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
+    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
+    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
+    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
+    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
+    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
+    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
+    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
+    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
+    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
+    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
     {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'}
+    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
+    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
+    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'}
   ]
 });
 
@@ -465,23 +546,23 @@ var intro_mouse;
 var BACKGROUNDClock;
 var background_instr;
 var gender;
-var background_gender_female;
-var background_gender_male;
+var female;
+var male;
 var age;
-var background_age_18_24;
-var background_age_25_34;
-var background_age_35_44;
-var background_age_45_54;
-var background_age_55_64;
-var background_age_65;
+var _18_24;
+var _25_34;
+var _35_44;
+var _45_54;
+var _55_64;
+var _65;
 var education;
-var background_education_before_high_school;
-var background_education_high_school;
-var background_education_college;
-var background_education_bachelor;
-var background_education_graudate;
-var backgrond_education_doctorate;
-var background_education_other;
+var less_than_high_school;
+var high_school_equivalent;
+var college;
+var bachelor;
+var graduate;
+var doctorate;
+var other;
 var background_btn;
 var background_mouse;
 var MERGE_INTROClock;
@@ -497,7 +578,6 @@ var merge_ans_instr;
 var merge_train_instr;
 var merge_train_scale_right;
 var merge_train_scale_left;
-var merge_train_compare;
 var merge_train_sep;
 var merge_train;
 var merge_train_mc_1;
@@ -505,6 +585,7 @@ var merge_train_mc_2;
 var merge_train_scale;
 var merge_train_btn_1;
 var merge_train_btn_2;
+var merge_train_compare;
 var merge_train_mouse;
 var merge_train_timer;
 var MERGE_EXPLClock;
@@ -637,8 +718,8 @@ var sort_test_mouse;
 var sort_test_timer;
 var DEBRIEFClock;
 var intro_text_5;
-var debrief_btn;
 var debrief_mouse;
+var debrief_btn;
 var globalClock;
 var routineTimer;
 function experimentInit() {
@@ -691,24 +772,15 @@ function experimentInit() {
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -4.0 
   });
-  intro_btn = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'intro_btn',
-    text: 'Continue',
-    font: 'Open Sans',
-    pos: [0, (- 0.4)], letterHeight: 0.05,
-    size: [0.28, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -6.0 
+  intro_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'intro_btn', units : undefined, 
+    image : 'materials/imgs/continue.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -5.0 
   });
-  
   intro_mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -737,42 +809,24 @@ function experimentInit() {
     depth: -4.0 
   });
   
-  background_gender_female = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_gender_female',
-    text: 'Female',
-    font: 'Open Sans',
-    pos: [(- 0.15), 0.25], letterHeight: 0.03,
-    size: [0.12, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -5.0 
+  female = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'female', units : undefined, 
+    image : 'materials/imgs/female.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.15), 0.2], size : [0.12, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -5.0 
   });
-  
-  background_gender_male = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_gender_male',
-    text: 'Male',
-    font: 'Open Sans',
-    pos: [0.15, 0.25], letterHeight: 0.03,
-    size: [0.1, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -6.0 
+  male = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'male', units : undefined, 
+    image : 'materials/imgs/male.png', mask : undefined,
+    ori : 0.0, pos : [0.15, 0.2], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -6.0 
   });
-  
   age = new visual.TextStim({
     win: psychoJS.window,
     name: 'age',
@@ -784,114 +838,60 @@ function experimentInit() {
     depth: -7.0 
   });
   
-  background_age_18_24 = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_age_18_24',
-    text: '18-24',
-    font: 'Open Sans',
-    pos: [(- 0.5), 0.05], letterHeight: 0.03,
-    size: [0.1, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -8.0 
+  _18_24 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : '_18_24', units : undefined, 
+    image : 'materials/imgs/_18_24.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.5), 0], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -8.0 
   });
-  
-  background_age_25_34 = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_age_25_34',
-    text: '25-34',
-    font: 'Open Sans',
-    pos: [(- 0.3), 0.05], letterHeight: 0.03,
-    size: [0.1, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -9.0 
+  _25_34 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : '_25_34', units : undefined, 
+    image : 'materials/imgs/_25_34.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.3), 0], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -9.0 
   });
-  
-  background_age_35_44 = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_age_35_44',
-    text: '35-44',
-    font: 'Open Sans',
-    pos: [(- 0.1), 0.05], letterHeight: 0.03,
-    size: [0.1, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -10.0 
+  _35_44 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : '_35_44', units : undefined, 
+    image : 'materials/imgs/_35_44.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.1), 0], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -10.0 
   });
-  
-  background_age_45_54 = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_age_45_54',
-    text: '45-54',
-    font: 'Open Sans',
-    pos: [0.1, 0.05], letterHeight: 0.03,
-    size: [0.1, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -11.0 
+  _45_54 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : '_45_54', units : undefined, 
+    image : 'materials/imgs/_45_54.png', mask : undefined,
+    ori : 0.0, pos : [0.1, 0], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -11.0 
   });
-  
-  background_age_55_64 = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_age_55_64',
-    text: '55-64',
-    font: 'Open Sans',
-    pos: [0.3, 0.05], letterHeight: 0.03,
-    size: [0.1, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -12.0 
+  _55_64 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : '_55_64', units : undefined, 
+    image : 'materials/imgs/_55_64.png', mask : undefined,
+    ori : 0.0, pos : [0.3, 0], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -12.0 
   });
-  
-  background_age_65 = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_age_65',
-    text: 'Above 65',
-    font: 'Open Sans',
-    pos: [0.5, 0.05], letterHeight: 0.03,
-    size: [0.15, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -13.0 
+  _65 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : '_65', units : undefined, 
+    image : 'materials/imgs/_65.png', mask : undefined,
+    ori : 0.0, pos : [0.5, 0], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -13.0 
   });
-  
   education = new visual.TextStim({
     win: psychoJS.window,
     name: 'education',
@@ -903,150 +903,78 @@ function experimentInit() {
     depth: -14.0 
   });
   
-  background_education_before_high_school = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_education_before_high_school',
-    text: 'Less than high school',
-    font: 'Open Sans',
-    pos: [(- 0.75), (- 0.15)], letterHeight: 0.02,
-    size: [0.2, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -15.0 
+  less_than_high_school = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'less_than_high_school', units : undefined, 
+    image : 'materials/imgs/less_than_high_school.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.75), (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -15.0 
   });
-  
-  background_education_high_school = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_education_high_school',
-    text: 'High school  and equivalent',
-    font: 'Open Sans',
-    pos: [(- 0.5), (- 0.15)], letterHeight: 0.02,
-    size: [0.2, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -16.0 
+  high_school_equivalent = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'high_school_equivalent', units : undefined, 
+    image : 'materials/imgs/high_school_equivalent.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.5), (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -16.0 
   });
-  
-  background_education_college = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_education_college',
-    text: 'Some college, no degree',
-    font: 'Open Sans',
-    pos: [(- 0.25), (- 0.15)], letterHeight: 0.02,
-    size: [0.2, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -17.0 
+  college = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'college', units : undefined, 
+    image : 'materials/imgs/college.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.25), (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -17.0 
   });
-  
-  background_education_bachelor = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_education_bachelor',
-    text: 'Bachelor’s degree',
-    font: 'Open Sans',
-    pos: [0, (- 0.15)], letterHeight: 0.02,
-    size: [0.2, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -18.0 
+  bachelor = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'bachelor', units : undefined, 
+    image : 'materials/imgs/bachelor.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -18.0 
   });
-  
-  background_education_graudate = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_education_graudate',
-    text: 'Graduate or professional degree',
-    font: 'Open Sans',
-    pos: [0.25, (- 0.15)], letterHeight: 0.02,
-    size: [0.2, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -19.0 
+  graduate = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'graduate', units : undefined, 
+    image : 'materials/imgs/graduate.png', mask : undefined,
+    ori : 0.0, pos : [0.25, (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -19.0 
   });
-  
-  backgrond_education_doctorate = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'backgrond_education_doctorate',
-    text: 'Doctorate degree',
-    font: 'Open Sans',
-    pos: [0.5, (- 0.15)], letterHeight: 0.02,
-    size: [0.2, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -20.0 
+  doctorate = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'doctorate', units : undefined, 
+    image : 'materials/imgs/doctorate.png', mask : undefined,
+    ori : 0.0, pos : [0.5, (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -20.0 
   });
-  
-  background_education_other = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_education_other',
-    text: 'Other',
-    font: 'Open Sans',
-    pos: [0.75, (- 0.15)], letterHeight: 0.02,
-    size: [0.2, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -21.0 
+  other = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'other', units : undefined, 
+    image : 'materials/imgs/other.png', mask : undefined,
+    ori : 0.0, pos : [0.75, (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -21.0 
   });
-  
-  background_btn = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'background_btn',
-    text: 'Continue',
-    font: 'Open Sans',
-    pos: [5, 5], letterHeight: 0.05,
-    size: [0, 0],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -23.0 
+  background_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'background_btn', units : undefined, 
+    image : 'materials/imgs/waiting.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.4)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -22.0 
   });
-  
   background_mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -1091,24 +1019,15 @@ function experimentInit() {
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -3.0 
   });
-  merge_intro_btn = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'merge_intro_btn',
-    text: 'Continue',
-    font: 'Open Sans',
-    pos: [0, (- 0.4)], letterHeight: 0.05,
-    size: [0.28, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -5.0 
+  merge_intro_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_intro_btn', units : undefined, 
+    image : 'materials/imgs/continue.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -4.0 
   });
-  
   merge_intro_mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -1184,24 +1103,6 @@ function experimentInit() {
     depth: -10.0 
   });
   
-  merge_train_compare = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'merge_train_compare',
-    text: 'Compare',
-    font: 'Open Sans',
-    pos: [(- 0.65), (- 0.02)], letterHeight: 0.03,
-    size: [0.16, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -11.0 
-  });
-  
   merge_train_sep = new visual.ImageStim({
     win : psychoJS.window,
     name : 'merge_train_sep', units : undefined, 
@@ -1209,7 +1110,7 @@ function experimentInit() {
     ori : 0.0, pos : [0, (- 0.11)], size : [1.5, 0.005],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -12.0 
+    texRes : 128.0, interpolate : true, depth : -11.0 
   });
   merge_train = new visual.ImageStim({
     win : psychoJS.window,
@@ -1218,7 +1119,7 @@ function experimentInit() {
     ori : 0.0, pos : [0, 0.2], size : [0.8, 0.4],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -13.0 
+    texRes : 128.0, interpolate : true, depth : -12.0 
   });
   merge_train_mc_1 = new visual.ImageStim({
     win : psychoJS.window,
@@ -1227,7 +1128,7 @@ function experimentInit() {
     ori : 0.0, pos : [(- 0.3), (- 0.25)], size : [0.7, 0.1],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -14.0 
+    texRes : 128.0, interpolate : true, depth : -13.0 
   });
   merge_train_mc_2 = new visual.ImageStim({
     win : psychoJS.window,
@@ -1236,7 +1137,7 @@ function experimentInit() {
     ori : 0.0, pos : [(- 0.3), (- 0.4)], size : [0.7, 0.1],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -15.0 
+    texRes : 128.0, interpolate : true, depth : -14.0 
   });
   merge_train_scale = new visual.ImageStim({
     win : psychoJS.window,
@@ -1245,44 +1146,35 @@ function experimentInit() {
     ori : 0.0, pos : [(- 0.65), 0.15], size : [0.3, 0.3],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -15.0 
+  });
+  merge_train_btn_1 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_train_btn_1', units : undefined, 
+    image : 'materials/imgs/submit.png', mask : undefined,
+    ori : 0.0, pos : [0.5, (- 0.25)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -16.0 
   });
-  merge_train_btn_1 = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'merge_train_btn_1',
-    text: 'Submit',
-    font: 'Open Sans',
-    pos: [0.5, (- 0.25)], letterHeight: 0.05,
-    size: [0.24, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -18.0 
+  merge_train_btn_2 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_train_btn_2', units : undefined, 
+    image : 'materials/imgs/submit.png', mask : undefined,
+    ori : 0.0, pos : [0.5, (- 0.4)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -17.0 
   });
-  
-  merge_train_btn_2 = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'merge_train_btn_2',
-    text: 'Submit',
-    font: 'Open Sans',
-    pos: [0.5, (- 0.4)], letterHeight: 0.05,
-    size: [0.24, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -19.0 
+  merge_train_compare = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_train_compare', units : undefined, 
+    image : 'materials/merge_sort/imgs/compare.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.65), (- 0.05)], size : [0.16, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -18.0 
   });
-  
   merge_train_mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -1295,7 +1187,7 @@ function experimentInit() {
     units: undefined, 
     pos: [0.65, (- 0.05)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('orange'),  opacity: undefined,
-    depth: -21.0 
+    depth: -20.0 
   });
   
   // Initialize components for Routine "MERGE_EXPL"
@@ -1378,24 +1270,15 @@ function experimentInit() {
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -7.0 
   });
-  merge_expl_btn = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'merge_expl_btn',
-    text: 'Continue',
-    font: 'Open Sans',
-    pos: [0.35, (- 0.42)], letterHeight: 0.05,
-    size: [0.28, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -9.0 
+  merge_expl_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_expl_btn', units : undefined, 
+    image : 'materials/imgs/continue.png', mask : undefined,
+    ori : 0.0, pos : [0.35, (- 0.42)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -8.0 
   });
-  
   merge_expl_mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -1408,7 +1291,7 @@ function experimentInit() {
     units: undefined, 
     pos: [(- 0.55), (- 0.42)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('orange'),  opacity: undefined,
-    depth: -11.0 
+    depth: -10.0 
   });
   
   // Initialize components for Routine "MERGE_TEST_INTRO"
@@ -1451,24 +1334,15 @@ function experimentInit() {
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -3.0 
   });
-  merge_test_intro_btn = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'merge_test_intro_btn',
-    text: 'Continue',
-    font: 'Open Sans',
-    pos: [0, (- 0.4)], letterHeight: 0.05,
-    size: [0.28, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -5.0 
+  merge_test_intro_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_test_intro_btn', units : undefined, 
+    image : 'materials/imgs/continue.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -4.0 
   });
-  
   merge_test_intro_mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -1607,24 +1481,15 @@ function experimentInit() {
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -13.0 
   });
-  merge_test_btn = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'merge_test_btn',
-    text: 'Submit',
-    font: 'Open Sans',
-    pos: [0.5, (- 0.35)], letterHeight: 0.05,
-    size: [0.24, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -15.0 
+  merge_test_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_test_btn', units : undefined, 
+    image : 'materials/imgs/submit.png', mask : undefined,
+    ori : 0.0, pos : [0.5, (- 0.35)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -14.0 
   });
-  
   merge_test_mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -1637,7 +1502,7 @@ function experimentInit() {
     units: undefined, 
     pos: [0.65, (- 0.05)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('orange'),  opacity: undefined,
-    depth: -17.0 
+    depth: -16.0 
   });
   
   // Initialize components for Routine "SORT_INTRO"
@@ -1680,24 +1545,15 @@ function experimentInit() {
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -3.0 
   });
-  sort_intro_btn = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'sort_intro_btn',
-    text: 'Continue',
-    font: 'Open Sans',
-    pos: [0, (- 0.4)], letterHeight: 0.05,
-    size: [0.28, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -5.0 
+  sort_intro_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'sort_intro_btn', units : undefined, 
+    image : 'materials/imgs/continue.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -4.0 
   });
-  
   sort_intro_mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -1944,24 +1800,15 @@ function experimentInit() {
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -28.0 
   });
-  sort_train_btn = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'sort_train_btn',
-    text: 'Submit',
-    font: 'Open Sans',
-    pos: [0.5, (- 0.35)], letterHeight: 0.05,
-    size: [0.24, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -29.0 
+  sort_train_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'sort_train_btn', units : undefined, 
+    image : 'materials/imgs/submit.png', mask : undefined,
+    ori : 0.0, pos : [0.5, (- 0.35)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -29.0 
   });
-  
   sort_train_mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -2241,24 +2088,15 @@ function experimentInit() {
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -27.0 
   });
-  sort_expl_btn = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'sort_expl_btn',
-    text: 'Continue',
-    font: 'Open Sans',
-    pos: [0.5, (- 0.35)], letterHeight: 0.05,
-    size: [0.28, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -28.0 
+  sort_expl_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'sort_expl_btn', units : undefined, 
+    image : 'materials/imgs/continue.png', mask : undefined,
+    ori : 0.0, pos : [0.5, (- 0.35)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -28.0 
   });
-  
   sort_expl_mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -2325,24 +2163,15 @@ function experimentInit() {
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -3.0 
   });
-  sort_test_intro_btn = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'sort_test_intro_btn',
-    text: 'Continue',
-    font: 'Open Sans',
-    pos: [0, (- 0.4)], letterHeight: 0.05,
-    size: [0.28, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -5.0 
+  sort_test_intro_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'sort_test_intro_btn', units : undefined, 
+    image : 'materials/imgs/continue.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -4.0 
   });
-  
   sort_test_intro_mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -2589,24 +2418,15 @@ function experimentInit() {
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -27.0 
   });
-  sort_test_btn = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'sort_test_btn',
-    text: 'Submit',
-    font: 'Open Sans',
-    pos: [0.5, (- 0.35)], letterHeight: 0.05,
-    size: [0.24, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -29.0 
+  sort_test_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'sort_test_btn', units : undefined, 
+    image : 'materials/imgs/submit.png', mask : undefined,
+    ori : 0.0, pos : [0.5, (- 0.35)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -28.0 
   });
-  
   sort_test_mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -2619,7 +2439,7 @@ function experimentInit() {
     units: undefined, 
     pos: [0.65, (- 0.05)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('orange'),  opacity: undefined,
-    depth: -31.0 
+    depth: -30.0 
   });
   
   // Initialize components for Routine "DEBRIEF"
@@ -2635,28 +2455,19 @@ function experimentInit() {
     depth: 0.0 
   });
   
-  debrief_btn = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'debrief_btn',
-    text: 'End',
-    font: 'Open Sans',
-    pos: [0, (- 0.4)], letterHeight: 0.05,
-    size: [0.15, 0.1],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: true, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'center',
-    depth: -1.0 
-  });
-  
   debrief_mouse = new core.Mouse({
     win: psychoJS.window,
   });
   debrief_mouse.mouseClock = new util.Clock();
+  debrief_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'debrief_btn', units : undefined, 
+    image : 'materials/imgs/end.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.4)], size : [0.15, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -2.0 
+  });
   // Create some handy timers
   globalClock = new util.Clock();  // to track the time since experiment started
   routineTimer = new util.CountdownTimer();  // to track time remaining of each (non-slip) routine
@@ -2680,7 +2491,6 @@ function INTRORoutineBegin(snapshot) {
     routineTimer.add(120.000000);
     // update component parameters for each repeat
     // setup some python lists for storing info about the intro_mouse
-    intro_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
     // keep track of which components have finished
     INTROComponents = [];
@@ -2701,8 +2511,6 @@ function INTRORoutineBegin(snapshot) {
 
 
 var frameRemains;
-var prevButtonState;
-var _mouseButtons;
 function INTRORoutineEachFrame(snapshot) {
   return function () {
     //------Loop for each frame of Routine 'INTRO'-------
@@ -2794,36 +2602,10 @@ function INTRORoutineEachFrame(snapshot) {
     if ((intro_btn.status === PsychoJS.Status.STARTED || intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       intro_btn.setAutoDraw(false);
     }
-    // *intro_mouse* updates
-    if (t >= 0.5 && intro_mouse.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      intro_mouse.tStart = t;  // (not accounting for frame time here)
-      intro_mouse.frameNStart = frameN;  // exact frame index
-      
-      intro_mouse.status = PsychoJS.Status.STARTED;
-      intro_mouse.mouseClock.reset();
-      prevButtonState = intro_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((intro_mouse.status === PsychoJS.Status.STARTED || intro_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      intro_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (intro_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = intro_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [intro_btn]) {
-            if (intro_mouse.isPressedIn(obj)) {
-              intro_mouse.clicked_name.push(obj.name)
-              continueRoutine = false;
-            }
-          }
-        }
-      }
+    if ((intro_mouse.isPressedIn(intro_btn) && (intro_btn.status === PsychoJS.Status.STARTED))) {
+        continueRoutine = false;
     }
+    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -2852,6 +2634,7 @@ function INTRORoutineEachFrame(snapshot) {
 
 
 var _mouseXYs;
+var _mouseButtons;
 function INTRORoutineEnd(snapshot) {
   return function () {
     //------Ending Routine 'INTRO'-------
@@ -2868,8 +2651,6 @@ function INTRORoutineEnd(snapshot) {
     psychoJS.experiment.addData('intro_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('intro_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('intro_mouse.rightButton', _mouseButtons[2]);
-    if (intro_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('intro_mouse.clicked_name', intro_mouse.clicked_name[0]);}
     return Scheduler.Event.NEXT;
   };
 }
@@ -2881,7 +2662,6 @@ var gender_selected;
 var gender_groups;
 var age_groups;
 var education_groups;
-var all_groups;
 var BACKGROUNDComponents;
 function BACKGROUNDRoutineBegin(snapshot) {
   return function () {
@@ -2896,43 +2676,36 @@ function BACKGROUNDRoutineBegin(snapshot) {
     gender.setText('What is your gender at birth?');
     age.setText('What is your age?');
     education.setText('What is the highest degree or level of school you have completed?');
-    background_education_bachelor.setFillColor(new util.Color('white'));
+    // setup some python lists for storing info about the background_mouse
+    gotValidClick = false; // until a click is received
     age_selected = null;
     education_selected = null;
     gender_selected = null;
-    gender_groups = [background_gender_female, background_gender_male];
-    age_groups = [background_age_18_24, background_age_25_34, background_age_35_44, background_age_45_54, background_age_55_64, background_age_65];
-    education_groups = [background_education_before_high_school, background_education_high_school, background_education_college, background_education_bachelor, background_education_graudate, backgrond_education_doctorate, background_education_other];
-    all_groups = ((gender_groups + age_groups) + education_groups);
-    for (var g, _pj_c = 0, _pj_a = all_groups, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
-        g = _pj_a[_pj_c];
-        g.fillColor = white;
-    }
+    gender_groups = [female, male];
+    age_groups = [_18_24, _25_34, _35_44, _45_54, _55_64, _65];
+    education_groups = [less_than_high_school, high_school_equivalent, college, bachelor, graduate, doctorate, other];
     
-    // setup some python lists for storing info about the background_mouse
-    background_mouse.clicked_name = [];
-    gotValidClick = false; // until a click is received
     // keep track of which components have finished
     BACKGROUNDComponents = [];
     BACKGROUNDComponents.push(background_instr);
     BACKGROUNDComponents.push(gender);
-    BACKGROUNDComponents.push(background_gender_female);
-    BACKGROUNDComponents.push(background_gender_male);
+    BACKGROUNDComponents.push(female);
+    BACKGROUNDComponents.push(male);
     BACKGROUNDComponents.push(age);
-    BACKGROUNDComponents.push(background_age_18_24);
-    BACKGROUNDComponents.push(background_age_25_34);
-    BACKGROUNDComponents.push(background_age_35_44);
-    BACKGROUNDComponents.push(background_age_45_54);
-    BACKGROUNDComponents.push(background_age_55_64);
-    BACKGROUNDComponents.push(background_age_65);
+    BACKGROUNDComponents.push(_18_24);
+    BACKGROUNDComponents.push(_25_34);
+    BACKGROUNDComponents.push(_35_44);
+    BACKGROUNDComponents.push(_45_54);
+    BACKGROUNDComponents.push(_55_64);
+    BACKGROUNDComponents.push(_65);
     BACKGROUNDComponents.push(education);
-    BACKGROUNDComponents.push(background_education_before_high_school);
-    BACKGROUNDComponents.push(background_education_high_school);
-    BACKGROUNDComponents.push(background_education_college);
-    BACKGROUNDComponents.push(background_education_bachelor);
-    BACKGROUNDComponents.push(background_education_graudate);
-    BACKGROUNDComponents.push(backgrond_education_doctorate);
-    BACKGROUNDComponents.push(background_education_other);
+    BACKGROUNDComponents.push(less_than_high_school);
+    BACKGROUNDComponents.push(high_school_equivalent);
+    BACKGROUNDComponents.push(college);
+    BACKGROUNDComponents.push(bachelor);
+    BACKGROUNDComponents.push(graduate);
+    BACKGROUNDComponents.push(doctorate);
+    BACKGROUNDComponents.push(other);
     BACKGROUNDComponents.push(background_btn);
     BACKGROUNDComponents.push(background_mouse);
     
@@ -2983,32 +2756,32 @@ function BACKGROUNDRoutineEachFrame(snapshot) {
       gender.setAutoDraw(false);
     }
     
-    // *background_gender_female* updates
-    if (t >= 1.0 && background_gender_female.status === PsychoJS.Status.NOT_STARTED) {
+    // *female* updates
+    if (t >= 1.0 && female.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_gender_female.tStart = t;  // (not accounting for frame time here)
-      background_gender_female.frameNStart = frameN;  // exact frame index
+      female.tStart = t;  // (not accounting for frame time here)
+      female.frameNStart = frameN;  // exact frame index
       
-      background_gender_female.setAutoDraw(true);
+      female.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_gender_female.status === PsychoJS.Status.STARTED || background_gender_female.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_gender_female.setAutoDraw(false);
+    if ((female.status === PsychoJS.Status.STARTED || female.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      female.setAutoDraw(false);
     }
     
-    // *background_gender_male* updates
-    if (t >= 1.0 && background_gender_male.status === PsychoJS.Status.NOT_STARTED) {
+    // *male* updates
+    if (t >= 1.0 && male.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_gender_male.tStart = t;  // (not accounting for frame time here)
-      background_gender_male.frameNStart = frameN;  // exact frame index
+      male.tStart = t;  // (not accounting for frame time here)
+      male.frameNStart = frameN;  // exact frame index
       
-      background_gender_male.setAutoDraw(true);
+      male.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_gender_male.status === PsychoJS.Status.STARTED || background_gender_male.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_gender_male.setAutoDraw(false);
+    if ((male.status === PsychoJS.Status.STARTED || male.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      male.setAutoDraw(false);
     }
     
     // *age* updates
@@ -3025,88 +2798,88 @@ function BACKGROUNDRoutineEachFrame(snapshot) {
       age.setAutoDraw(false);
     }
     
-    // *background_age_18_24* updates
-    if (t >= 1.0 && background_age_18_24.status === PsychoJS.Status.NOT_STARTED) {
+    // *_18_24* updates
+    if (t >= 1.0 && _18_24.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_age_18_24.tStart = t;  // (not accounting for frame time here)
-      background_age_18_24.frameNStart = frameN;  // exact frame index
+      _18_24.tStart = t;  // (not accounting for frame time here)
+      _18_24.frameNStart = frameN;  // exact frame index
       
-      background_age_18_24.setAutoDraw(true);
+      _18_24.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_age_18_24.status === PsychoJS.Status.STARTED || background_age_18_24.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_age_18_24.setAutoDraw(false);
+    if ((_18_24.status === PsychoJS.Status.STARTED || _18_24.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      _18_24.setAutoDraw(false);
     }
     
-    // *background_age_25_34* updates
-    if (t >= 1.0 && background_age_25_34.status === PsychoJS.Status.NOT_STARTED) {
+    // *_25_34* updates
+    if (t >= 1.0 && _25_34.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_age_25_34.tStart = t;  // (not accounting for frame time here)
-      background_age_25_34.frameNStart = frameN;  // exact frame index
+      _25_34.tStart = t;  // (not accounting for frame time here)
+      _25_34.frameNStart = frameN;  // exact frame index
       
-      background_age_25_34.setAutoDraw(true);
+      _25_34.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_age_25_34.status === PsychoJS.Status.STARTED || background_age_25_34.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_age_25_34.setAutoDraw(false);
+    if ((_25_34.status === PsychoJS.Status.STARTED || _25_34.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      _25_34.setAutoDraw(false);
     }
     
-    // *background_age_35_44* updates
-    if (t >= 1.0 && background_age_35_44.status === PsychoJS.Status.NOT_STARTED) {
+    // *_35_44* updates
+    if (t >= 1.0 && _35_44.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_age_35_44.tStart = t;  // (not accounting for frame time here)
-      background_age_35_44.frameNStart = frameN;  // exact frame index
+      _35_44.tStart = t;  // (not accounting for frame time here)
+      _35_44.frameNStart = frameN;  // exact frame index
       
-      background_age_35_44.setAutoDraw(true);
+      _35_44.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_age_35_44.status === PsychoJS.Status.STARTED || background_age_35_44.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_age_35_44.setAutoDraw(false);
+    if ((_35_44.status === PsychoJS.Status.STARTED || _35_44.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      _35_44.setAutoDraw(false);
     }
     
-    // *background_age_45_54* updates
-    if (t >= 1.0 && background_age_45_54.status === PsychoJS.Status.NOT_STARTED) {
+    // *_45_54* updates
+    if (t >= 1.0 && _45_54.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_age_45_54.tStart = t;  // (not accounting for frame time here)
-      background_age_45_54.frameNStart = frameN;  // exact frame index
+      _45_54.tStart = t;  // (not accounting for frame time here)
+      _45_54.frameNStart = frameN;  // exact frame index
       
-      background_age_45_54.setAutoDraw(true);
+      _45_54.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_age_45_54.status === PsychoJS.Status.STARTED || background_age_45_54.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_age_45_54.setAutoDraw(false);
+    if ((_45_54.status === PsychoJS.Status.STARTED || _45_54.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      _45_54.setAutoDraw(false);
     }
     
-    // *background_age_55_64* updates
-    if (t >= 1.0 && background_age_55_64.status === PsychoJS.Status.NOT_STARTED) {
+    // *_55_64* updates
+    if (t >= 1.0 && _55_64.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_age_55_64.tStart = t;  // (not accounting for frame time here)
-      background_age_55_64.frameNStart = frameN;  // exact frame index
+      _55_64.tStart = t;  // (not accounting for frame time here)
+      _55_64.frameNStart = frameN;  // exact frame index
       
-      background_age_55_64.setAutoDraw(true);
+      _55_64.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_age_55_64.status === PsychoJS.Status.STARTED || background_age_55_64.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_age_55_64.setAutoDraw(false);
+    if ((_55_64.status === PsychoJS.Status.STARTED || _55_64.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      _55_64.setAutoDraw(false);
     }
     
-    // *background_age_65* updates
-    if (t >= 1.0 && background_age_65.status === PsychoJS.Status.NOT_STARTED) {
+    // *_65* updates
+    if (t >= 1.0 && _65.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_age_65.tStart = t;  // (not accounting for frame time here)
-      background_age_65.frameNStart = frameN;  // exact frame index
+      _65.tStart = t;  // (not accounting for frame time here)
+      _65.frameNStart = frameN;  // exact frame index
       
-      background_age_65.setAutoDraw(true);
+      _65.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_age_65.status === PsychoJS.Status.STARTED || background_age_65.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_age_65.setAutoDraw(false);
+    if ((_65.status === PsychoJS.Status.STARTED || _65.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      _65.setAutoDraw(false);
     }
     
     // *education* updates
@@ -3123,124 +2896,103 @@ function BACKGROUNDRoutineEachFrame(snapshot) {
       education.setAutoDraw(false);
     }
     
-    // *background_education_before_high_school* updates
-    if (t >= 1.0 && background_education_before_high_school.status === PsychoJS.Status.NOT_STARTED) {
+    // *less_than_high_school* updates
+    if (t >= 1.0 && less_than_high_school.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_education_before_high_school.tStart = t;  // (not accounting for frame time here)
-      background_education_before_high_school.frameNStart = frameN;  // exact frame index
+      less_than_high_school.tStart = t;  // (not accounting for frame time here)
+      less_than_high_school.frameNStart = frameN;  // exact frame index
       
-      background_education_before_high_school.setAutoDraw(true);
+      less_than_high_school.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_education_before_high_school.status === PsychoJS.Status.STARTED || background_education_before_high_school.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_education_before_high_school.setAutoDraw(false);
+    if ((less_than_high_school.status === PsychoJS.Status.STARTED || less_than_high_school.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      less_than_high_school.setAutoDraw(false);
     }
     
-    // *background_education_high_school* updates
-    if (t >= 1.0 && background_education_high_school.status === PsychoJS.Status.NOT_STARTED) {
+    // *high_school_equivalent* updates
+    if (t >= 1.0 && high_school_equivalent.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_education_high_school.tStart = t;  // (not accounting for frame time here)
-      background_education_high_school.frameNStart = frameN;  // exact frame index
+      high_school_equivalent.tStart = t;  // (not accounting for frame time here)
+      high_school_equivalent.frameNStart = frameN;  // exact frame index
       
-      background_education_high_school.setAutoDraw(true);
+      high_school_equivalent.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_education_high_school.status === PsychoJS.Status.STARTED || background_education_high_school.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_education_high_school.setAutoDraw(false);
+    if ((high_school_equivalent.status === PsychoJS.Status.STARTED || high_school_equivalent.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      high_school_equivalent.setAutoDraw(false);
     }
     
-    // *background_education_college* updates
-    if (t >= 1.0 && background_education_college.status === PsychoJS.Status.NOT_STARTED) {
+    // *college* updates
+    if (t >= 1.0 && college.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_education_college.tStart = t;  // (not accounting for frame time here)
-      background_education_college.frameNStart = frameN;  // exact frame index
+      college.tStart = t;  // (not accounting for frame time here)
+      college.frameNStart = frameN;  // exact frame index
       
-      background_education_college.setAutoDraw(true);
+      college.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_education_college.status === PsychoJS.Status.STARTED || background_education_college.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_education_college.setAutoDraw(false);
+    if ((college.status === PsychoJS.Status.STARTED || college.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      college.setAutoDraw(false);
     }
     
-    // *background_education_bachelor* updates
-    if (t >= 1.0 && background_education_bachelor.status === PsychoJS.Status.NOT_STARTED) {
+    // *bachelor* updates
+    if (t >= 1.0 && bachelor.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_education_bachelor.tStart = t;  // (not accounting for frame time here)
-      background_education_bachelor.frameNStart = frameN;  // exact frame index
+      bachelor.tStart = t;  // (not accounting for frame time here)
+      bachelor.frameNStart = frameN;  // exact frame index
       
-      background_education_bachelor.setAutoDraw(true);
+      bachelor.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_education_bachelor.status === PsychoJS.Status.STARTED || background_education_bachelor.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_education_bachelor.setAutoDraw(false);
+    if ((bachelor.status === PsychoJS.Status.STARTED || bachelor.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      bachelor.setAutoDraw(false);
     }
     
-    // *background_education_graudate* updates
-    if (t >= 1.0 && background_education_graudate.status === PsychoJS.Status.NOT_STARTED) {
+    // *graduate* updates
+    if (t >= 1.0 && graduate.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_education_graudate.tStart = t;  // (not accounting for frame time here)
-      background_education_graudate.frameNStart = frameN;  // exact frame index
+      graduate.tStart = t;  // (not accounting for frame time here)
+      graduate.frameNStart = frameN;  // exact frame index
       
-      background_education_graudate.setAutoDraw(true);
+      graduate.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_education_graudate.status === PsychoJS.Status.STARTED || background_education_graudate.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_education_graudate.setAutoDraw(false);
+    if ((graduate.status === PsychoJS.Status.STARTED || graduate.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      graduate.setAutoDraw(false);
     }
     
-    // *backgrond_education_doctorate* updates
-    if (t >= 1.0 && backgrond_education_doctorate.status === PsychoJS.Status.NOT_STARTED) {
+    // *doctorate* updates
+    if (t >= 1.0 && doctorate.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      backgrond_education_doctorate.tStart = t;  // (not accounting for frame time here)
-      backgrond_education_doctorate.frameNStart = frameN;  // exact frame index
+      doctorate.tStart = t;  // (not accounting for frame time here)
+      doctorate.frameNStart = frameN;  // exact frame index
       
-      backgrond_education_doctorate.setAutoDraw(true);
+      doctorate.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((backgrond_education_doctorate.status === PsychoJS.Status.STARTED || backgrond_education_doctorate.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      backgrond_education_doctorate.setAutoDraw(false);
+    if ((doctorate.status === PsychoJS.Status.STARTED || doctorate.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      doctorate.setAutoDraw(false);
     }
     
-    // *background_education_other* updates
-    if (t >= 1.0 && background_education_other.status === PsychoJS.Status.NOT_STARTED) {
+    // *other* updates
+    if (t >= 1.0 && other.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      background_education_other.tStart = t;  // (not accounting for frame time here)
-      background_education_other.frameNStart = frameN;  // exact frame index
+      other.tStart = t;  // (not accounting for frame time here)
+      other.frameNStart = frameN;  // exact frame index
       
-      background_education_other.setAutoDraw(true);
+      other.setAutoDraw(true);
     }
 
     frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_education_other.status === PsychoJS.Status.STARTED || background_education_other.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_education_other.setAutoDraw(false);
+    if ((other.status === PsychoJS.Status.STARTED || other.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      other.setAutoDraw(false);
     }
-    gender_selected = checkBGSelection(background_mouse, gender_groups, gender_selected);
-    age_selected = checkBGSelection(background_mouse, age_groups, age_selected);
-    education_selected = checkBGSelection(background_mouse, education_groups, education_selected);
-    if ((((age_selected !== null) && (education_selected !== null)) && (gender_selected !== null))) {
-        if (((background_btn.size[0] === 0) && (background_btn.size[1] === 0))) {
-            background_btn.size = [0.28, 0.1];
-        }
-        if (((background_btn.pos[0] === 5) && (background_btn.pos[1] === 5))) {
-            background_btn.pos = [0, (- 0.4)];
-        }
-        if ((age_selected !== null)) {
-            demographic_age = age_selected.text;
-        }
-        if ((education_selected !== null)) {
-            demographic_education = education_selected.text;
-        }
-        if ((gender_selected !== null)) {
-            demographic_gender = gender_selected.text;
-        }
-    }
-    
     
     // *background_btn* updates
     if (t >= 0.5 && background_btn.status === PsychoJS.Status.NOT_STARTED) {
@@ -3255,39 +3007,25 @@ function BACKGROUNDRoutineEachFrame(snapshot) {
     if ((background_btn.status === PsychoJS.Status.STARTED || background_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       background_btn.setAutoDraw(false);
     }
-    // *background_mouse* updates
-    if (t >= 0.5 && background_mouse.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      background_mouse.tStart = t;  // (not accounting for frame time here)
-      background_mouse.frameNStart = frameN;  // exact frame index
-      
-      background_mouse.status = PsychoJS.Status.STARTED;
-      background_mouse.mouseClock.reset();
-      prevButtonState = background_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((background_mouse.status === PsychoJS.Status.STARTED || background_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      background_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (background_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = background_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [[background_btn]]) {
-            if (obj.contains(background_mouse)) {
-              gotValidClick = true;
-              background_mouse.clicked_name.push(obj.name)
-            }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-          }
-        }
-      }
+    gender_selected = checkBGSelection(background_mouse, gender_groups, gender_selected);
+    age_selected = checkBGSelection(background_mouse, age_groups, age_selected);
+    education_selected = checkBGSelection(background_mouse, education_groups, education_selected);
+    if ((age_selected !== null)) {
+        demographic_age = age_selected.name;
     }
+    if ((education_selected !== null)) {
+        demographic_education = education_selected.name;
+    }
+    if ((gender_selected !== null)) {
+        demographic_gender = gender_selected.name;
+    }
+    if (((((age_selected !== null) && (education_selected !== null)) && (gender_selected !== null)) && (background_btn.image !== "materials/imgs/submit.png"))) {
+        background_btn.image = "materials/imgs/submit.png";
+    }
+    if (((((intro_mouse.isPressedIn(background_btn) && (age_selected !== null)) && (education_selected !== null)) && (gender_selected !== null)) && (background_btn.status === PsychoJS.Status.STARTED))) {
+        continueRoutine = false;
+    }
+    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -3331,8 +3069,6 @@ function BACKGROUNDRoutineEnd(snapshot) {
     psychoJS.experiment.addData('background_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('background_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('background_mouse.rightButton', _mouseButtons[2]);
-    if (background_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('background_mouse.clicked_name', background_mouse.clicked_name[0]);}
     return Scheduler.Event.NEXT;
   };
 }
@@ -3349,7 +3085,6 @@ function MERGE_INTRORoutineBegin(snapshot) {
     routineTimer.add(120.000000);
     // update component parameters for each repeat
     // setup some python lists for storing info about the merge_intro_mouse
-    merge_intro_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
     // keep track of which components have finished
     MERGE_INTROComponents = [];
@@ -3445,39 +3180,10 @@ function MERGE_INTRORoutineEachFrame(snapshot) {
     if ((merge_intro_btn.status === PsychoJS.Status.STARTED || merge_intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_intro_btn.setAutoDraw(false);
     }
-    // *merge_intro_mouse* updates
-    if (t >= 0.5 && merge_intro_mouse.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_intro_mouse.tStart = t;  // (not accounting for frame time here)
-      merge_intro_mouse.frameNStart = frameN;  // exact frame index
-      
-      merge_intro_mouse.status = PsychoJS.Status.STARTED;
-      merge_intro_mouse.mouseClock.reset();
-      prevButtonState = merge_intro_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_intro_mouse.status === PsychoJS.Status.STARTED || merge_intro_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_intro_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (merge_intro_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = merge_intro_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [[merge_intro_btn]]) {
-            if (obj.contains(merge_intro_mouse)) {
-              gotValidClick = true;
-              merge_intro_mouse.clicked_name.push(obj.name)
-            }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-          }
-        }
-      }
+    if ((merge_intro_mouse.isPressedIn(merge_intro_btn) && (merge_intro_btn.status === PsychoJS.Status.STARTED))) {
+        continueRoutine = false;
     }
+    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -3521,8 +3227,6 @@ function MERGE_INTRORoutineEnd(snapshot) {
     psychoJS.experiment.addData('merge_intro_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('merge_intro_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('merge_intro_mouse.rightButton', _mouseButtons[2]);
-    if (merge_intro_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('merge_intro_mouse.clicked_name', merge_intro_mouse.clicked_name[0]);}
     return Scheduler.Event.NEXT;
   };
 }
@@ -3671,6 +3375,12 @@ function TEST_2LoopEnd() {
 }
 
 
+var merge_train_input;
+var mc_order;
+var merge_train_labels;
+var merge_train_compareN;
+var merge_train_mc_path_2;
+var merge_train_mc_path_1;
 var MERGE_TRAINComponents;
 function MERGE_TRAINRoutineBegin(snapshot) {
   return function () {
@@ -3690,6 +3400,13 @@ function MERGE_TRAINRoutineBegin(snapshot) {
     // setup some python lists for storing info about the merge_train_mouse
     merge_train_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
+    merge_train_input = input;
+    mc_order = [];
+    merge_train_labels = encryption;
+    merge_train_compareN = 0;
+    merge_train_mc_path_2 = mc_path_2;
+    merge_train_mc_path_1 = mc_path_1;
+    
     // keep track of which components have finished
     MERGE_TRAINComponents = [];
     MERGE_TRAINComponents.push(merge_train_scale_instr);
@@ -3697,7 +3414,6 @@ function MERGE_TRAINRoutineBegin(snapshot) {
     MERGE_TRAINComponents.push(merge_train_instr);
     MERGE_TRAINComponents.push(merge_train_scale_right);
     MERGE_TRAINComponents.push(merge_train_scale_left);
-    MERGE_TRAINComponents.push(merge_train_compare);
     MERGE_TRAINComponents.push(merge_train_sep);
     MERGE_TRAINComponents.push(merge_train);
     MERGE_TRAINComponents.push(merge_train_mc_1);
@@ -3705,6 +3421,7 @@ function MERGE_TRAINRoutineBegin(snapshot) {
     MERGE_TRAINComponents.push(merge_train_scale);
     MERGE_TRAINComponents.push(merge_train_btn_1);
     MERGE_TRAINComponents.push(merge_train_btn_2);
+    MERGE_TRAINComponents.push(merge_train_compare);
     MERGE_TRAINComponents.push(merge_train_mouse);
     MERGE_TRAINComponents.push(merge_train_timer);
     
@@ -3716,8 +3433,7 @@ function MERGE_TRAINRoutineBegin(snapshot) {
 }
 
 
-var mc_order;
-var merge_train_compareN;
+var prevButtonState;
 function MERGE_TRAINRoutineEachFrame(snapshot) {
   return function () {
     //------Loop for each frame of Routine 'MERGE_TRAIN'-------
@@ -3796,20 +3512,6 @@ function MERGE_TRAINRoutineEachFrame(snapshot) {
       merge_train_scale_left.setAutoDraw(false);
     }
     
-    // *merge_train_compare* updates
-    if (t >= 0.0 && merge_train_compare.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_compare.tStart = t;  // (not accounting for frame time here)
-      merge_train_compare.frameNStart = frameN;  // exact frame index
-      
-      merge_train_compare.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_train_compare.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_train_compare.setAutoDraw(false);
-    }
-    
     // *merge_train_sep* updates
     if (t >= 0.0 && merge_train_sep.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
@@ -3879,14 +3581,6 @@ function MERGE_TRAINRoutineEachFrame(snapshot) {
     if (merge_train_scale.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       merge_train_scale.setAutoDraw(false);
     }
-    if ((mc_order === [])) {
-        mc_order = getCorrectMCOrder(TRAIN_1.thisTrialN, merge_train_mc_path_1, merge_train_mc_path_2, merge_train_mc_1, merge_train_mc_2);
-    }
-    if (merge_train_mouse.isPressedIn(merge_train_compare)) {
-        merge_train_compareN = (merge_train_compareN + compare(merge_train_scale, merge_train_input, merge_train_labels, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right));
-    }
-    merge_train_timer.text = timerWarning(mergeTrainTimeL, t);
-    
     
     // *merge_train_btn_1* updates
     if (t >= 0.5 && merge_train_btn_1.status === PsychoJS.Status.NOT_STARTED) {
@@ -3915,38 +3609,19 @@ function MERGE_TRAINRoutineEachFrame(snapshot) {
     if ((merge_train_btn_2.status === PsychoJS.Status.STARTED || merge_train_btn_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_train_btn_2.setAutoDraw(false);
     }
-    // *merge_train_mouse* updates
-    if (t >= 0.5 && merge_train_mouse.status === PsychoJS.Status.NOT_STARTED) {
+    
+    // *merge_train_compare* updates
+    if (t >= 0.5 && merge_train_compare.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      merge_train_mouse.tStart = t;  // (not accounting for frame time here)
-      merge_train_mouse.frameNStart = frameN;  // exact frame index
+      merge_train_compare.tStart = t;  // (not accounting for frame time here)
+      merge_train_compare.frameNStart = frameN;  // exact frame index
       
-      merge_train_mouse.status = PsychoJS.Status.STARTED;
-      merge_train_mouse.mouseClock.reset();
-      prevButtonState = merge_train_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
+      merge_train_compare.setAutoDraw(true);
+    }
+
     frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_train_mouse.status === PsychoJS.Status.STARTED || merge_train_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_train_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (merge_train_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = merge_train_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [[merge_train_btn_1,merge_train_btn_2]]) {
-            if (obj.contains(merge_train_mouse)) {
-              gotValidClick = true;
-              merge_train_mouse.clicked_name.push(obj.name)
-            }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-          }
-        }
-      }
+    if ((merge_train_compare.status === PsychoJS.Status.STARTED || merge_train_compare.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_train_compare.setAutoDraw(false);
     }
     
     // *merge_train_timer* updates
@@ -3962,6 +3637,50 @@ function MERGE_TRAINRoutineEachFrame(snapshot) {
     if ((merge_train_timer.status === PsychoJS.Status.STARTED || merge_train_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_train_timer.setAutoDraw(false);
     }
+    if ((mc_order === [])) {
+        mc_order = getCorrectMCOrder(TRAIN_1.thisTrialN, merge_train_mc_path_1, merge_train_mc_path_2, merge_train_mc_1, merge_train_mc_2);
+    }
+    
+    if (t >= 0.5 && merge_train_mouse.status === PsychoJS.Status.NOT_STARTED) {
+          // keep track of start time/frame for later
+          merge_train_mouse.tStart = t;  // (not accounting for frame time here)
+          merge_train_mouse.frameNStart = frameN;  // exact frame index
+          
+          merge_train_mouse.status = PsychoJS.Status.STARTED;
+          merge_train_mouse.mouseClock.reset();
+          prevButtonState = merge_train_mouse.getPressed();  // if button is down already this ISN'T a new click
+    }
+    
+    if ((merge_train_mouse.status === PsychoJS.Status.STARTED || merge_train_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+          merge_train_mouse.status = PsychoJS.Status.FINISHED;
+      }
+    
+    if (merge_train_mouse.status === PsychoJS.Status.STARTED) {
+        _mouseButtons = merge_train_mouse.getPressed();
+        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
+        prevButtonState = _mouseButtons;
+            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
+                for (const obj of [merge_train_btn_1,merge_train_btn_2,merge_train_compare,merge_train_scale_left,merge_train_scale_right]) {
+                    if (merge_train_mouse.isPressedIn(obj) && (obj.name === "merge_train_btn_1" || obj.name === "merge_train_btn_2")) {
+                        merge_train_mouse.clicked_name.push(obj.name)
+                        continueRoutine = false;
+                    } else {
+                        if(merge_train_mouse.isPressedIn(obj)) {
+                            if(obj.name === "merge_train_compare") {
+                                merge_train_compareN = (merge_train_compareN + compare(merge_train_scale, merge_train_input, merge_train_labels, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right));
+                                merge_train_compare.image = "materials/merge_sort/imgs/compare_selected.png";
+                                timeSleep(sleepTime);
+                                merge_train_compare.image = "materials/merge_sort/imgs/compare.png";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    merge_train_timer.text = timerWarning(mergeTrainTimeL, t);
+    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -4031,6 +3750,9 @@ function MERGE_EXPLRoutineBegin(snapshot) {
     merge_expl_2.setImage('materials/merge_sort/imgs/white_BG.png');
     merge_expl_mc_1.setImage('materials/merge_sort/imgs/white_BG.png');
     merge_expl_mc_2.setImage('materials/merge_sort/imgs/white_BG.png');
+    // setup some python lists for storing info about the merge_expl_mouse
+    merge_expl_mouse.clicked_name = [];
+    gotValidClick = false; // until a click is received
     var _pj;
     function _pj_snippets(container) {
         function in_es6(left, right) {
@@ -4059,9 +3781,6 @@ function MERGE_EXPLRoutineBegin(snapshot) {
     }
     showMergeExpl(submitted, merge_expl_feedback_1, merge_expl_feedback_2, merge_expl_mc_1, merge_expl_mc_2, merge_train_mc_path_1, merge_train_mc_path_2, merge_expl_1, merge_expl_2);
     
-    // setup some python lists for storing info about the merge_expl_mouse
-    merge_expl_mouse.clicked_name = [];
-    gotValidClick = false; // until a click is received
     // keep track of which components have finished
     MERGE_EXPLComponents = [];
     MERGE_EXPLComponents.push(merge_expl_instr);
@@ -4203,8 +3922,6 @@ function MERGE_EXPLRoutineEachFrame(snapshot) {
     if (merge_expl_mc_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       merge_expl_mc_2.setAutoDraw(false);
     }
-    merge_expl_timer.text = timerWarning(mergeExplTimeL, t);
-    
     
     // *merge_expl_btn* updates
     if (t >= 0.5 && merge_expl_btn.status === PsychoJS.Status.NOT_STARTED) {
@@ -4266,6 +3983,8 @@ function MERGE_EXPLRoutineEachFrame(snapshot) {
     if ((merge_expl_timer.status === PsychoJS.Status.STARTED || merge_expl_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_expl_timer.setAutoDraw(false);
     }
+    merge_expl_timer.text = timerWarning(mergeExplTimeL, t);
+    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -4456,6 +4175,10 @@ function MERGE_TEST_INTRORoutineEachFrame(snapshot) {
         }
       }
     }
+    if ((merge_test_mouse.isPressedIn(merge_test_btn) && (merge_test_btn.status === PsychoJS.Status.STARTED))) {
+        continueRoutine = false;
+    }
+    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -4696,12 +4419,6 @@ function MERGE_TESTRoutineEachFrame(snapshot) {
     if (merge_test_scale.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       merge_test_scale.setAutoDraw(false);
     }
-    if (merge_test_mouse.isPressedIn(merge_test_compare)) {
-        merge_test_compareN = (merge_test_compareN + compare(merge_test_scale, merge_test_input, merge_test_labels, merge_test_scale_instr, merge_test_scale_left, merge_test_scale_right));
-    }
-    merge_test_timer.text = timerWarning(mergeTestTimeL, t);
-    merge_test_ans = merge_test_res.text;
-    
     
     // *merge_test_btn* updates
     if (t >= 0.5 && merge_test_btn.status === PsychoJS.Status.NOT_STARTED) {
@@ -4763,6 +4480,12 @@ function MERGE_TESTRoutineEachFrame(snapshot) {
     if ((merge_test_timer.status === PsychoJS.Status.STARTED || merge_test_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_test_timer.setAutoDraw(false);
     }
+    if (merge_test_mouse.isPressedIn(merge_test_compare)) {
+        merge_test_compareN = (merge_test_compareN + compare(merge_test_scale, merge_test_input, merge_test_labels, merge_test_scale_instr, merge_test_scale_left, merge_test_scale_right));
+    }
+    merge_test_timer.text = timerWarning(mergeTestTimeL, t);
+    merge_test_ans = merge_test_res.text;
+    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -4959,6 +4682,10 @@ function SORT_INTRORoutineEachFrame(snapshot) {
         }
       }
     }
+    if ((sort_intro_mouse.isPressedIn(sort_intro_btn) && (sort_intro_btn.status === PsychoJS.Status.STARTED))) {
+        continueRoutine = false;
+    }
+    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -6293,6 +6020,10 @@ function SORT_TEST_INTRORoutineEachFrame(snapshot) {
         }
       }
     }
+    if ((sort_test_mouse.isPressedIn(sort_test_btn) && (sort_test_btn.status === PsychoJS.Status.STARTED))) {
+        continueRoutine = false;
+    }
+    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -6320,7 +6051,6 @@ function SORT_TEST_INTRORoutineEachFrame(snapshot) {
 }
 
 
-var repeats;
 function SORT_TEST_INTRORoutineEnd(snapshot) {
   return function () {
     //------Ending Routine 'SORT_TEST_INTRO'-------
@@ -6329,8 +6059,6 @@ function SORT_TEST_INTRORoutineEnd(snapshot) {
         thisComponent.setAutoDraw(false);
       }
     }
-    repeats = makeScreenShot();
-    
     // store data for thisExp (ExperimentHandler)
     _mouseXYs = sort_test_intro_mouse.getPos();
     _mouseButtons = sort_test_intro_mouse.getPressed();
@@ -6372,6 +6100,9 @@ function SORT_TESTRoutineBegin(snapshot) {
     sort_test_ex_10.setPos([0.2, 0.3]);
     sort_test_ex_11.setPos([0.25, 0.3]);
     sort_test_ex_12.setPos([0.3, 0.3]);
+    // setup some python lists for storing info about the sort_test_mouse
+    sort_test_mouse.clicked_name = [];
+    gotValidClick = false; // until a click is received
     items = [];
     frameCnt = 0;
     tracePos = [];
@@ -6383,9 +6114,6 @@ function SORT_TESTRoutineBegin(snapshot) {
     left = (x - (w / 2));
     right = (x + (w / 2));
     
-    // setup some python lists for storing info about the sort_test_mouse
-    sort_test_mouse.clicked_name = [];
-    gotValidClick = false; // until a click is received
     // keep track of which components have finished
     SORT_TESTComponents = [];
     SORT_TESTComponents.push(sort_test_scale_instr);
@@ -6739,31 +6467,6 @@ function SORT_TESTRoutineEachFrame(snapshot) {
     if (sort_test_ex_12.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       sort_test_ex_12.setAutoDraw(false);
     }
-    if ((items === [])) {
-        items = enableImageComponents(SORT_TESTComponents, sort_test_labels, sort_test_path_base);
-    }
-    movingItem = moveItem(sort_test_mouse, movingItem);
-    if (((frameCnt % traceSaveAtFrame) === 0)) {
-        newTracePos = [];
-        for (var i, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
-            i = _pj_a[_pj_c];
-            newTracePos.append([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
-        }
-        hasMoved = updateTrace(tracePos, newTracePos);
-        if ((hasMoved !== [])) {
-            for (var j, _pj_c = 0, _pj_a = hasMoved, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
-                j = _pj_a[_pj_c];
-                sort_test_trace.append(j);
-            }
-        }
-        tracePos = newTracePos;
-    }
-    if (sort_test_mouse.isPressedIn(sort_test_compare)) {
-        sort_test_compareN = (sort_test_compareN + compare(sort_test_scale, sort_test_input, sort_test_labels, sort_test_scale_instr, sort_test_scale_left, sort_test_scale_right));
-    }
-    sort_test_ans = sort_test_res.text;
-    sort_test_timer.text = timerWarning(sortTestTimeL, t);
-    
     
     // *sort_test_btn* updates
     if (t >= 0.5 && sort_test_btn.status === PsychoJS.Status.NOT_STARTED) {
@@ -6825,6 +6528,31 @@ function SORT_TESTRoutineEachFrame(snapshot) {
     if ((sort_test_timer.status === PsychoJS.Status.STARTED || sort_test_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_timer.setAutoDraw(false);
     }
+    if ((items === [])) {
+        items = enableImageComponents(SORT_TESTComponents, sort_test_labels, sort_test_path_base);
+    }
+    movingItem = moveItem(sort_test_mouse, movingItem);
+    if (((frameCnt % traceSaveAtFrame) === 0)) {
+        newTracePos = [];
+        for (var i, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            newTracePos.append([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
+        }
+        hasMoved = updateTrace(tracePos, newTracePos);
+        if ((hasMoved !== [])) {
+            for (var j, _pj_c = 0, _pj_a = hasMoved, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+                j = _pj_a[_pj_c];
+                sort_test_trace.append(j);
+            }
+        }
+        tracePos = newTracePos;
+    }
+    if (sort_test_mouse.isPressedIn(sort_test_compare)) {
+        sort_test_compareN = (sort_test_compareN + compare(sort_test_scale, sort_test_input, sort_test_labels, sort_test_scale_instr, sort_test_scale_left, sort_test_scale_right));
+    }
+    sort_test_ans = sort_test_res.text;
+    sort_test_timer.text = timerWarning(sortTestTimeL, t);
+    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -6897,8 +6625,8 @@ function DEBRIEFRoutineBegin(snapshot) {
     // keep track of which components have finished
     DEBRIEFComponents = [];
     DEBRIEFComponents.push(intro_text_5);
-    DEBRIEFComponents.push(debrief_btn);
     DEBRIEFComponents.push(debrief_mouse);
+    DEBRIEFComponents.push(debrief_btn);
     
     for (const thisComponent of DEBRIEFComponents)
       if ('status' in thisComponent)
@@ -6928,20 +6656,6 @@ function DEBRIEFRoutineEachFrame(snapshot) {
     frameRemains = 0.0 + 10.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (intro_text_5.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       intro_text_5.setAutoDraw(false);
-    }
-    
-    // *debrief_btn* updates
-    if (t >= 0.5 && debrief_btn.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      debrief_btn.tStart = t;  // (not accounting for frame time here)
-      debrief_btn.frameNStart = frameN;  // exact frame index
-      
-      debrief_btn.setAutoDraw(true);
-    }
-
-    frameRemains = 10.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((debrief_btn.status === PsychoJS.Status.STARTED || debrief_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      debrief_btn.setAutoDraw(false);
     }
     // *debrief_mouse* updates
     if (t >= 0.5 && debrief_mouse.status === PsychoJS.Status.NOT_STARTED) {
@@ -6976,6 +6690,24 @@ function DEBRIEFRoutineEachFrame(snapshot) {
         }
       }
     }
+    
+    // *debrief_btn* updates
+    if (t >= 0.5 && debrief_btn.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      debrief_btn.tStart = t;  // (not accounting for frame time here)
+      debrief_btn.frameNStart = frameN;  // exact frame index
+      
+      debrief_btn.setAutoDraw(true);
+    }
+
+    frameRemains = 10.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((debrief_btn.status === PsychoJS.Status.STARTED || debrief_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      debrief_btn.setAutoDraw(false);
+    }
+    if ((debrief_mouse.isPressedIn(debrief_btn) && (debrief_btn.status === PsychoJS.Status.STARTED))) {
+        continueRoutine = false;
+    }
+    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -7062,6 +6794,8 @@ function quitPsychoJS(message, isCompleted) {
   if (psychoJS.experiment.isEntryEmpty()) {
     psychoJS.experiment.nextEntry();
   }
+  
+  
   
   
   
