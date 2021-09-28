@@ -1,30 +1,15 @@
-/************************* 
+﻿/************************* 
  * Seq_Teaching_Exp Test *
  *************************/
 
-import { PsychoJS } from './lib/core-2021.1.4.js';
-import * as core from './lib/core-2021.1.4.js';
-import { TrialHandler } from './lib/data-2021.1.4.js';
-import { Scheduler } from './lib/util-2021.1.4.js';
-import * as visual from './lib/visual-2021.1.4.js';
-import * as sound from './lib/sound-2021.1.4.js';
-import * as util from './lib/util-2021.1.4.js';
+import { core, data, sound, util, visual } from './lib/psychojs-2021.2.3.js';
+const { PsychoJS } = core;
+const { TrialHandler } = data;
+const { Scheduler } = util;
 //some handy aliases as in the psychopy scripts;
 const { abs, sin, cos, PI: pi, sqrt } = Math;
 const { round } = util;
 
-// init psychoJS:
-const psychoJS = new PsychoJS({
-  debug: true
-});
-
-// open window:
-psychoJS.openWindow({
-  fullscr: true,
-  color: new util.Color([0, 0, 0]),
-  units: 'height',
-  waitBlanking: true
-});
 
 // store info about the experiment session:
 let expName = 'seq_teaching_exp';  // from the Builder filename that created this script
@@ -354,6 +339,18 @@ function updateTrace(itemPos, newItemPos) {
     }
     return updated;
 }
+// init psychoJS:
+const psychoJS = new PsychoJS({
+  debug: true
+});
+
+// open window:
+psychoJS.openWindow({
+  fullscr: true,
+  color: new util.Color([0, 0, 0]),
+  units: 'height',
+  waitBlanking: true
+});
 // schedule the experiment:
 psychoJS.schedule(psychoJS.gui.DlgFromDict({
   dictionary: expInfo,
@@ -377,28 +374,28 @@ flowScheduler.add(MERGE_INTRORoutineBegin());
 flowScheduler.add(MERGE_INTRORoutineEachFrame());
 flowScheduler.add(MERGE_INTRORoutineEnd());
 const TRAIN_1LoopScheduler = new Scheduler(psychoJS);
-flowScheduler.add(TRAIN_1LoopBegin, TRAIN_1LoopScheduler);
+flowScheduler.add(TRAIN_1LoopBegin(TRAIN_1LoopScheduler));
 flowScheduler.add(TRAIN_1LoopScheduler);
 flowScheduler.add(TRAIN_1LoopEnd);
 flowScheduler.add(MERGE_TEST_INTRORoutineBegin());
 flowScheduler.add(MERGE_TEST_INTRORoutineEachFrame());
 flowScheduler.add(MERGE_TEST_INTRORoutineEnd());
 const TEST_1LoopScheduler = new Scheduler(psychoJS);
-flowScheduler.add(TEST_1LoopBegin, TEST_1LoopScheduler);
+flowScheduler.add(TEST_1LoopBegin(TEST_1LoopScheduler));
 flowScheduler.add(TEST_1LoopScheduler);
 flowScheduler.add(TEST_1LoopEnd);
 flowScheduler.add(SORT_INTRORoutineBegin());
 flowScheduler.add(SORT_INTRORoutineEachFrame());
 flowScheduler.add(SORT_INTRORoutineEnd());
 const TRAIN_2LoopScheduler = new Scheduler(psychoJS);
-flowScheduler.add(TRAIN_2LoopBegin, TRAIN_2LoopScheduler);
+flowScheduler.add(TRAIN_2LoopBegin(TRAIN_2LoopScheduler));
 flowScheduler.add(TRAIN_2LoopScheduler);
 flowScheduler.add(TRAIN_2LoopEnd);
 flowScheduler.add(SORT_TEST_INTRORoutineBegin());
 flowScheduler.add(SORT_TEST_INTRORoutineEachFrame());
 flowScheduler.add(SORT_TEST_INTRORoutineEnd());
 const TEST_2LoopScheduler = new Scheduler(psychoJS);
-flowScheduler.add(TEST_2LoopBegin, TEST_2LoopScheduler);
+flowScheduler.add(TEST_2LoopBegin(TEST_2LoopScheduler));
 flowScheduler.add(TEST_2LoopScheduler);
 flowScheduler.add(TEST_2LoopEnd);
 flowScheduler.add(DEBRIEFRoutineBegin());
@@ -413,101 +410,101 @@ psychoJS.start({
   expName: expName,
   expInfo: expInfo,
   resources: [
-    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_test_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_test_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
-    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
-    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
-    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
-    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
-    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
-    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
-    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
-    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
-    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
-    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
-    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
-    {'name': 'materials/imgs/end.png', 'path': 'materials/imgs/end.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
-    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
-    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
-    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
-    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
-    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/compare_selected.png', 'path': 'materials/merge_sort/imgs/compare_selected.png'},
-    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
-    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
-    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
-    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
-    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
-    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
-    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
-    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
-    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
-    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
-    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
-    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
-    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
-    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
-    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
     {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
+    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
     {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
+    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
+    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
+    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
+    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
+    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
+    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
+    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
+    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
+    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
+    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
+    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
     {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
-    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
-    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
-    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
-    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
+    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
+    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
+    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
+    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
     {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
-    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
-    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
+    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
+    {'name': 'materials/merge_sort/imgs/compare_selected.png', 'path': 'materials/merge_sort/imgs/compare_selected.png'},
+    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
+    {'name': 'materials/imgs/end.png', 'path': 'materials/imgs/end.png'},
+    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
+    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_test_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_test_example.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
+    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
+    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
+    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
+    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
+    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
+    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
+    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
+    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
+    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
     {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
+    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
+    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
+    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
     {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
-    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'}
+    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
+    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
+    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
+    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
+    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
+    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
+    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'}
   ]
 });
 
@@ -515,10 +512,10 @@ psychoJS.experimentLogger.setLevel(core.Logger.ServerLevel.EXP);
 
 
 var frameDur;
-function updateInfo() {
+async function updateInfo() {
   expInfo['date'] = util.MonotonicClock.getDateStr();  // add a simple timestamp
   expInfo['expName'] = expName;
-  expInfo['psychopyVersion'] = '2021.1.4';
+  expInfo['psychopyVersion'] = '2021.2.3';
   expInfo['OS'] = window.navigator.platform;
 
   // store frame rate of monitor if we can measure it successfully
@@ -722,7 +719,7 @@ var debrief_mouse;
 var debrief_btn;
 var globalClock;
 var routineTimer;
-function experimentInit() {
+async function experimentInit() {
   // Initialize components for Routine "INTRO"
   INTROClock = new util.Clock();
   intro_text = new visual.TextStim({
@@ -2482,7 +2479,9 @@ var continueRoutine;
 var gotValidClick;
 var INTROComponents;
 function INTRORoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'INTRO'-------
     t = 0;
     INTROClock.reset(); // clock
@@ -2511,8 +2510,8 @@ function INTRORoutineBegin(snapshot) {
 
 
 var frameRemains;
-function INTRORoutineEachFrame(snapshot) {
-  return function () {
+function INTRORoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'INTRO'-------
     // get current time
     t = INTROClock.getTime();
@@ -2635,15 +2634,15 @@ function INTRORoutineEachFrame(snapshot) {
 
 var _mouseXYs;
 var _mouseButtons;
-function INTRORoutineEnd(snapshot) {
-  return function () {
+function INTRORoutineEnd() {
+  return async function () {
     //------Ending Routine 'INTRO'-------
     for (const thisComponent of INTROComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
         thisComponent.setAutoDraw(false);
       }
     }
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = intro_mouse.getPos();
     _mouseButtons = intro_mouse.getPressed();
     psychoJS.experiment.addData('intro_mouse.x', _mouseXYs[0]);
@@ -2664,7 +2663,9 @@ var age_groups;
 var education_groups;
 var BACKGROUNDComponents;
 function BACKGROUNDRoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'BACKGROUND'-------
     t = 0;
     BACKGROUNDClock.reset(); // clock
@@ -2720,8 +2721,8 @@ function BACKGROUNDRoutineBegin(snapshot) {
 var demographic_age;
 var demographic_education;
 var demographic_gender;
-function BACKGROUNDRoutineEachFrame(snapshot) {
-  return function () {
+function BACKGROUNDRoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'BACKGROUND'-------
     // get current time
     t = BACKGROUNDClock.getTime();
@@ -3053,15 +3054,15 @@ function BACKGROUNDRoutineEachFrame(snapshot) {
 }
 
 
-function BACKGROUNDRoutineEnd(snapshot) {
-  return function () {
+function BACKGROUNDRoutineEnd() {
+  return async function () {
     //------Ending Routine 'BACKGROUND'-------
     for (const thisComponent of BACKGROUNDComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
         thisComponent.setAutoDraw(false);
       }
     }
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = background_mouse.getPos();
     _mouseButtons = background_mouse.getPressed();
     psychoJS.experiment.addData('background_mouse.x', _mouseXYs[0]);
@@ -3076,7 +3077,9 @@ function BACKGROUNDRoutineEnd(snapshot) {
 
 var MERGE_INTROComponents;
 function MERGE_INTRORoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'MERGE_INTRO'-------
     t = 0;
     MERGE_INTROClock.reset(); // clock
@@ -3103,8 +3106,8 @@ function MERGE_INTRORoutineBegin(snapshot) {
 }
 
 
-function MERGE_INTRORoutineEachFrame(snapshot) {
-  return function () {
+function MERGE_INTRORoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'MERGE_INTRO'-------
     // get current time
     t = MERGE_INTROClock.getTime();
@@ -3211,15 +3214,15 @@ function MERGE_INTRORoutineEachFrame(snapshot) {
 }
 
 
-function MERGE_INTRORoutineEnd(snapshot) {
-  return function () {
+function MERGE_INTRORoutineEnd() {
+  return async function () {
     //------Ending Routine 'MERGE_INTRO'-------
     for (const thisComponent of MERGE_INTROComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
         thisComponent.setAutoDraw(false);
       }
     }
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = merge_intro_mouse.getPos();
     _mouseButtons = merge_intro_mouse.getPressed();
     psychoJS.experiment.addData('merge_intro_mouse.x', _mouseXYs[0]);
@@ -3234,36 +3237,40 @@ function MERGE_INTRORoutineEnd(snapshot) {
 
 var TRAIN_1;
 var currentLoop;
-function TRAIN_1LoopBegin(TRAIN_1LoopScheduler) {
-  // set up handler to look after randomisation of conditions etc
-  TRAIN_1 = new TrialHandler({
-    psychoJS: psychoJS,
-    nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
-    extraInfo: expInfo, originPath: undefined,
-    trialList: 'materials/merge_train_cond.csv',
-    seed: undefined, name: 'TRAIN_1'
-  });
-  psychoJS.experiment.addLoop(TRAIN_1); // add the loop to the experiment
-  currentLoop = TRAIN_1;  // we're now the current loop
-
-  // Schedule all the trials in the trialList:
-  for (const thisTRAIN_1 of TRAIN_1) {
-    const snapshot = TRAIN_1.getSnapshot();
-    TRAIN_1LoopScheduler.add(importConditions(snapshot));
-    TRAIN_1LoopScheduler.add(MERGE_TRAINRoutineBegin(snapshot));
-    TRAIN_1LoopScheduler.add(MERGE_TRAINRoutineEachFrame(snapshot));
-    TRAIN_1LoopScheduler.add(MERGE_TRAINRoutineEnd(snapshot));
-    TRAIN_1LoopScheduler.add(MERGE_EXPLRoutineBegin(snapshot));
-    TRAIN_1LoopScheduler.add(MERGE_EXPLRoutineEachFrame(snapshot));
-    TRAIN_1LoopScheduler.add(MERGE_EXPLRoutineEnd(snapshot));
-    TRAIN_1LoopScheduler.add(endLoopIteration(TRAIN_1LoopScheduler, snapshot));
+function TRAIN_1LoopBegin(TRAIN_1LoopScheduler, snapshot) {
+  return async function() {
+    TrialHandler.fromSnapshot(snapshot); // update internal variables (.thisN etc) of the loop
+    
+    // set up handler to look after randomisation of conditions etc
+    TRAIN_1 = new TrialHandler({
+      psychoJS: psychoJS,
+      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
+      extraInfo: expInfo, originPath: undefined,
+      trialList: 'materials/merge_train_cond.csv',
+      seed: undefined, name: 'TRAIN_1'
+    });
+    psychoJS.experiment.addLoop(TRAIN_1); // add the loop to the experiment
+    currentLoop = TRAIN_1;  // we're now the current loop
+    
+    // Schedule all the trials in the trialList:
+    for (const thisTRAIN_1 of TRAIN_1) {
+      const snapshot = TRAIN_1.getSnapshot();
+      TRAIN_1LoopScheduler.add(importConditions(snapshot));
+      TRAIN_1LoopScheduler.add(MERGE_TRAINRoutineBegin(snapshot));
+      TRAIN_1LoopScheduler.add(MERGE_TRAINRoutineEachFrame());
+      TRAIN_1LoopScheduler.add(MERGE_TRAINRoutineEnd());
+      TRAIN_1LoopScheduler.add(MERGE_EXPLRoutineBegin(snapshot));
+      TRAIN_1LoopScheduler.add(MERGE_EXPLRoutineEachFrame());
+      TRAIN_1LoopScheduler.add(MERGE_EXPLRoutineEnd());
+      TRAIN_1LoopScheduler.add(endLoopIteration(TRAIN_1LoopScheduler, snapshot));
+    }
+    
+    return Scheduler.Event.NEXT;
   }
-
-  return Scheduler.Event.NEXT;
 }
 
 
-function TRAIN_1LoopEnd() {
+async function TRAIN_1LoopEnd() {
   psychoJS.experiment.removeLoop(TRAIN_1);
 
   return Scheduler.Event.NEXT;
@@ -3271,33 +3278,37 @@ function TRAIN_1LoopEnd() {
 
 
 var TEST_1;
-function TEST_1LoopBegin(TEST_1LoopScheduler) {
-  // set up handler to look after randomisation of conditions etc
-  TEST_1 = new TrialHandler({
-    psychoJS: psychoJS,
-    nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
-    extraInfo: expInfo, originPath: undefined,
-    trialList: 'materials/merge_test_cond.csv',
-    seed: undefined, name: 'TEST_1'
-  });
-  psychoJS.experiment.addLoop(TEST_1); // add the loop to the experiment
-  currentLoop = TEST_1;  // we're now the current loop
-
-  // Schedule all the trials in the trialList:
-  for (const thisTEST_1 of TEST_1) {
-    const snapshot = TEST_1.getSnapshot();
-    TEST_1LoopScheduler.add(importConditions(snapshot));
-    TEST_1LoopScheduler.add(MERGE_TESTRoutineBegin(snapshot));
-    TEST_1LoopScheduler.add(MERGE_TESTRoutineEachFrame(snapshot));
-    TEST_1LoopScheduler.add(MERGE_TESTRoutineEnd(snapshot));
-    TEST_1LoopScheduler.add(endLoopIteration(TEST_1LoopScheduler, snapshot));
+function TEST_1LoopBegin(TEST_1LoopScheduler, snapshot) {
+  return async function() {
+    TrialHandler.fromSnapshot(snapshot); // update internal variables (.thisN etc) of the loop
+    
+    // set up handler to look after randomisation of conditions etc
+    TEST_1 = new TrialHandler({
+      psychoJS: psychoJS,
+      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
+      extraInfo: expInfo, originPath: undefined,
+      trialList: 'materials/merge_test_cond.csv',
+      seed: undefined, name: 'TEST_1'
+    });
+    psychoJS.experiment.addLoop(TEST_1); // add the loop to the experiment
+    currentLoop = TEST_1;  // we're now the current loop
+    
+    // Schedule all the trials in the trialList:
+    for (const thisTEST_1 of TEST_1) {
+      const snapshot = TEST_1.getSnapshot();
+      TEST_1LoopScheduler.add(importConditions(snapshot));
+      TEST_1LoopScheduler.add(MERGE_TESTRoutineBegin(snapshot));
+      TEST_1LoopScheduler.add(MERGE_TESTRoutineEachFrame());
+      TEST_1LoopScheduler.add(MERGE_TESTRoutineEnd());
+      TEST_1LoopScheduler.add(endLoopIteration(TEST_1LoopScheduler, snapshot));
+    }
+    
+    return Scheduler.Event.NEXT;
   }
-
-  return Scheduler.Event.NEXT;
 }
 
 
-function TEST_1LoopEnd() {
+async function TEST_1LoopEnd() {
   psychoJS.experiment.removeLoop(TEST_1);
 
   return Scheduler.Event.NEXT;
@@ -3305,36 +3316,40 @@ function TEST_1LoopEnd() {
 
 
 var TRAIN_2;
-function TRAIN_2LoopBegin(TRAIN_2LoopScheduler) {
-  // set up handler to look after randomisation of conditions etc
-  TRAIN_2 = new TrialHandler({
-    psychoJS: psychoJS,
-    nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
-    extraInfo: expInfo, originPath: undefined,
-    trialList: 'materials/sort_train_cond.csv',
-    seed: undefined, name: 'TRAIN_2'
-  });
-  psychoJS.experiment.addLoop(TRAIN_2); // add the loop to the experiment
-  currentLoop = TRAIN_2;  // we're now the current loop
-
-  // Schedule all the trials in the trialList:
-  for (const thisTRAIN_2 of TRAIN_2) {
-    const snapshot = TRAIN_2.getSnapshot();
-    TRAIN_2LoopScheduler.add(importConditions(snapshot));
-    TRAIN_2LoopScheduler.add(SORT_TRAINRoutineBegin(snapshot));
-    TRAIN_2LoopScheduler.add(SORT_TRAINRoutineEachFrame(snapshot));
-    TRAIN_2LoopScheduler.add(SORT_TRAINRoutineEnd(snapshot));
-    TRAIN_2LoopScheduler.add(SORT_EXPLRoutineBegin(snapshot));
-    TRAIN_2LoopScheduler.add(SORT_EXPLRoutineEachFrame(snapshot));
-    TRAIN_2LoopScheduler.add(SORT_EXPLRoutineEnd(snapshot));
-    TRAIN_2LoopScheduler.add(endLoopIteration(TRAIN_2LoopScheduler, snapshot));
+function TRAIN_2LoopBegin(TRAIN_2LoopScheduler, snapshot) {
+  return async function() {
+    TrialHandler.fromSnapshot(snapshot); // update internal variables (.thisN etc) of the loop
+    
+    // set up handler to look after randomisation of conditions etc
+    TRAIN_2 = new TrialHandler({
+      psychoJS: psychoJS,
+      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
+      extraInfo: expInfo, originPath: undefined,
+      trialList: 'materials/sort_train_cond.csv',
+      seed: undefined, name: 'TRAIN_2'
+    });
+    psychoJS.experiment.addLoop(TRAIN_2); // add the loop to the experiment
+    currentLoop = TRAIN_2;  // we're now the current loop
+    
+    // Schedule all the trials in the trialList:
+    for (const thisTRAIN_2 of TRAIN_2) {
+      const snapshot = TRAIN_2.getSnapshot();
+      TRAIN_2LoopScheduler.add(importConditions(snapshot));
+      TRAIN_2LoopScheduler.add(SORT_TRAINRoutineBegin(snapshot));
+      TRAIN_2LoopScheduler.add(SORT_TRAINRoutineEachFrame());
+      TRAIN_2LoopScheduler.add(SORT_TRAINRoutineEnd());
+      TRAIN_2LoopScheduler.add(SORT_EXPLRoutineBegin(snapshot));
+      TRAIN_2LoopScheduler.add(SORT_EXPLRoutineEachFrame());
+      TRAIN_2LoopScheduler.add(SORT_EXPLRoutineEnd());
+      TRAIN_2LoopScheduler.add(endLoopIteration(TRAIN_2LoopScheduler, snapshot));
+    }
+    
+    return Scheduler.Event.NEXT;
   }
-
-  return Scheduler.Event.NEXT;
 }
 
 
-function TRAIN_2LoopEnd() {
+async function TRAIN_2LoopEnd() {
   psychoJS.experiment.removeLoop(TRAIN_2);
 
   return Scheduler.Event.NEXT;
@@ -3342,33 +3357,37 @@ function TRAIN_2LoopEnd() {
 
 
 var TEST_2;
-function TEST_2LoopBegin(TEST_2LoopScheduler) {
-  // set up handler to look after randomisation of conditions etc
-  TEST_2 = new TrialHandler({
-    psychoJS: psychoJS,
-    nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
-    extraInfo: expInfo, originPath: undefined,
-    trialList: 'materials/sort_test_cond.csv',
-    seed: undefined, name: 'TEST_2'
-  });
-  psychoJS.experiment.addLoop(TEST_2); // add the loop to the experiment
-  currentLoop = TEST_2;  // we're now the current loop
-
-  // Schedule all the trials in the trialList:
-  for (const thisTEST_2 of TEST_2) {
-    const snapshot = TEST_2.getSnapshot();
-    TEST_2LoopScheduler.add(importConditions(snapshot));
-    TEST_2LoopScheduler.add(SORT_TESTRoutineBegin(snapshot));
-    TEST_2LoopScheduler.add(SORT_TESTRoutineEachFrame(snapshot));
-    TEST_2LoopScheduler.add(SORT_TESTRoutineEnd(snapshot));
-    TEST_2LoopScheduler.add(endLoopIteration(TEST_2LoopScheduler, snapshot));
+function TEST_2LoopBegin(TEST_2LoopScheduler, snapshot) {
+  return async function() {
+    TrialHandler.fromSnapshot(snapshot); // update internal variables (.thisN etc) of the loop
+    
+    // set up handler to look after randomisation of conditions etc
+    TEST_2 = new TrialHandler({
+      psychoJS: psychoJS,
+      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
+      extraInfo: expInfo, originPath: undefined,
+      trialList: 'materials/sort_test_cond.csv',
+      seed: undefined, name: 'TEST_2'
+    });
+    psychoJS.experiment.addLoop(TEST_2); // add the loop to the experiment
+    currentLoop = TEST_2;  // we're now the current loop
+    
+    // Schedule all the trials in the trialList:
+    for (const thisTEST_2 of TEST_2) {
+      const snapshot = TEST_2.getSnapshot();
+      TEST_2LoopScheduler.add(importConditions(snapshot));
+      TEST_2LoopScheduler.add(SORT_TESTRoutineBegin(snapshot));
+      TEST_2LoopScheduler.add(SORT_TESTRoutineEachFrame());
+      TEST_2LoopScheduler.add(SORT_TESTRoutineEnd());
+      TEST_2LoopScheduler.add(endLoopIteration(TEST_2LoopScheduler, snapshot));
+    }
+    
+    return Scheduler.Event.NEXT;
   }
-
-  return Scheduler.Event.NEXT;
 }
 
 
-function TEST_2LoopEnd() {
+async function TEST_2LoopEnd() {
   psychoJS.experiment.removeLoop(TEST_2);
 
   return Scheduler.Event.NEXT;
@@ -3383,7 +3402,9 @@ var merge_train_mc_path_2;
 var merge_train_mc_path_1;
 var MERGE_TRAINComponents;
 function MERGE_TRAINRoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'MERGE_TRAIN'-------
     t = 0;
     MERGE_TRAINClock.reset(); // clock
@@ -3393,6 +3414,8 @@ function MERGE_TRAINRoutineBegin(snapshot) {
     // update component parameters for each repeat
     merge_train_scale_instr.setColor(new util.Color('white'));
     merge_train_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes');
+    merge_train_scale_right.setText('');
+    merge_train_scale_left.setText('');
     merge_train.setImage(img_path);
     merge_train_mc_1.setImage('materials/merge_sort/imgs/white_BG.png');
     merge_train_mc_2.setImage('materials/merge_sort/imgs/white_BG.png');
@@ -3434,8 +3457,8 @@ function MERGE_TRAINRoutineBegin(snapshot) {
 
 
 var prevButtonState;
-function MERGE_TRAINRoutineEachFrame(snapshot) {
-  return function () {
+function MERGE_TRAINRoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'MERGE_TRAIN'-------
     // get current time
     t = MERGE_TRAINClock.getTime();
@@ -3708,8 +3731,8 @@ function MERGE_TRAINRoutineEachFrame(snapshot) {
 }
 
 
-function MERGE_TRAINRoutineEnd(snapshot) {
-  return function () {
+function MERGE_TRAINRoutineEnd() {
+  return async function () {
     //------Ending Routine 'MERGE_TRAIN'-------
     for (const thisComponent of MERGE_TRAINComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
@@ -3717,10 +3740,8 @@ function MERGE_TRAINRoutineEnd(snapshot) {
       }
     }
     psychoJS.experiment.addData('merge_train_scale_right.text',merge_train_scale_right.text)
-    merge_train_scale_right.reset()
     psychoJS.experiment.addData('merge_train_scale_left.text',merge_train_scale_left.text)
-    merge_train_scale_left.reset()
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = merge_train_mouse.getPos();
     _mouseButtons = merge_train_mouse.getPressed();
     psychoJS.experiment.addData('merge_train_mouse.x', _mouseXYs[0]);
@@ -3738,7 +3759,9 @@ function MERGE_TRAINRoutineEnd(snapshot) {
 var _pj;
 var MERGE_EXPLComponents;
 function MERGE_EXPLRoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'MERGE_EXPL'-------
     t = 0;
     MERGE_EXPLClock.reset(); // clock
@@ -3803,8 +3826,8 @@ function MERGE_EXPLRoutineBegin(snapshot) {
 }
 
 
-function MERGE_EXPLRoutineEachFrame(snapshot) {
-  return function () {
+function MERGE_EXPLRoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'MERGE_EXPL'-------
     // get current time
     t = MERGE_EXPLClock.getTime();
@@ -4012,15 +4035,15 @@ function MERGE_EXPLRoutineEachFrame(snapshot) {
 }
 
 
-function MERGE_EXPLRoutineEnd(snapshot) {
-  return function () {
+function MERGE_EXPLRoutineEnd() {
+  return async function () {
     //------Ending Routine 'MERGE_EXPL'-------
     for (const thisComponent of MERGE_EXPLComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
         thisComponent.setAutoDraw(false);
       }
     }
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = merge_expl_mouse.getPos();
     _mouseButtons = merge_expl_mouse.getPressed();
     psychoJS.experiment.addData('merge_expl_mouse.x', _mouseXYs[0]);
@@ -4037,7 +4060,9 @@ function MERGE_EXPLRoutineEnd(snapshot) {
 
 var MERGE_TEST_INTROComponents;
 function MERGE_TEST_INTRORoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'MERGE_TEST_INTRO'-------
     t = 0;
     MERGE_TEST_INTROClock.reset(); // clock
@@ -4065,8 +4090,8 @@ function MERGE_TEST_INTRORoutineBegin(snapshot) {
 }
 
 
-function MERGE_TEST_INTRORoutineEachFrame(snapshot) {
-  return function () {
+function MERGE_TEST_INTRORoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'MERGE_TEST_INTRO'-------
     // get current time
     t = MERGE_TEST_INTROClock.getTime();
@@ -4206,15 +4231,15 @@ function MERGE_TEST_INTRORoutineEachFrame(snapshot) {
 }
 
 
-function MERGE_TEST_INTRORoutineEnd(snapshot) {
-  return function () {
+function MERGE_TEST_INTRORoutineEnd() {
+  return async function () {
     //------Ending Routine 'MERGE_TEST_INTRO'-------
     for (const thisComponent of MERGE_TEST_INTROComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
         thisComponent.setAutoDraw(false);
       }
     }
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = merge_test_intro_mouse.getPos();
     _mouseButtons = merge_test_intro_mouse.getPressed();
     psychoJS.experiment.addData('merge_test_intro_mouse.x', _mouseXYs[0]);
@@ -4231,7 +4256,9 @@ function MERGE_TEST_INTRORoutineEnd(snapshot) {
 
 var MERGE_TESTComponents;
 function MERGE_TESTRoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'MERGE_TEST'-------
     t = 0;
     MERGE_TESTClock.reset(); // clock
@@ -4241,6 +4268,9 @@ function MERGE_TESTRoutineBegin(snapshot) {
     // update component parameters for each repeat
     merge_test_scale_instr.setColor(new util.Color('white'));
     merge_test_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes');
+    merge_test_scale_right.setText('');
+    merge_test_scale_left.setText('');
+    merge_test_res.setText('');
     merge_test.setImage(img_path);
     merge_test_scale.setImage(scaleEqPath);
     // setup some python lists for storing info about the merge_test_mouse
@@ -4272,8 +4302,8 @@ function MERGE_TESTRoutineBegin(snapshot) {
 
 var merge_test_compareN;
 var merge_test_ans;
-function MERGE_TESTRoutineEachFrame(snapshot) {
-  return function () {
+function MERGE_TESTRoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'MERGE_TEST'-------
     // get current time
     t = MERGE_TESTClock.getTime();
@@ -4513,8 +4543,8 @@ function MERGE_TESTRoutineEachFrame(snapshot) {
 }
 
 
-function MERGE_TESTRoutineEnd(snapshot) {
-  return function () {
+function MERGE_TESTRoutineEnd() {
+  return async function () {
     //------Ending Routine 'MERGE_TEST'-------
     for (const thisComponent of MERGE_TESTComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
@@ -4522,12 +4552,9 @@ function MERGE_TESTRoutineEnd(snapshot) {
       }
     }
     psychoJS.experiment.addData('merge_test_scale_right.text',merge_test_scale_right.text)
-    merge_test_scale_right.reset()
     psychoJS.experiment.addData('merge_test_scale_left.text',merge_test_scale_left.text)
-    merge_test_scale_left.reset()
     psychoJS.experiment.addData('merge_test_res.text',merge_test_res.text)
-    merge_test_res.reset()
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = merge_test_mouse.getPos();
     _mouseButtons = merge_test_mouse.getPressed();
     psychoJS.experiment.addData('merge_test_mouse.x', _mouseXYs[0]);
@@ -4544,7 +4571,9 @@ function MERGE_TESTRoutineEnd(snapshot) {
 
 var SORT_INTROComponents;
 function SORT_INTRORoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'SORT_INTRO'-------
     t = 0;
     SORT_INTROClock.reset(); // clock
@@ -4572,8 +4601,8 @@ function SORT_INTRORoutineBegin(snapshot) {
 }
 
 
-function SORT_INTRORoutineEachFrame(snapshot) {
-  return function () {
+function SORT_INTRORoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'SORT_INTRO'-------
     // get current time
     t = SORT_INTROClock.getTime();
@@ -4713,15 +4742,15 @@ function SORT_INTRORoutineEachFrame(snapshot) {
 }
 
 
-function SORT_INTRORoutineEnd(snapshot) {
-  return function () {
+function SORT_INTRORoutineEnd() {
+  return async function () {
     //------Ending Routine 'SORT_INTRO'-------
     for (const thisComponent of SORT_INTROComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
         thisComponent.setAutoDraw(false);
       }
     }
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = sort_intro_mouse.getPos();
     _mouseButtons = sort_intro_mouse.getPressed();
     psychoJS.experiment.addData('sort_intro_mouse.x', _mouseXYs[0]);
@@ -4746,7 +4775,9 @@ var left;
 var right;
 var SORT_TRAINComponents;
 function SORT_TRAINRoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'SORT_TRAIN'-------
     t = 0;
     SORT_TRAINClock.reset(); // clock
@@ -4756,6 +4787,9 @@ function SORT_TRAINRoutineBegin(snapshot) {
     // update component parameters for each repeat
     sort_train_scale_instr.setColor(new util.Color('white'));
     sort_train_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes');
+    sort_train_scale_right.setText('');
+    sort_train_scale_left.setText('');
+    sort_train_res.setText('');
     sort_train_board.setImage('materials/merge_sort/imgs/purple_diamond.png');
     sort_train_scale.setImage(scaleEqPath);
     sort_train_ex_1.setPos([(- 0.25), 0.3]);
@@ -4827,8 +4861,8 @@ var newTracePos;
 var hasMoved;
 var sort_train_compareN;
 var sort_train_ans;
-function SORT_TRAINRoutineEachFrame(snapshot) {
-  return function () {
+function SORT_TRAINRoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'SORT_TRAIN'-------
     // get current time
     t = SORT_TRAINClock.getTime();
@@ -5271,8 +5305,8 @@ function SORT_TRAINRoutineEachFrame(snapshot) {
 }
 
 
-function SORT_TRAINRoutineEnd(snapshot) {
-  return function () {
+function SORT_TRAINRoutineEnd() {
+  return async function () {
     //------Ending Routine 'SORT_TRAIN'-------
     for (const thisComponent of SORT_TRAINComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
@@ -5280,12 +5314,9 @@ function SORT_TRAINRoutineEnd(snapshot) {
       }
     }
     psychoJS.experiment.addData('sort_train_scale_right.text',sort_train_scale_right.text)
-    sort_train_scale_right.reset()
     psychoJS.experiment.addData('sort_train_scale_left.text',sort_train_scale_left.text)
-    sort_train_scale_left.reset()
     psychoJS.experiment.addData('sort_train_res.text',sort_train_res.text)
-    sort_train_res.reset()
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = sort_train_mouse.getPos();
     _mouseButtons = sort_train_mouse.getPressed();
     psychoJS.experiment.addData('sort_train_mouse.x', _mouseXYs[0]);
@@ -5303,7 +5334,9 @@ function SORT_TRAINRoutineEnd(snapshot) {
 var positions;
 var SORT_EXPLComponents;
 function SORT_EXPLRoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'SORT_EXPL'-------
     t = 0;
     SORT_EXPLClock.reset(); // clock
@@ -5317,6 +5350,8 @@ function SORT_EXPLRoutineBegin(snapshot) {
     sort_expl_feedback_1.setText('');
     sort_expl_feedback_2.setColor(new util.Color('white'));
     sort_expl_feedback_2.setText('');
+    sort_expl_scale_right.setText('');
+    sort_expl_scale_left.setText('');
     sort_expl_res.setText('');
     sort_expl_board.setImage('materials/merge_sort/imgs/purple_diamond.png');
     sort_expl_scale.setImage(scaleEqPath);
@@ -5394,8 +5429,8 @@ function SORT_EXPLRoutineBegin(snapshot) {
 
 
 var sort_expl_compareN;
-function SORT_EXPLRoutineEachFrame(snapshot) {
-  return function () {
+function SORT_EXPLRoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'SORT_EXPL'-------
     // get current time
     t = SORT_EXPLClock.getTime();
@@ -5853,8 +5888,8 @@ function SORT_EXPLRoutineEachFrame(snapshot) {
 }
 
 
-function SORT_EXPLRoutineEnd(snapshot) {
-  return function () {
+function SORT_EXPLRoutineEnd() {
+  return async function () {
     //------Ending Routine 'SORT_EXPL'-------
     for (const thisComponent of SORT_EXPLComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
@@ -5862,10 +5897,8 @@ function SORT_EXPLRoutineEnd(snapshot) {
       }
     }
     psychoJS.experiment.addData('sort_expl_scale_right.text',sort_expl_scale_right.text)
-    sort_expl_scale_right.reset()
     psychoJS.experiment.addData('sort_expl_scale_left.text',sort_expl_scale_left.text)
-    sort_expl_scale_left.reset()
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = sort_expl_mouse.getPos();
     _mouseButtons = sort_expl_mouse.getPressed();
     psychoJS.experiment.addData('sort_expl_mouse.x', _mouseXYs[0]);
@@ -5882,7 +5915,9 @@ function SORT_EXPLRoutineEnd(snapshot) {
 
 var SORT_TEST_INTROComponents;
 function SORT_TEST_INTRORoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'SORT_TEST_INTRO'-------
     t = 0;
     SORT_TEST_INTROClock.reset(); // clock
@@ -5910,8 +5945,8 @@ function SORT_TEST_INTRORoutineBegin(snapshot) {
 }
 
 
-function SORT_TEST_INTRORoutineEachFrame(snapshot) {
-  return function () {
+function SORT_TEST_INTRORoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'SORT_TEST_INTRO'-------
     // get current time
     t = SORT_TEST_INTROClock.getTime();
@@ -6051,15 +6086,15 @@ function SORT_TEST_INTRORoutineEachFrame(snapshot) {
 }
 
 
-function SORT_TEST_INTRORoutineEnd(snapshot) {
-  return function () {
+function SORT_TEST_INTRORoutineEnd() {
+  return async function () {
     //------Ending Routine 'SORT_TEST_INTRO'-------
     for (const thisComponent of SORT_TEST_INTROComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
         thisComponent.setAutoDraw(false);
       }
     }
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = sort_test_intro_mouse.getPos();
     _mouseButtons = sort_test_intro_mouse.getPressed();
     psychoJS.experiment.addData('sort_test_intro_mouse.x', _mouseXYs[0]);
@@ -6076,7 +6111,9 @@ function SORT_TEST_INTRORoutineEnd(snapshot) {
 
 var SORT_TESTComponents;
 function SORT_TESTRoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'SORT_TEST'-------
     t = 0;
     SORT_TESTClock.reset(); // clock
@@ -6086,6 +6123,9 @@ function SORT_TESTRoutineBegin(snapshot) {
     // update component parameters for each repeat
     sort_test_scale_instr.setColor(new util.Color('white'));
     sort_test_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes');
+    sort_test_scale_right.setText('');
+    sort_test_scale_left.setText('');
+    sort_test_res.setText('');
     sort_test_board.setImage('materials/merge_sort/imgs/purple_diamond.png');
     sort_test_scale.setImage(scaleEqPath);
     sort_test_ex_1.setPos([(- 0.25), 0.3]);
@@ -6152,8 +6192,8 @@ function SORT_TESTRoutineBegin(snapshot) {
 
 var sort_test_compareN;
 var sort_test_ans;
-function SORT_TESTRoutineEachFrame(snapshot) {
-  return function () {
+function SORT_TESTRoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'SORT_TEST'-------
     // get current time
     t = SORT_TESTClock.getTime();
@@ -6580,8 +6620,8 @@ function SORT_TESTRoutineEachFrame(snapshot) {
 }
 
 
-function SORT_TESTRoutineEnd(snapshot) {
-  return function () {
+function SORT_TESTRoutineEnd() {
+  return async function () {
     //------Ending Routine 'SORT_TEST'-------
     for (const thisComponent of SORT_TESTComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
@@ -6589,12 +6629,9 @@ function SORT_TESTRoutineEnd(snapshot) {
       }
     }
     psychoJS.experiment.addData('sort_test_scale_right.text',sort_test_scale_right.text)
-    sort_test_scale_right.reset()
     psychoJS.experiment.addData('sort_test_scale_left.text',sort_test_scale_left.text)
-    sort_test_scale_left.reset()
     psychoJS.experiment.addData('sort_test_res.text',sort_test_res.text)
-    sort_test_res.reset()
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = sort_test_mouse.getPos();
     _mouseButtons = sort_test_mouse.getPressed();
     psychoJS.experiment.addData('sort_test_mouse.x', _mouseXYs[0]);
@@ -6611,7 +6648,9 @@ function SORT_TESTRoutineEnd(snapshot) {
 
 var DEBRIEFComponents;
 function DEBRIEFRoutineBegin(snapshot) {
-  return function () {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
     //------Prepare to start Routine 'DEBRIEF'-------
     t = 0;
     DEBRIEFClock.reset(); // clock
@@ -6636,8 +6675,8 @@ function DEBRIEFRoutineBegin(snapshot) {
 }
 
 
-function DEBRIEFRoutineEachFrame(snapshot) {
-  return function () {
+function DEBRIEFRoutineEachFrame() {
+  return async function () {
     //------Loop for each frame of Routine 'DEBRIEF'-------
     // get current time
     t = DEBRIEFClock.getTime();
@@ -6735,15 +6774,15 @@ function DEBRIEFRoutineEachFrame(snapshot) {
 }
 
 
-function DEBRIEFRoutineEnd(snapshot) {
-  return function () {
+function DEBRIEFRoutineEnd() {
+  return async function () {
     //------Ending Routine 'DEBRIEF'-------
     for (const thisComponent of DEBRIEFComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
         thisComponent.setAutoDraw(false);
       }
     }
-    // store data for thisExp (ExperimentHandler)
+    // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = debrief_mouse.getPos();
     _mouseButtons = debrief_mouse.getPressed();
     psychoJS.experiment.addData('debrief_mouse.x', _mouseXYs[0]);
@@ -6760,7 +6799,7 @@ function DEBRIEFRoutineEnd(snapshot) {
 
 function endLoopIteration(scheduler, snapshot) {
   // ------Prepare for next entry------
-  return function () {
+  return async function () {
     if (typeof snapshot !== 'undefined') {
       // ------Check if user ended loop early------
       if (snapshot.finished) {
@@ -6782,14 +6821,14 @@ function endLoopIteration(scheduler, snapshot) {
 
 
 function importConditions(currentLoop) {
-  return function () {
+  return async function () {
     psychoJS.importAttributes(currentLoop.getCurrentTrial());
     return Scheduler.Event.NEXT;
     };
 }
 
 
-function quitPsychoJS(message, isCompleted) {
+async function quitPsychoJS(message, isCompleted) {
   // Check for and save orphaned data
   if (psychoJS.experiment.isEntryEmpty()) {
     psychoJS.experiment.nextEntry();

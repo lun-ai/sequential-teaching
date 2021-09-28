@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-This experiment was created using PsychoPy3 Experiment Builder (v2021.1.4),
-    on Tue 28 Sep 2021 14:42:01 BST
+This experiment was created using PsychoPy3 Experiment Builder (v2021.2.3),
+    on September 28, 2021, at 20:09
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -60,48 +60,52 @@ def moveItem(mouse, grabbed):
                 return item
     return grabbed
  
-def comparePickedItems(scale,values,labels,leftInput,rightInput):
+def comparePickedItems(values,labels,leftInput,rightInput):
     if len(leftInput.text) == 0 or len(leftInput.text) == 0:
         return 1
     elif len(leftInput.text) > 1 or len(leftInput.text) > 1:
         return 2
-    elif leftInput.text in labels and rightInput.text in labels:
+    elif leftInput.text not in labels or rightInput.text not in labels:
         return 3
     leftIdx = labels.index(leftInput.text)
     rightIdx = labels.index(rightInput.text)
     leftValue = values[leftIdx]
     rightValue = values[rightIdx]
-    if leftValue > rightValue:
-        scale.image = scaleGtPath
-    elif leftValue < rightValue:
-        scale.image = scaleLtPath
-    else:
-        scale.image = scaleEqPath
     timeSleep(sleepTime)
+    if leftValue > rightValue:
+        return 4
+    elif leftValue < rightValue:
+        return 5
+    else:
+        return 6
     
 def timeSleep(T):
     u = 0
-    for i in range(int(10000*T)):
+    for i in range(int(1000000*T)):
         u = u + 1
     
 def compare(scale,listValues,labels,instr,scaleLeft,scaleRight):
-    state = comparePickedItems(scale,listValues,labels,scaleLeft,scaleRight)
-    if state == 0:
+    state = comparePickedItems(listValues,labels,scaleLeft,scaleRight)
+    if state > 3:
         instr.text = ""
         instr.color = white
+        if state == 4:
+            scale.image = scaleGtPath
+        elif state == 5 :
+            scale.image = scaleLtPath
+        else:
+            scale.image = scaleEqPath
         return 1
     elif state == 1:
         instr.text = "Please provide labels in correct format for both LHS and RHS"
         instr.color = red
-        return 0
     elif state == 2:
         instr.text = "Please enter labels as single capitals"
         instr.color = red
-        return 0        
     elif state == 3:
         instr.text = "Please enter an existing item"
         instr.color = red
-        return 0
+    return 0
 def labelMergeInput(input, labelList):
     temp = sorted(input)
     labels = []
@@ -244,7 +248,7 @@ _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
 
 # Store info about the experiment session
-psychopyVersion = '2021.1.4'
+psychopyVersion = '2021.2.3'
 expName = 'seq_teaching_exp'  # from the Builder filename that created this script
 expInfo = {'participant': '000', 'session': '001'}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
@@ -260,7 +264,7 @@ filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expNa
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath='/home/lun/workspace/seq_teaching_interface/seq_teaching_exp.py',
+    originPath='C:\\Users\\allen\\OneDrive\\Documents\\GitHub\\seq_teaching_interface\\seq_teaching_exp.py',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 # save a log file for detail verbose info
@@ -285,6 +289,9 @@ if expInfo['frameRate'] != None:
     frameDur = 1.0 / round(expInfo['frameRate'])
 else:
     frameDur = 1.0 / 60.0  # could not measure, so guess
+
+# Setup eyetracking
+ioDevice = ioConfig = ioSession = ioServer = eyetracker = None
 
 # create a default keyboard (e.g. to check for escape)
 defaultKeyboard = keyboard.Keyboard()
@@ -2622,6 +2629,8 @@ for thisTRAIN_1 in TRAIN_1:
     merge_train_input = input  # Set routine start values for merge_train_input
     merge_train_scale_instr.setColor('white', colorSpace='rgb')
     merge_train_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes')
+    merge_train_scale_right.reset()
+    merge_train_scale_left.reset()
     merge_train.setImage(img_path)
     merge_train_mc_1.setImage('materials/merge_sort/imgs/white_BG.png')
     merge_train_mc_2.setImage('materials/merge_sort/imgs/white_BG.png')
@@ -2864,7 +2873,7 @@ for thisTRAIN_1 in TRAIN_1:
                 merge_train_btn_2.setAutoDraw(False)
         
         # *merge_train_compare* updates
-        if merge_train_compare.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        if merge_train_compare.status == NOT_STARTED and tThisFlip >= 0.5-frameTolerance:
             # keep track of start time/frame for later
             merge_train_compare.frameNStart = frameN  # exact frame index
             merge_train_compare.tStart = t  # local t and not account for scr refresh
@@ -2905,10 +2914,10 @@ for thisTRAIN_1 in TRAIN_1:
         merge_train_timer.text = timerWarning(mergeTrainTimeL,t) 
         
         if merge_train_mouse.isPressedIn(merge_train_btn_1) and merge_train_btn_1.status == STARTED:
-            merge_train_mouse.clicked_name.append(merge_train_btn_1.name)
+            #merge_train_mouse.clicked_name.append(merge_train_btn_1.name)
             continueRoutine = False
         if merge_train_mouse.isPressedIn(merge_train_btn_2) and merge_train_btn_2.status == STARTED:
-            merge_train_mouse.clicked_name.append(merge_train_btn_2.name)
+            #merge_train_mouse.clicked_name.append(merge_train_btn_2.name)
             continueRoutine = False
         
         # check for quit (typically the Esc key)
@@ -2938,9 +2947,7 @@ for thisTRAIN_1 in TRAIN_1:
     thisExp.addData('merge_train_mc_path_1.routineEndVal', merge_train_mc_path_1)  # Save end routine value
     thisExp.addData('merge_train_input.routineEndVal', merge_train_input)  # Save end routine value
     TRAIN_1.addData('merge_train_scale_right.text',merge_train_scale_right.text)
-    merge_train_scale_right.reset()
     TRAIN_1.addData('merge_train_scale_left.text',merge_train_scale_left.text)
-    merge_train_scale_left.reset()
     TRAIN_1.addData('merge_train.started', merge_train.tStartRefresh)
     TRAIN_1.addData('merge_train.stopped', merge_train.tStopRefresh)
     # store data for TRAIN_1 (TrialHandler)
@@ -2949,7 +2956,12 @@ for thisTRAIN_1 in TRAIN_1:
     if sum(buttons):
         # check if the mouse was inside our 'clickable' objects
         gotValidClick = False
-        for obj in [merge_train_btn_1,merge_train_btn_2]:
+        try:
+            iter([merge_train_compare,merge_train_btn_1,merge_train_btn_2])
+            clickableList = [merge_train_compare,merge_train_btn_1,merge_train_btn_2]
+        except:
+            clickableList = [[merge_train_compare,merge_train_btn_1,merge_train_btn_2]]
+        for obj in clickableList:
             if obj.contains(merge_train_mouse):
                 gotValidClick = True
                 merge_train_mouse.clicked_name.append(obj.name)
@@ -3179,7 +3191,12 @@ for thisTRAIN_1 in TRAIN_1:
                 if sum(buttons) > 0:  # state changed to a new click
                     # check if the mouse was inside our 'clickable' objects
                     gotValidClick = False
-                    for obj in [merge_expl_btn]:
+                    try:
+                        iter([merge_expl_btn])
+                        clickableList = [merge_expl_btn]
+                    except:
+                        clickableList = [[merge_expl_btn]]
+                    for obj in clickableList:
                         if obj.contains(merge_expl_mouse):
                             gotValidClick = True
                             merge_expl_mouse.clicked_name.append(obj.name)
@@ -3235,7 +3252,12 @@ for thisTRAIN_1 in TRAIN_1:
     if sum(buttons):
         # check if the mouse was inside our 'clickable' objects
         gotValidClick = False
-        for obj in [merge_expl_btn]:
+        try:
+            iter([merge_expl_btn])
+            clickableList = [merge_expl_btn]
+        except:
+            clickableList = [[merge_expl_btn]]
+        for obj in clickableList:
             if obj.contains(merge_expl_mouse):
                 gotValidClick = True
                 merge_expl_mouse.clicked_name.append(obj.name)
@@ -3391,7 +3413,12 @@ while continueRoutine and routineTimer.getTime() > 0:
             if sum(buttons) > 0:  # state changed to a new click
                 # check if the mouse was inside our 'clickable' objects
                 gotValidClick = False
-                for obj in [merge_test_intro_btn]:
+                try:
+                    iter([merge_test_intro_btn])
+                    clickableList = [merge_test_intro_btn]
+                except:
+                    clickableList = [[merge_test_intro_btn]]
+                for obj in clickableList:
                     if obj.contains(merge_test_intro_mouse):
                         gotValidClick = True
                         merge_test_intro_mouse.clicked_name.append(obj.name)
@@ -3429,7 +3456,12 @@ buttons = merge_test_intro_mouse.getPressed()
 if sum(buttons):
     # check if the mouse was inside our 'clickable' objects
     gotValidClick = False
-    for obj in [merge_test_intro_btn]:
+    try:
+        iter([merge_test_intro_btn])
+        clickableList = [merge_test_intro_btn]
+    except:
+        clickableList = [[merge_test_intro_btn]]
+    for obj in clickableList:
         if obj.contains(merge_test_intro_mouse):
             gotValidClick = True
             merge_test_intro_mouse.clicked_name.append(obj.name)
@@ -3472,6 +3504,10 @@ for thisTEST_1 in TEST_1:
     merge_test_input = input  # Set routine start values for merge_test_input
     merge_test_scale_instr.setColor('white', colorSpace='rgb')
     merge_test_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes')
+    merge_test_scale_right.reset()
+    merge_test_scale_left.reset()
+    merge_test_compare.reset()
+    merge_test_res.reset()
     merge_test.setImage(img_path)
     merge_test_scale.setImage(scaleEqPath)
     # setup some python lists for storing info about the merge_test_mouse
@@ -3712,7 +3748,12 @@ for thisTEST_1 in TEST_1:
                 if sum(buttons) > 0:  # state changed to a new click
                     # check if the mouse was inside our 'clickable' objects
                     gotValidClick = False
-                    for obj in [merge_test_btn]:
+                    try:
+                        iter([merge_test_btn])
+                        clickableList = [merge_test_btn]
+                    except:
+                        clickableList = [[merge_test_btn]]
+                    for obj in clickableList:
                         if obj.contains(merge_test_mouse):
                             gotValidClick = True
                             merge_test_mouse.clicked_name.append(obj.name)
@@ -3767,11 +3808,8 @@ for thisTEST_1 in TEST_1:
     thisExp.addData('merge_test_compareN.routineEndVal', merge_test_compareN)  # Save end routine value
     thisExp.addData('merge_test_input.routineEndVal', merge_test_input)  # Save end routine value
     TEST_1.addData('merge_test_scale_right.text',merge_test_scale_right.text)
-    merge_test_scale_right.reset()
     TEST_1.addData('merge_test_scale_left.text',merge_test_scale_left.text)
-    merge_test_scale_left.reset()
     TEST_1.addData('merge_test_res.text',merge_test_res.text)
-    merge_test_res.reset()
     TEST_1.addData('merge_test.started', merge_test.tStartRefresh)
     TEST_1.addData('merge_test.stopped', merge_test.tStopRefresh)
     # store data for TEST_1 (TrialHandler)
@@ -3780,7 +3818,12 @@ for thisTEST_1 in TEST_1:
     if sum(buttons):
         # check if the mouse was inside our 'clickable' objects
         gotValidClick = False
-        for obj in [merge_test_btn]:
+        try:
+            iter([merge_test_btn])
+            clickableList = [merge_test_btn]
+        except:
+            clickableList = [[merge_test_btn]]
+        for obj in clickableList:
             if obj.contains(merge_test_mouse):
                 gotValidClick = True
                 merge_test_mouse.clicked_name.append(obj.name)
@@ -3936,7 +3979,12 @@ while continueRoutine and routineTimer.getTime() > 0:
             if sum(buttons) > 0:  # state changed to a new click
                 # check if the mouse was inside our 'clickable' objects
                 gotValidClick = False
-                for obj in [sort_intro_btn]:
+                try:
+                    iter([sort_intro_btn])
+                    clickableList = [sort_intro_btn]
+                except:
+                    clickableList = [[sort_intro_btn]]
+                for obj in clickableList:
                     if obj.contains(sort_intro_mouse):
                         gotValidClick = True
                         sort_intro_mouse.clicked_name.append(obj.name)
@@ -3974,7 +4022,12 @@ buttons = sort_intro_mouse.getPressed()
 if sum(buttons):
     # check if the mouse was inside our 'clickable' objects
     gotValidClick = False
-    for obj in [sort_intro_btn]:
+    try:
+        iter([sort_intro_btn])
+        clickableList = [sort_intro_btn]
+    except:
+        clickableList = [[sort_intro_btn]]
+    for obj in clickableList:
         if obj.contains(sort_intro_mouse):
             gotValidClick = True
             sort_intro_mouse.clicked_name.append(obj.name)
@@ -4021,6 +4074,10 @@ for thisTRAIN_2 in TRAIN_2:
     thisExp.addData('sort_train_input.routineStartVal', sort_train_input)  # Save exp start value
     sort_train_scale_instr.setColor('white', colorSpace='rgb')
     sort_train_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes')
+    sort_train_scale_right.reset()
+    sort_train_scale_left.reset()
+    sort_train_compare.reset()
+    sort_train_res.reset()
     sort_train_board.setImage('materials/merge_sort/imgs/purple_diamond.png')
     sort_train_scale.setImage(scaleEqPath)
     sort_train_ex_1.setPos((-0.25, 0.3))
@@ -4490,7 +4547,12 @@ for thisTRAIN_2 in TRAIN_2:
                 if sum(buttons) > 0:  # state changed to a new click
                     # check if the mouse was inside our 'clickable' objects
                     gotValidClick = False
-                    for obj in [sort_train_btn]:
+                    try:
+                        iter([sort_train_btn])
+                        clickableList = [sort_train_btn]
+                    except:
+                        clickableList = [[sort_train_btn]]
+                    for obj in clickableList:
                         if obj.contains(sort_train_mouse):
                             gotValidClick = True
                             sort_train_mouse.clicked_name.append(obj.name)
@@ -4579,11 +4641,8 @@ for thisTRAIN_2 in TRAIN_2:
     thisExp.addData('sort_train_trace.routineEndVal', sort_train_trace)  # Save end routine value
     thisExp.addData('sort_train_compareN.routineEndVal', sort_train_compareN)  # Save end routine value
     TRAIN_2.addData('sort_train_scale_right.text',sort_train_scale_right.text)
-    sort_train_scale_right.reset()
     TRAIN_2.addData('sort_train_scale_left.text',sort_train_scale_left.text)
-    sort_train_scale_left.reset()
     TRAIN_2.addData('sort_train_res.text',sort_train_res.text)
-    sort_train_res.reset()
     TRAIN_2.addData('sort_train_ex_1.started', sort_train_ex_1.tStartRefresh)
     TRAIN_2.addData('sort_train_ex_1.stopped', sort_train_ex_1.tStopRefresh)
     # store data for TRAIN_2 (TrialHandler)
@@ -4592,7 +4651,12 @@ for thisTRAIN_2 in TRAIN_2:
     if sum(buttons):
         # check if the mouse was inside our 'clickable' objects
         gotValidClick = False
-        for obj in [sort_train_btn]:
+        try:
+            iter([sort_train_btn])
+            clickableList = [sort_train_btn]
+        except:
+            clickableList = [[sort_train_btn]]
+        for obj in clickableList:
             if obj.contains(sort_train_mouse):
                 gotValidClick = True
                 sort_train_mouse.clicked_name.append(obj.name)
@@ -4621,6 +4685,10 @@ for thisTRAIN_2 in TRAIN_2:
     sort_expl_feedback_1.setText('')
     sort_expl_feedback_2.setColor('white', colorSpace='rgb')
     sort_expl_feedback_2.setText('')
+    sort_expl_scale_right.reset()
+    sort_expl_scale_left.reset()
+    sort_expl_compare.reset()
+    sort_expl_res.reset()
     sort_expl_res.setText('')
     sort_expl_board.setImage('materials/merge_sort/imgs/purple_diamond.png')
     sort_expl_scale.setImage(scaleEqPath)
@@ -5115,7 +5183,12 @@ for thisTRAIN_2 in TRAIN_2:
                 if sum(buttons) > 0:  # state changed to a new click
                     # check if the mouse was inside our 'clickable' objects
                     gotValidClick = False
-                    for obj in [sort_expl_btn]:
+                    try:
+                        iter([sort_expl_btn])
+                        clickableList = [sort_expl_btn]
+                    except:
+                        clickableList = [[sort_expl_btn]]
+                    for obj in clickableList:
                         if obj.contains(sort_expl_mouse):
                             gotValidClick = True
                             sort_expl_mouse.clicked_name.append(obj.name)
@@ -5206,16 +5279,19 @@ for thisTRAIN_2 in TRAIN_2:
     TRAIN_2.addData('sort_expl_feedback_2.started', sort_expl_feedback_2.tStartRefresh)
     TRAIN_2.addData('sort_expl_feedback_2.stopped', sort_expl_feedback_2.tStopRefresh)
     TRAIN_2.addData('sort_expl_scale_right.text',sort_expl_scale_right.text)
-    sort_expl_scale_right.reset()
     TRAIN_2.addData('sort_expl_scale_left.text',sort_expl_scale_left.text)
-    sort_expl_scale_left.reset()
     # store data for TRAIN_2 (TrialHandler)
     x, y = sort_expl_mouse.getPos()
     buttons = sort_expl_mouse.getPressed()
     if sum(buttons):
         # check if the mouse was inside our 'clickable' objects
         gotValidClick = False
-        for obj in [sort_expl_btn]:
+        try:
+            iter([sort_expl_btn])
+            clickableList = [sort_expl_btn]
+        except:
+            clickableList = [[sort_expl_btn]]
+        for obj in clickableList:
             if obj.contains(sort_expl_mouse):
                 gotValidClick = True
                 sort_expl_mouse.clicked_name.append(obj.name)
@@ -5371,7 +5447,12 @@ while continueRoutine and routineTimer.getTime() > 0:
             if sum(buttons) > 0:  # state changed to a new click
                 # check if the mouse was inside our 'clickable' objects
                 gotValidClick = False
-                for obj in [sort_test_intro_btn]:
+                try:
+                    iter([sort_test_intro_btn])
+                    clickableList = [sort_test_intro_btn]
+                except:
+                    clickableList = [[sort_test_intro_btn]]
+                for obj in clickableList:
                     if obj.contains(sort_test_intro_mouse):
                         gotValidClick = True
                         sort_test_intro_mouse.clicked_name.append(obj.name)
@@ -5409,7 +5490,12 @@ buttons = sort_test_intro_mouse.getPressed()
 if sum(buttons):
     # check if the mouse was inside our 'clickable' objects
     gotValidClick = False
-    for obj in [sort_test_intro_btn]:
+    try:
+        iter([sort_test_intro_btn])
+        clickableList = [sort_test_intro_btn]
+    except:
+        clickableList = [[sort_test_intro_btn]]
+    for obj in clickableList:
         if obj.contains(sort_test_intro_mouse):
             gotValidClick = True
             sort_test_intro_mouse.clicked_name.append(obj.name)
@@ -5455,6 +5541,10 @@ for thisTEST_2 in TEST_2:
     thisExp.addData('sort_test_input.routineStartVal', sort_test_input)  # Save exp start value
     sort_test_scale_instr.setColor('white', colorSpace='rgb')
     sort_test_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS  textboxes')
+    sort_test_scale_right.reset()
+    sort_test_scale_left.reset()
+    sort_test_compare.reset()
+    sort_test_res.reset()
     sort_test_board.setImage('materials/merge_sort/imgs/purple_diamond.png')
     sort_test_scale.setImage(scaleEqPath)
     sort_test_ex_1.setPos((-0.25, 0.3))
@@ -5922,7 +6012,12 @@ for thisTEST_2 in TEST_2:
                 if sum(buttons) > 0:  # state changed to a new click
                     # check if the mouse was inside our 'clickable' objects
                     gotValidClick = False
-                    for obj in [sort_test_btn]:
+                    try:
+                        iter([sort_test_btn])
+                        clickableList = [sort_test_btn]
+                    except:
+                        clickableList = [[sort_test_btn]]
+                    for obj in clickableList:
                         if obj.contains(sort_test_mouse):
                             gotValidClick = True
                             sort_test_mouse.clicked_name.append(obj.name)
@@ -5991,11 +6086,8 @@ for thisTEST_2 in TEST_2:
     thisExp.addData('sort_test_trace.routineEndVal', sort_test_trace)  # Save end routine value
     thisExp.addData('sort_test_compareN.routineEndVal', sort_test_compareN)  # Save end routine value
     TEST_2.addData('sort_test_scale_right.text',sort_test_scale_right.text)
-    sort_test_scale_right.reset()
     TEST_2.addData('sort_test_scale_left.text',sort_test_scale_left.text)
-    sort_test_scale_left.reset()
     TEST_2.addData('sort_test_res.text',sort_test_res.text)
-    sort_test_res.reset()
     TEST_2.addData('sort_test_ex_1.started', sort_test_ex_1.tStartRefresh)
     TEST_2.addData('sort_test_ex_1.stopped', sort_test_ex_1.tStopRefresh)
     # store data for TEST_2 (TrialHandler)
@@ -6004,7 +6096,12 @@ for thisTEST_2 in TEST_2:
     if sum(buttons):
         # check if the mouse was inside our 'clickable' objects
         gotValidClick = False
-        for obj in [sort_test_btn]:
+        try:
+            iter([sort_test_btn])
+            clickableList = [sort_test_btn]
+        except:
+            clickableList = [[sort_test_btn]]
+        for obj in clickableList:
             if obj.contains(sort_test_mouse):
                 gotValidClick = True
                 sort_test_mouse.clicked_name.append(obj.name)
@@ -6092,7 +6189,12 @@ while continueRoutine and routineTimer.getTime() > 0:
             if sum(buttons) > 0:  # state changed to a new click
                 # check if the mouse was inside our 'clickable' objects
                 gotValidClick = False
-                for obj in [debrief_btn]:
+                try:
+                    iter([debrief_btn])
+                    clickableList = [debrief_btn]
+                except:
+                    clickableList = [[debrief_btn]]
+                for obj in clickableList:
                     if obj.contains(debrief_mouse):
                         gotValidClick = True
                         debrief_mouse.clicked_name.append(obj.name)
@@ -6145,7 +6247,12 @@ buttons = debrief_mouse.getPressed()
 if sum(buttons):
     # check if the mouse was inside our 'clickable' objects
     gotValidClick = False
-    for obj in [debrief_btn]:
+    try:
+        iter([debrief_btn])
+        clickableList = [debrief_btn]
+    except:
+        clickableList = [[debrief_btn]]
+    for obj in clickableList:
         if obj.contains(debrief_mouse):
             gotValidClick = True
             debrief_mouse.clicked_name.append(obj.name)
