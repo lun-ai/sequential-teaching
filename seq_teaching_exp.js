@@ -5164,6 +5164,7 @@ function SORT_TRAINRoutineEachFrame() {
         for (var u = 0, v = items.length; (u < v); u += 1) {
             items[u].refresh();
         }
+        movingItem = items[0];
     }
     
     if (t >= 0.5 && sort_train_mouse.status === PsychoJS.Status.NOT_STARTED) {
@@ -5179,7 +5180,7 @@ function SORT_TRAINRoutineEachFrame() {
           sort_train_mouse.status = PsychoJS.Status.FINISHED;
       }
     
-    if (sort_train_mouse.status === PsychoJS.Status.STARTED) {
+    if (t >= 0.5 && sort_train_mouse.status === PsychoJS.Status.STARTED) {
         _mouseButtons = sort_train_mouse.getPressed();
         if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
             prevButtonState = _mouseButtons;
@@ -5200,23 +5201,24 @@ function SORT_TRAINRoutineEachFrame() {
         }
     }
     
-    movingItem = moveItem(sort_train_mouse, movingItem);
-    if (((frameCnt % traceSaveAtFrame) === 0)) {
-        newTracePos = [];
-        for (var i, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
-            i = _pj_a[_pj_c];
-            newTracePos.push([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
-        }
-        hasMoved = updateTrace(tracePos, newTracePos);
-        if ((hasMoved !== [])) {
-            for (var j, _pj_c = 0, _pj_a = hasMoved, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
-                j = _pj_a[_pj_c];
-                sort_train_trace.push(j);
+    if (t >= 0.5 && sort_train_mouse.status === PsychoJS.Status.STARTED) {
+        movingItem = moveItem(sort_train_mouse, movingItem);
+        if (((frameCnt % traceSaveAtFrame) === 0)) {
+            newTracePos = [];
+            for (var i, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+                i = _pj_a[_pj_c];
+                newTracePos.push([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
             }
+            hasMoved = updateTrace(tracePos, newTracePos);
+            if ((hasMoved !== [])) {
+                for (var j, _pj_c = 0, _pj_a = hasMoved, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+                    j = _pj_a[_pj_c];
+                    sort_train_trace.push(j);
+                }
+            }
+            tracePos = newTracePos;
         }
-        tracePos = newTracePos;
     }
-    
     sort_train_ans = sort_train_res.text;
     sort_train_timer.text = timerWarning(sortTrainTimeL, t);
     
@@ -5759,6 +5761,7 @@ function SORT_EXPLRoutineEachFrame() {
         for (var i = 0, _pj_a = items.length; (i < _pj_a); i += 1) {
             items[i].pos = positions[i];
         }
+        movingItem = items[0];
     }
     
     if (t >= 0.5 && sort_expl_mouse.status === PsychoJS.Status.NOT_STARTED) {
@@ -5774,7 +5777,7 @@ function SORT_EXPLRoutineEachFrame() {
           sort_expl_mouse.status = PsychoJS.Status.FINISHED;
       }
     
-    if (sort_expl_mouse.status === PsychoJS.Status.STARTED) {
+    if (t >= 0.5 && sort_expl_mouse.status === PsychoJS.Status.STARTED) {
         _mouseButtons = sort_expl_mouse.getPressed();
         if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
             prevButtonState = _mouseButtons;
@@ -5795,21 +5798,23 @@ function SORT_EXPLRoutineEachFrame() {
         }
     }
     
-    movingItem = moveItem(sort_expl_mouse, movingItem);
-    if (((frameCnt % traceSaveAtFrame) === 0)) {
-        newTracePos = [];
-        for (var i, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
-            i = _pj_a[_pj_c];
-            newTracePos.push([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
-        }
-        hasMoved = updateTrace(tracePos, newTracePos);
-        if ((hasMoved !== [])) {
-            for (var j, _pj_c = 0, _pj_a = hasMoved, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
-                j = _pj_a[_pj_c];
-                sort_expl_trace.push(j);
+    if (t >= 0.5 && sort_expl_mouse.status === PsychoJS.Status.STARTED) {
+        movingItem = moveItem(sort_expl_mouse, movingItem);
+        if (((frameCnt % traceSaveAtFrame) === 0)) {
+            newTracePos = [];
+            for (var i, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+                i = _pj_a[_pj_c];
+                newTracePos.push([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
             }
+            hasMoved = updateTrace(tracePos, newTracePos);
+            if ((hasMoved !== [])) {
+                for (var j, _pj_c = 0, _pj_a = hasMoved, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+                    j = _pj_a[_pj_c];
+                    sort_expl_trace.push(j);
+                }
+            }
+            tracePos = newTracePos;
         }
-        tracePos = newTracePos;
     }
     sort_expl_timer.text = timerWarning(sortExplTimeL, t);
     
@@ -6473,6 +6478,7 @@ function SORT_TESTRoutineEachFrame() {
     }
     if ((items.length === 0)) {
         items = enableImageComponents(SORT_TESTComponents, sort_test_labels, sort_test_path_base);
+        movingItem = items[0];
     }
     
     if (t >= 0.5 && sort_test_mouse.status === PsychoJS.Status.NOT_STARTED) {
@@ -6488,7 +6494,7 @@ function SORT_TESTRoutineEachFrame() {
           sort_test_mouse.status = PsychoJS.Status.FINISHED;
       }
     
-    if (sort_test_mouse.status === PsychoJS.Status.STARTED) {
+    if (t >= 0.5 && sort_test_mouse.status === PsychoJS.Status.STARTED) {
         _mouseButtons = sort_test_mouse.getPressed();
         if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
             prevButtonState = _mouseButtons;
@@ -6508,21 +6514,23 @@ function SORT_TESTRoutineEachFrame() {
         }
     }
     
-    movingItem = moveItem(sort_test_mouse, movingItem);
-    if (((frameCnt % traceSaveAtFrame) === 0)) {
-        newTracePos = [];
-        for (var i, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
-            i = _pj_a[_pj_c];
-            newTracePos.push([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
-        }
-        hasMoved = updateTrace(tracePos, newTracePos);
-        if ((hasMoved !== [])) {
-            for (var j, _pj_c = 0, _pj_a = hasMoved, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
-                j = _pj_a[_pj_c];
-                sort_test_trace.push(j);
+    if (t >= 0.5 && sort_test_mouse.status === PsychoJS.Status.STARTED) {
+        movingItem = moveItem(sort_test_mouse, movingItem);
+        if (((frameCnt % traceSaveAtFrame) === 0)) {
+            newTracePos = [];
+            for (var i, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+                i = _pj_a[_pj_c];
+                newTracePos.push([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
             }
+            hasMoved = updateTrace(tracePos, newTracePos);
+            if ((hasMoved !== [])) {
+                for (var j, _pj_c = 0, _pj_a = hasMoved, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+                    j = _pj_a[_pj_c];
+                    sort_test_trace.push(j);
+                }
+            }
+            tracePos = newTracePos;
         }
-        tracePos = newTracePos;
     }
     
     sort_test_ans = sort_test_res.text;
