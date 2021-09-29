@@ -1,4 +1,4 @@
-img_path_base,input,labels
+img_path_base,input,encryption
 materials/merge_sort/imgs/fruits/melon,"[5, 2, 6, 7, 4, 3, 1]","['E', 'B', 'C', 'A', 'F', 'D', 'G']"
 materials/merge_sort/imgs/fruits/banana,"[7, 2, 6, 3, 5, 4, 1]","['A', 'G', 'D', 'C', 'B', 'F', 'E']"
 materials/merge_sort/imgs/fruits/apple,"[7, 5, 3, 6, 1, 4, 2]","['B', 'F', 'E', 'D', 'G', 'A', 'C']"

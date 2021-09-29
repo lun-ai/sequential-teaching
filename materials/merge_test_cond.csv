@@ -1,4 +1,4 @@
-img_path,input,labels
+img_path,input,encryption
 materials/merge_sort/imgs/merge_test/merge_test_ex_1.png,"[1, 2, 5, 3, 4]","['C', 'A', 'B', 'D', 'E']"
 materials/merge_sort/imgs/merge_test/merge_test_ex_2.png,"[3, 4, 5, 1, 2]","['B', 'A', 'C', 'D', 'E']"
 materials/merge_sort/imgs/merge_test/merge_test_ex_3.png,"[3, 5, 6, 1, 2, 4]","['A', 'C', 'B', 'F', 'D', 'E']"

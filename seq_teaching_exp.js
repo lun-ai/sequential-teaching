@@ -76,10 +76,10 @@ var leftValue;
 var rightValue;
 function comparePickedItems(values, labels, leftInput, rightInput) {
     var leftIdx, leftValue, rightIdx, rightValue;
-    if (((leftInput.text.length === 0) || (leftInput.text.length === 0))) {
+    if (((leftInput.text.length === 0) || (rightInput.text.length === 0))) {
         return 1;
     } else {
-        if (((leftInput.text.length > 1) || (leftInput.text.length > 1))) {
+        if (((leftInput.text.length > 1) || (rightInput.text.length > 1))) {
             return 2;
         } else {
             if (((_pj.in_es6("'"+leftInput.text + "'", labels) === false) || (_pj.in_es6("'"+rightInput.text + "'", labels)) === false)) {
@@ -148,18 +148,6 @@ function compare(scale, listValues, labels, instr, scaleLeft, scaleRight) {
     return 0;
 }
 
-var temp;
-var labels;
-function labelMergeInput(input, labelList) {
-    var labels, temp;
-    temp = sorted(input);
-    labels = [];
-    for (var i, _pj_c = 0, _pj_a = temp, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
-        i = _pj_a[_pj_c];
-        labels.append(labelList[input.index(i)]);
-    }
-    return labels;
-}
 
 var correct;
 var submitted;
@@ -190,21 +178,24 @@ function checkSortTrainAns(input, labels, res, feedback_1, feedback_2) {
     }
 }
 
+var temp;
 var sublistLabels;
 function getSortTrace(input, labels) {
     var sublistLabels, sublists, temp;
     temp = [];
     for (var i, _pj_c = 0, _pj_a = input, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
         i = _pj_a[_pj_c];
-        temp.append([i]);
+        temp.push([i]);
     }
     while ((temp.length > 1)) {
         sublists = [];
         for (var i = 0, _pj_a = Number.parseInt((temp.length / 2)); (i < _pj_a); i += 1) {
-            sublists.append(sorted((temp[(i * 2)] + temp[((i * 2) + 1)])));
+            const l = temp[(i * 2)].concat(temp[((i * 2) + 1)]);
+            l.sort(function(k,m){return k-m});
+            sublists.push(l);
         }
         if (((temp.length % 2) === 1)) {
-            temp = (sublists + [temp.slice((- 1))[0]]);
+            temp = sublists.concat([temp.slice((- 1))[0]]);
         } else {
             temp = sublists;
         }
@@ -212,7 +203,7 @@ function getSortTrace(input, labels) {
     sublistLabels = "";
     for (var i = 0, _pj_a = temp.length; (i < _pj_a); i += 1) {
         for (var j = 0, _pj_b = temp[i].length; (j < _pj_b); j += 1) {
-            sublistLabels = (sublistLabels + labels[input.index(temp[i][j])]);
+            sublistLabels = (sublistLabels + labels[input.indexOf(temp[i][j])][1]);
             if (((i < (temp.length - 1)) || (j < (temp[i].length - 1)))) {
                 sublistLabels = (sublistLabels + ",");
             }
@@ -234,10 +225,10 @@ function enableImageComponents(components, labels, imagePathBase) {
             if ((exId.slice((- 2))[0] === "ex")) {
                 imageIdx = exId.slice((- 1))[0];
                 if ((Number.parseInt(imageIdx) > labels.length)) {
-                    component.image = null;
+                    component.image = "materials/merge_sort/imgs/white_BG.png";
                 } else {
-                    component.image = (((imagePathBase + "_") + labels[i]) + ".png");
-                    enabledComponents.append(component);
+                    component.image = (((imagePathBase + "_") + labels[i].charAt(1)) + ".png");
+                    enabledComponents.push(component);
                     i += 1;
                 }
             }
@@ -410,101 +401,138 @@ psychoJS.start({
   expName: expName,
   expInfo: expInfo,
   resources: [
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
-    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
-    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
-    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
-    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
-    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
-    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
-    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
-    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
-    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
-    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
-    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
-    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
-    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
-    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
-    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
-    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
-    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
-    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
-    {'name': 'materials/merge_sort/imgs/compare_selected.png', 'path': 'materials/merge_sort/imgs/compare_selected.png'},
-    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
-    {'name': 'materials/imgs/end.png', 'path': 'materials/imgs/end.png'},
-    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
-    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_test_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_test_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
-    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
-    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
-    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
-    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
-    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
-    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
-    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
     {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
-    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
+    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
+    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
+    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
+    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
-    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
-    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
-    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
-    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
-    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
-    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
-    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
-    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
+    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
+    {'name': 'materials/merge_sort/imgs/compare_selected.png', 'path': 'materials/merge_sort/imgs/compare_selected.png'},
+    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
+    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
+    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
+    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
     {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
     {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
+    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
+    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
+    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
+    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
+    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
+    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
+    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
+    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
+    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
+    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
+    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
+    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
+    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
+    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
+    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
+    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
+    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
+    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
+    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
+    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
+    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
+    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
+    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
+    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
+    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
+    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_test_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_test_example.png'},
+    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
+    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'}
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
+    {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
+    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
+    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
+    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
+    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'}
   ]
 });
 
@@ -610,12 +638,12 @@ var merge_test_ans_instr;
 var merge_test_instr;
 var merge_test_scale_right;
 var merge_test_scale_left;
-var merge_test_compare;
 var merge_test_res;
 var merge_test_sep;
 var merge_test;
 var merge_test_scale;
 var merge_test_btn;
+var merge_test_compare;
 var merge_test_mouse;
 var merge_test_timer;
 var SORT_INTROClock;
@@ -631,7 +659,6 @@ var sort_train_ans_instr;
 var sort_train_instr;
 var sort_train_scale_right;
 var sort_train_scale_left;
-var sort_train_compare;
 var sort_train_res;
 var sort_train_sep;
 var sort_train_board;
@@ -649,6 +676,7 @@ var sort_train_ex_10;
 var sort_train_ex_11;
 var sort_train_ex_12;
 var sort_train_btn;
+var sort_train_compare;
 var sort_train_mouse;
 var sort_train_timer;
 var sort_train_hint;
@@ -659,7 +687,6 @@ var sort_expl_feedback_2;
 var sort_expl_instr;
 var sort_expl_scale_right;
 var sort_expl_scale_left;
-var sort_expl_compare;
 var sort_expl_res;
 var sort_expl_sep;
 var sort_expl_board;
@@ -677,6 +704,7 @@ var sort_expl_ex_10;
 var sort_expl_ex_11;
 var sort_expl_ex_12;
 var sort_expl_btn;
+var sort_expl_compare;
 var sort_expl_mouse;
 var sort_expl_timer;
 var sort_expl_hint;
@@ -693,7 +721,6 @@ var sort_test_ans_instr;
 var sort_test_instr;
 var sort_test_scale_right;
 var sort_test_scale_left;
-var sort_test_compare;
 var sort_test_res;
 var sort_test_sep;
 var sort_test_board;
@@ -711,12 +738,12 @@ var sort_test_ex_10;
 var sort_test_ex_11;
 var sort_test_ex_12;
 var sort_test_btn;
+var sort_test_compare;
 var sort_test_mouse;
 var sort_test_timer;
 var DEBRIEFClock;
 var intro_text_5;
 var debrief_mouse;
-var debrief_btn;
 var globalClock;
 var routineTimer;
 async function experimentInit() {
@@ -1056,7 +1083,7 @@ async function experimentInit() {
   merge_train_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'merge_train_instr',
-    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. In EACH ORANGE box, fruits are arranged in INCREASING weights from LEFT to RIGHT\n\n3. Fruits on the CONVEYOR BELT are arranged in INCREASING weights from LEFT to RIGHT',
+    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. In EACH ORANGE box, fruits are arranged in INCREASING weights from LEFT to RIGHT\n\n3. Fruits on the CONVEYOR BELT are arranged in INCREASING weights from LEFT to RIGHT\n\nYou have 60 SECS to SUBMIT!',
     font: 'Open Sans',
     units: undefined, 
     pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
@@ -1192,7 +1219,7 @@ async function experimentInit() {
   merge_expl_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'merge_expl_instr',
-    text: 'Read the feedback and continue whenever you are ready',
+    text: 'Read the feedback and continue whenever you are ready (30 SECS)',
     font: 'Open Sans',
     units: undefined, 
     pos: [(- 0.55), 0.4], height: 0.03,  wrapWidth: 0.6, ori: 0.0,
@@ -1371,7 +1398,7 @@ async function experimentInit() {
   merge_test_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'merge_test_instr',
-    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. In EACH ORANGE box, fruits are arranged in INCREASING weights from LEFT to RIGHT\n\n3. Fruits on the CONVEYOR BELT are arranged in INCREASING weights from LEFT to RIGHT',
+    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. In EACH ORANGE box, fruits are arranged in INCREASING weights from LEFT to RIGHT\n\n3. Fruits on the CONVEYOR BELT are arranged in INCREASING weights from LEFT to RIGHT\n\nYou have 90 SECS to SUBMIT!',
     font: 'Open Sans',
     units: undefined, 
     pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
@@ -1415,24 +1442,6 @@ async function experimentInit() {
     depth: -8.0 
   });
   
-  merge_test_compare = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'merge_test_compare',
-    text: 'Compare',
-    font: 'Open Sans',
-    pos: [(- 0.65), (- 0.02)], letterHeight: 0.03,
-    size: [0.16, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -9.0 
-  });
-  
   merge_test_res = new visual.TextBox({
     win: psychoJS.window,
     name: 'merge_test_res',
@@ -1448,7 +1457,7 @@ async function experimentInit() {
     editable: true,
     multiline: true,
     anchor: 'top-center',
-    depth: -10.0 
+    depth: -9.0 
   });
   
   merge_test_sep = new visual.ImageStim({
@@ -1458,7 +1467,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, (- 0.15)], size : [1.5, 0.005],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -11.0 
+    texRes : 128.0, interpolate : true, depth : -10.0 
   });
   merge_test = new visual.ImageStim({
     win : psychoJS.window,
@@ -1467,7 +1476,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0.2], size : [0.8, 0.4],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -12.0 
+    texRes : 128.0, interpolate : true, depth : -11.0 
   });
   merge_test_scale = new visual.ImageStim({
     win : psychoJS.window,
@@ -1476,13 +1485,22 @@ async function experimentInit() {
     ori : 0.0, pos : [(- 0.65), 0.15], size : [0.3, 0.3],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -13.0 
+    texRes : 128.0, interpolate : true, depth : -12.0 
   });
   merge_test_btn = new visual.ImageStim({
     win : psychoJS.window,
     name : 'merge_test_btn', units : undefined, 
     image : 'materials/imgs/submit.png', mask : undefined,
     ori : 0.0, pos : [0.5, (- 0.35)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -13.0 
+  });
+  merge_test_compare = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_test_compare', units : undefined, 
+    image : 'materials/merge_sort/imgs/compare.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.65), (- 0.05)], size : [0.16, 0.07],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -14.0 
@@ -1571,7 +1589,7 @@ async function experimentInit() {
   sort_train_ans_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'sort_train_ans_instr',
-    text: 'Put fruits into the PACKAGE by entering their labels as  X,X,X,X,X,X,X,X, ... ,X',
+    text: 'Put fruits into the PACKAGE by entering their labels as  X,X,X,X,X,X, ... ,X',
     font: 'Open Sans',
     units: undefined, 
     pos: [(- 0.25), (- 0.25)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
@@ -1582,7 +1600,7 @@ async function experimentInit() {
   sort_train_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'sort_train_instr',
-    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. You are given a PILE of fruits that is most likely UNORDERED\n\n3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT',
+    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. You are given a PILE of fruits that is most likely UNORDERED\n\n3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT\n\nYou have 240 SECS to SUBMIT!',
     font: 'Open Sans',
     units: undefined, 
     pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
@@ -1626,24 +1644,6 @@ async function experimentInit() {
     depth: -11.0 
   });
   
-  sort_train_compare = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'sort_train_compare',
-    text: 'Compare',
-    font: 'Open Sans',
-    pos: [(- 0.65), (- 0.02)], letterHeight: 0.03,
-    size: [0.16, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -12.0 
-  });
-  
   sort_train_res = new visual.TextBox({
     win: psychoJS.window,
     name: 'sort_train_res',
@@ -1659,7 +1659,7 @@ async function experimentInit() {
     editable: true,
     multiline: true,
     anchor: 'top-center',
-    depth: -13.0 
+    depth: -12.0 
   });
   
   sort_train_sep = new visual.ImageStim({
@@ -1669,7 +1669,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, (- 0.15)], size : [1.5, 0.005],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -14.0 
+    texRes : 128.0, interpolate : true, depth : -13.0 
   });
   sort_train_board = new visual.ImageStim({
     win : psychoJS.window,
@@ -1678,7 +1678,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0.2], size : [0.8, 0.5],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -15.0 
+    texRes : 128.0, interpolate : true, depth : -14.0 
   });
   sort_train_scale = new visual.ImageStim({
     win : psychoJS.window,
@@ -1687,121 +1687,130 @@ async function experimentInit() {
     ori : 0.0, pos : [(- 0.65), 0.15], size : [0.3, 0.3],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -16.0 
+    texRes : 128.0, interpolate : true, depth : -15.0 
   });
   sort_train_ex_1 = new visual.ImageStim({
     win : psychoJS.window,
     name : 'sort_train_ex_1', units : undefined, 
-    image : undefined, mask : undefined,
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
+    ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -16.0 
+  });
+  sort_train_ex_2 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'sort_train_ex_2', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -17.0 
   });
-  sort_train_ex_2 = new visual.ImageStim({
+  sort_train_ex_3 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_train_ex_2', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_train_ex_3', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -18.0 
   });
-  sort_train_ex_3 = new visual.ImageStim({
+  sort_train_ex_4 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_train_ex_3', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_train_ex_4', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -19.0 
   });
-  sort_train_ex_4 = new visual.ImageStim({
+  sort_train_ex_5 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_train_ex_4', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_train_ex_5', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -20.0 
   });
-  sort_train_ex_5 = new visual.ImageStim({
+  sort_train_ex_6 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_train_ex_5', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_train_ex_6', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -21.0 
   });
-  sort_train_ex_6 = new visual.ImageStim({
+  sort_train_ex_7 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_train_ex_6', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_train_ex_7', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -22.0 
   });
-  sort_train_ex_7 = new visual.ImageStim({
+  sort_train_ex_8 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_train_ex_7', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_train_ex_8', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -23.0 
   });
-  sort_train_ex_8 = new visual.ImageStim({
+  sort_train_ex_9 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_train_ex_8', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_train_ex_9', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -24.0 
   });
-  sort_train_ex_9 = new visual.ImageStim({
+  sort_train_ex_10 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_train_ex_9', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_train_ex_10', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -25.0 
   });
-  sort_train_ex_10 = new visual.ImageStim({
+  sort_train_ex_11 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_train_ex_10', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_train_ex_11', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -26.0 
   });
-  sort_train_ex_11 = new visual.ImageStim({
+  sort_train_ex_12 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_train_ex_11', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_train_ex_12', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -27.0 
-  });
-  sort_train_ex_12 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'sort_train_ex_12', units : undefined, 
-    image : undefined, mask : undefined,
-    ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -28.0 
   });
   sort_train_btn = new visual.ImageStim({
     win : psychoJS.window,
     name : 'sort_train_btn', units : undefined, 
     image : 'materials/imgs/submit.png', mask : undefined,
     ori : 0.0, pos : [0.5, (- 0.35)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -28.0 
+  });
+  sort_train_compare = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'sort_train_compare', units : undefined, 
+    image : 'materials/merge_sort/imgs/compare.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.65), (- 0.05)], size : [0.16, 0.07],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -29.0 
@@ -1870,7 +1879,7 @@ async function experimentInit() {
   sort_expl_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'sort_expl_instr',
-    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. READ the feedback and CHECK the provided answer with yours\n\n3. CONTINUE if you are ready',
+    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. READ the feedback and CHECK the provided answer with yours\n\n3. CONTINUE if you are ready\n\nYou have 60 SECS to spare!',
     font: 'Open Sans',
     units: undefined, 
     pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
@@ -1914,24 +1923,6 @@ async function experimentInit() {
     depth: -10.0 
   });
   
-  sort_expl_compare = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'sort_expl_compare',
-    text: 'Compare',
-    font: 'Open Sans',
-    pos: [(- 0.65), (- 0.02)], letterHeight: 0.03,
-    size: [0.16, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -11.0 
-  });
-  
   sort_expl_res = new visual.TextBox({
     win: psychoJS.window,
     name: 'sort_expl_res',
@@ -1947,7 +1938,7 @@ async function experimentInit() {
     editable: false,
     multiline: true,
     anchor: 'top-center',
-    depth: -12.0 
+    depth: -11.0 
   });
   
   sort_expl_sep = new visual.ImageStim({
@@ -1957,7 +1948,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, (- 0.15)], size : [1.5, 0.005],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -13.0 
+    texRes : 128.0, interpolate : true, depth : -12.0 
   });
   sort_expl_board = new visual.ImageStim({
     win : psychoJS.window,
@@ -1966,7 +1957,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0.2], size : [0.8, 0.5],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -14.0 
+    texRes : 128.0, interpolate : true, depth : -13.0 
   });
   sort_expl_scale = new visual.ImageStim({
     win : psychoJS.window,
@@ -1975,121 +1966,130 @@ async function experimentInit() {
     ori : 0.0, pos : [(- 0.65), 0.15], size : [0.3, 0.3],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -15.0 
+    texRes : 128.0, interpolate : true, depth : -14.0 
   });
   sort_expl_ex_1 = new visual.ImageStim({
     win : psychoJS.window,
     name : 'sort_expl_ex_1', units : undefined, 
-    image : undefined, mask : undefined,
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
+    ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -15.0 
+  });
+  sort_expl_ex_2 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'sort_expl_ex_2', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -16.0 
   });
-  sort_expl_ex_2 = new visual.ImageStim({
+  sort_expl_ex_3 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_expl_ex_2', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_expl_ex_3', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -17.0 
   });
-  sort_expl_ex_3 = new visual.ImageStim({
+  sort_expl_ex_4 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_expl_ex_3', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_expl_ex_4', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -18.0 
   });
-  sort_expl_ex_4 = new visual.ImageStim({
+  sort_expl_ex_5 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_expl_ex_4', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_expl_ex_5', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -19.0 
   });
-  sort_expl_ex_5 = new visual.ImageStim({
+  sort_expl_ex_6 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_expl_ex_5', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_expl_ex_6', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -20.0 
   });
-  sort_expl_ex_6 = new visual.ImageStim({
+  sort_expl_ex_7 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_expl_ex_6', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_expl_ex_7', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -21.0 
   });
-  sort_expl_ex_7 = new visual.ImageStim({
+  sort_expl_ex_8 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_expl_ex_7', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_expl_ex_8', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -22.0 
   });
-  sort_expl_ex_8 = new visual.ImageStim({
+  sort_expl_ex_9 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_expl_ex_8', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_expl_ex_9', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -23.0 
   });
-  sort_expl_ex_9 = new visual.ImageStim({
+  sort_expl_ex_10 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_expl_ex_9', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_expl_ex_10', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -24.0 
   });
-  sort_expl_ex_10 = new visual.ImageStim({
+  sort_expl_ex_11 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_expl_ex_10', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_expl_ex_11', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -25.0 
   });
-  sort_expl_ex_11 = new visual.ImageStim({
+  sort_expl_ex_12 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_expl_ex_11', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_expl_ex_12', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -26.0 
-  });
-  sort_expl_ex_12 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'sort_expl_ex_12', units : undefined, 
-    image : undefined, mask : undefined,
-    ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -27.0 
   });
   sort_expl_btn = new visual.ImageStim({
     win : psychoJS.window,
     name : 'sort_expl_btn', units : undefined, 
     image : 'materials/imgs/continue.png', mask : undefined,
     ori : 0.0, pos : [0.5, (- 0.35)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -27.0 
+  });
+  sort_expl_compare = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'sort_expl_compare', units : undefined, 
+    image : 'materials/merge_sort/imgs/compare.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.65), (- 0.05)], size : [0.16, 0.07],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -28.0 
@@ -2189,7 +2189,7 @@ async function experimentInit() {
   sort_test_ans_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'sort_test_ans_instr',
-    text: 'Put fruits into the PACKAGE by entering their labels as  X,X,X,X,X,X,X,X, ... ,X',
+    text: 'Put fruits into the PACKAGE by entering their labels as  X,X,X,X,X,X, ... ,X',
     font: 'Open Sans',
     units: undefined, 
     pos: [(- 0.25), (- 0.25)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
@@ -2200,7 +2200,7 @@ async function experimentInit() {
   sort_test_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'sort_test_instr',
-    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. You are given a PILE of fruits that is most likely UNORDERED\n\n3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT',
+    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. You are given a PILE of fruits that is most likely UNORDERED\n\n3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT\n\nYou have 300 SECS to SUBMIT!',
     font: 'Open Sans',
     units: undefined, 
     pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
@@ -2244,24 +2244,6 @@ async function experimentInit() {
     depth: -10.0 
   });
   
-  sort_test_compare = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'sort_test_compare',
-    text: 'Compare',
-    font: 'Open Sans',
-    pos: [(- 0.65), (- 0.02)], letterHeight: 0.03,
-    size: [0.16, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: false,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -11.0 
-  });
-  
   sort_test_res = new visual.TextBox({
     win: psychoJS.window,
     name: 'sort_test_res',
@@ -2277,7 +2259,7 @@ async function experimentInit() {
     editable: true,
     multiline: true,
     anchor: 'top-center',
-    depth: -12.0 
+    depth: -11.0 
   });
   
   sort_test_sep = new visual.ImageStim({
@@ -2287,7 +2269,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, (- 0.15)], size : [1.5, 0.005],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -13.0 
+    texRes : 128.0, interpolate : true, depth : -12.0 
   });
   sort_test_board = new visual.ImageStim({
     win : psychoJS.window,
@@ -2296,7 +2278,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0.2], size : [0.8, 0.5],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -14.0 
+    texRes : 128.0, interpolate : true, depth : -13.0 
   });
   sort_test_scale = new visual.ImageStim({
     win : psychoJS.window,
@@ -2305,121 +2287,130 @@ async function experimentInit() {
     ori : 0.0, pos : [(- 0.65), 0.15], size : [0.3, 0.3],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -15.0 
+    texRes : 128.0, interpolate : true, depth : -14.0 
   });
   sort_test_ex_1 = new visual.ImageStim({
     win : psychoJS.window,
     name : 'sort_test_ex_1', units : undefined, 
-    image : undefined, mask : undefined,
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
+    ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -15.0 
+  });
+  sort_test_ex_2 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'sort_test_ex_2', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -16.0 
   });
-  sort_test_ex_2 = new visual.ImageStim({
+  sort_test_ex_3 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_test_ex_2', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_test_ex_3', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -17.0 
   });
-  sort_test_ex_3 = new visual.ImageStim({
+  sort_test_ex_4 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_test_ex_3', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_test_ex_4', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -18.0 
   });
-  sort_test_ex_4 = new visual.ImageStim({
+  sort_test_ex_5 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_test_ex_4', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_test_ex_5', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -19.0 
   });
-  sort_test_ex_5 = new visual.ImageStim({
+  sort_test_ex_6 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_test_ex_5', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_test_ex_6', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -20.0 
   });
-  sort_test_ex_6 = new visual.ImageStim({
+  sort_test_ex_7 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_test_ex_6', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_test_ex_7', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -21.0 
   });
-  sort_test_ex_7 = new visual.ImageStim({
+  sort_test_ex_8 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_test_ex_7', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_test_ex_8', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -22.0 
   });
-  sort_test_ex_8 = new visual.ImageStim({
+  sort_test_ex_9 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_test_ex_8', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_test_ex_9', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -23.0 
   });
-  sort_test_ex_9 = new visual.ImageStim({
+  sort_test_ex_10 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_test_ex_9', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_test_ex_10', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -24.0 
   });
-  sort_test_ex_10 = new visual.ImageStim({
+  sort_test_ex_11 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_test_ex_10', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_test_ex_11', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -25.0 
   });
-  sort_test_ex_11 = new visual.ImageStim({
+  sort_test_ex_12 = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'sort_test_ex_11', units : undefined, 
-    image : undefined, mask : undefined,
+    name : 'sort_test_ex_12', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -26.0 
-  });
-  sort_test_ex_12 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'sort_test_ex_12', units : undefined, 
-    image : undefined, mask : undefined,
-    ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -27.0 
   });
   sort_test_btn = new visual.ImageStim({
     win : psychoJS.window,
     name : 'sort_test_btn', units : undefined, 
     image : 'materials/imgs/submit.png', mask : undefined,
     ori : 0.0, pos : [0.5, (- 0.35)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -27.0 
+  });
+  sort_test_compare = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'sort_test_compare', units : undefined, 
+    image : 'materials/merge_sort/imgs/compare.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.65), (- 0.05)], size : [0.16, 0.07],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -28.0 
@@ -2444,7 +2435,7 @@ async function experimentInit() {
   intro_text_5 = new visual.TextStim({
     win: psychoJS.window,
     name: 'intro_text_5',
-    text: 'This is the end of the experiment!\n\nThank you very much for your time and effort!',
+    text: 'This is the end of the experiment!\n\nThank you very much for your time and effort!\n\nClick anywhere to exit.',
     font: 'Open Sans',
     units: undefined, 
     pos: [0, 0], height: 0.03,  wrapWidth: undefined, ori: 0.0,
@@ -2456,15 +2447,6 @@ async function experimentInit() {
     win: psychoJS.window,
   });
   debrief_mouse.mouseClock = new util.Clock();
-  debrief_btn = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'debrief_btn', units : undefined, 
-    image : 'materials/imgs/end.png', mask : undefined,
-    ori : 0.0, pos : [0, (- 0.4)], size : [0.15, 0.1],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -2.0 
-  });
   // Create some handy timers
   globalClock = new util.Clock();  // to track the time since experiment started
   routineTimer = new util.CountdownTimer();  // to track time remaining of each (non-slip) routine
@@ -3023,7 +3005,7 @@ function BACKGROUNDRoutineEachFrame() {
     if (((((age_selected !== null) && (education_selected !== null)) && (gender_selected !== null)) && (background_btn.image !== "materials/imgs/submit.png"))) {
         background_btn.image = "materials/imgs/submit.png";
     }
-    if (((((intro_mouse.isPressedIn(background_btn) && (age_selected !== null)) && (education_selected !== null)) && (gender_selected !== null)) && (background_btn.status === PsychoJS.Status.STARTED))) {
+    if (((((background_mouse.isPressedIn(background_btn) && (age_selected !== null)) && (education_selected !== null)) && (gender_selected !== null)) && (background_btn.status === PsychoJS.Status.STARTED))) {
         continueRoutine = false;
     }
     
@@ -3183,7 +3165,13 @@ function MERGE_INTRORoutineEachFrame() {
     if ((merge_intro_btn.status === PsychoJS.Status.STARTED || merge_intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_intro_btn.setAutoDraw(false);
     }
-    if ((merge_intro_mouse.isPressedIn(merge_intro_btn) && (merge_intro_btn.status === PsychoJS.Status.STARTED))) {
+    if (((t >= 0.5) && (merge_intro_mouse.status === PsychoJS.Status.NOT_STARTED))) {
+        merge_intro_mouse.tStart = t;
+        merge_intro_mouse.frameNStart = frameN;
+        merge_intro_mouse.status = PsychoJS.Status.STARTED;
+        merge_intro_mouse.mouseClock.reset();
+    }
+    if (((merge_intro_mouse.isPressedIn(merge_intro_btn) && (merge_intro_mouse.status === PsychoJS.Status.STARTED)) && (merge_intro_btn.status === PsychoJS.Status.STARTED))) {
         continueRoutine = false;
     }
     
@@ -3430,6 +3418,8 @@ function MERGE_TRAINRoutineBegin(snapshot) {
     merge_train_mc_path_2 = mc_path_2;
     merge_train_mc_path_1 = mc_path_1;
     
+    merge_train_scale_left.refresh();
+    merge_train_scale_right.refresh();
     // keep track of which components have finished
     MERGE_TRAINComponents = [];
     MERGE_TRAINComponents.push(merge_train_scale_instr);
@@ -3516,8 +3506,8 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_scale_right.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_train_scale_right.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_train_scale_right.status === PsychoJS.Status.STARTED || merge_train_scale_right.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_train_scale_right.setAutoDraw(false);
     }
     
@@ -3530,8 +3520,8 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_scale_left.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_train_scale_left.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_train_scale_left.status === PsychoJS.Status.STARTED || merge_train_scale_left.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_train_scale_left.setAutoDraw(false);
     }
     
@@ -3660,7 +3650,7 @@ function MERGE_TRAINRoutineEachFrame() {
     if ((merge_train_timer.status === PsychoJS.Status.STARTED || merge_train_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_train_timer.setAutoDraw(false);
     }
-    if ((mc_order === [])) {
+    if ((mc_order.length === 0)) {
         mc_order = getCorrectMCOrder(TRAIN_1.thisTrialN, merge_train_mc_path_1, merge_train_mc_path_2, merge_train_mc_1, merge_train_mc_2);
     }
     
@@ -3681,19 +3671,16 @@ function MERGE_TRAINRoutineEachFrame() {
     if (merge_train_mouse.status === PsychoJS.Status.STARTED) {
         _mouseButtons = merge_train_mouse.getPressed();
         if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
-        prevButtonState = _mouseButtons;
+            prevButtonState = _mouseButtons;
             if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
                 for (const obj of [merge_train_btn_1,merge_train_btn_2,merge_train_compare,merge_train_scale_left,merge_train_scale_right]) {
                     if (merge_train_mouse.isPressedIn(obj) && (obj.name === "merge_train_btn_1" || obj.name === "merge_train_btn_2")) {
-                        merge_train_mouse.clicked_name.push(obj.name)
+                        merge_train_mouse.clicked_name.push(obj.name);
                         continueRoutine = false;
                     } else {
                         if(merge_train_mouse.isPressedIn(obj)) {
                             if(obj.name === "merge_train_compare") {
                                 merge_train_compareN = (merge_train_compareN + compare(merge_train_scale, merge_train_input, merge_train_labels, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right));
-                                merge_train_compare.image = "materials/merge_sort/imgs/compare_selected.png";
-                                timeSleep(sleepTime);
-                                merge_train_compare.image = "materials/merge_sort/imgs/compare.png";
                             }
                         }
                     }
@@ -3774,7 +3761,6 @@ function MERGE_EXPLRoutineBegin(snapshot) {
     merge_expl_mc_1.setImage('materials/merge_sort/imgs/white_BG.png');
     merge_expl_mc_2.setImage('materials/merge_sort/imgs/white_BG.png');
     // setup some python lists for storing info about the merge_expl_mouse
-    merge_expl_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
     var _pj;
     function _pj_snippets(container) {
@@ -3959,39 +3945,6 @@ function MERGE_EXPLRoutineEachFrame() {
     if ((merge_expl_btn.status === PsychoJS.Status.STARTED || merge_expl_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_expl_btn.setAutoDraw(false);
     }
-    // *merge_expl_mouse* updates
-    if (t >= 0.5 && merge_expl_mouse.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_mouse.tStart = t;  // (not accounting for frame time here)
-      merge_expl_mouse.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_mouse.status = PsychoJS.Status.STARTED;
-      merge_expl_mouse.mouseClock.reset();
-      prevButtonState = merge_expl_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
-    frameRemains = 30.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_expl_mouse.status === PsychoJS.Status.STARTED || merge_expl_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_expl_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (merge_expl_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = merge_expl_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [[merge_expl_btn]]) {
-            if (obj.contains(merge_expl_mouse)) {
-              gotValidClick = true;
-              merge_expl_mouse.clicked_name.push(obj.name)
-            }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-          }
-        }
-      }
-    }
     
     // *merge_expl_timer* updates
     if (t >= 0.0 && merge_expl_timer.status === PsychoJS.Status.NOT_STARTED) {
@@ -4008,6 +3961,32 @@ function MERGE_EXPLRoutineEachFrame() {
     }
     merge_expl_timer.text = timerWarning(mergeExplTimeL, t);
     
+    if (t >= 0.5 && merge_expl_mouse.status === PsychoJS.Status.NOT_STARTED) {
+          merge_expl_mouse.tStart = t;
+          merge_expl_mouse.frameNStart = frameN;
+          
+          merge_expl_mouse.status = PsychoJS.Status.STARTED;
+          merge_expl_mouse.mouseClock.reset();
+          prevButtonState = merge_expl_mouse.getPressed();
+    }
+    
+    if ((merge_expl_mouse.status === PsychoJS.Status.STARTED || merge_expl_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+          merge_expl_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    
+    if (merge_expl_mouse.status === PsychoJS.Status.STARTED) {
+        _mouseButtons = merge_expl_mouse.getPressed();
+        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
+            prevButtonState = _mouseButtons;
+            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
+                for (const obj of [merge_expl_btn]) {
+                    if (merge_expl_mouse.isPressedIn(obj) && (obj.name === "merge_expl_btn")) {
+                        continueRoutine = false;
+                    } 
+                }
+            }
+        }
+    }
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -4051,8 +4030,6 @@ function MERGE_EXPLRoutineEnd() {
     psychoJS.experiment.addData('merge_expl_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('merge_expl_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('merge_expl_mouse.rightButton', _mouseButtons[2]);
-    if (merge_expl_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('merge_expl_mouse.clicked_name', merge_expl_mouse.clicked_name[0]);}
     return Scheduler.Event.NEXT;
   };
 }
@@ -4071,7 +4048,6 @@ function MERGE_TEST_INTRORoutineBegin(snapshot) {
     routineTimer.add(120.000000);
     // update component parameters for each repeat
     // setup some python lists for storing info about the merge_test_intro_mouse
-    merge_test_intro_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
     // keep track of which components have finished
     MERGE_TEST_INTROComponents = [];
@@ -4167,40 +4143,13 @@ function MERGE_TEST_INTRORoutineEachFrame() {
     if ((merge_test_intro_btn.status === PsychoJS.Status.STARTED || merge_test_intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_test_intro_btn.setAutoDraw(false);
     }
-    // *merge_test_intro_mouse* updates
-    if (t >= 0.5 && merge_test_intro_mouse.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_intro_mouse.tStart = t;  // (not accounting for frame time here)
-      merge_test_intro_mouse.frameNStart = frameN;  // exact frame index
-      
-      merge_test_intro_mouse.status = PsychoJS.Status.STARTED;
-      merge_test_intro_mouse.mouseClock.reset();
-      prevButtonState = merge_test_intro_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_test_intro_mouse.status === PsychoJS.Status.STARTED || merge_test_intro_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_test_intro_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (merge_test_intro_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = merge_test_intro_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [[merge_test_intro_btn]]) {
-            if (obj.contains(merge_test_intro_mouse)) {
-              gotValidClick = true;
-              merge_test_intro_mouse.clicked_name.push(obj.name)
-            }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-          }
-        }
-      }
+    if (((t >= 0.5) && (merge_test_mouse.status === PsychoJS.Status.NOT_STARTED))) {
+        merge_test_mouse.tStart = t;
+        merge_test_mouse.frameNStart = frameN;
+        merge_test_mouse.status = PsychoJS.Status.STARTED;
+        merge_test_mouse.mouseClock.reset();
     }
-    if ((merge_test_mouse.isPressedIn(merge_test_btn) && (merge_test_btn.status === PsychoJS.Status.STARTED))) {
+    if (((merge_test_mouse.isPressedIn(merge_test_intro_btn) && (merge_test_mouse.status === PsychoJS.Status.STARTED)) && (merge_test_intro_btn.status === PsychoJS.Status.STARTED))) {
         continueRoutine = false;
     }
     
@@ -4247,13 +4196,14 @@ function MERGE_TEST_INTRORoutineEnd() {
     psychoJS.experiment.addData('merge_test_intro_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('merge_test_intro_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('merge_test_intro_mouse.rightButton', _mouseButtons[2]);
-    if (merge_test_intro_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('merge_test_intro_mouse.clicked_name', merge_test_intro_mouse.clicked_name[0]);}
     return Scheduler.Event.NEXT;
   };
 }
 
 
+var merge_test_input;
+var merge_test_labels;
+var merge_test_compareN;
 var MERGE_TESTComponents;
 function MERGE_TESTRoutineBegin(snapshot) {
   return async function () {
@@ -4274,8 +4224,14 @@ function MERGE_TESTRoutineBegin(snapshot) {
     merge_test.setImage(img_path);
     merge_test_scale.setImage(scaleEqPath);
     // setup some python lists for storing info about the merge_test_mouse
-    merge_test_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
+    merge_test_input = input;
+    merge_test_labels = encryption;
+    merge_test_compareN = 0;
+    
+    merge_test_res.refresh();
+    merge_test_scale_left.refresh();
+    merge_test_scale_right.refresh();
     // keep track of which components have finished
     MERGE_TESTComponents = [];
     MERGE_TESTComponents.push(merge_test_scale_instr);
@@ -4283,12 +4239,12 @@ function MERGE_TESTRoutineBegin(snapshot) {
     MERGE_TESTComponents.push(merge_test_instr);
     MERGE_TESTComponents.push(merge_test_scale_right);
     MERGE_TESTComponents.push(merge_test_scale_left);
-    MERGE_TESTComponents.push(merge_test_compare);
     MERGE_TESTComponents.push(merge_test_res);
     MERGE_TESTComponents.push(merge_test_sep);
     MERGE_TESTComponents.push(merge_test);
     MERGE_TESTComponents.push(merge_test_scale);
     MERGE_TESTComponents.push(merge_test_btn);
+    MERGE_TESTComponents.push(merge_test_compare);
     MERGE_TESTComponents.push(merge_test_mouse);
     MERGE_TESTComponents.push(merge_test_timer);
     
@@ -4300,7 +4256,6 @@ function MERGE_TESTRoutineBegin(snapshot) {
 }
 
 
-var merge_test_compareN;
 var merge_test_ans;
 function MERGE_TESTRoutineEachFrame() {
   return async function () {
@@ -4380,20 +4335,6 @@ function MERGE_TESTRoutineEachFrame() {
       merge_test_scale_left.setAutoDraw(false);
     }
     
-    // *merge_test_compare* updates
-    if (t >= 0.0 && merge_test_compare.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_compare.tStart = t;  // (not accounting for frame time here)
-      merge_test_compare.frameNStart = frameN;  // exact frame index
-      
-      merge_test_compare.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_test_compare.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_test_compare.setAutoDraw(false);
-    }
-    
     // *merge_test_res* updates
     if (t >= 0.0 && merge_test_res.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
@@ -4463,38 +4404,19 @@ function MERGE_TESTRoutineEachFrame() {
     if ((merge_test_btn.status === PsychoJS.Status.STARTED || merge_test_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_test_btn.setAutoDraw(false);
     }
-    // *merge_test_mouse* updates
-    if (t >= 0.5 && merge_test_mouse.status === PsychoJS.Status.NOT_STARTED) {
+    
+    // *merge_test_compare* updates
+    if (t >= 0.5 && merge_test_compare.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      merge_test_mouse.tStart = t;  // (not accounting for frame time here)
-      merge_test_mouse.frameNStart = frameN;  // exact frame index
+      merge_test_compare.tStart = t;  // (not accounting for frame time here)
+      merge_test_compare.frameNStart = frameN;  // exact frame index
       
-      merge_test_mouse.status = PsychoJS.Status.STARTED;
-      merge_test_mouse.mouseClock.reset();
-      prevButtonState = merge_test_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
+      merge_test_compare.setAutoDraw(true);
+    }
+
     frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_test_mouse.status === PsychoJS.Status.STARTED || merge_test_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_test_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (merge_test_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = merge_test_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [[merge_test_btn]]) {
-            if (obj.contains(merge_test_mouse)) {
-              gotValidClick = true;
-              merge_test_mouse.clicked_name.push(obj.name)
-            }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-          }
-        }
-      }
+    if ((merge_test_compare.status === PsychoJS.Status.STARTED || merge_test_compare.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_test_compare.setAutoDraw(false);
     }
     
     // *merge_test_timer* updates
@@ -4510,9 +4432,39 @@ function MERGE_TESTRoutineEachFrame() {
     if ((merge_test_timer.status === PsychoJS.Status.STARTED || merge_test_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_test_timer.setAutoDraw(false);
     }
-    if (merge_test_mouse.isPressedIn(merge_test_compare)) {
-        merge_test_compareN = (merge_test_compareN + compare(merge_test_scale, merge_test_input, merge_test_labels, merge_test_scale_instr, merge_test_scale_left, merge_test_scale_right));
+    if (t >= 0.5 && merge_test_mouse.status === PsychoJS.Status.NOT_STARTED) {
+          merge_test_mouse.tStart = t;
+          merge_test_mouse.frameNStart = frameN;  
+          
+          merge_test_mouse.status = PsychoJS.Status.STARTED;
+          merge_test_mouse.mouseClock.reset();
+          prevButtonState = merge_test_mouse.getPressed();
     }
+    
+    if ((merge_test_mouse.status === PsychoJS.Status.STARTED || merge_test_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+          merge_test_mouse.status = PsychoJS.Status.FINISHED;
+      }
+    
+    if (merge_test_mouse.status === PsychoJS.Status.STARTED) {
+        _mouseButtons = merge_test_mouse.getPressed();
+        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
+            prevButtonState = _mouseButtons;
+            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
+                for (const obj of [merge_test_btn,merge_test_compare]) {
+                    if (merge_test_mouse.isPressedIn(obj) && obj.name === "merge_test_btn") {
+                        continueRoutine = false;
+                    } else {
+                        if(merge_test_mouse.isPressedIn(obj)) {
+                            if(obj.name === "merge_test_compare") {
+                                merge_train_compareN = (merge_test_compareN + compare(merge_test_scale, merge_test_input, merge_test_labels, merge_test_scale_instr, merge_test_scale_left, merge_test_scale_right));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     merge_test_timer.text = timerWarning(mergeTestTimeL, t);
     merge_test_ans = merge_test_res.text;
     
@@ -4562,8 +4514,6 @@ function MERGE_TESTRoutineEnd() {
     psychoJS.experiment.addData('merge_test_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('merge_test_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('merge_test_mouse.rightButton', _mouseButtons[2]);
-    if (merge_test_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('merge_test_mouse.clicked_name', merge_test_mouse.clicked_name[0]);}
     return Scheduler.Event.NEXT;
   };
 }
@@ -4582,7 +4532,6 @@ function SORT_INTRORoutineBegin(snapshot) {
     routineTimer.add(120.000000);
     // update component parameters for each repeat
     // setup some python lists for storing info about the sort_intro_mouse
-    sort_intro_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
     // keep track of which components have finished
     SORT_INTROComponents = [];
@@ -4678,40 +4627,13 @@ function SORT_INTRORoutineEachFrame() {
     if ((sort_intro_btn.status === PsychoJS.Status.STARTED || sort_intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_intro_btn.setAutoDraw(false);
     }
-    // *sort_intro_mouse* updates
-    if (t >= 0.5 && sort_intro_mouse.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      sort_intro_mouse.tStart = t;  // (not accounting for frame time here)
-      sort_intro_mouse.frameNStart = frameN;  // exact frame index
-      
-      sort_intro_mouse.status = PsychoJS.Status.STARTED;
-      sort_intro_mouse.mouseClock.reset();
-      prevButtonState = sort_intro_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((sort_intro_mouse.status === PsychoJS.Status.STARTED || sort_intro_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      sort_intro_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (sort_intro_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = sort_intro_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [[sort_intro_btn]]) {
-            if (obj.contains(sort_intro_mouse)) {
-              gotValidClick = true;
-              sort_intro_mouse.clicked_name.push(obj.name)
-            }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-          }
-        }
-      }
+    if (((t >= 0.5) && (sort_intro_mouse.status === PsychoJS.Status.NOT_STARTED))) {
+        sort_intro_mouse.tStart = t;
+        sort_intro_mouse.frameNStart = frameN;
+        sort_intro_mouse.status = PsychoJS.Status.STARTED;
+        sort_intro_mouse.mouseClock.reset();
     }
-    if ((sort_intro_mouse.isPressedIn(sort_intro_btn) && (sort_intro_btn.status === PsychoJS.Status.STARTED))) {
+    if (((sort_intro_mouse.isPressedIn(sort_intro_btn) && (sort_intro_mouse.status === PsychoJS.Status.STARTED)) && (sort_intro_btn.status === PsychoJS.Status.STARTED))) {
         continueRoutine = false;
     }
     
@@ -4758,8 +4680,6 @@ function SORT_INTRORoutineEnd() {
     psychoJS.experiment.addData('sort_intro_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('sort_intro_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('sort_intro_mouse.rightButton', _mouseButtons[2]);
-    if (sort_intro_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('sort_intro_mouse.clicked_name', sort_intro_mouse.clicked_name[0]);}
     return Scheduler.Event.NEXT;
   };
 }
@@ -4768,7 +4688,17 @@ function SORT_INTRORoutineEnd() {
 var items;
 var frameCnt;
 var tracePos;
+var sort_train_input;
+var sort_train_labels;
+var sort_train_compareN;
+var sort_train_trace;
+var sort_train_compare_limit;
+var sort_train_path_base;
 var movingItem;
+var x;
+var y;
+var w;
+var h;
 var top;
 var bot;
 var left;
@@ -4805,21 +4735,32 @@ function SORT_TRAINRoutineBegin(snapshot) {
     sort_train_ex_11.setPos([0.25, 0.3]);
     sort_train_ex_12.setPos([0.3, 0.3]);
     // setup some python lists for storing info about the sort_train_mouse
-    sort_train_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
     sort_train_hint.setText('');
     items = [];
     frameCnt = 0;
     tracePos = [];
+    sort_train_input = input;
+    sort_train_labels = encryption;
+    sort_train_compareN = 0;
+    sort_train_trace = [];
+    sort_train_compare_limit = ms_compare;
+    sort_train_path_base = img_path_base;
+    
+    sort_train_res.refresh();
+    sort_train_scale_left.refresh();
+    sort_train_scale_right.refresh();
+    
     sort_train_hint.text = ((("Bob uses " + sort_train_compare_limit.toString()) + " comparisons\n") + "You have used: 0");
     movingItem = null;
-    [x, y] = sort_train_board.pos;
-    [w, h] = sort_train_board.size;
+    x = sort_train_board.getPos()[0];
+    y = sort_train_board.getPos()[1];
+    w = sort_train_board.getSize()[0];
+    h = sort_train_board.getSize()[0];
     top = (y + (h / 2));
     bot = (y - (h / 2));
     left = (x - (w / 2));
     right = (x + (w / 2));
-    
     // keep track of which components have finished
     SORT_TRAINComponents = [];
     SORT_TRAINComponents.push(sort_train_scale_instr);
@@ -4827,7 +4768,6 @@ function SORT_TRAINRoutineBegin(snapshot) {
     SORT_TRAINComponents.push(sort_train_instr);
     SORT_TRAINComponents.push(sort_train_scale_right);
     SORT_TRAINComponents.push(sort_train_scale_left);
-    SORT_TRAINComponents.push(sort_train_compare);
     SORT_TRAINComponents.push(sort_train_res);
     SORT_TRAINComponents.push(sort_train_sep);
     SORT_TRAINComponents.push(sort_train_board);
@@ -4845,6 +4785,7 @@ function SORT_TRAINRoutineBegin(snapshot) {
     SORT_TRAINComponents.push(sort_train_ex_11);
     SORT_TRAINComponents.push(sort_train_ex_12);
     SORT_TRAINComponents.push(sort_train_btn);
+    SORT_TRAINComponents.push(sort_train_compare);
     SORT_TRAINComponents.push(sort_train_mouse);
     SORT_TRAINComponents.push(sort_train_timer);
     SORT_TRAINComponents.push(sort_train_hint);
@@ -4859,7 +4800,6 @@ function SORT_TRAINRoutineBegin(snapshot) {
 
 var newTracePos;
 var hasMoved;
-var sort_train_compareN;
 var sort_train_ans;
 function SORT_TRAINRoutineEachFrame() {
   return async function () {
@@ -4939,20 +4879,6 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_scale_left.setAutoDraw(false);
     }
     
-    // *sort_train_compare* updates
-    if (t >= 0.0 && sort_train_compare.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      sort_train_compare.tStart = t;  // (not accounting for frame time here)
-      sort_train_compare.frameNStart = frameN;  // exact frame index
-      
-      sort_train_compare.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_compare.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      sort_train_compare.setAutoDraw(false);
-    }
-    
     // *sort_train_res* updates
     if (t >= 0.0 && sort_train_res.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
@@ -5010,7 +4936,7 @@ function SORT_TRAINRoutineEachFrame() {
     }
     
     // *sort_train_ex_1* updates
-    if (t >= 0.0 && sort_train_ex_1.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_train_ex_1.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_train_ex_1.tStart = t;  // (not accounting for frame time here)
       sort_train_ex_1.frameNStart = frameN;  // exact frame index
@@ -5018,13 +4944,13 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_1.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_ex_1.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_train_ex_1.status === PsychoJS.Status.STARTED || sort_train_ex_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_1.setAutoDraw(false);
     }
     
     // *sort_train_ex_2* updates
-    if (t >= 0.0 && sort_train_ex_2.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_train_ex_2.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_train_ex_2.tStart = t;  // (not accounting for frame time here)
       sort_train_ex_2.frameNStart = frameN;  // exact frame index
@@ -5032,13 +4958,13 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_2.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_ex_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_train_ex_2.status === PsychoJS.Status.STARTED || sort_train_ex_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_2.setAutoDraw(false);
     }
     
     // *sort_train_ex_3* updates
-    if (t >= 0.0 && sort_train_ex_3.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_train_ex_3.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_train_ex_3.tStart = t;  // (not accounting for frame time here)
       sort_train_ex_3.frameNStart = frameN;  // exact frame index
@@ -5046,13 +4972,13 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_3.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_ex_3.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_train_ex_3.status === PsychoJS.Status.STARTED || sort_train_ex_3.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_3.setAutoDraw(false);
     }
     
     // *sort_train_ex_4* updates
-    if (t >= 0.0 && sort_train_ex_4.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_train_ex_4.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_train_ex_4.tStart = t;  // (not accounting for frame time here)
       sort_train_ex_4.frameNStart = frameN;  // exact frame index
@@ -5060,13 +4986,13 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_4.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_ex_4.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_train_ex_4.status === PsychoJS.Status.STARTED || sort_train_ex_4.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_4.setAutoDraw(false);
     }
     
     // *sort_train_ex_5* updates
-    if (t >= 0.0 && sort_train_ex_5.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_train_ex_5.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_train_ex_5.tStart = t;  // (not accounting for frame time here)
       sort_train_ex_5.frameNStart = frameN;  // exact frame index
@@ -5074,13 +5000,13 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_5.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_ex_5.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_train_ex_5.status === PsychoJS.Status.STARTED || sort_train_ex_5.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_5.setAutoDraw(false);
     }
     
     // *sort_train_ex_6* updates
-    if (t >= 0.0 && sort_train_ex_6.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_train_ex_6.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_train_ex_6.tStart = t;  // (not accounting for frame time here)
       sort_train_ex_6.frameNStart = frameN;  // exact frame index
@@ -5088,13 +5014,13 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_6.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_ex_6.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_train_ex_6.status === PsychoJS.Status.STARTED || sort_train_ex_6.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_6.setAutoDraw(false);
     }
     
     // *sort_train_ex_7* updates
-    if (t >= 0.0 && sort_train_ex_7.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_train_ex_7.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_train_ex_7.tStart = t;  // (not accounting for frame time here)
       sort_train_ex_7.frameNStart = frameN;  // exact frame index
@@ -5102,13 +5028,13 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_7.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_ex_7.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_train_ex_7.status === PsychoJS.Status.STARTED || sort_train_ex_7.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_7.setAutoDraw(false);
     }
     
     // *sort_train_ex_8* updates
-    if (t >= 0.0 && sort_train_ex_8.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_train_ex_8.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_train_ex_8.tStart = t;  // (not accounting for frame time here)
       sort_train_ex_8.frameNStart = frameN;  // exact frame index
@@ -5116,13 +5042,13 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_8.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_ex_8.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_train_ex_8.status === PsychoJS.Status.STARTED || sort_train_ex_8.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_8.setAutoDraw(false);
     }
     
     // *sort_train_ex_9* updates
-    if (t >= 0.0 && sort_train_ex_9.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_train_ex_9.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_train_ex_9.tStart = t;  // (not accounting for frame time here)
       sort_train_ex_9.frameNStart = frameN;  // exact frame index
@@ -5130,13 +5056,13 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_9.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_ex_9.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_train_ex_9.status === PsychoJS.Status.STARTED || sort_train_ex_9.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_9.setAutoDraw(false);
     }
     
     // *sort_train_ex_10* updates
-    if (t >= 0.0 && sort_train_ex_10.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_train_ex_10.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_train_ex_10.tStart = t;  // (not accounting for frame time here)
       sort_train_ex_10.frameNStart = frameN;  // exact frame index
@@ -5144,13 +5070,13 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_10.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_ex_10.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_train_ex_10.status === PsychoJS.Status.STARTED || sort_train_ex_10.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_10.setAutoDraw(false);
     }
     
     // *sort_train_ex_11* updates
-    if (t >= 0.0 && sort_train_ex_11.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_train_ex_11.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_train_ex_11.tStart = t;  // (not accounting for frame time here)
       sort_train_ex_11.frameNStart = frameN;  // exact frame index
@@ -5158,13 +5084,13 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_11.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_ex_11.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_train_ex_11.status === PsychoJS.Status.STARTED || sort_train_ex_11.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_11.setAutoDraw(false);
     }
     
     // *sort_train_ex_12* updates
-    if (t >= 0.0 && sort_train_ex_12.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_train_ex_12.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_train_ex_12.tStart = t;  // (not accounting for frame time here)
       sort_train_ex_12.frameNStart = frameN;  // exact frame index
@@ -5172,8 +5098,8 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_12.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_train_ex_12.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_train_ex_12.status === PsychoJS.Status.STARTED || sort_train_ex_12.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_12.setAutoDraw(false);
     }
     
@@ -5190,38 +5116,19 @@ function SORT_TRAINRoutineEachFrame() {
     if ((sort_train_btn.status === PsychoJS.Status.STARTED || sort_train_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_btn.setAutoDraw(false);
     }
-    // *sort_train_mouse* updates
-    if (t >= 0.5 && sort_train_mouse.status === PsychoJS.Status.NOT_STARTED) {
+    
+    // *sort_train_compare* updates
+    if (t >= 0.5 && sort_train_compare.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      sort_train_mouse.tStart = t;  // (not accounting for frame time here)
-      sort_train_mouse.frameNStart = frameN;  // exact frame index
+      sort_train_compare.tStart = t;  // (not accounting for frame time here)
+      sort_train_compare.frameNStart = frameN;  // exact frame index
       
-      sort_train_mouse.status = PsychoJS.Status.STARTED;
-      sort_train_mouse.mouseClock.reset();
-      prevButtonState = sort_train_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
+      sort_train_compare.setAutoDraw(true);
+    }
+
     frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((sort_train_mouse.status === PsychoJS.Status.STARTED || sort_train_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      sort_train_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (sort_train_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = sort_train_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [[sort_train_btn]]) {
-            if (obj.contains(sort_train_mouse)) {
-              gotValidClick = true;
-              sort_train_mouse.clicked_name.push(obj.name)
-            }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-          }
-        }
-      }
+    if ((sort_train_compare.status === PsychoJS.Status.STARTED || sort_train_compare.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      sort_train_compare.setAutoDraw(false);
     }
     
     // *sort_train_timer* updates
@@ -5252,29 +5159,64 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_hint.setAutoDraw(false);
     }
     frameCnt = (frameCnt + 1);
-    if ((items === [])) {
+    if ((items.length === 0)) {
         items = enableImageComponents(SORT_TRAINComponents, sort_train_labels, sort_train_path_base);
+        for (var u = 0, v = items.length; (u < v); u += 1) {
+            items[u].refresh();
+        }
     }
+    
+    if (t >= 0.5 && sort_train_mouse.status === PsychoJS.Status.NOT_STARTED) {
+          sort_train_mouse.tStart = t;
+          sort_train_mouse.frameNStart = frameN;  
+          
+          sort_train_mouse.status = PsychoJS.Status.STARTED;
+          sort_train_mouse.mouseClock.reset();
+          prevButtonState = sort_train_mouse.getPressed();
+    }
+    
+    if ((sort_train_mouse.status === PsychoJS.Status.STARTED || sort_train_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+          sort_train_mouse.status = PsychoJS.Status.FINISHED;
+      }
+    
+    if (sort_train_mouse.status === PsychoJS.Status.STARTED) {
+        _mouseButtons = sort_train_mouse.getPressed();
+        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
+            prevButtonState = _mouseButtons;
+            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
+                for (const obj of [sort_train_btn,sort_train_compare]) {
+                    if (sort_train_mouse.isPressedIn(obj) && obj.name === "sort_train_btn") {
+                        continueRoutine = false;
+                    } else {
+                        if(sort_train_mouse.isPressedIn(obj)) {
+                            if(obj.name === "sort_train_compare") {
+                                sort_train_compareN = (sort_train_compareN + compare(sort_train_scale, sort_train_input, sort_train_labels, sort_train_scale_instr, sort_train_scale_left, sort_train_scale_right));
+                                sort_train_hint.text = (((("Bob uses " + sort_train_compare_limit.toString()) + " comparisons\n") + "You have used: ") + sort_train_compareN.toString());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     movingItem = moveItem(sort_train_mouse, movingItem);
     if (((frameCnt % traceSaveAtFrame) === 0)) {
         newTracePos = [];
         for (var i, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
             i = _pj_a[_pj_c];
-            newTracePos.append([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
+            newTracePos.push([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
         }
         hasMoved = updateTrace(tracePos, newTracePos);
         if ((hasMoved !== [])) {
             for (var j, _pj_c = 0, _pj_a = hasMoved, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
                 j = _pj_a[_pj_c];
-                sort_train_trace.append(j);
+                sort_train_trace.push(j);
             }
         }
         tracePos = newTracePos;
     }
-    if (sort_train_mouse.isPressedIn(sort_train_compare)) {
-        sort_train_compareN = (sort_train_compareN + compare(sort_train_scale, sort_train_input, sort_train_labels, sort_train_scale_instr, sort_train_scale_left, sort_train_scale_right));
-        sort_train_hint.text = (((("Bob uses " + sort_train_compare_limit.toString()) + " comparisons\n") + "You have used: ") + sort_train_compareN.toString());
-    }
+    
     sort_train_ans = sort_train_res.text;
     sort_train_timer.text = timerWarning(sortTrainTimeL, t);
     
@@ -5324,14 +5266,17 @@ function SORT_TRAINRoutineEnd() {
     psychoJS.experiment.addData('sort_train_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('sort_train_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('sort_train_mouse.rightButton', _mouseButtons[2]);
-    if (sort_train_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('sort_train_mouse.clicked_name', sort_train_mouse.clicked_name[0]);}
     return Scheduler.Event.NEXT;
   };
 }
 
 
 var positions;
+var sort_expl_input;
+var sort_expl_labels;
+var sort_expl_compareN;
+var sort_expl_trace;
+var sort_expl_path_base;
 var SORT_EXPLComponents;
 function SORT_EXPLRoutineBegin(snapshot) {
   return async function () {
@@ -5368,28 +5313,38 @@ function SORT_EXPLRoutineBegin(snapshot) {
     sort_expl_ex_11.setPos([0.25, 0.3]);
     sort_expl_ex_12.setPos([0.3, 0.3]);
     // setup some python lists for storing info about the sort_expl_mouse
-    sort_expl_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
     sort_expl_hint.setText('');
     positions = [];
     for (var u, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
         u = _pj_a[_pj_c];
-        positions.append(u.pos);
+        positions.push(u.pos);
     }
     items = [];
     frameCnt = 0;
     tracePos = [];
     movingItem = null;
+    sort_expl_input = input;
+    sort_expl_labels = encryption;
+    sort_expl_compareN = 0;
+    sort_expl_trace = [];
+    sort_expl_path_base = img_path_base;
+    
+    sort_expl_res.refresh();
+    sort_expl_scale_left.refresh();
+    sort_expl_scale_right.refresh();
+    
     sort_expl_hint.text = (((("Bob uses " + sort_train_compare_limit.toString()) + " comparisons\n") + "You have used: ") + (sort_train_compareN + sort_expl_compareN).toString());
     sort_expl_res.text = sort_train_ans;
     checkSortTrainAns(sort_expl_input, sort_expl_labels, sort_expl_res.text, sort_expl_feedback_1, sort_expl_feedback_2);
-    [x, y] = sort_expl_board.pos;
-    [w, h] = sort_expl_board.size;
+    x = sort_expl_board.getPos()[0];
+    y = sort_expl_board.getPos()[1];
+    w = sort_expl_board.getSize()[0];
+    h = sort_expl_board.getSize()[0];
     top = (y + (h / 2));
     bot = (y - (h / 2));
     left = (x - (w / 2));
     right = (x + (w / 2));
-    
     // keep track of which components have finished
     SORT_EXPLComponents = [];
     SORT_EXPLComponents.push(sort_expl_scale_instr);
@@ -5398,7 +5353,6 @@ function SORT_EXPLRoutineBegin(snapshot) {
     SORT_EXPLComponents.push(sort_expl_instr);
     SORT_EXPLComponents.push(sort_expl_scale_right);
     SORT_EXPLComponents.push(sort_expl_scale_left);
-    SORT_EXPLComponents.push(sort_expl_compare);
     SORT_EXPLComponents.push(sort_expl_res);
     SORT_EXPLComponents.push(sort_expl_sep);
     SORT_EXPLComponents.push(sort_expl_board);
@@ -5416,6 +5370,7 @@ function SORT_EXPLRoutineBegin(snapshot) {
     SORT_EXPLComponents.push(sort_expl_ex_11);
     SORT_EXPLComponents.push(sort_expl_ex_12);
     SORT_EXPLComponents.push(sort_expl_btn);
+    SORT_EXPLComponents.push(sort_expl_compare);
     SORT_EXPLComponents.push(sort_expl_mouse);
     SORT_EXPLComponents.push(sort_expl_timer);
     SORT_EXPLComponents.push(sort_expl_hint);
@@ -5428,7 +5383,6 @@ function SORT_EXPLRoutineBegin(snapshot) {
 }
 
 
-var sort_expl_compareN;
 function SORT_EXPLRoutineEachFrame() {
   return async function () {
     //------Loop for each frame of Routine 'SORT_EXPL'-------
@@ -5521,20 +5475,6 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_scale_left.setAutoDraw(false);
     }
     
-    // *sort_expl_compare* updates
-    if (t >= 0.0 && sort_expl_compare.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      sort_expl_compare.tStart = t;  // (not accounting for frame time here)
-      sort_expl_compare.frameNStart = frameN;  // exact frame index
-      
-      sort_expl_compare.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_compare.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      sort_expl_compare.setAutoDraw(false);
-    }
-    
     // *sort_expl_res* updates
     if (t >= 0.0 && sort_expl_res.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
@@ -5592,7 +5532,7 @@ function SORT_EXPLRoutineEachFrame() {
     }
     
     // *sort_expl_ex_1* updates
-    if (t >= 0.0 && sort_expl_ex_1.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_expl_ex_1.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_expl_ex_1.tStart = t;  // (not accounting for frame time here)
       sort_expl_ex_1.frameNStart = frameN;  // exact frame index
@@ -5600,13 +5540,13 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_ex_1.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_ex_1.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_expl_ex_1.status === PsychoJS.Status.STARTED || sort_expl_ex_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_ex_1.setAutoDraw(false);
     }
     
     // *sort_expl_ex_2* updates
-    if (t >= 0.0 && sort_expl_ex_2.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_expl_ex_2.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_expl_ex_2.tStart = t;  // (not accounting for frame time here)
       sort_expl_ex_2.frameNStart = frameN;  // exact frame index
@@ -5614,13 +5554,13 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_ex_2.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_ex_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_expl_ex_2.status === PsychoJS.Status.STARTED || sort_expl_ex_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_ex_2.setAutoDraw(false);
     }
     
     // *sort_expl_ex_3* updates
-    if (t >= 0.0 && sort_expl_ex_3.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_expl_ex_3.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_expl_ex_3.tStart = t;  // (not accounting for frame time here)
       sort_expl_ex_3.frameNStart = frameN;  // exact frame index
@@ -5628,13 +5568,13 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_ex_3.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_ex_3.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_expl_ex_3.status === PsychoJS.Status.STARTED || sort_expl_ex_3.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_ex_3.setAutoDraw(false);
     }
     
     // *sort_expl_ex_4* updates
-    if (t >= 0.0 && sort_expl_ex_4.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_expl_ex_4.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_expl_ex_4.tStart = t;  // (not accounting for frame time here)
       sort_expl_ex_4.frameNStart = frameN;  // exact frame index
@@ -5642,13 +5582,13 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_ex_4.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_ex_4.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_expl_ex_4.status === PsychoJS.Status.STARTED || sort_expl_ex_4.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_ex_4.setAutoDraw(false);
     }
     
     // *sort_expl_ex_5* updates
-    if (t >= 0.0 && sort_expl_ex_5.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_expl_ex_5.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_expl_ex_5.tStart = t;  // (not accounting for frame time here)
       sort_expl_ex_5.frameNStart = frameN;  // exact frame index
@@ -5656,13 +5596,13 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_ex_5.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_ex_5.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_expl_ex_5.status === PsychoJS.Status.STARTED || sort_expl_ex_5.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_ex_5.setAutoDraw(false);
     }
     
     // *sort_expl_ex_6* updates
-    if (t >= 0.0 && sort_expl_ex_6.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_expl_ex_6.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_expl_ex_6.tStart = t;  // (not accounting for frame time here)
       sort_expl_ex_6.frameNStart = frameN;  // exact frame index
@@ -5670,13 +5610,13 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_ex_6.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_ex_6.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_expl_ex_6.status === PsychoJS.Status.STARTED || sort_expl_ex_6.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_ex_6.setAutoDraw(false);
     }
     
     // *sort_expl_ex_7* updates
-    if (t >= 0.0 && sort_expl_ex_7.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_expl_ex_7.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_expl_ex_7.tStart = t;  // (not accounting for frame time here)
       sort_expl_ex_7.frameNStart = frameN;  // exact frame index
@@ -5684,13 +5624,13 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_ex_7.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_ex_7.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_expl_ex_7.status === PsychoJS.Status.STARTED || sort_expl_ex_7.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_ex_7.setAutoDraw(false);
     }
     
     // *sort_expl_ex_8* updates
-    if (t >= 0.0 && sort_expl_ex_8.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_expl_ex_8.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_expl_ex_8.tStart = t;  // (not accounting for frame time here)
       sort_expl_ex_8.frameNStart = frameN;  // exact frame index
@@ -5698,13 +5638,13 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_ex_8.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_ex_8.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_expl_ex_8.status === PsychoJS.Status.STARTED || sort_expl_ex_8.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_ex_8.setAutoDraw(false);
     }
     
     // *sort_expl_ex_9* updates
-    if (t >= 0.0 && sort_expl_ex_9.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_expl_ex_9.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_expl_ex_9.tStart = t;  // (not accounting for frame time here)
       sort_expl_ex_9.frameNStart = frameN;  // exact frame index
@@ -5712,13 +5652,13 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_ex_9.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_ex_9.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_expl_ex_9.status === PsychoJS.Status.STARTED || sort_expl_ex_9.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_ex_9.setAutoDraw(false);
     }
     
     // *sort_expl_ex_10* updates
-    if (t >= 0.0 && sort_expl_ex_10.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_expl_ex_10.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_expl_ex_10.tStart = t;  // (not accounting for frame time here)
       sort_expl_ex_10.frameNStart = frameN;  // exact frame index
@@ -5726,13 +5666,13 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_ex_10.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_ex_10.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_expl_ex_10.status === PsychoJS.Status.STARTED || sort_expl_ex_10.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_ex_10.setAutoDraw(false);
     }
     
     // *sort_expl_ex_11* updates
-    if (t >= 0.0 && sort_expl_ex_11.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_expl_ex_11.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_expl_ex_11.tStart = t;  // (not accounting for frame time here)
       sort_expl_ex_11.frameNStart = frameN;  // exact frame index
@@ -5740,13 +5680,13 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_ex_11.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_ex_11.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_expl_ex_11.status === PsychoJS.Status.STARTED || sort_expl_ex_11.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_ex_11.setAutoDraw(false);
     }
     
     // *sort_expl_ex_12* updates
-    if (t >= 0.0 && sort_expl_ex_12.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_expl_ex_12.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_expl_ex_12.tStart = t;  // (not accounting for frame time here)
       sort_expl_ex_12.frameNStart = frameN;  // exact frame index
@@ -5754,8 +5694,8 @@ function SORT_EXPLRoutineEachFrame() {
       sort_expl_ex_12.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_expl_ex_12.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_expl_ex_12.status === PsychoJS.Status.STARTED || sort_expl_ex_12.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_ex_12.setAutoDraw(false);
     }
     
@@ -5772,38 +5712,19 @@ function SORT_EXPLRoutineEachFrame() {
     if ((sort_expl_btn.status === PsychoJS.Status.STARTED || sort_expl_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_btn.setAutoDraw(false);
     }
-    // *sort_expl_mouse* updates
-    if (t >= 0.5 && sort_expl_mouse.status === PsychoJS.Status.NOT_STARTED) {
+    
+    // *sort_expl_compare* updates
+    if (t >= 0.5 && sort_expl_compare.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      sort_expl_mouse.tStart = t;  // (not accounting for frame time here)
-      sort_expl_mouse.frameNStart = frameN;  // exact frame index
+      sort_expl_compare.tStart = t;  // (not accounting for frame time here)
+      sort_expl_compare.frameNStart = frameN;  // exact frame index
       
-      sort_expl_mouse.status = PsychoJS.Status.STARTED;
-      sort_expl_mouse.mouseClock.reset();
-      prevButtonState = sort_expl_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
+      sort_expl_compare.setAutoDraw(true);
+    }
+
     frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((sort_expl_mouse.status === PsychoJS.Status.STARTED || sort_expl_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      sort_expl_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (sort_expl_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = sort_expl_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [[sort_expl_btn]]) {
-            if (obj.contains(sort_expl_mouse)) {
-              gotValidClick = true;
-              sort_expl_mouse.clicked_name.push(obj.name)
-            }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-          }
-        }
-      }
+    if ((sort_expl_compare.status === PsychoJS.Status.STARTED || sort_expl_compare.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      sort_expl_compare.setAutoDraw(false);
     }
     
     // *sort_expl_timer* updates
@@ -5833,31 +5754,62 @@ function SORT_EXPLRoutineEachFrame() {
     if ((sort_expl_hint.status === PsychoJS.Status.STARTED || sort_expl_hint.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_expl_hint.setAutoDraw(false);
     }
-    if ((items === [])) {
+    if ((items.length === 0)) {
         items = enableImageComponents(SORT_EXPLComponents, sort_expl_labels, sort_expl_path_base);
         for (var i = 0, _pj_a = items.length; (i < _pj_a); i += 1) {
             items[i].pos = positions[i];
         }
     }
+    
+    if (t >= 0.5 && sort_expl_mouse.status === PsychoJS.Status.NOT_STARTED) {
+          sort_expl_mouse.tStart = t;
+          sort_expl_mouse.frameNStart = frameN;  
+          
+          sort_expl_mouse.status = PsychoJS.Status.STARTED;
+          sort_expl_mouse.mouseClock.reset();
+          prevButtonState = sort_expl_mouse.getPressed();
+    }
+    
+    if ((sort_expl_mouse.status === PsychoJS.Status.STARTED || sort_expl_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+          sort_expl_mouse.status = PsychoJS.Status.FINISHED;
+      }
+    
+    if (sort_expl_mouse.status === PsychoJS.Status.STARTED) {
+        _mouseButtons = sort_expl_mouse.getPressed();
+        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
+            prevButtonState = _mouseButtons;
+            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
+                for (const obj of [sort_expl_btn,sort_expl_compare]) {
+                    if (sort_expl_mouse.isPressedIn(obj) && obj.name === "sort_expl_btn") {
+                        continueRoutine = false;
+                    } else {
+                        if(sort_expl_mouse.isPressedIn(obj)) {
+                            if(obj.name === "sort_expl_compare") {
+                                sort_expl_compareN = (sort_expl_compareN + compare(sort_expl_scale, sort_expl_input, sort_expl_labels, sort_expl_scale_instr, sort_expl_scale_left, sort_expl_scale_right));
+                                sort_expl_hint.text = (((("Bob uses " + sort_train_compare_limit.toString()) + " comparisons\n") + "You have used: ") + (sort_train_compareN + sort_expl_compareN).toString());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     movingItem = moveItem(sort_expl_mouse, movingItem);
     if (((frameCnt % traceSaveAtFrame) === 0)) {
         newTracePos = [];
         for (var i, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
             i = _pj_a[_pj_c];
-            newTracePos.append([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
+            newTracePos.push([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
         }
         hasMoved = updateTrace(tracePos, newTracePos);
         if ((hasMoved !== [])) {
             for (var j, _pj_c = 0, _pj_a = hasMoved, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
                 j = _pj_a[_pj_c];
-                sort_expl_trace.append(j);
+                sort_expl_trace.push(j);
             }
         }
         tracePos = newTracePos;
-    }
-    if (sort_expl_mouse.isPressedIn(sort_expl_compare)) {
-        sort_expl_compareN = (sort_expl_compareN + compare(sort_expl_scale, sort_expl_input, sort_expl_labels, sort_expl_scale_instr, sort_expl_scale_left, sort_expl_scale_right));
-        sort_expl_hint.text = (((("Bob uses " + sort_train_compare_limit.toString()) + " comparisons\n") + "You have used: ") + (sort_train_compareN + sort_expl_compareN).toString());
     }
     sort_expl_timer.text = timerWarning(sortExplTimeL, t);
     
@@ -5906,8 +5858,6 @@ function SORT_EXPLRoutineEnd() {
     psychoJS.experiment.addData('sort_expl_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('sort_expl_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('sort_expl_mouse.rightButton', _mouseButtons[2]);
-    if (sort_expl_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('sort_expl_mouse.clicked_name', sort_expl_mouse.clicked_name[0]);}
     return Scheduler.Event.NEXT;
   };
 }
@@ -5926,7 +5876,6 @@ function SORT_TEST_INTRORoutineBegin(snapshot) {
     routineTimer.add(120.000000);
     // update component parameters for each repeat
     // setup some python lists for storing info about the sort_test_intro_mouse
-    sort_test_intro_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
     // keep track of which components have finished
     SORT_TEST_INTROComponents = [];
@@ -6022,40 +5971,13 @@ function SORT_TEST_INTRORoutineEachFrame() {
     if ((sort_test_intro_btn.status === PsychoJS.Status.STARTED || sort_test_intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_intro_btn.setAutoDraw(false);
     }
-    // *sort_test_intro_mouse* updates
-    if (t >= 0.5 && sort_test_intro_mouse.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      sort_test_intro_mouse.tStart = t;  // (not accounting for frame time here)
-      sort_test_intro_mouse.frameNStart = frameN;  // exact frame index
-      
-      sort_test_intro_mouse.status = PsychoJS.Status.STARTED;
-      sort_test_intro_mouse.mouseClock.reset();
-      prevButtonState = sort_test_intro_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((sort_test_intro_mouse.status === PsychoJS.Status.STARTED || sort_test_intro_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      sort_test_intro_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (sort_test_intro_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = sort_test_intro_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [[sort_test_intro_btn]]) {
-            if (obj.contains(sort_test_intro_mouse)) {
-              gotValidClick = true;
-              sort_test_intro_mouse.clicked_name.push(obj.name)
-            }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-          }
-        }
-      }
+    if (((t >= 0.5) && (sort_test_intro_mouse.status === PsychoJS.Status.NOT_STARTED))) {
+        sort_test_intro_mouse.tStart = t;
+        sort_test_intro_mouse.frameNStart = frameN;
+        sort_test_intro_mouse.status = PsychoJS.Status.STARTED;
+        sort_test_intro_mouse.mouseClock.reset();
     }
-    if ((sort_test_mouse.isPressedIn(sort_test_btn) && (sort_test_btn.status === PsychoJS.Status.STARTED))) {
+    if (((sort_test_intro_mouse.isPressedIn(sort_test_intro_btn) && (sort_test_intro_mouse.status === PsychoJS.Status.STARTED)) && (sort_test_intro_btn.status === PsychoJS.Status.STARTED))) {
         continueRoutine = false;
     }
     
@@ -6102,13 +6024,17 @@ function SORT_TEST_INTRORoutineEnd() {
     psychoJS.experiment.addData('sort_test_intro_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('sort_test_intro_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('sort_test_intro_mouse.rightButton', _mouseButtons[2]);
-    if (sort_test_intro_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('sort_test_intro_mouse.clicked_name', sort_test_intro_mouse.clicked_name[0]);}
     return Scheduler.Event.NEXT;
   };
 }
 
 
+var sort_test_input;
+var sort_test_labels;
+var sort_test_compareN;
+var sort_test_trace;
+var sort_test_compare_limit;
+var sort_test_path_base;
 var SORT_TESTComponents;
 function SORT_TESTRoutineBegin(snapshot) {
   return async function () {
@@ -6141,19 +6067,30 @@ function SORT_TESTRoutineBegin(snapshot) {
     sort_test_ex_11.setPos([0.25, 0.3]);
     sort_test_ex_12.setPos([0.3, 0.3]);
     // setup some python lists for storing info about the sort_test_mouse
-    sort_test_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
     items = [];
     frameCnt = 0;
     tracePos = [];
     movingItem = null;
-    [x, y] = sort_test_board.pos;
-    [w, h] = sort_test_board.size;
+    sort_test_input = input;
+    sort_test_labels = encryption;
+    sort_test_compareN = 0;
+    sort_test_trace = [];
+    sort_test_compare_limit = ms_compare;
+    sort_test_path_base = img_path_base;
+    
+    sort_test_res.refresh();
+    sort_test_scale_left.refresh();
+    sort_test_scale_right.refresh();
+    
+    x = sort_test_board.getPos()[0];
+    y = sort_test_board.getPos()[1];
+    w = sort_test_board.getSize()[0];
+    h = sort_test_board.getSize()[0];
     top = (y + (h / 2));
     bot = (y - (h / 2));
     left = (x - (w / 2));
     right = (x + (w / 2));
-    
     // keep track of which components have finished
     SORT_TESTComponents = [];
     SORT_TESTComponents.push(sort_test_scale_instr);
@@ -6161,7 +6098,6 @@ function SORT_TESTRoutineBegin(snapshot) {
     SORT_TESTComponents.push(sort_test_instr);
     SORT_TESTComponents.push(sort_test_scale_right);
     SORT_TESTComponents.push(sort_test_scale_left);
-    SORT_TESTComponents.push(sort_test_compare);
     SORT_TESTComponents.push(sort_test_res);
     SORT_TESTComponents.push(sort_test_sep);
     SORT_TESTComponents.push(sort_test_board);
@@ -6179,6 +6115,7 @@ function SORT_TESTRoutineBegin(snapshot) {
     SORT_TESTComponents.push(sort_test_ex_11);
     SORT_TESTComponents.push(sort_test_ex_12);
     SORT_TESTComponents.push(sort_test_btn);
+    SORT_TESTComponents.push(sort_test_compare);
     SORT_TESTComponents.push(sort_test_mouse);
     SORT_TESTComponents.push(sort_test_timer);
     
@@ -6190,7 +6127,6 @@ function SORT_TESTRoutineBegin(snapshot) {
 }
 
 
-var sort_test_compareN;
 var sort_test_ans;
 function SORT_TESTRoutineEachFrame() {
   return async function () {
@@ -6270,20 +6206,6 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_scale_left.setAutoDraw(false);
     }
     
-    // *sort_test_compare* updates
-    if (t >= 0.0 && sort_test_compare.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      sort_test_compare.tStart = t;  // (not accounting for frame time here)
-      sort_test_compare.frameNStart = frameN;  // exact frame index
-      
-      sort_test_compare.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_compare.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      sort_test_compare.setAutoDraw(false);
-    }
-    
     // *sort_test_res* updates
     if (t >= 0.0 && sort_test_res.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
@@ -6341,7 +6263,7 @@ function SORT_TESTRoutineEachFrame() {
     }
     
     // *sort_test_ex_1* updates
-    if (t >= 0.0 && sort_test_ex_1.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_test_ex_1.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_test_ex_1.tStart = t;  // (not accounting for frame time here)
       sort_test_ex_1.frameNStart = frameN;  // exact frame index
@@ -6349,13 +6271,13 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_ex_1.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_ex_1.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_test_ex_1.status === PsychoJS.Status.STARTED || sort_test_ex_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_ex_1.setAutoDraw(false);
     }
     
     // *sort_test_ex_2* updates
-    if (t >= 0.0 && sort_test_ex_2.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_test_ex_2.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_test_ex_2.tStart = t;  // (not accounting for frame time here)
       sort_test_ex_2.frameNStart = frameN;  // exact frame index
@@ -6363,13 +6285,13 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_ex_2.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_ex_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_test_ex_2.status === PsychoJS.Status.STARTED || sort_test_ex_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_ex_2.setAutoDraw(false);
     }
     
     // *sort_test_ex_3* updates
-    if (t >= 0.0 && sort_test_ex_3.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_test_ex_3.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_test_ex_3.tStart = t;  // (not accounting for frame time here)
       sort_test_ex_3.frameNStart = frameN;  // exact frame index
@@ -6377,13 +6299,13 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_ex_3.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_ex_3.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_test_ex_3.status === PsychoJS.Status.STARTED || sort_test_ex_3.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_ex_3.setAutoDraw(false);
     }
     
     // *sort_test_ex_4* updates
-    if (t >= 0.0 && sort_test_ex_4.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_test_ex_4.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_test_ex_4.tStart = t;  // (not accounting for frame time here)
       sort_test_ex_4.frameNStart = frameN;  // exact frame index
@@ -6391,13 +6313,13 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_ex_4.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_ex_4.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_test_ex_4.status === PsychoJS.Status.STARTED || sort_test_ex_4.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_ex_4.setAutoDraw(false);
     }
     
     // *sort_test_ex_5* updates
-    if (t >= 0.0 && sort_test_ex_5.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_test_ex_5.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_test_ex_5.tStart = t;  // (not accounting for frame time here)
       sort_test_ex_5.frameNStart = frameN;  // exact frame index
@@ -6405,13 +6327,13 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_ex_5.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_ex_5.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_test_ex_5.status === PsychoJS.Status.STARTED || sort_test_ex_5.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_ex_5.setAutoDraw(false);
     }
     
     // *sort_test_ex_6* updates
-    if (t >= 0.0 && sort_test_ex_6.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_test_ex_6.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_test_ex_6.tStart = t;  // (not accounting for frame time here)
       sort_test_ex_6.frameNStart = frameN;  // exact frame index
@@ -6419,13 +6341,13 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_ex_6.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_ex_6.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_test_ex_6.status === PsychoJS.Status.STARTED || sort_test_ex_6.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_ex_6.setAutoDraw(false);
     }
     
     // *sort_test_ex_7* updates
-    if (t >= 0.0 && sort_test_ex_7.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_test_ex_7.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_test_ex_7.tStart = t;  // (not accounting for frame time here)
       sort_test_ex_7.frameNStart = frameN;  // exact frame index
@@ -6433,13 +6355,13 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_ex_7.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_ex_7.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_test_ex_7.status === PsychoJS.Status.STARTED || sort_test_ex_7.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_ex_7.setAutoDraw(false);
     }
     
     // *sort_test_ex_8* updates
-    if (t >= 0.0 && sort_test_ex_8.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_test_ex_8.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_test_ex_8.tStart = t;  // (not accounting for frame time here)
       sort_test_ex_8.frameNStart = frameN;  // exact frame index
@@ -6447,13 +6369,13 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_ex_8.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_ex_8.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_test_ex_8.status === PsychoJS.Status.STARTED || sort_test_ex_8.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_ex_8.setAutoDraw(false);
     }
     
     // *sort_test_ex_9* updates
-    if (t >= 0.0 && sort_test_ex_9.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_test_ex_9.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_test_ex_9.tStart = t;  // (not accounting for frame time here)
       sort_test_ex_9.frameNStart = frameN;  // exact frame index
@@ -6461,13 +6383,13 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_ex_9.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_ex_9.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_test_ex_9.status === PsychoJS.Status.STARTED || sort_test_ex_9.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_ex_9.setAutoDraw(false);
     }
     
     // *sort_test_ex_10* updates
-    if (t >= 0.0 && sort_test_ex_10.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_test_ex_10.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_test_ex_10.tStart = t;  // (not accounting for frame time here)
       sort_test_ex_10.frameNStart = frameN;  // exact frame index
@@ -6475,13 +6397,13 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_ex_10.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_ex_10.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_test_ex_10.status === PsychoJS.Status.STARTED || sort_test_ex_10.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_ex_10.setAutoDraw(false);
     }
     
     // *sort_test_ex_11* updates
-    if (t >= 0.0 && sort_test_ex_11.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_test_ex_11.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_test_ex_11.tStart = t;  // (not accounting for frame time here)
       sort_test_ex_11.frameNStart = frameN;  // exact frame index
@@ -6489,13 +6411,13 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_ex_11.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_ex_11.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_test_ex_11.status === PsychoJS.Status.STARTED || sort_test_ex_11.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_ex_11.setAutoDraw(false);
     }
     
     // *sort_test_ex_12* updates
-    if (t >= 0.0 && sort_test_ex_12.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.2 && sort_test_ex_12.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       sort_test_ex_12.tStart = t;  // (not accounting for frame time here)
       sort_test_ex_12.frameNStart = frameN;  // exact frame index
@@ -6503,8 +6425,8 @@ function SORT_TESTRoutineEachFrame() {
       sort_test_ex_12.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (sort_test_ex_12.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((sort_test_ex_12.status === PsychoJS.Status.STARTED || sort_test_ex_12.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_ex_12.setAutoDraw(false);
     }
     
@@ -6521,38 +6443,19 @@ function SORT_TESTRoutineEachFrame() {
     if ((sort_test_btn.status === PsychoJS.Status.STARTED || sort_test_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_btn.setAutoDraw(false);
     }
-    // *sort_test_mouse* updates
-    if (t >= 0.5 && sort_test_mouse.status === PsychoJS.Status.NOT_STARTED) {
+    
+    // *sort_test_compare* updates
+    if (t >= 0.5 && sort_test_compare.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      sort_test_mouse.tStart = t;  // (not accounting for frame time here)
-      sort_test_mouse.frameNStart = frameN;  // exact frame index
+      sort_test_compare.tStart = t;  // (not accounting for frame time here)
+      sort_test_compare.frameNStart = frameN;  // exact frame index
       
-      sort_test_mouse.status = PsychoJS.Status.STARTED;
-      sort_test_mouse.mouseClock.reset();
-      prevButtonState = sort_test_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
+      sort_test_compare.setAutoDraw(true);
+    }
+
     frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((sort_test_mouse.status === PsychoJS.Status.STARTED || sort_test_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      sort_test_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (sort_test_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = sort_test_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [[sort_test_btn]]) {
-            if (obj.contains(sort_test_mouse)) {
-              gotValidClick = true;
-              sort_test_mouse.clicked_name.push(obj.name)
-            }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-          }
-        }
-      }
+    if ((sort_test_compare.status === PsychoJS.Status.STARTED || sort_test_compare.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      sort_test_compare.setAutoDraw(false);
     }
     
     // *sort_test_timer* updates
@@ -6568,28 +6471,60 @@ function SORT_TESTRoutineEachFrame() {
     if ((sort_test_timer.status === PsychoJS.Status.STARTED || sort_test_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_test_timer.setAutoDraw(false);
     }
-    if ((items === [])) {
+    if ((items.length === 0)) {
         items = enableImageComponents(SORT_TESTComponents, sort_test_labels, sort_test_path_base);
     }
+    
+    if (t >= 0.5 && sort_test_mouse.status === PsychoJS.Status.NOT_STARTED) {
+          sort_test_mouse.tStart = t;
+          sort_test_mouse.frameNStart = frameN;  
+          
+          sort_test_mouse.status = PsychoJS.Status.STARTED;
+          sort_test_mouse.mouseClock.reset();
+          prevButtonState = sort_test_mouse.getPressed();
+    }
+    
+    if ((sort_test_mouse.status === PsychoJS.Status.STARTED || sort_test_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+          sort_test_mouse.status = PsychoJS.Status.FINISHED;
+      }
+    
+    if (sort_test_mouse.status === PsychoJS.Status.STARTED) {
+        _mouseButtons = sort_test_mouse.getPressed();
+        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
+            prevButtonState = _mouseButtons;
+            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
+                for (const obj of [sort_test_btn,sort_test_compare]) {
+                    if (sort_test_mouse.isPressedIn(obj) && obj.name === "sort_test_btn") {
+                        continueRoutine = false;
+                    } else {
+                        if(sort_expl_mouse.isPressedIn(obj)) {
+                            if(obj.name === "sort_test_compare") {
+                                sort_test_compareN = (sort_test_compareN + compare(sort_test_scale, sort_test_input, sort_test_labels, sort_test_scale_instr, sort_test_scale_left, sort_test_scale_right));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     movingItem = moveItem(sort_test_mouse, movingItem);
     if (((frameCnt % traceSaveAtFrame) === 0)) {
         newTracePos = [];
         for (var i, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
             i = _pj_a[_pj_c];
-            newTracePos.append([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
+            newTracePos.push([i.name.split("_").slice((- 1))[0], i.pos[0], i.pos[1]]);
         }
         hasMoved = updateTrace(tracePos, newTracePos);
         if ((hasMoved !== [])) {
             for (var j, _pj_c = 0, _pj_a = hasMoved, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
                 j = _pj_a[_pj_c];
-                sort_test_trace.append(j);
+                sort_test_trace.push(j);
             }
         }
         tracePos = newTracePos;
     }
-    if (sort_test_mouse.isPressedIn(sort_test_compare)) {
-        sort_test_compareN = (sort_test_compareN + compare(sort_test_scale, sort_test_input, sort_test_labels, sort_test_scale_instr, sort_test_scale_left, sort_test_scale_right));
-    }
+    
     sort_test_ans = sort_test_res.text;
     sort_test_timer.text = timerWarning(sortTestTimeL, t);
     
@@ -6639,8 +6574,6 @@ function SORT_TESTRoutineEnd() {
     psychoJS.experiment.addData('sort_test_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('sort_test_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('sort_test_mouse.rightButton', _mouseButtons[2]);
-    if (sort_test_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('sort_test_mouse.clicked_name', sort_test_mouse.clicked_name[0]);}
     return Scheduler.Event.NEXT;
   };
 }
@@ -6656,16 +6589,14 @@ function DEBRIEFRoutineBegin(snapshot) {
     DEBRIEFClock.reset(); // clock
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
-    routineTimer.add(10.000000);
+    routineTimer.add(120.000000);
     // update component parameters for each repeat
     // setup some python lists for storing info about the debrief_mouse
-    debrief_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
     // keep track of which components have finished
     DEBRIEFComponents = [];
     DEBRIEFComponents.push(intro_text_5);
     DEBRIEFComponents.push(debrief_mouse);
-    DEBRIEFComponents.push(debrief_btn);
     
     for (const thisComponent of DEBRIEFComponents)
       if ('status' in thisComponent)
@@ -6692,7 +6623,7 @@ function DEBRIEFRoutineEachFrame() {
       intro_text_5.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 10.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (intro_text_5.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       intro_text_5.setAutoDraw(false);
     }
@@ -6706,7 +6637,7 @@ function DEBRIEFRoutineEachFrame() {
       debrief_mouse.mouseClock.reset();
       prevButtonState = debrief_mouse.getPressed();  // if button is down already this ISN'T a new click
       }
-    frameRemains = 10.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((debrief_mouse.status === PsychoJS.Status.STARTED || debrief_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       debrief_mouse.status = PsychoJS.Status.FINISHED;
   }
@@ -6715,38 +6646,11 @@ function DEBRIEFRoutineEachFrame() {
       if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
         prevButtonState = _mouseButtons;
         if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          for (const obj of [[debrief_btn]]) {
-            if (obj.contains(debrief_mouse)) {
-              gotValidClick = true;
-              debrief_mouse.clicked_name.push(obj.name)
-            }
-          }
-          if (gotValidClick === true) { // abort routine on response
-            continueRoutine = false;
-          }
+          // abort routine on response
+          continueRoutine = false;
         }
       }
     }
-    
-    // *debrief_btn* updates
-    if (t >= 0.5 && debrief_btn.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      debrief_btn.tStart = t;  // (not accounting for frame time here)
-      debrief_btn.frameNStart = frameN;  // exact frame index
-      
-      debrief_btn.setAutoDraw(true);
-    }
-
-    frameRemains = 10.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((debrief_btn.status === PsychoJS.Status.STARTED || debrief_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      debrief_btn.setAutoDraw(false);
-    }
-    if ((debrief_mouse.isPressedIn(debrief_btn) && (debrief_btn.status === PsychoJS.Status.STARTED))) {
-        continueRoutine = false;
-    }
-    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -6790,8 +6694,6 @@ function DEBRIEFRoutineEnd() {
     psychoJS.experiment.addData('debrief_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('debrief_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('debrief_mouse.rightButton', _mouseButtons[2]);
-    if (debrief_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('debrief_mouse.clicked_name', debrief_mouse.clicked_name[0]);}
     return Scheduler.Event.NEXT;
   };
 }
@@ -6833,8 +6735,6 @@ async function quitPsychoJS(message, isCompleted) {
   if (psychoJS.experiment.isEntryEmpty()) {
     psychoJS.experiment.nextEntry();
   }
-  
-  
   
   
   
