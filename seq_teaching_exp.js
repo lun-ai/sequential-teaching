@@ -406,138 +406,138 @@ psychoJS.start({
   expName: expName,
   expInfo: expInfo,
   resources: [
-    {'name': 'materials/merge_sort/imgs/compare_selected.png', 'path': 'materials/merge_sort/imgs/compare_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
-    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
-    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
-    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
-    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
-    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
     {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
-    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_test_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_test_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'},
-    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
-    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
-    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
-    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
-    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
-    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
     {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
-    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
-    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
-    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
-    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
-    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
-    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
-    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
-    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
     {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
-    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
+    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
+    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
     {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
+    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
+    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
+    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
+    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
+    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
+    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
+    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
+    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
+    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
+    {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
+    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
+    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
+    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
+    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
+    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
+    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
+    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
+    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
+    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
+    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
+    {'name': 'materials/merge_sort/imgs/compare_selected.png', 'path': 'materials/merge_sort/imgs/compare_selected.png'},
+    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
+    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
+    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
+    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
+    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
+    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
     {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
+    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_test_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_test_example.png'},
+    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
+    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
+    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
     {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
-    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
-    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
-    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
-    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
-    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
-    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
-    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
-    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
-    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
-    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
-    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
-    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
-    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
     {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
-    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
-    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
-    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
     {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
-    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'}
+    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
+    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
+    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
+    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
+    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
+    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'}
   ]
 });
 
@@ -1608,7 +1608,7 @@ async function experimentInit() {
     text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. You are given a PILE of fruits that is most likely UNORDERED and you can move fruits freely on the SKETCHBOARD in the middle\n\n3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT\n\n4. You can see the NUMBER OF COMPARISONS BOB uses as a reference and you have 240 SECS to SUBMIT!',
     font: 'Open Sans',
     units: undefined, 
-    pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
+    pos: [0.65, 0.2], height: 0.02,  wrapWidth: 0.4, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: -9.0 
   });
@@ -1699,7 +1699,7 @@ async function experimentInit() {
     name : 'sort_train_ex_1', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -16.0 
   });
@@ -1708,7 +1708,7 @@ async function experimentInit() {
     name : 'sort_train_ex_2', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -17.0 
   });
@@ -1717,7 +1717,7 @@ async function experimentInit() {
     name : 'sort_train_ex_3', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -18.0 
   });
@@ -1726,7 +1726,7 @@ async function experimentInit() {
     name : 'sort_train_ex_4', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -19.0 
   });
@@ -1735,7 +1735,7 @@ async function experimentInit() {
     name : 'sort_train_ex_5', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -20.0 
   });
@@ -1744,7 +1744,7 @@ async function experimentInit() {
     name : 'sort_train_ex_6', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -21.0 
   });
@@ -1753,7 +1753,7 @@ async function experimentInit() {
     name : 'sort_train_ex_7', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -22.0 
   });
@@ -1762,7 +1762,7 @@ async function experimentInit() {
     name : 'sort_train_ex_8', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -23.0 
   });
@@ -1771,7 +1771,7 @@ async function experimentInit() {
     name : 'sort_train_ex_9', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -24.0 
   });
@@ -1780,7 +1780,7 @@ async function experimentInit() {
     name : 'sort_train_ex_10', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -25.0 
   });
@@ -1789,7 +1789,7 @@ async function experimentInit() {
     name : 'sort_train_ex_11', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -26.0 
   });
@@ -1798,7 +1798,7 @@ async function experimentInit() {
     name : 'sort_train_ex_12', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -27.0 
   });
@@ -1978,7 +1978,7 @@ async function experimentInit() {
     name : 'sort_expl_ex_1', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -15.0 
   });
@@ -1987,7 +1987,7 @@ async function experimentInit() {
     name : 'sort_expl_ex_2', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -16.0 
   });
@@ -1996,7 +1996,7 @@ async function experimentInit() {
     name : 'sort_expl_ex_3', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -17.0 
   });
@@ -2005,7 +2005,7 @@ async function experimentInit() {
     name : 'sort_expl_ex_4', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -18.0 
   });
@@ -2014,7 +2014,7 @@ async function experimentInit() {
     name : 'sort_expl_ex_5', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -19.0 
   });
@@ -2023,7 +2023,7 @@ async function experimentInit() {
     name : 'sort_expl_ex_6', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -20.0 
   });
@@ -2032,7 +2032,7 @@ async function experimentInit() {
     name : 'sort_expl_ex_7', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -21.0 
   });
@@ -2041,7 +2041,7 @@ async function experimentInit() {
     name : 'sort_expl_ex_8', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -22.0 
   });
@@ -2050,7 +2050,7 @@ async function experimentInit() {
     name : 'sort_expl_ex_9', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -23.0 
   });
@@ -2059,7 +2059,7 @@ async function experimentInit() {
     name : 'sort_expl_ex_10', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -24.0 
   });
@@ -2068,7 +2068,7 @@ async function experimentInit() {
     name : 'sort_expl_ex_11', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -25.0 
   });
@@ -2077,7 +2077,7 @@ async function experimentInit() {
     name : 'sort_expl_ex_12', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -26.0 
   });
@@ -2208,7 +2208,7 @@ async function experimentInit() {
     text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. You are given a PILE of fruits that is most likely UNORDERED and you can move fruits freely on the SKETCHBOARD in the middle\n\n3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT\n\nYou have 300 SECS to SUBMIT!',
     font: 'Open Sans',
     units: undefined, 
-    pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
+    pos: [0.65, 0.2], height: 0.02,  wrapWidth: 0.4, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: -8.0 
   });
@@ -2299,7 +2299,7 @@ async function experimentInit() {
     name : 'sort_test_ex_1', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -15.0 
   });
@@ -2308,7 +2308,7 @@ async function experimentInit() {
     name : 'sort_test_ex_2', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -16.0 
   });
@@ -2317,7 +2317,7 @@ async function experimentInit() {
     name : 'sort_test_ex_3', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -17.0 
   });
@@ -2326,7 +2326,7 @@ async function experimentInit() {
     name : 'sort_test_ex_4', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -18.0 
   });
@@ -2335,7 +2335,7 @@ async function experimentInit() {
     name : 'sort_test_ex_5', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -19.0 
   });
@@ -2344,7 +2344,7 @@ async function experimentInit() {
     name : 'sort_test_ex_6', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -20.0 
   });
@@ -2353,7 +2353,7 @@ async function experimentInit() {
     name : 'sort_test_ex_7', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -21.0 
   });
@@ -2362,7 +2362,7 @@ async function experimentInit() {
     name : 'sort_test_ex_8', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -22.0 
   });
@@ -2371,7 +2371,7 @@ async function experimentInit() {
     name : 'sort_test_ex_9', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -23.0 
   });
@@ -2380,7 +2380,7 @@ async function experimentInit() {
     name : 'sort_test_ex_10', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -24.0 
   });
@@ -2389,7 +2389,7 @@ async function experimentInit() {
     name : 'sort_test_ex_11', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -25.0 
   });
@@ -2398,7 +2398,7 @@ async function experimentInit() {
     name : 'sort_test_ex_12', units : undefined, 
     image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -26.0 
   });
@@ -4801,17 +4801,29 @@ function SORT_TRAINRoutineBegin(snapshot) {
     sort_train_res.setText('');
     sort_train_board.setImage('materials/merge_sort/imgs/purple_diamond.png');
     sort_train_scale.setImage(scaleEqPath);
+    sort_train_ex_1.setOpacity(0.0);
     sort_train_ex_1.setPos([(- 0.25), 0.3]);
+    sort_train_ex_2.setOpacity(0.0);
     sort_train_ex_2.setPos([(- 0.2), 0.3]);
+    sort_train_ex_3.setOpacity(0.0);
     sort_train_ex_3.setPos([(- 0.15), 0.3]);
+    sort_train_ex_4.setOpacity(0.0);
     sort_train_ex_4.setPos([(- 0.1), 0.3]);
+    sort_train_ex_5.setOpacity(0.0);
     sort_train_ex_5.setPos([(- 0.05), 0.3]);
+    sort_train_ex_6.setOpacity(0.0);
     sort_train_ex_6.setPos([0.0, 0.3]);
+    sort_train_ex_7.setOpacity(0.0);
     sort_train_ex_7.setPos([0.05, 0.3]);
+    sort_train_ex_8.setOpacity(0.0);
     sort_train_ex_8.setPos([0.1, 0.3]);
+    sort_train_ex_9.setOpacity(0.0);
     sort_train_ex_9.setPos([0.15, 0.3]);
+    sort_train_ex_10.setOpacity(0.0);
     sort_train_ex_10.setPos([0.2, 0.3]);
+    sort_train_ex_11.setOpacity(0.0);
     sort_train_ex_11.setPos([0.25, 0.3]);
+    sort_train_ex_12.setOpacity(0.0);
     sort_train_ex_12.setPos([0.3, 0.3]);
     // setup some python lists for storing info about the sort_train_mouse
     gotValidClick = false; // until a click is received
@@ -4835,6 +4847,7 @@ function SORT_TRAINRoutineBegin(snapshot) {
     
     sort_train_hint.text = ((("Bob uses " + sort_train_compare_limit.toString()) + " comparisons\n") + "You have used: 0");
     movingItem = null;
+    
     x = sort_train_board.getPos()[0];
     y = sort_train_board.getPos()[1];
     w = sort_train_board.getSize()[0];
@@ -5251,7 +5264,7 @@ function SORT_TRAINRoutineEachFrame() {
     if ((items.length === 0)) {
         items = enableImageComponents(SORT_TRAINComponents, sort_train_labels, sort_train_path_base);
         for (var u = 0, v = items.length; (u < v); u += 1) {
-            items[u].refresh();
+            items[u].opacity = 1.0;
         }
         movingItem = items[0];
     }
@@ -5405,17 +5418,29 @@ function SORT_EXPLRoutineBegin(snapshot) {
     sort_expl_res.setText('');
     sort_expl_board.setImage('materials/merge_sort/imgs/purple_diamond.png');
     sort_expl_scale.setImage(scaleEqPath);
+    sort_expl_ex_1.setOpacity(0.0);
     sort_expl_ex_1.setPos([(- 0.25), 0.3]);
+    sort_expl_ex_2.setOpacity(0.0);
     sort_expl_ex_2.setPos([(- 0.2), 0.3]);
+    sort_expl_ex_3.setOpacity(0.0);
     sort_expl_ex_3.setPos([(- 0.15), 0.3]);
+    sort_expl_ex_4.setOpacity(0.0);
     sort_expl_ex_4.setPos([(- 0.1), 0.3]);
+    sort_expl_ex_5.setOpacity(0.0);
     sort_expl_ex_5.setPos([(- 0.05), 0.3]);
+    sort_expl_ex_6.setOpacity(0.0);
     sort_expl_ex_6.setPos([0.0, 0.3]);
+    sort_expl_ex_7.setOpacity(0.0);
     sort_expl_ex_7.setPos([0.05, 0.3]);
+    sort_expl_ex_8.setOpacity(0.0);
     sort_expl_ex_8.setPos([0.1, 0.3]);
+    sort_expl_ex_9.setOpacity(0.0);
     sort_expl_ex_9.setPos([0.15, 0.3]);
+    sort_expl_ex_10.setOpacity(0.0);
     sort_expl_ex_10.setPos([0.2, 0.3]);
+    sort_expl_ex_11.setOpacity(0.0);
     sort_expl_ex_11.setPos([0.25, 0.3]);
+    sort_expl_ex_12.setOpacity(0.0);
     sort_expl_ex_12.setPos([0.3, 0.3]);
     // setup some python lists for storing info about the sort_expl_mouse
     gotValidClick = false; // until a click is received
@@ -5868,6 +5893,7 @@ function SORT_EXPLRoutineEachFrame() {
         items = enableImageComponents(SORT_EXPLComponents, sort_expl_labels, sort_expl_path_base);
         for (var i = 0, _pj_a = items.length; (i < _pj_a); i += 1) {
             items[i].pos = positions[i];
+            items[i].opacity = 1.0;
         }
         movingItem = items[0];
     }
@@ -6181,17 +6207,29 @@ function SORT_TESTRoutineBegin(snapshot) {
     sort_test_res.setText('');
     sort_test_board.setImage('materials/merge_sort/imgs/purple_diamond.png');
     sort_test_scale.setImage(scaleEqPath);
+    sort_test_ex_1.setOpacity(0.0);
     sort_test_ex_1.setPos([(- 0.25), 0.3]);
+    sort_test_ex_2.setOpacity(0.0);
     sort_test_ex_2.setPos([(- 0.2), 0.3]);
+    sort_test_ex_3.setOpacity(0.0);
     sort_test_ex_3.setPos([(- 0.15), 0.3]);
+    sort_test_ex_4.setOpacity(0.0);
     sort_test_ex_4.setPos([(- 0.1), 0.3]);
+    sort_test_ex_5.setOpacity(0.0);
     sort_test_ex_5.setPos([(- 0.05), 0.3]);
+    sort_test_ex_6.setOpacity(0.0);
     sort_test_ex_6.setPos([0.0, 0.3]);
+    sort_test_ex_7.setOpacity(0.0);
     sort_test_ex_7.setPos([0.05, 0.3]);
+    sort_test_ex_8.setOpacity(0.0);
     sort_test_ex_8.setPos([0.1, 0.3]);
+    sort_test_ex_9.setOpacity(0.0);
     sort_test_ex_9.setPos([0.15, 0.3]);
+    sort_test_ex_10.setOpacity(0.0);
     sort_test_ex_10.setPos([0.2, 0.3]);
+    sort_test_ex_11.setOpacity(0.0);
     sort_test_ex_11.setPos([0.25, 0.3]);
+    sort_test_ex_12.setOpacity(0.0);
     sort_test_ex_12.setPos([0.3, 0.3]);
     // setup some python lists for storing info about the sort_test_mouse
     gotValidClick = false; // until a click is received
@@ -6611,6 +6649,9 @@ function SORT_TESTRoutineEachFrame() {
     frameCnt = (frameCnt + 1);
     if ((items.length === 0)) {
         items = enableImageComponents(SORT_TESTComponents, sort_test_labels, sort_test_path_base);
+        for (var i = 0, _pj_a = items.length; (i < _pj_a); i += 1) {
+            items[i].opacity = 1.0;
+        }
         movingItem = items[0];
     }
     
