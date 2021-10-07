@@ -5,9 +5,5 @@ __pycache__/
 env/
 node_modules
 /*.py
-incremental/*legacy-browsers.js
-incremental/*.py
-decremental/*legacy-browsers.js
-decremental/*.py
 /*.png
 /*legacy-browsers.js
