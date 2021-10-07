@@ -4,7 +4,10 @@ lib/
 __pycache__/
 env/
 node_modules
-*.py
+/*.py
+incremental/*legacy-browsers.js
+incremental/*.py
+decremental/*legacy-browsers.js
+decremental/*.py
 /*.png
-*legacy-browsers.js
-*.js
+/*legacy-browsers.js
