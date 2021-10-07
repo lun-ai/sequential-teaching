@@ -80,13 +80,13 @@ var rightValue;
 function comparePickedItems(values, labels, leftInput, rightInput) {
     var leftIdx, leftValue, rightIdx, rightValue;
     if (((leftInput.text.length === 0) || (rightInput.text.length === 0))) {
-        return 1;
+        return [1,"",""];
     } else {
         if (((leftInput.text.length > 1) || (rightInput.text.length > 1))) {
-            return 2;
+            return [2,"",""];
         } else {
             if (((_pj.in_es6("'"+leftInput.text + "'", labels) === false) || (_pj.in_es6("'"+rightInput.text + "'", labels)) === false)) {
-                return 3;
+                return [3,"",""];
             }
         }
     }
@@ -95,12 +95,12 @@ function comparePickedItems(values, labels, leftInput, rightInput) {
     leftValue = parseInt(values[leftIdx]);
     rightValue = parseInt(values[rightIdx]);
     if ((leftValue > rightValue)) {
-        return 4;
+        return [4,leftInput.text,rightInput.text];
     } else {
         if ((leftValue < rightValue)) {
-            return 5;
+            return [5,leftInput.text,rightInput.text];
         } else {
-            return 6;
+            return [6,leftInput.text,rightInput.text];
         }
     }
 }
@@ -120,37 +120,45 @@ function compare(scale, listValues, labels, compareBtn, instr, scaleLeft, scaleR
     var state;
     state = comparePickedItems(listValues, labels, scaleLeft, scaleRight);
     timeSleep(sleepTime);
-    if ((state > 3)) {
-        instr.text = "";
-        instr.color = white;
-        if ((state === 4)) {
+    if ((state[0] > 3)) {
+        instr.color = green;
+        if ((state[0] === 4)) {
+            instr.text = state[1] + " > " + state[2];
+            instr.height = 0.05;
             scale.image = scaleGtPath;
         } else {
-            if ((state === 5)) {
+            if ((state[0] === 5)) {
+                instr.text = state[1] + " < " + state[2];
+                instr.height = 0.05;
                 scale.image = scaleLtPath;
             } else {
+                instr.text = state[1] + " = " + state[2];
+                instr.height = 0.05;
                 scale.image = scaleEqPath;
             }
         }
         compareBtn.image = "materials/merge_sort/imgs/compare_selected.png";
-        return 1;
+        return [1,state[1],state[2]];
     } else {
-        if ((state === 1)) {
+        if ((state[0] === 1)) {
             instr.text = "Please provide labels in correct format for both LHS and RHS";
             instr.color = red;
+            instr.height = 0.02;
         } else {
-            if ((state === 2)) {
+            if ((state[0] === 2)) {
                 instr.text = "Please enter labels as single capitals";
                 instr.color = red;
+                instr.height = 0.02;
             } else {
-                if ((state === 3)) {
+                if ((state[0] === 3)) {
                     instr.text = "Please enter an existing item";
                     instr.color = red;
+                    instr.height = 0.02;
                 }
             }
         }
     }
-    return 0;
+    return [0,state[1],state[2]];
 }
 
 
@@ -360,12 +368,15 @@ psychoJS.scheduleCondition(function() { return (psychoJS.gui.dialogComponent.but
 // flowScheduler gets run if the participants presses OK
 flowScheduler.add(updateInfo); // add timeStamp
 flowScheduler.add(experimentInit);
-flowScheduler.add(INTRORoutineBegin());
-flowScheduler.add(INTRORoutineEachFrame());
-flowScheduler.add(INTRORoutineEnd());
 flowScheduler.add(BACKGROUNDRoutineBegin());
 flowScheduler.add(BACKGROUNDRoutineEachFrame());
 flowScheduler.add(BACKGROUNDRoutineEnd());
+flowScheduler.add(INTRORoutineBegin());
+flowScheduler.add(INTRORoutineEachFrame());
+flowScheduler.add(INTRORoutineEnd());
+flowScheduler.add(HINTRoutineBegin());
+flowScheduler.add(HINTRoutineEachFrame());
+flowScheduler.add(HINTRoutineEnd());
 flowScheduler.add(MERGE_INTRORoutineBegin());
 flowScheduler.add(MERGE_INTRORoutineEachFrame());
 flowScheduler.add(MERGE_INTRORoutineEnd());
@@ -394,6 +405,9 @@ const TEST_2LoopScheduler = new Scheduler(psychoJS);
 flowScheduler.add(TEST_2LoopBegin(TEST_2LoopScheduler));
 flowScheduler.add(TEST_2LoopScheduler);
 flowScheduler.add(TEST_2LoopEnd);
+flowScheduler.add(EXP_CHECKRoutineBegin());
+flowScheduler.add(EXP_CHECKRoutineEachFrame());
+flowScheduler.add(EXP_CHECKRoutineEnd());
 flowScheduler.add(DEBRIEFRoutineBegin());
 flowScheduler.add(DEBRIEFRoutineEachFrame());
 flowScheduler.add(DEBRIEFRoutineEnd());
@@ -406,138 +420,143 @@ psychoJS.start({
   expName: expName,
   expInfo: expInfo,
   resources: [
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
-    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
-    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
-    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
-    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
     {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
-    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
-    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
-    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
-    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
-    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
     {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
-    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
-    {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
-    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
-    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
-    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
-    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
-    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
-    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
-    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
-    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
-    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
-    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
-    {'name': 'materials/merge_sort/imgs/compare_selected.png', 'path': 'materials/merge_sort/imgs/compare_selected.png'},
-    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
-    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
-    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
-    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
-    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
-    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
-    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
-    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_test_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_test_example.png'},
-    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
-    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
-    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
-    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
-    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
-    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
-    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
     {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
-    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
+    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
+    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
+    {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
+    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
     {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
+    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
+    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
+    {'name': 'materials/imgs/other_gender.png', 'path': 'materials/imgs/other_gender.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
+    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
+    {'name': 'materials/imgs/other_gender_selected.png', 'path': 'materials/imgs/other_gender_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
-    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
-    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
+    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
+    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
+    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
+    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
+    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
+    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
+    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
+    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
+    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
+    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
+    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
+    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
     {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
+    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
+    {'name': 'materials/imgs/prefer_not_to_say_selected.png', 'path': 'materials/imgs/prefer_not_to_say_selected.png'},
+    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
+    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/compare_selected.png', 'path': 'materials/merge_sort/imgs/compare_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
+    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
+    {'name': 'materials/imgs/arrow.png', 'path': 'materials/imgs/arrow.png'},
+    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'},
     {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'}
+    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
+    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
+    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_test_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_test_example.png'},
+    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
+    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
+    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
+    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
+    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
+    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
+    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
+    {'name': 'materials/imgs/prefer_not_to_say.png', 'path': 'materials/imgs/prefer_not_to_say.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
+    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
+    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
+    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
+    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
+    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'}
   ]
 });
 
@@ -565,17 +584,11 @@ async function updateInfo() {
 }
 
 
-var INTROClock;
-var intro_text;
-var alice;
-var bob;
-var door_1;
-var door_2;
-var intro_btn;
-var intro_mouse;
 var BACKGROUNDClock;
 var background_instr;
 var gender;
+var prefer_not_to_say;
+var other_gender;
 var female;
 var male;
 var age;
@@ -595,6 +608,23 @@ var doctorate;
 var other;
 var background_btn;
 var background_mouse;
+var INTROClock;
+var intro_text;
+var alice;
+var bob;
+var door_1;
+var door_2;
+var intro_btn;
+var intro_mouse;
+var HINTClock;
+var intro_text_8;
+var arrow;
+var alice_5;
+var bob_5;
+var door_8;
+var door_9;
+var hint_btn;
+var hint_mouse;
 var MERGE_INTROClock;
 var intro_text_2;
 var alice_2;
@@ -746,18 +776,235 @@ var sort_test_btn;
 var sort_test_compare;
 var sort_test_mouse;
 var sort_test_timer;
+var EXP_CHECKClock;
+var exp_check_question;
+var exp_check_res;
+var exp_check_btn;
+var exp_check_mouse;
 var DEBRIEFClock;
 var intro_text_5;
 var debrief_mouse;
 var globalClock;
 var routineTimer;
 async function experimentInit() {
+  // Initialize components for Routine "BACKGROUND"
+  BACKGROUNDClock = new util.Clock();
+  background_instr = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'background_instr',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, 0.4], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -3.0 
+  });
+  
+  gender = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'gender',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, 0.3], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -4.0 
+  });
+  
+  prefer_not_to_say = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'prefer_not_to_say', units : undefined, 
+    image : 'materials/imgs/prefer_not_to_say.png', mask : undefined,
+    ori : 0.0, pos : [0.3, 0.2], size : [0.12, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -5.0 
+  });
+  other_gender = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'other_gender', units : undefined, 
+    image : 'materials/imgs/other_gender.png', mask : undefined,
+    ori : 0.0, pos : [0.1, 0.2], size : [0.12, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -6.0 
+  });
+  female = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'female', units : undefined, 
+    image : 'materials/imgs/female.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.3), 0.2], size : [0.12, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -7.0 
+  });
+  male = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'male', units : undefined, 
+    image : 'materials/imgs/male.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.1), 0.2], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -8.0 
+  });
+  age = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'age',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, 0.1], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -9.0 
+  });
+  
+  _18_24 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : '_18_24', units : undefined, 
+    image : 'materials/imgs/_18_24.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.5), 0], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -10.0 
+  });
+  _25_34 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : '_25_34', units : undefined, 
+    image : 'materials/imgs/_25_34.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.3), 0], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -11.0 
+  });
+  _35_44 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : '_35_44', units : undefined, 
+    image : 'materials/imgs/_35_44.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.1), 0], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -12.0 
+  });
+  _45_54 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : '_45_54', units : undefined, 
+    image : 'materials/imgs/_45_54.png', mask : undefined,
+    ori : 0.0, pos : [0.1, 0], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -13.0 
+  });
+  _55_64 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : '_55_64', units : undefined, 
+    image : 'materials/imgs/_55_64.png', mask : undefined,
+    ori : 0.0, pos : [0.3, 0], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -14.0 
+  });
+  _65 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : '_65', units : undefined, 
+    image : 'materials/imgs/_65.png', mask : undefined,
+    ori : 0.0, pos : [0.5, 0], size : [0.1, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -15.0 
+  });
+  education = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'education',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, (- 0.1)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -16.0 
+  });
+  
+  less_than_high_school = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'less_than_high_school', units : undefined, 
+    image : 'materials/imgs/less_than_high_school.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.75), (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -17.0 
+  });
+  high_school_equivalent = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'high_school_equivalent', units : undefined, 
+    image : 'materials/imgs/high_school_equivalent.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.5), (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -18.0 
+  });
+  college = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'college', units : undefined, 
+    image : 'materials/imgs/college.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.25), (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -19.0 
+  });
+  bachelor = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'bachelor', units : undefined, 
+    image : 'materials/imgs/bachelor.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -20.0 
+  });
+  graduate = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'graduate', units : undefined, 
+    image : 'materials/imgs/graduate.png', mask : undefined,
+    ori : 0.0, pos : [0.25, (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -21.0 
+  });
+  doctorate = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'doctorate', units : undefined, 
+    image : 'materials/imgs/doctorate.png', mask : undefined,
+    ori : 0.0, pos : [0.5, (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -22.0 
+  });
+  other = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'other', units : undefined, 
+    image : 'materials/imgs/other.png', mask : undefined,
+    ori : 0.0, pos : [0.75, (- 0.2)], size : [0.2, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -23.0 
+  });
+  background_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'background_btn', units : undefined, 
+    image : 'materials/imgs/waiting.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.4)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -24.0 
+  });
+  background_mouse = new core.Mouse({
+    win: psychoJS.window,
+  });
+  background_mouse.mouseClock = new util.Clock();
   // Initialize components for Routine "INTRO"
   INTROClock = new util.Clock();
   intro_text = new visual.TextStim({
     win: psychoJS.window,
     name: 'intro_text',
-    text: 'Today, you will learn how to help our robot trader friends ALICE & BOB to package fruits for shipment. \n\nYou will visit two warehouses "rooms", in which you will learn individual steps of the process from ALICE and BOB. \n\nIn the end, you can put the skills learned in the rooms together and complete the whole process by yourself!',
+    text: 'Today, you will learn how to help our robot trader friends ALICE & BOB to package fruits for shipment. \n\nYou will visit two warehouses "rooms" and perform TWO tasks. ALICE and BOB will first help you learn these tasks and then test your knowledge afterwards.',
     font: 'Open Sans',
     units: undefined, 
     pos: [0, (- 0.15)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
@@ -814,200 +1061,77 @@ async function experimentInit() {
     win: psychoJS.window,
   });
   intro_mouse.mouseClock = new util.Clock();
-  // Initialize components for Routine "BACKGROUND"
-  BACKGROUNDClock = new util.Clock();
-  background_instr = new visual.TextStim({
+  // Initialize components for Routine "HINT"
+  HINTClock = new util.Clock();
+  intro_text_8 = new visual.TextStim({
     win: psychoJS.window,
-    name: 'background_instr',
-    text: '',
+    name: 'intro_text_8',
+    text: '*** Try to think about the CONNECTION between the two tasks and APPLY your knowledge obtained in one task for the other task ***',
     font: 'Open Sans',
     units: undefined, 
-    pos: [0, 0.4], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    pos: [0, (- 0.15)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
-    depth: -3.0 
+    depth: 0.0 
   });
   
-  gender = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'gender',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0, 0.3], height: 0.03,  wrapWidth: undefined, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -4.0 
-  });
-  
-  female = new visual.ImageStim({
+  arrow = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'female', units : undefined, 
-    image : 'materials/imgs/female.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.15), 0.2], size : [0.12, 0.07],
+    name : 'arrow', units : undefined, 
+    image : 'materials/imgs/arrow.png', mask : undefined,
+    ori : 0.0, pos : [0, 0.2], size : [0.3, 0.2],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -1.0 
+  });
+  alice_5 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'alice_5', units : undefined, 
+    image : 'materials/merge_sort/imgs/alice.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.3), 0.2], size : [0.2, 0.2],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -2.0 
+  });
+  bob_5 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'bob_5', units : undefined, 
+    image : 'materials/merge_sort/imgs/bob.png', mask : undefined,
+    ori : 0.0, pos : [0.3, 0.2], size : [0.2, 0.2],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -3.0 
+  });
+  door_8 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'door_8', units : undefined, 
+    image : 'materials/merge_sort/imgs/door.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.5), 0.2], size : [0.15, 0.3],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -4.0 
+  });
+  door_9 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'door_9', units : undefined, 
+    image : 'materials/merge_sort/imgs/door.png', mask : undefined,
+    ori : 0.0, pos : [0.5, 0.2], size : [0.15, 0.3],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -5.0 
   });
-  male = new visual.ImageStim({
+  hint_btn = new visual.ImageStim({
     win : psychoJS.window,
-    name : 'male', units : undefined, 
-    image : 'materials/imgs/male.png', mask : undefined,
-    ori : 0.0, pos : [0.15, 0.2], size : [0.1, 0.07],
+    name : 'hint_btn', units : undefined, 
+    image : 'materials/imgs/continue.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -6.0 
   });
-  age = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'age',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0, 0.1], height: 0.03,  wrapWidth: undefined, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -7.0 
-  });
-  
-  _18_24 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : '_18_24', units : undefined, 
-    image : 'materials/imgs/_18_24.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.5), 0], size : [0.1, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -8.0 
-  });
-  _25_34 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : '_25_34', units : undefined, 
-    image : 'materials/imgs/_25_34.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.3), 0], size : [0.1, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -9.0 
-  });
-  _35_44 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : '_35_44', units : undefined, 
-    image : 'materials/imgs/_35_44.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.1), 0], size : [0.1, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -10.0 
-  });
-  _45_54 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : '_45_54', units : undefined, 
-    image : 'materials/imgs/_45_54.png', mask : undefined,
-    ori : 0.0, pos : [0.1, 0], size : [0.1, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -11.0 
-  });
-  _55_64 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : '_55_64', units : undefined, 
-    image : 'materials/imgs/_55_64.png', mask : undefined,
-    ori : 0.0, pos : [0.3, 0], size : [0.1, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -12.0 
-  });
-  _65 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : '_65', units : undefined, 
-    image : 'materials/imgs/_65.png', mask : undefined,
-    ori : 0.0, pos : [0.5, 0], size : [0.1, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -13.0 
-  });
-  education = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'education',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0, (- 0.1)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -14.0 
-  });
-  
-  less_than_high_school = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'less_than_high_school', units : undefined, 
-    image : 'materials/imgs/less_than_high_school.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.75), (- 0.2)], size : [0.2, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -15.0 
-  });
-  high_school_equivalent = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'high_school_equivalent', units : undefined, 
-    image : 'materials/imgs/high_school_equivalent.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.5), (- 0.2)], size : [0.2, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -16.0 
-  });
-  college = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'college', units : undefined, 
-    image : 'materials/imgs/college.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.25), (- 0.2)], size : [0.2, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -17.0 
-  });
-  bachelor = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'bachelor', units : undefined, 
-    image : 'materials/imgs/bachelor.png', mask : undefined,
-    ori : 0.0, pos : [0, (- 0.2)], size : [0.2, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -18.0 
-  });
-  graduate = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'graduate', units : undefined, 
-    image : 'materials/imgs/graduate.png', mask : undefined,
-    ori : 0.0, pos : [0.25, (- 0.2)], size : [0.2, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -19.0 
-  });
-  doctorate = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'doctorate', units : undefined, 
-    image : 'materials/imgs/doctorate.png', mask : undefined,
-    ori : 0.0, pos : [0.5, (- 0.2)], size : [0.2, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -20.0 
-  });
-  other = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'other', units : undefined, 
-    image : 'materials/imgs/other.png', mask : undefined,
-    ori : 0.0, pos : [0.75, (- 0.2)], size : [0.2, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -21.0 
-  });
-  background_btn = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'background_btn', units : undefined, 
-    image : 'materials/imgs/waiting.png', mask : undefined,
-    ori : 0.0, pos : [0, (- 0.4)], size : [0.24, 0.1],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -22.0 
-  });
-  background_mouse = new core.Mouse({
+  hint_mouse = new core.Mouse({
     win: psychoJS.window,
   });
-  background_mouse.mouseClock = new util.Clock();
+  hint_mouse.mouseClock = new util.Clock();
   // Initialize components for Routine "MERGE_INTRO"
   MERGE_INTROClock = new util.Clock();
   intro_text_2 = new visual.TextStim({
@@ -1069,9 +1193,9 @@ async function experimentInit() {
     text: '',
     font: 'Open Sans',
     units: undefined, 
-    pos: [(- 0.65), 0.45], height: 0.02,  wrapWidth: 0.3, ori: 0.0,
+    pos: [(- 0.65), 0.45], height: 1.0,  wrapWidth: 0.3, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
-    depth: -6.0 
+    depth: -7.0 
   });
   
   merge_ans_instr = new visual.TextStim({
@@ -1082,7 +1206,7 @@ async function experimentInit() {
     units: undefined, 
     pos: [0, (- 0.15)], height: 0.03,  wrapWidth: 1.5, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
-    depth: -7.0 
+    depth: -8.0 
   });
   
   merge_train_instr = new visual.TextStim({
@@ -1093,7 +1217,7 @@ async function experimentInit() {
     units: undefined, 
     pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
-    depth: -8.0 
+    depth: -9.0 
   });
   
   merge_train_scale_right = new visual.TextBox({
@@ -1111,7 +1235,7 @@ async function experimentInit() {
     editable: true,
     multiline: true,
     anchor: 'top-center',
-    depth: -9.0 
+    depth: -10.0 
   });
   
   merge_train_scale_left = new visual.TextBox({
@@ -1129,7 +1253,7 @@ async function experimentInit() {
     editable: true,
     multiline: true,
     anchor: 'top-center',
-    depth: -10.0 
+    depth: -11.0 
   });
   
   merge_train_sep = new visual.ImageStim({
@@ -1139,7 +1263,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, (- 0.11)], size : [1.5, 0.005],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -11.0 
+    texRes : 128.0, interpolate : true, depth : -12.0 
   });
   merge_train = new visual.ImageStim({
     win : psychoJS.window,
@@ -1148,7 +1272,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0.2], size : [0.8, 0.4],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -12.0 
+    texRes : 128.0, interpolate : true, depth : -13.0 
   });
   merge_train_mc_1 = new visual.ImageStim({
     win : psychoJS.window,
@@ -1157,7 +1281,7 @@ async function experimentInit() {
     ori : 0.0, pos : [(- 0.3), (- 0.25)], size : [0.7, 0.1],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -13.0 
+    texRes : 128.0, interpolate : true, depth : -14.0 
   });
   merge_train_mc_2 = new visual.ImageStim({
     win : psychoJS.window,
@@ -1166,7 +1290,7 @@ async function experimentInit() {
     ori : 0.0, pos : [(- 0.3), (- 0.4)], size : [0.7, 0.1],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -14.0 
+    texRes : 128.0, interpolate : true, depth : -15.0 
   });
   merge_train_scale = new visual.ImageStim({
     win : psychoJS.window,
@@ -1175,7 +1299,7 @@ async function experimentInit() {
     ori : 0.0, pos : [(- 0.65), 0.15], size : [0.3, 0.3],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -15.0 
+    texRes : 128.0, interpolate : true, depth : -16.0 
   });
   merge_train_btn_1 = new visual.ImageStim({
     win : psychoJS.window,
@@ -1184,7 +1308,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0.5, (- 0.25)], size : [0.24, 0.1],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -16.0 
+    texRes : 128.0, interpolate : true, depth : -17.0 
   });
   merge_train_btn_2 = new visual.ImageStim({
     win : psychoJS.window,
@@ -1193,7 +1317,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0.5, (- 0.4)], size : [0.24, 0.1],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -17.0 
+    texRes : 128.0, interpolate : true, depth : -18.0 
   });
   merge_train_compare = new visual.ImageStim({
     win : psychoJS.window,
@@ -1202,7 +1326,7 @@ async function experimentInit() {
     ori : 0.0, pos : [(- 0.65), (- 0.05)], size : [0.16, 0.07],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -18.0 
+    texRes : 128.0, interpolate : true, depth : -19.0 
   });
   merge_train_mouse = new core.Mouse({
     win: psychoJS.window,
@@ -1216,7 +1340,7 @@ async function experimentInit() {
     units: undefined, 
     pos: [0.65, (- 0.05)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('orange'),  opacity: undefined,
-    depth: -20.0 
+    depth: -21.0 
   });
   
   // Initialize components for Routine "MERGE_EXPL"
@@ -1384,7 +1508,7 @@ async function experimentInit() {
     text: '',
     font: 'Open Sans',
     units: undefined, 
-    pos: [(- 0.65), 0.45], height: 0.02,  wrapWidth: 0.3, ori: 0.0,
+    pos: [(- 0.65), 0.45], height: 1.0,  wrapWidth: 0.3, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: -4.0 
   });
@@ -1586,7 +1710,7 @@ async function experimentInit() {
     text: '',
     font: 'Open Sans',
     units: undefined, 
-    pos: [(- 0.65), 0.45], height: 0.02,  wrapWidth: 0.3, ori: 0.0,
+    pos: [(- 0.65), 0.45], height: 1.0,  wrapWidth: 0.3, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: -7.0 
   });
@@ -1605,7 +1729,7 @@ async function experimentInit() {
   sort_train_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'sort_train_instr',
-    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. You are given a PILE of fruits that is most likely UNORDERED and you can move fruits freely on the SKETCHBOARD in the middle\n\n3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT\n\n4. You can see the NUMBER OF COMPARISONS BOB uses as a reference and you have 240 SECS to SUBMIT!',
+    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. You are given a PILE of fruits that is most likely UNORDERED and you can move fruits freely on the MONITOR in the middle\n\n3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT\n\n4. You can see the NUMBER OF COMPARISONS BOB uses as a reference and you have 240 SECS to SUBMIT!',
     font: 'Open Sans',
     units: undefined, 
     pos: [0.65, 0.2], height: 0.02,  wrapWidth: 0.4, ori: 0.0,
@@ -1854,9 +1978,9 @@ async function experimentInit() {
     text: '',
     font: 'Open Sans',
     units: undefined, 
-    pos: [(- 0.65), 0.45], height: 0.02,  wrapWidth: 0.3, ori: 0.0,
+    pos: [(- 0.65), 0.45], height: 1.0,  wrapWidth: 0.3, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
-    depth: -5.0 
+    depth: -6.0 
   });
   
   sort_expl_feedback_1 = new visual.TextStim({
@@ -1867,7 +1991,7 @@ async function experimentInit() {
     units: undefined, 
     pos: [(- 0.25), (- 0.18)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
-    depth: -6.0 
+    depth: -7.0 
   });
   
   sort_expl_feedback_2 = new visual.TextStim({
@@ -1878,18 +2002,18 @@ async function experimentInit() {
     units: undefined, 
     pos: [(- 0.25), (- 0.25)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
-    depth: -7.0 
+    depth: -8.0 
   });
   
   sort_expl_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'sort_expl_instr',
-    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. READ the feedback and CHECK the provided answer with yours\n\n3. You can move fruits freely on the SKETCHBOARD in the middle to understand the answer and CONTINUE if you are ready\n\nYou have 60 SECS to spare!',
+    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. READ the feedback and CHECK the provided answer with yours\n\n3. You can move fruits freely on the MONITOR in the middle to understand the answer and CONTINUE if you are ready\n\nYou have 60 SECS to spare!',
     font: 'Open Sans',
     units: undefined, 
     pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
-    depth: -8.0 
+    depth: -9.0 
   });
   
   sort_expl_scale_right = new visual.TextBox({
@@ -1907,7 +2031,7 @@ async function experimentInit() {
     editable: true,
     multiline: true,
     anchor: 'top-center',
-    depth: -9.0 
+    depth: -10.0 
   });
   
   sort_expl_scale_left = new visual.TextBox({
@@ -1925,7 +2049,7 @@ async function experimentInit() {
     editable: true,
     multiline: true,
     anchor: 'top-center',
-    depth: -10.0 
+    depth: -11.0 
   });
   
   sort_expl_res = new visual.TextBox({
@@ -1943,7 +2067,7 @@ async function experimentInit() {
     editable: false,
     multiline: true,
     anchor: 'top-center',
-    depth: -11.0 
+    depth: -12.0 
   });
   
   sort_expl_sep = new visual.ImageStim({
@@ -1953,7 +2077,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, (- 0.15)], size : [1.5, 0.005],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -12.0 
+    texRes : 128.0, interpolate : true, depth : -13.0 
   });
   sort_expl_board = new visual.ImageStim({
     win : psychoJS.window,
@@ -1962,7 +2086,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0.2], size : [0.8, 0.5],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -13.0 
+    texRes : 128.0, interpolate : true, depth : -14.0 
   });
   sort_expl_scale = new visual.ImageStim({
     win : psychoJS.window,
@@ -1971,7 +2095,7 @@ async function experimentInit() {
     ori : 0.0, pos : [(- 0.65), 0.15], size : [0.3, 0.3],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -14.0 
+    texRes : 128.0, interpolate : true, depth : -15.0 
   });
   sort_expl_ex_1 = new visual.ImageStim({
     win : psychoJS.window,
@@ -1980,7 +2104,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -15.0 
+    texRes : 128.0, interpolate : true, depth : -16.0 
   });
   sort_expl_ex_2 = new visual.ImageStim({
     win : psychoJS.window,
@@ -1989,7 +2113,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -16.0 
+    texRes : 128.0, interpolate : true, depth : -17.0 
   });
   sort_expl_ex_3 = new visual.ImageStim({
     win : psychoJS.window,
@@ -1998,7 +2122,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -17.0 
+    texRes : 128.0, interpolate : true, depth : -18.0 
   });
   sort_expl_ex_4 = new visual.ImageStim({
     win : psychoJS.window,
@@ -2007,7 +2131,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -18.0 
+    texRes : 128.0, interpolate : true, depth : -19.0 
   });
   sort_expl_ex_5 = new visual.ImageStim({
     win : psychoJS.window,
@@ -2016,7 +2140,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -19.0 
+    texRes : 128.0, interpolate : true, depth : -20.0 
   });
   sort_expl_ex_6 = new visual.ImageStim({
     win : psychoJS.window,
@@ -2025,7 +2149,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -20.0 
+    texRes : 128.0, interpolate : true, depth : -21.0 
   });
   sort_expl_ex_7 = new visual.ImageStim({
     win : psychoJS.window,
@@ -2034,7 +2158,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -21.0 
+    texRes : 128.0, interpolate : true, depth : -22.0 
   });
   sort_expl_ex_8 = new visual.ImageStim({
     win : psychoJS.window,
@@ -2043,7 +2167,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -22.0 
+    texRes : 128.0, interpolate : true, depth : -23.0 
   });
   sort_expl_ex_9 = new visual.ImageStim({
     win : psychoJS.window,
@@ -2052,7 +2176,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -23.0 
+    texRes : 128.0, interpolate : true, depth : -24.0 
   });
   sort_expl_ex_10 = new visual.ImageStim({
     win : psychoJS.window,
@@ -2061,7 +2185,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -24.0 
+    texRes : 128.0, interpolate : true, depth : -25.0 
   });
   sort_expl_ex_11 = new visual.ImageStim({
     win : psychoJS.window,
@@ -2070,7 +2194,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -25.0 
+    texRes : 128.0, interpolate : true, depth : -26.0 
   });
   sort_expl_ex_12 = new visual.ImageStim({
     win : psychoJS.window,
@@ -2079,7 +2203,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, 0], size : [0.06, 0.08],
     color : new util.Color([1, 1, 1]), opacity : 1.0,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -26.0 
+    texRes : 128.0, interpolate : true, depth : -27.0 
   });
   sort_expl_btn = new visual.ImageStim({
     win : psychoJS.window,
@@ -2088,7 +2212,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0.5, (- 0.35)], size : [0.28, 0.1],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -27.0 
+    texRes : 128.0, interpolate : true, depth : -28.0 
   });
   sort_expl_compare = new visual.ImageStim({
     win : psychoJS.window,
@@ -2097,7 +2221,7 @@ async function experimentInit() {
     ori : 0.0, pos : [(- 0.65), (- 0.05)], size : [0.16, 0.07],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -28.0 
+    texRes : 128.0, interpolate : true, depth : -29.0 
   });
   sort_expl_mouse = new core.Mouse({
     win: psychoJS.window,
@@ -2111,7 +2235,7 @@ async function experimentInit() {
     units: undefined, 
     pos: [0.65, (- 0.05)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('orange'),  opacity: undefined,
-    depth: -30.0 
+    depth: -31.0 
   });
   
   sort_expl_hint = new visual.TextStim({
@@ -2122,7 +2246,7 @@ async function experimentInit() {
     units: undefined, 
     pos: [0.5, (- 0.25)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
-    depth: -31.0 
+    depth: -32.0 
   });
   
   // Initialize components for Routine "SORT_TEST_INTRO"
@@ -2186,7 +2310,7 @@ async function experimentInit() {
     text: '',
     font: 'Open Sans',
     units: undefined, 
-    pos: [(- 0.65), 0.45], height: 0.02,  wrapWidth: 0.3, ori: 0.0,
+    pos: [(- 0.65), 0.45], height: 1.0,  wrapWidth: 0.3, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: -6.0 
   });
@@ -2205,7 +2329,7 @@ async function experimentInit() {
   sort_test_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'sort_test_instr',
-    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. You are given a PILE of fruits that is most likely UNORDERED and you can move fruits freely on the SKETCHBOARD in the middle\n\n3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT\n\nYou have 300 SECS to SUBMIT!',
+    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. You are given a PILE of fruits that is most likely UNORDERED and you can move fruits freely on the MONITOR in the middle\n\n3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT\n\nYou have 300 SECS to SUBMIT!',
     font: 'Open Sans',
     units: undefined, 
     pos: [0.65, 0.2], height: 0.02,  wrapWidth: 0.4, ori: 0.0,
@@ -2435,6 +2559,50 @@ async function experimentInit() {
     depth: -30.0 
   });
   
+  // Initialize components for Routine "EXP_CHECK"
+  EXP_CHECKClock = new util.Clock();
+  exp_check_question = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'exp_check_question',
+    text: 'If you have received training or have studied any SORTING algorithm before the experiment, please tell us which one(s) you KNOW and HAVE USED for the experiment:',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, 0.2], height: 0.05,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: 0.0 
+  });
+  
+  exp_check_res = new visual.TextBox({
+    win: psychoJS.window,
+    name: 'exp_check_res',
+    text: '',
+    font: 'Open Sans',
+    pos: [0, (- 0.15)], letterHeight: 0.05,
+    size: [0.7, 0.2],  units: undefined, 
+    color: 'black', colorSpace: 'rgb',
+    fillColor: 'white', borderColor: undefined,
+    bold: false, italic: false,
+    opacity: undefined,
+    padding: undefined,
+    editable: true,
+    multiline: true,
+    anchor: 'center',
+    depth: -1.0 
+  });
+  
+  exp_check_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'exp_check_btn', units : undefined, 
+    image : 'materials/imgs/submit.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.35)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -2.0 
+  });
+  exp_check_mouse = new core.Mouse({
+    win: psychoJS.window,
+  });
+  exp_check_mouse.mouseClock = new util.Clock();
   // Initialize components for Routine "DEBRIEF"
   DEBRIEFClock = new util.Clock();
   intro_text_5 = new visual.TextStim({
@@ -2464,194 +2632,13 @@ var t;
 var frameN;
 var continueRoutine;
 var gotValidClick;
-var INTROComponents;
-function INTRORoutineBegin(snapshot) {
-  return async function () {
-    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
-    
-    //------Prepare to start Routine 'INTRO'-------
-    t = 0;
-    INTROClock.reset(); // clock
-    frameN = -1;
-    continueRoutine = true; // until we're told otherwise
-    routineTimer.add(120.000000);
-    // update component parameters for each repeat
-    // setup some python lists for storing info about the intro_mouse
-    gotValidClick = false; // until a click is received
-    // keep track of which components have finished
-    INTROComponents = [];
-    INTROComponents.push(intro_text);
-    INTROComponents.push(alice);
-    INTROComponents.push(bob);
-    INTROComponents.push(door_1);
-    INTROComponents.push(door_2);
-    INTROComponents.push(intro_btn);
-    INTROComponents.push(intro_mouse);
-    
-    for (const thisComponent of INTROComponents)
-      if ('status' in thisComponent)
-        thisComponent.status = PsychoJS.Status.NOT_STARTED;
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-var frameRemains;
-var routineT;
-function INTRORoutineEachFrame() {
-  return async function () {
-    //------Loop for each frame of Routine 'INTRO'-------
-    // get current time
-    t = INTROClock.getTime();
-    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
-    // update/draw components on each frame
-    
-    // *intro_text* updates
-    if (t >= 0.0 && intro_text.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      intro_text.tStart = t;  // (not accounting for frame time here)
-      intro_text.frameNStart = frameN;  // exact frame index
-      
-      intro_text.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (intro_text.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      intro_text.setAutoDraw(false);
-    }
-    
-    // *alice* updates
-    if (t >= 0.0 && alice.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      alice.tStart = t;  // (not accounting for frame time here)
-      alice.frameNStart = frameN;  // exact frame index
-      
-      alice.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (alice.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      alice.setAutoDraw(false);
-    }
-    
-    // *bob* updates
-    if (t >= 0.0 && bob.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      bob.tStart = t;  // (not accounting for frame time here)
-      bob.frameNStart = frameN;  // exact frame index
-      
-      bob.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (bob.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      bob.setAutoDraw(false);
-    }
-    
-    // *door_1* updates
-    if (t >= 0.0 && door_1.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      door_1.tStart = t;  // (not accounting for frame time here)
-      door_1.frameNStart = frameN;  // exact frame index
-      
-      door_1.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (door_1.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      door_1.setAutoDraw(false);
-    }
-    
-    // *door_2* updates
-    if (t >= 0.0 && door_2.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      door_2.tStart = t;  // (not accounting for frame time here)
-      door_2.frameNStart = frameN;  // exact frame index
-      
-      door_2.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (door_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      door_2.setAutoDraw(false);
-    }
-    
-    // *intro_btn* updates
-    if (t >= 0.5 && intro_btn.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      intro_btn.tStart = t;  // (not accounting for frame time here)
-      intro_btn.frameNStart = frameN;  // exact frame index
-      
-      intro_btn.setAutoDraw(true);
-    }
-
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((intro_btn.status === PsychoJS.Status.STARTED || intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      intro_btn.setAutoDraw(false);
-    }
-    if ((intro_mouse.isPressedIn(intro_btn) && (intro_btn.status === PsychoJS.Status.STARTED))) {
-        continueRoutine = false;
-    }
-    
-    routineT = t;
-    
-    // check for quit (typically the Esc key)
-    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
-      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
-    }
-    
-    // check if the Routine should terminate
-    if (!continueRoutine) {  // a component has requested a forced-end of Routine
-      return Scheduler.Event.NEXT;
-    }
-    
-    continueRoutine = false;  // reverts to True if at least one component still running
-    for (const thisComponent of INTROComponents)
-      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
-        continueRoutine = true;
-        break;
-      }
-    
-    // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
-      return Scheduler.Event.FLIP_REPEAT;
-    } else {
-      return Scheduler.Event.NEXT;
-    }
-  };
-}
-
-
-var _mouseXYs;
-var _mouseButtons;
-function INTRORoutineEnd() {
-  return async function () {
-    //------Ending Routine 'INTRO'-------
-    for (const thisComponent of INTROComponents) {
-      if (typeof thisComponent.setAutoDraw === 'function') {
-        thisComponent.setAutoDraw(false);
-      }
-    }
-    // store data for psychoJS.experiment (ExperimentHandler)
-    _mouseXYs = intro_mouse.getPos();
-    _mouseButtons = intro_mouse.getPressed();
-    psychoJS.experiment.addData('intro_mouse.x', _mouseXYs[0]);
-    psychoJS.experiment.addData('intro_mouse.y', _mouseXYs[1]);
-    psychoJS.experiment.addData('intro_mouse.leftButton', _mouseButtons[0]);
-    psychoJS.experiment.addData('intro_mouse.midButton', _mouseButtons[1]);
-    psychoJS.experiment.addData('intro_mouse.rightButton', _mouseButtons[2]);
-    psychoJS.experiment.addData("intro.tEnd",routineT);
-    return Scheduler.Event.NEXT;
-  };
-}
-
-
 var age_selected;
 var education_selected;
 var gender_selected;
 var gender_groups;
 var age_groups;
 var education_groups;
+var routineT;
 var BACKGROUNDComponents;
 function BACKGROUNDRoutineBegin(snapshot) {
   return async function () {
@@ -2665,7 +2652,7 @@ function BACKGROUNDRoutineBegin(snapshot) {
     routineTimer.add(120.000000);
     // update component parameters for each repeat
     background_instr.setText('Please select most the fitting choice for each of the following questions');
-    gender.setText('What is your gender at birth?');
+    gender.setText('What is your gender?');
     age.setText('What is your age?');
     education.setText('What is the highest degree or level of school you have completed?');
     // setup some python lists for storing info about the background_mouse
@@ -2673,7 +2660,7 @@ function BACKGROUNDRoutineBegin(snapshot) {
     age_selected = null;
     education_selected = null;
     gender_selected = null;
-    gender_groups = [female, male];
+    gender_groups = [female, male, other_gender, prefer_not_to_say];
     age_groups = [_18_24, _25_34, _35_44, _45_54, _55_64, _65];
     education_groups = [less_than_high_school, high_school_equivalent, college, bachelor, graduate, doctorate, other];
     routineT = 0;
@@ -2681,6 +2668,8 @@ function BACKGROUNDRoutineBegin(snapshot) {
     BACKGROUNDComponents = [];
     BACKGROUNDComponents.push(background_instr);
     BACKGROUNDComponents.push(gender);
+    BACKGROUNDComponents.push(prefer_not_to_say);
+    BACKGROUNDComponents.push(other_gender);
     BACKGROUNDComponents.push(female);
     BACKGROUNDComponents.push(male);
     BACKGROUNDComponents.push(age);
@@ -2709,6 +2698,7 @@ function BACKGROUNDRoutineBegin(snapshot) {
 }
 
 
+var frameRemains;
 var demographic_age;
 var demographic_education;
 var demographic_gender;
@@ -2746,6 +2736,34 @@ function BACKGROUNDRoutineEachFrame() {
     frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (gender.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       gender.setAutoDraw(false);
+    }
+    
+    // *prefer_not_to_say* updates
+    if (t >= 1.0 && prefer_not_to_say.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      prefer_not_to_say.tStart = t;  // (not accounting for frame time here)
+      prefer_not_to_say.frameNStart = frameN;  // exact frame index
+      
+      prefer_not_to_say.setAutoDraw(true);
+    }
+
+    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((prefer_not_to_say.status === PsychoJS.Status.STARTED || prefer_not_to_say.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      prefer_not_to_say.setAutoDraw(false);
+    }
+    
+    // *other_gender* updates
+    if (t >= 1.0 && other_gender.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      other_gender.tStart = t;  // (not accounting for frame time here)
+      other_gender.frameNStart = frameN;  // exact frame index
+      
+      other_gender.setAutoDraw(true);
+    }
+
+    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((other_gender.status === PsychoJS.Status.STARTED || other_gender.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      other_gender.setAutoDraw(false);
     }
     
     // *female* updates
@@ -3015,7 +3033,12 @@ function BACKGROUNDRoutineEachFrame() {
         background_btn.image = "materials/imgs/submit.png";
     }
     if (((((background_mouse.isPressedIn(background_btn) && (age_selected !== null)) && (education_selected !== null)) && (gender_selected !== null)) && (background_btn.status === PsychoJS.Status.STARTED))) {
+        background_mouse.status = PsychoJS.Status.FINISHED;
         continueRoutine = false;
+    }
+    
+    if ((background_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        background_mouse.status = PsychoJS.Status.FINISHED;
     }
     
     routineT = t;
@@ -3046,6 +3069,8 @@ function BACKGROUNDRoutineEachFrame() {
 }
 
 
+var _mouseXYs;
+var _mouseButtons;
 function BACKGROUNDRoutineEnd() {
   return async function () {
     //------Ending Routine 'BACKGROUND'-------
@@ -3066,6 +3091,395 @@ function BACKGROUNDRoutineEnd() {
     psychoJS.experiment.addData('demographic_education',demographic_education);
     psychoJS.experiment.addData('demographic_gender',demographic_gender);
     psychoJS.experiment.addData("background.tEnd",routineT);
+    return Scheduler.Event.NEXT;
+  };
+}
+
+
+var INTROComponents;
+function INTRORoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //------Prepare to start Routine 'INTRO'-------
+    t = 0;
+    INTROClock.reset(); // clock
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    routineTimer.add(120.000000);
+    // update component parameters for each repeat
+    // setup some python lists for storing info about the intro_mouse
+    gotValidClick = false; // until a click is received
+    routineT = 0;
+    // keep track of which components have finished
+    INTROComponents = [];
+    INTROComponents.push(intro_text);
+    INTROComponents.push(alice);
+    INTROComponents.push(bob);
+    INTROComponents.push(door_1);
+    INTROComponents.push(door_2);
+    INTROComponents.push(intro_btn);
+    INTROComponents.push(intro_mouse);
+    
+    for (const thisComponent of INTROComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function INTRORoutineEachFrame() {
+  return async function () {
+    //------Loop for each frame of Routine 'INTRO'-------
+    // get current time
+    t = INTROClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *intro_text* updates
+    if (t >= 0.0 && intro_text.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      intro_text.tStart = t;  // (not accounting for frame time here)
+      intro_text.frameNStart = frameN;  // exact frame index
+      
+      intro_text.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (intro_text.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      intro_text.setAutoDraw(false);
+    }
+    
+    // *alice* updates
+    if (t >= 0.0 && alice.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      alice.tStart = t;  // (not accounting for frame time here)
+      alice.frameNStart = frameN;  // exact frame index
+      
+      alice.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (alice.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      alice.setAutoDraw(false);
+    }
+    
+    // *bob* updates
+    if (t >= 0.0 && bob.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      bob.tStart = t;  // (not accounting for frame time here)
+      bob.frameNStart = frameN;  // exact frame index
+      
+      bob.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (bob.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      bob.setAutoDraw(false);
+    }
+    
+    // *door_1* updates
+    if (t >= 0.0 && door_1.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      door_1.tStart = t;  // (not accounting for frame time here)
+      door_1.frameNStart = frameN;  // exact frame index
+      
+      door_1.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (door_1.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      door_1.setAutoDraw(false);
+    }
+    
+    // *door_2* updates
+    if (t >= 0.0 && door_2.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      door_2.tStart = t;  // (not accounting for frame time here)
+      door_2.frameNStart = frameN;  // exact frame index
+      
+      door_2.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (door_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      door_2.setAutoDraw(false);
+    }
+    
+    // *intro_btn* updates
+    if (t >= 0.5 && intro_btn.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      intro_btn.tStart = t;  // (not accounting for frame time here)
+      intro_btn.frameNStart = frameN;  // exact frame index
+      
+      intro_btn.setAutoDraw(true);
+    }
+
+    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((intro_btn.status === PsychoJS.Status.STARTED || intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      intro_btn.setAutoDraw(false);
+    }
+    if (((t >= 0.5) && (intro_mouse.status === PsychoJS.Status.NOT_STARTED))) {
+        intro_mouse.tStart = t;
+        intro_mouse.frameNStart = frameN;
+        intro_mouse.status = PsychoJS.Status.STARTED;
+        intro_mouse.mouseClock.reset();
+    }
+    if (((intro_mouse.isPressedIn(intro_btn) && (intro_mouse.status === PsychoJS.Status.STARTED)) && (intro_btn.status === PsychoJS.Status.STARTED))) {
+        intro_mouse.status = PsychoJS.Status.FINISHED;
+        continueRoutine = false;
+    }
+    if ((intro_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        intro_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    routineT = t;
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of INTROComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine && routineTimer.getTime() > 0) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function INTRORoutineEnd() {
+  return async function () {
+    //------Ending Routine 'INTRO'-------
+    for (const thisComponent of INTROComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    // store data for psychoJS.experiment (ExperimentHandler)
+    _mouseXYs = intro_mouse.getPos();
+    _mouseButtons = intro_mouse.getPressed();
+    psychoJS.experiment.addData('intro_mouse.x', _mouseXYs[0]);
+    psychoJS.experiment.addData('intro_mouse.y', _mouseXYs[1]);
+    psychoJS.experiment.addData('intro_mouse.leftButton', _mouseButtons[0]);
+    psychoJS.experiment.addData('intro_mouse.midButton', _mouseButtons[1]);
+    psychoJS.experiment.addData('intro_mouse.rightButton', _mouseButtons[2]);
+    psychoJS.experiment.addData("intro.tEnd",routineT);
+    return Scheduler.Event.NEXT;
+  };
+}
+
+
+var HINTComponents;
+function HINTRoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //------Prepare to start Routine 'HINT'-------
+    t = 0;
+    HINTClock.reset(); // clock
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    routineTimer.add(120.000000);
+    // update component parameters for each repeat
+    // setup some python lists for storing info about the hint_mouse
+    gotValidClick = false; // until a click is received
+    routineT = 0;
+    // keep track of which components have finished
+    HINTComponents = [];
+    HINTComponents.push(intro_text_8);
+    HINTComponents.push(arrow);
+    HINTComponents.push(alice_5);
+    HINTComponents.push(bob_5);
+    HINTComponents.push(door_8);
+    HINTComponents.push(door_9);
+    HINTComponents.push(hint_btn);
+    HINTComponents.push(hint_mouse);
+    
+    for (const thisComponent of HINTComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function HINTRoutineEachFrame() {
+  return async function () {
+    //------Loop for each frame of Routine 'HINT'-------
+    // get current time
+    t = HINTClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *intro_text_8* updates
+    if (t >= 0.0 && intro_text_8.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      intro_text_8.tStart = t;  // (not accounting for frame time here)
+      intro_text_8.frameNStart = frameN;  // exact frame index
+      
+      intro_text_8.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (intro_text_8.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      intro_text_8.setAutoDraw(false);
+    }
+    
+    // *arrow* updates
+    if (t >= 0.0 && arrow.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      arrow.tStart = t;  // (not accounting for frame time here)
+      arrow.frameNStart = frameN;  // exact frame index
+      
+      arrow.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (arrow.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      arrow.setAutoDraw(false);
+    }
+    
+    // *alice_5* updates
+    if (t >= 0.0 && alice_5.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      alice_5.tStart = t;  // (not accounting for frame time here)
+      alice_5.frameNStart = frameN;  // exact frame index
+      
+      alice_5.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (alice_5.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      alice_5.setAutoDraw(false);
+    }
+    
+    // *bob_5* updates
+    if (t >= 0.0 && bob_5.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      bob_5.tStart = t;  // (not accounting for frame time here)
+      bob_5.frameNStart = frameN;  // exact frame index
+      
+      bob_5.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (bob_5.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      bob_5.setAutoDraw(false);
+    }
+    
+    // *door_8* updates
+    if (t >= 0.0 && door_8.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      door_8.tStart = t;  // (not accounting for frame time here)
+      door_8.frameNStart = frameN;  // exact frame index
+      
+      door_8.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (door_8.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      door_8.setAutoDraw(false);
+    }
+    
+    // *door_9* updates
+    if (t >= 0.0 && door_9.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      door_9.tStart = t;  // (not accounting for frame time here)
+      door_9.frameNStart = frameN;  // exact frame index
+      
+      door_9.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (door_9.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      door_9.setAutoDraw(false);
+    }
+    
+    // *hint_btn* updates
+    if (t >= 0.5 && hint_btn.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      hint_btn.tStart = t;  // (not accounting for frame time here)
+      hint_btn.frameNStart = frameN;  // exact frame index
+      
+      hint_btn.setAutoDraw(true);
+    }
+
+    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((hint_btn.status === PsychoJS.Status.STARTED || hint_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      hint_btn.setAutoDraw(false);
+    }
+    if (((t >= 0.5) && (hint_mouse.status === PsychoJS.Status.NOT_STARTED))) {
+        hint_mouse.tStart = t;
+        hint_mouse.frameNStart = frameN;
+        hint_mouse.status = PsychoJS.Status.STARTED;
+        hint_mouse.mouseClock.reset();
+    }
+    if (((hint_mouse.isPressedIn(intro_btn) && (hint_mouse.status === PsychoJS.Status.STARTED)) && (hint_btn.status === PsychoJS.Status.STARTED))) {
+        hint_mouse.status = PsychoJS.Status.FINISHED;
+        continueRoutine = false;
+    }
+    if ((hint_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        hint_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    routineT = t;
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of HINTComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine && routineTimer.getTime() > 0) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function HINTRoutineEnd() {
+  return async function () {
+    //------Ending Routine 'HINT'-------
+    for (const thisComponent of HINTComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    // store data for psychoJS.experiment (ExperimentHandler)
+    _mouseXYs = hint_mouse.getPos();
+    _mouseButtons = hint_mouse.getPressed();
+    psychoJS.experiment.addData('hint_mouse.x', _mouseXYs[0]);
+    psychoJS.experiment.addData('hint_mouse.y', _mouseXYs[1]);
+    psychoJS.experiment.addData('hint_mouse.leftButton', _mouseButtons[0]);
+    psychoJS.experiment.addData('hint_mouse.midButton', _mouseButtons[1]);
+    psychoJS.experiment.addData('hint_mouse.rightButton', _mouseButtons[2]);
+    psychoJS.experiment.addData("hint.tEnd",routineT);
     return Scheduler.Event.NEXT;
   };
 }
@@ -3187,7 +3601,11 @@ function MERGE_INTRORoutineEachFrame() {
         merge_intro_mouse.mouseClock.reset();
     }
     if (((merge_intro_mouse.isPressedIn(merge_intro_btn) && (merge_intro_mouse.status === PsychoJS.Status.STARTED)) && (merge_intro_btn.status === PsychoJS.Status.STARTED))) {
+        merge_intro_mouse.status = PsychoJS.Status.FINISHED;
         continueRoutine = false;
+    }
+    if ((merge_intro_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        merge_intro_mouse.status = PsychoJS.Status.FINISHED;
     }
     routineT = t;
     
@@ -3401,6 +3819,7 @@ async function TEST_2LoopEnd() {
 
 var merge_train_input;
 var mc_order;
+var merge_train_compare_records;
 var merge_train_labels;
 var merge_train_compareN;
 var merge_train_mc_path_2;
@@ -3421,6 +3840,7 @@ function MERGE_TRAINRoutineBegin(snapshot) {
     // update component parameters for each repeat
     merge_train_scale_instr.setColor(new util.Color('white'));
     merge_train_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
+    merge_train_scale_instr.setHeight(0.02);
     merge_train_scale_right.setText('');
     merge_train_scale_left.setText('');
     merge_train.setImage(img_path);
@@ -3432,6 +3852,7 @@ function MERGE_TRAINRoutineBegin(snapshot) {
     gotValidClick = false; // until a click is received
     merge_train_input = input;
     mc_order = [];
+    merge_train_compare_records = [];
     merge_train_labels = encryption;
     merge_train_compareN = 0;
     merge_train_mc_path_2 = mc_path_2;
@@ -3706,11 +4127,16 @@ function MERGE_TRAINRoutineEachFrame() {
                 for (const obj of [merge_train_btn_1,merge_train_btn_2,merge_train_compare,merge_train_scale_left,merge_train_scale_right]) {
                     if (merge_train_mouse.isPressedIn(obj) && (obj.name === "merge_train_btn_1" || obj.name === "merge_train_btn_2")) {
                         merge_train_mouse.clicked_name.push(obj.name);
+                        merge_train_mouse.status = PsychoJS.Status.FINISHED;
                         continueRoutine = false;
                     } else {
                         if(merge_train_mouse.isPressedIn(obj)) {
                             if(obj.name === "merge_train_compare") {
-                                merge_train_compareN = (merge_train_compareN + compare(merge_train_scale, merge_train_input, merge_train_labels, merge_train_compare, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right));
+                                const compareStatus = compare(merge_train_scale, merge_train_input, merge_train_labels, merge_train_compare, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right);
+                                merge_train_compareN = (merge_train_compareN + compareStatus[0]);
+                                if (compareStatus[0] !== 0) {
+                                    merge_train_compare_records.push([compareStatus[1],compareStatus[2]]);
+                                }
                                 comparePressedT = t;
                                 isComparePressed = true;
                             }
@@ -3780,6 +4206,7 @@ function MERGE_TRAINRoutineEnd() {
     psychoJS.experiment.addData("merge_train_compareN",merge_train_compareN);
     psychoJS.experiment.addData("merge_train_labels",merge_train_labels);
     psychoJS.experiment.addData("merge_train_input",merge_train_input);
+    psychoJS.experiment.addData("merge_train_compare_records",merge_train_compare_records);
     psychoJS.experiment.addData("merge_train_mouse_clicked",merge_train_mouse.clicked_name);
     psychoJS.experiment.addData("merge_train.tEnd",routineT);
     return Scheduler.Event.NEXT;
@@ -4026,6 +4453,7 @@ function MERGE_EXPLRoutineEachFrame() {
             if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
                 for (const obj of [merge_expl_btn]) {
                     if (merge_expl_mouse.isPressedIn(obj) && (obj.name === "merge_expl_btn")) {
+                        merge_expl_mouse.status = PsychoJS.Status.FINISHED;
                         continueRoutine = false;
                     } 
                 }
@@ -4193,17 +4621,21 @@ function MERGE_TEST_INTRORoutineEachFrame() {
     if ((merge_test_intro_btn.status === PsychoJS.Status.STARTED || merge_test_intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_test_intro_btn.setAutoDraw(false);
     }
-    if (((t >= 0.5) && (merge_test_mouse.status === PsychoJS.Status.NOT_STARTED))) {
-        merge_test_mouse.tStart = t;
-        merge_test_mouse.frameNStart = frameN;
-        merge_test_mouse.status = PsychoJS.Status.STARTED;
-        merge_test_mouse.mouseClock.reset();
+    if (((t >= 0.5) && (merge_test_intro_mouse.status === PsychoJS.Status.NOT_STARTED))) {
+        merge_test_intro_mouse.tStart = t;
+        merge_test_intro_mouse.frameNStart = frameN;
+        merge_test_intro_mouse.status = PsychoJS.Status.STARTED;
+        merge_test_intro_mouse.mouseClock.reset();
     }
-    if (((merge_test_mouse.isPressedIn(merge_test_intro_btn) && (merge_test_mouse.status === PsychoJS.Status.STARTED)) && (merge_test_intro_btn.status === PsychoJS.Status.STARTED))) {
+    if (((merge_test_intro_mouse.isPressedIn(merge_test_intro_btn) && (merge_test_intro_mouse.status === PsychoJS.Status.STARTED)) && (merge_test_intro_btn.status === PsychoJS.Status.STARTED))) {
+        merge_test_intro_mouse.status = PsychoJS.Status.FINISHED;
         continueRoutine = false;
     }
     routineT = t;
     
+    if ((merge_test_intro_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        merge_test_intro_mouse.status = PsychoJS.Status.FINISHED;
+    }
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -4256,6 +4688,7 @@ function MERGE_TEST_INTRORoutineEnd() {
 var merge_test_input;
 var merge_test_labels;
 var merge_test_compareN;
+var merge_test_compare_records;
 var MERGE_TESTComponents;
 function MERGE_TESTRoutineBegin(snapshot) {
   return async function () {
@@ -4270,6 +4703,7 @@ function MERGE_TESTRoutineBegin(snapshot) {
     // update component parameters for each repeat
     merge_test_scale_instr.setColor(new util.Color('white'));
     merge_test_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
+    merge_test_scale_instr.setHeight(0.02);
     merge_test_scale_right.setText('');
     merge_test_scale_left.setText('');
     merge_test_res.setText('');
@@ -4280,6 +4714,7 @@ function MERGE_TESTRoutineBegin(snapshot) {
     merge_test_input = input;
     merge_test_labels = encryption;
     merge_test_compareN = 0;
+    merge_test_compare_records = [];
     
     merge_test_res.refresh();
     merge_test_scale_left.refresh();
@@ -4319,7 +4754,6 @@ function MERGE_TESTRoutineBegin(snapshot) {
 }
 
 
-var merge_test_ans;
 function MERGE_TESTRoutineEachFrame() {
   return async function () {
     //------Loop for each frame of Routine 'MERGE_TEST'-------
@@ -4506,7 +4940,7 @@ function MERGE_TESTRoutineEachFrame() {
     
     if ((merge_test_mouse.status === PsychoJS.Status.STARTED || merge_test_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
           merge_test_mouse.status = PsychoJS.Status.FINISHED;
-      }
+    }
     
     if (t >= 0.5 && merge_test_mouse.status === PsychoJS.Status.STARTED) {
         _mouseButtons = merge_test_mouse.getPressed();
@@ -4515,11 +4949,16 @@ function MERGE_TESTRoutineEachFrame() {
             if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
                 for (const obj of [merge_test_btn,merge_test_compare]) {
                     if (merge_test_mouse.isPressedIn(obj) && obj.name === "merge_test_btn") {
+                        merge_test_mouse.status = PsychoJS.Status.FINISHED;
                         continueRoutine = false;
                     } else {
                         if(merge_test_mouse.isPressedIn(obj)) {
                             if(obj.name === "merge_test_compare") {
-                                merge_test_compareN = (merge_test_compareN + compare(merge_test_scale, merge_test_input, merge_test_labels, merge_test_compare, merge_test_scale_instr, merge_test_scale_left, merge_test_scale_right));
+                                const compareStatus = compare(merge_test_scale, merge_test_input, merge_test_labels, merge_test_compare, merge_test_scale_instr, merge_test_scale_left, merge_test_scale_right);
+                                merge_test_compareN = (merge_test_compareN + compareStatus[0]);
+                                if (compareStatus[0] !== 0) {
+                                    merge_test_compare_records.push([compareStatus[1],compareStatus[2]]);
+                                }
                                 comparePressedT = t;
                                 isComparePressed = true;
                             }
@@ -4531,7 +4970,6 @@ function MERGE_TESTRoutineEachFrame() {
     }
     
     merge_test_timer.text = timerWarning(mergeTestTimeL, t);
-    merge_test_ans = merge_test_res.text;
     routineT = t;
     
     if (isComparePressed && (routineT - comparePressedT) >= 0.1) {
@@ -4586,8 +5024,8 @@ function MERGE_TESTRoutineEnd() {
     psychoJS.experiment.addData('merge_test_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("merge_test_input",merge_test_input);
     psychoJS.experiment.addData("merge_test_labels",merge_test_labels);
-    psychoJS.experiment.addData("merge_test_ans",merge_test_ans);
     psychoJS.experiment.addData("merge_test_compareN",merge_test_compareN);
+    psychoJS.experiment.addData("merge_test_compare_records",merge_test_compare_records);
     psychoJS.experiment.addData("merge_test.tStart",merge_test.tStart);
     psychoJS.experiment.addData("merge_test.tEnd",routineT);
     return Scheduler.Event.NEXT;
@@ -4711,10 +5149,13 @@ function SORT_INTRORoutineEachFrame() {
         sort_intro_mouse.mouseClock.reset();
     }
     if (((sort_intro_mouse.isPressedIn(sort_intro_btn) && (sort_intro_mouse.status === PsychoJS.Status.STARTED)) && (sort_intro_btn.status === PsychoJS.Status.STARTED))) {
+        sort_intro_mouse.status = PsychoJS.Status.FINISHED;
         continueRoutine = false;
     }
     routineT = t;
-    
+    if ((sort_intro_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        sort_intro_mouse.status = PsychoJS.Status.FINISHED;
+    }
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -4770,6 +5211,7 @@ var tracePos;
 var sort_train_input;
 var sort_train_labels;
 var sort_train_compareN;
+var sort_train_compare_records;
 var sort_train_trace;
 var sort_train_compare_limit;
 var sort_train_path_base;
@@ -4796,6 +5238,7 @@ function SORT_TRAINRoutineBegin(snapshot) {
     // update component parameters for each repeat
     sort_train_scale_instr.setColor(new util.Color('white'));
     sort_train_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
+    sort_train_scale_instr.setHeight(0.02);
     sort_train_scale_right.setText('');
     sort_train_scale_left.setText('');
     sort_train_res.setText('');
@@ -4837,6 +5280,7 @@ function SORT_TRAINRoutineBegin(snapshot) {
     sort_train_input = input;
     sort_train_labels = encryption;
     sort_train_compareN = 0;
+    sort_train_compare_records = [];
     sort_train_trace = [];
     sort_train_compare_limit = ms_compare;
     sort_train_path_base = img_path_base;
@@ -4902,7 +5346,6 @@ function SORT_TRAINRoutineBegin(snapshot) {
 
 var newTracePos;
 var hasMoved;
-var sort_train_ans;
 function SORT_TRAINRoutineEachFrame() {
   return async function () {
     //------Loop for each frame of Routine 'SORT_TRAIN'-------
@@ -5289,12 +5732,17 @@ function SORT_TRAINRoutineEachFrame() {
             if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
                 for (const obj of [sort_train_btn,sort_train_compare]) {
                     if (sort_train_mouse.isPressedIn(obj) && obj.name === "sort_train_btn") {
+                        sort_train_mouse.status = PsychoJS.Status.FINISHED;
                         continueRoutine = false;
                     } else {
                         if(sort_train_mouse.isPressedIn(obj)) {
                             if(obj.name === "sort_train_compare") {
-                                sort_train_compareN = (sort_train_compareN + compare(sort_train_scale, sort_train_input, sort_train_labels, sort_train_compare, sort_train_scale_instr, sort_train_scale_left, sort_train_scale_right));
+                                const compareStatus = compare(sort_train_scale, sort_train_input, sort_train_labels, sort_train_compare, sort_train_scale_instr, sort_train_scale_left, sort_train_scale_right);
+                                sort_train_compareN = (sort_train_compareN + compareStatus[0]);
                                 sort_train_hint.text = (((("Bob uses " + sort_train_compare_limit.toString()) + " comparisons\n") + "You have used: ") + sort_train_compareN.toString());
+                                if (compareStatus[0] !== 0) {
+                                    sort_train_compare_records.push([compareStatus[1],compareStatus[2]]);
+                                }
                                 comparePressedT = t;
                                 isComparePressed = true;
                             }
@@ -5323,7 +5771,6 @@ function SORT_TRAINRoutineEachFrame() {
             tracePos = newTracePos;
         }
     }
-    sort_train_ans = sort_train_res.text;
     sort_train_timer.text = timerWarning(sortTrainTimeL, t);
     routineT = t;
     
@@ -5380,10 +5827,10 @@ function SORT_TRAINRoutineEnd() {
     psychoJS.experiment.addData("sort_train_input",sort_train_input);
     psychoJS.experiment.addData("sort_train_labels",sort_train_labels);
     psychoJS.experiment.addData("sort_train_trace",sort_train_trace);
-    psychoJS.experiment.addData("sort_train_ans",sort_train_ans);
     psychoJS.experiment.addData("sort_train_compareN",sort_train_compareN);
     psychoJS.experiment.addData("sort_train.tStart",sort_train_ex_1.tStart);
     psychoJS.experiment.addData("sort_train.tEnd",routineT);
+    psychoJS.experiment.addData("sort_train_compare_records",sort_train_compare_records);
     return Scheduler.Event.NEXT;
   };
 }
@@ -5394,6 +5841,7 @@ var sort_expl_input;
 var sort_expl_labels;
 var sort_expl_compareN;
 var sort_expl_trace;
+var sort_expl_compare_records;
 var sort_expl_path_base;
 var SORT_EXPLComponents;
 function SORT_EXPLRoutineBegin(snapshot) {
@@ -5409,6 +5857,7 @@ function SORT_EXPLRoutineBegin(snapshot) {
     // update component parameters for each repeat
     sort_expl_scale_instr.setColor(new util.Color('white'));
     sort_expl_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
+    sort_expl_scale_instr.setHeight(0.02);
     sort_expl_feedback_1.setColor(new util.Color('white'));
     sort_expl_feedback_1.setText('');
     sort_expl_feedback_2.setColor(new util.Color('white'));
@@ -5460,6 +5909,7 @@ function SORT_EXPLRoutineBegin(snapshot) {
     sort_expl_labels = encryption;
     sort_expl_compareN = 0;
     sort_expl_trace = [];
+    sort_expl_compare_records = [];
     sort_expl_path_base = img_path_base;
     
     sort_expl_res.refresh();
@@ -5467,7 +5917,7 @@ function SORT_EXPLRoutineBegin(snapshot) {
     sort_expl_scale_right.refresh();
     
     sort_expl_hint.text = (((("Bob uses " + sort_train_compare_limit.toString()) + " comparisons\n") + "You have used: ") + (sort_train_compareN + sort_expl_compareN).toString());
-    sort_expl_res.text = sort_train_ans;
+    sort_expl_res.text = sort_train_res.text;
     checkSortTrainAns(sort_expl_input, sort_expl_labels, sort_expl_res.text, sort_expl_feedback_1, sort_expl_feedback_2);
     x = sort_expl_board.getPos()[0];
     y = sort_expl_board.getPos()[1];
@@ -5918,12 +6368,17 @@ function SORT_EXPLRoutineEachFrame() {
             if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
                 for (const obj of [sort_expl_btn,sort_expl_compare]) {
                     if (sort_expl_mouse.isPressedIn(obj) && obj.name === "sort_expl_btn") {
+                        sort_expl_mouse.status = PsychoJS.Status.FINISHED;
                         continueRoutine = false;
                     } else {
                         if(sort_expl_mouse.isPressedIn(obj)) {
                             if(obj.name === "sort_expl_compare") {
-                                sort_expl_compareN = (sort_expl_compareN + compare(sort_expl_scale, sort_expl_input, sort_expl_labels, sort_expl_compare, sort_expl_scale_instr, sort_expl_scale_left, sort_expl_scale_right));
+                                const compareStatus = compare(sort_expl_scale, sort_expl_input, sort_expl_labels, sort_expl_compare, sort_expl_scale_instr, sort_expl_scale_left, sort_expl_scale_right);
+                                sort_expl_compareN = (sort_expl_compareN + compareStatus[0]);
                                 sort_expl_hint.text = (((("Bob uses " + sort_train_compare_limit.toString()) + " comparisons\n") + "You have used: ") + (sort_train_compareN + sort_expl_compareN).toString());
+                                if (compareStatus[0] !== 0) {
+                                    sort_expl_compare_records.push([compareStatus[1],compareStatus[2]]);
+                                }
                                 comparePressedT = t;
                                 isComparePressed = true;
                             }
@@ -6006,6 +6461,7 @@ function SORT_EXPLRoutineEnd() {
     psychoJS.experiment.addData('sort_expl_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("sort_expl_trace",sort_expl_trace);
     psychoJS.experiment.addData("sort_expl_compareN",sort_expl_compareN);
+    psychoJS.experiment.addData("sort_expl_compare_records",sort_expl_compare_records);
     psychoJS.experiment.addData("sort_expl.tStart",sort_expl_ex_1.tStart);
     psychoJS.experiment.addData("sort_expl.tEnd",routineT);
     return Scheduler.Event.NEXT;
@@ -6129,10 +6585,13 @@ function SORT_TEST_INTRORoutineEachFrame() {
         sort_test_intro_mouse.mouseClock.reset();
     }
     if (((sort_test_intro_mouse.isPressedIn(sort_test_intro_btn) && (sort_test_intro_mouse.status === PsychoJS.Status.STARTED)) && (sort_test_intro_btn.status === PsychoJS.Status.STARTED))) {
+        sort_test_intro_mouse.status = PsychoJS.Status.FINISHED;
         continueRoutine = false;
     }
     routineT = t;
-    
+    if ((sort_test_intro_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        sort_test_intro_mouse.status = PsychoJS.Status.FINISHED;
+    }
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -6186,6 +6645,7 @@ var sort_test_input;
 var sort_test_labels;
 var sort_test_compareN;
 var sort_test_trace;
+var sort_test_compare_records;
 var sort_test_compare_limit;
 var sort_test_path_base;
 var SORT_TESTComponents;
@@ -6202,6 +6662,7 @@ function SORT_TESTRoutineBegin(snapshot) {
     // update component parameters for each repeat
     sort_test_scale_instr.setColor(new util.Color('white'));
     sort_test_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
+    sort_test_scale_instr.setHeight(0.02);
     sort_test_scale_right.setText('');
     sort_test_scale_left.setText('');
     sort_test_res.setText('');
@@ -6244,6 +6705,7 @@ function SORT_TESTRoutineBegin(snapshot) {
     sort_test_labels = encryption;
     sort_test_compareN = 0;
     sort_test_trace = [];
+    sort_test_compare_records = [];
     sort_test_compare_limit = ms_compare;
     sort_test_path_base = img_path_base;
     
@@ -6302,7 +6764,6 @@ function SORT_TESTRoutineBegin(snapshot) {
 }
 
 
-var sort_test_ans;
 function SORT_TESTRoutineEachFrame() {
   return async function () {
     //------Loop for each frame of Routine 'SORT_TEST'-------
@@ -6675,11 +7136,16 @@ function SORT_TESTRoutineEachFrame() {
             if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
                 for (const obj of [sort_test_btn,sort_test_compare]) {
                     if (sort_test_mouse.isPressedIn(obj) && obj.name === "sort_test_btn") {
+                        sort_test_mouse.status = PsychoJS.Status.FINISHED;
                         continueRoutine = false;
                     } else {
                         if(sort_expl_mouse.isPressedIn(obj)) {
                             if(obj.name === "sort_test_compare") {
-                                sort_test_compareN = (sort_test_compareN + compare(sort_test_scale, sort_test_input, sort_test_labels, sort_test_compare, sort_test_scale_instr, sort_test_scale_left, sort_test_scale_right));
+                                const compareStatus = compare(sort_test_scale, sort_test_input, sort_test_labels, sort_test_compare, sort_test_scale_instr, sort_test_scale_left, sort_test_scale_right);
+                                sort_test_compareN = (sort_test_compareN + compareStatus[0]);
+                                if (compareStatus[0] !== 0) {
+                                    sort_test_compare_records.push([compareStatus[1],compareStatus[2]]);
+                                }
                                 comparePressedT = t;
                                 isComparePressed = true;
                             }
@@ -6709,7 +7175,6 @@ function SORT_TESTRoutineEachFrame() {
         }
     }
     
-    sort_test_ans = sort_test_res.text;
     sort_test_timer.text = timerWarning(sortTestTimeL, t);
     routineT = t;
     
@@ -6766,10 +7231,156 @@ function SORT_TESTRoutineEnd() {
     psychoJS.experiment.addData("sort_test_input",sort_test_input);
     psychoJS.experiment.addData("sort_test_labels",sort_test_labels);
     psychoJS.experiment.addData("sort_test_trace",sort_test_trace);
-    psychoJS.experiment.addData("sort_test_ans",sort_test_ans);
+    psychoJS.experiment.addData("sort_test_compare_records",sort_test_compare_records);
     psychoJS.experiment.addData("sort_test_compareN",sort_test_compareN);
     psychoJS.experiment.addData("sort_test.tStart",sort_test_ex_1.tStart);
     psychoJS.experiment.addData("sort_test.tEnd",routineT);
+    return Scheduler.Event.NEXT;
+  };
+}
+
+
+var EXP_CHECKComponents;
+function EXP_CHECKRoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //------Prepare to start Routine 'EXP_CHECK'-------
+    t = 0;
+    EXP_CHECKClock.reset(); // clock
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    routineTimer.add(300.000000);
+    // update component parameters for each repeat
+    exp_check_res.setText('');
+    // setup some python lists for storing info about the exp_check_mouse
+    gotValidClick = false; // until a click is received
+    routineT = 0;
+    // keep track of which components have finished
+    EXP_CHECKComponents = [];
+    EXP_CHECKComponents.push(exp_check_question);
+    EXP_CHECKComponents.push(exp_check_res);
+    EXP_CHECKComponents.push(exp_check_btn);
+    EXP_CHECKComponents.push(exp_check_mouse);
+    
+    for (const thisComponent of EXP_CHECKComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function EXP_CHECKRoutineEachFrame() {
+  return async function () {
+    //------Loop for each frame of Routine 'EXP_CHECK'-------
+    // get current time
+    t = EXP_CHECKClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *exp_check_question* updates
+    if (t >= 0.0 && exp_check_question.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      exp_check_question.tStart = t;  // (not accounting for frame time here)
+      exp_check_question.frameNStart = frameN;  // exact frame index
+      
+      exp_check_question.setAutoDraw(true);
+    }
+
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((exp_check_question.status === PsychoJS.Status.STARTED || exp_check_question.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      exp_check_question.setAutoDraw(false);
+    }
+    
+    // *exp_check_res* updates
+    if (t >= 0.0 && exp_check_res.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      exp_check_res.tStart = t;  // (not accounting for frame time here)
+      exp_check_res.frameNStart = frameN;  // exact frame index
+      
+      exp_check_res.setAutoDraw(true);
+    }
+
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((exp_check_res.status === PsychoJS.Status.STARTED || exp_check_res.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      exp_check_res.setAutoDraw(false);
+    }
+    
+    // *exp_check_btn* updates
+    if (t >= 0.5 && exp_check_btn.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      exp_check_btn.tStart = t;  // (not accounting for frame time here)
+      exp_check_btn.frameNStart = frameN;  // exact frame index
+      
+      exp_check_btn.setAutoDraw(true);
+    }
+
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((exp_check_btn.status === PsychoJS.Status.STARTED || exp_check_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      exp_check_btn.setAutoDraw(false);
+    }
+    if (((t >= 0.5) && (exp_check_mouse.status === PsychoJS.Status.NOT_STARTED))) {
+        exp_check_mouse.tStart = t;
+        exp_check_mouse.frameNStart = frameN;
+        exp_check_mouse.status = PsychoJS.Status.STARTED;
+        exp_check_mouse.mouseClock.reset();
+    }
+    if (((exp_check_mouse.isPressedIn(exp_check_btn) && (exp_check_mouse.status === PsychoJS.Status.STARTED)) && (exp_check_btn.status === PsychoJS.Status.STARTED))) {
+        exp_check_mouse.status = PsychoJS.Status.FINISHED;
+        continueRoutine = false;
+    }
+    routineT = t;
+    
+    if ((exp_check_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        exp_check_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of EXP_CHECKComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine && routineTimer.getTime() > 0) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function EXP_CHECKRoutineEnd() {
+  return async function () {
+    //------Ending Routine 'EXP_CHECK'-------
+    for (const thisComponent of EXP_CHECKComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    psychoJS.experiment.addData('exp_check_res.text',exp_check_res.text)
+    // store data for psychoJS.experiment (ExperimentHandler)
+    _mouseXYs = exp_check_mouse.getPos();
+    _mouseButtons = exp_check_mouse.getPressed();
+    psychoJS.experiment.addData('exp_check_mouse.x', _mouseXYs[0]);
+    psychoJS.experiment.addData('exp_check_mouse.y', _mouseXYs[1]);
+    psychoJS.experiment.addData('exp_check_mouse.leftButton', _mouseButtons[0]);
+    psychoJS.experiment.addData('exp_check_mouse.midButton', _mouseButtons[1]);
+    psychoJS.experiment.addData('exp_check_mouse.rightButton', _mouseButtons[2]);
+    psychoJS.experiment.addData("exp_check.tEnd",routineT);
     return Scheduler.Event.NEXT;
   };
 }
@@ -6931,6 +7542,10 @@ async function quitPsychoJS(message, isCompleted) {
   if (psychoJS.experiment.isEntryEmpty()) {
     psychoJS.experiment.nextEntry();
   }
+  
+  
+  
+  
   
   
   
