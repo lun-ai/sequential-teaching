@@ -2564,7 +2564,7 @@ async function experimentInit() {
   exp_check_question = new visual.TextStim({
     win: psychoJS.window,
     name: 'exp_check_question',
-    text: 'If you have received training or have studied any SORTING algorithm(s) before the experiment, please tell us which one(s) you KNOW and HAVE USED for the experiment:',
+    text: 'If you have received training or have studied any SORTING algorithms before the experiment, please tell us which one(s) you KNOW and HAVE USED for the experiment:',
     font: 'Open Sans',
     units: undefined, 
     pos: [0, 0.2], height: 0.05,  wrapWidth: undefined, ori: 0.0,
