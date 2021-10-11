@@ -3,7 +3,7 @@ lib/
 __pycache__/
 env/
 node_modules
-*.py
+/*.py
 /*.png
 *legacy-browsers.js
-*.js
+/*.js
