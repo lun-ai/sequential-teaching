@@ -1,3 +1,4 @@
+import numpy
 import numpy as np
 from scipy import stats
 from os import listdir
@@ -6,8 +7,9 @@ import matplotlib.pyplot as plt
 
 DATA_DIR_CS = "test/CS/"
 DATA_DIR_NON_CS = "test/non_CS/"
+DATA_DIR_PSY = "test/10_10_2021/"
 
-def extract_from_CSV(path):
+def extract_from_CSV(path,is_trace_enabled=False):
     files = listdir(path)
     csv_files = sorted([file for file in files if file.endswith(".csv")])
 
@@ -25,8 +27,9 @@ def extract_from_CSV(path):
     merge_test_comparison = []
     sort_test_comparison = []
     sort_test_trace = []
-    merge_train_response_time = []
-    sort_train_response_time = []
+    merge_test_comparison_records = []
+    sort_test_comparison_records = []
+    free_res = []
 
     for c in csv_list:
         t1, t2 = extract_time(c)
@@ -37,17 +40,23 @@ def extract_from_CSV(path):
         merge_test_score.append(s1)
         sort_test_score.append(s2)
 
-        c1, c2 = extract_comparison(c)
+        c1, c2, r1, r2 = extract_comparison(c)
         merge_test_comparison.append(c1)
         sort_test_comparison.append(c2)
+        merge_test_comparison_records.append(r1)
+        sort_test_comparison_records.append(r2)
 
-        t = extract_trace(c)
-        sort_test_trace.append(t)
-        name = c[1][c[0].index("participant")]
-        i = 1
-        for d in t:
-            reconstruct_trace(d,path,name + "_" + str(i))
-            i += 1
+        e = extract_free_response(c)
+        free_res.append(e)
+
+        if is_trace_enabled:
+            t = extract_trace(c)
+            sort_test_trace.append(t)
+            name = c[1][c[0].index("participant")]
+            i = 1
+            for d in t:
+                reconstruct_trace(d,path,name + "_" + str(i))
+                i += 1
 
 
     print('merge test time: ' + str(merge_test_response_time))
@@ -55,8 +64,10 @@ def extract_from_CSV(path):
     print('merge test score: ' + str(merge_test_score))
     print('sort test score: ' + str(sort_test_score))
     print('merge test comparison: ' + str(merge_test_comparison))
+    print('merge test comparison records: ' + str(np.array(merge_test_comparison_records)))
     print('sort test comparison: ' + str(sort_test_comparison))
-    print('sort test trace: ' + str(sort_test_trace))
+    print('sort test comparison records: ' + str(np.array(sort_test_comparison_records)))
+    print('strategy reflection: ' + str(free_res))
 
 
 def extract_time(input):
@@ -76,8 +87,8 @@ def extract_response(input):
     sort_test_input_col = input[0].index("sort_test_input")
     merge_test_labels_col = input[0].index("merge_test_labels")
     sort_test_labels_col = input[0].index("sort_test_labels")
-    merge_test_ans_col = input[0].index("merge_test_ans")
-    sort_test_ans_col = input[0].index("sort_test_ans")
+    merge_test_ans_col = input[0].index("merge_test_res.text")
+    sort_test_ans_col = input[0].index("sort_test_res.text")
 
     i1 = [list(map(int,parseStringLine(line[merge_test_input_col]))) for line in input[1:] if line[merge_test_input_col] != '']
     i2 = [list(map(int,parseStringLine(line[sort_test_input_col]))) for line in input[1:] if line[sort_test_input_col] != '']
@@ -88,11 +99,11 @@ def extract_response(input):
     r1 = [parseStringLine(line[merge_test_ans_col]) for line in input[1:] if line[merge_test_ans_col] != '']
     r2 = [parseStringLine(line[sort_test_ans_col]) for line in input[1:] if line[sort_test_ans_col] != '']
 
-    a1 = [labels2Ints(l1[i],i1[i],r1[i]) for i in range(min(len(l1),len(r1))) if containLabels(l1[i],r1[i])]
-    a2 = [labels2Ints(l2[i],i2[i],r2[i]) for i in range(min(len(l2),len(r2))) if containLabels(l2[i],r2[i])]
+    a1 = [labels2Ints(l1[i],i1[i],r1[i]) if containLabels(l1[i],r1[i]) else [] for i in range(min(len(l1),len(r1)))]
+    a2 = [labels2Ints(l2[i],i2[i],r2[i]) if containLabels(l2[i],r2[i]) else [] for i in range(min(len(l2),len(r2)))]
 
-    s1 = [round(stats.spearmanr(sorted(i1[i]), a1[i])[0],3) for i in range(min(len(i1),len(a1)))]
-    s2 = [round(stats.spearmanr(sorted(i2[i]), a2[i])[0],3) for i in range(min(len(i2),len(a2)))]
+    s1 = [round(stats.spearmanr(sorted(i1[i]), a1[i])[0],3) if len(l1[i]) == len(r1[i]) else numpy.NaN for i in range(min(len(i1),len(a1)))]
+    s2 = [round(stats.spearmanr(sorted(i2[i]), a2[i])[0],3) if len(l2[i]) == len(r2[i]) else numpy.NaN for i in range(min(len(i2),len(a2)))]
 
     return s1,s2
 
@@ -107,13 +118,21 @@ def labels2Ints(labels,ints,res):
 
 def extract_comparison(input):
     merge_test_com_col = input[0].index("merge_test_compareN")
+    merge_test_com_records = input[0].index("merge_test_compare_records")
     sort_test_com_col = input[0].index("sort_test_compareN")
-    return [int(line[merge_test_com_col]) for line in input[1:] if line[merge_test_com_col] != ''], [int(line[sort_test_com_col]) for line in input[1:] if line[sort_test_com_col] != '']
+    sort_test_com_records = input[0].index("sort_test_compare_records")
+
+    return [int(line[merge_test_com_col]) for line in input[1:] if line[merge_test_com_col] != ''], [int(line[sort_test_com_col]) for line in input[1:] if line[sort_test_com_col] != ''],[line[merge_test_com_records].replace("\"","") for line in input[1:] if line[merge_test_com_records] != ''],[line[sort_test_com_records].replace("\"","") for line in input[1:] if line[sort_test_com_records] != '']
 
 def extract_trace(input):
     sort_test_trace_col = input[0].index("sort_test_trace")
     t1 = [parseTrace(line[sort_test_trace_col]) for line in input[1:] if line[sort_test_trace_col] != '']
     return t1
+
+def extract_free_response(input):
+    col = input[0].index("exp_check_res.text")
+    return [line[col] for line in input[1:] if line[col] != '']
+
 
 def parseTrace(line):
     trace = line.replace("\"", "").replace("[", "").strip("]]").split("],")
@@ -132,5 +151,7 @@ def reconstruct_trace(trace,path,name):
     plt.savefig(path + "traces/sort_test/" + name)
     plt.close()
 
-extract_from_CSV(DATA_DIR_CS)
+
+# extract_from_CSV(DATA_DIR_CS)
 # extract_from_CSV(DATA_DIR_NON_CS)
+extract_from_CSV(DATA_DIR_PSY,is_trace_enabled=True)
