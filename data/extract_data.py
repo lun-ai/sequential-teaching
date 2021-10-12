@@ -133,7 +133,6 @@ def extract_free_response(input):
     col = input[0].index("exp_check_res.text")
     return [line[col] for line in input[1:] if line[col] != '']
 
-
 def parseTrace(line):
     trace = line.replace("\"", "").replace("[", "").strip("]]").split("],")
     trace = [t.split(",") for t in trace]
@@ -150,7 +149,6 @@ def reconstruct_trace(trace,path,name):
     plt.axis('off')
     plt.savefig(path + "traces/sort_test/" + name)
     plt.close()
-
 
 # extract_from_CSV(DATA_DIR_CS)
 # extract_from_CSV(DATA_DIR_NON_CS)
