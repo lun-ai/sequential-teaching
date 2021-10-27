@@ -1,0 +1,19 @@
+sort test:
+entry: <values> <encryption> <isort> <bumsort>
+entry: [6, 3, 5, 4, 2, 1],[E, B, C, A, F, D] 15 8
+D,F,B,A,C,E
+
+entry: [4, 6, 5, 2, 3, 1],[A, D, C, B, F, E] 15 9
+E,B,F,A,C,D
+
+entry: [7, 5, 3, 6, 1, 4, 2],[B, F, E, D, G, A, C] 19 12
+G,C,E,A,F,D,B
+
+entry: [4, 7, 2, 6, 3, 5, 1],[E, D, G, A, C, B, F] 18 12
+F,G,C,E,B,A,D
+
+entry: [8, 7, 6, 5, 4, 3, 2, 1],[A, H, C, E, B, D, F, G] 28 12
+G,F,D,B,E,C,H,A
+
+entry: [5, 7, 6, 1, 4, 9, 8, 10, 2, 3],[E, I, H, F, B, G, C, J, D, A] 30 12
+F,D,A,B,E,H,I,C,G,J

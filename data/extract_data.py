@@ -5,9 +5,12 @@ from os import listdir
 import csv
 import matplotlib.pyplot as plt
 
-DATA_DIR_CS = "test/CS/"
-DATA_DIR_NON_CS = "test/non_CS/"
-DATA_DIR_PSY = "test/10_10_2021/"
+DATA_DIR_CS = "test/Test_1/CS/"
+DATA_DIR_NON_CS = "test/Test_1/non_CS/"
+DATA_DIR_TEST2_PSYA = "test/Test_2/10_10_2021/merge_sort/"
+DATA_DIR_TEST2_PSYB = "test/Test_2/10_10_2021/sort_merge/"
+DATA_DIR_TEST2_ADDITIONALA = "test/Test_2/18_10_2021/merge_sort/"
+DATA_DIR_TEST2_ADDITIONALB = "test/Test_2/18_10_2021/sort_merge/"
 
 def extract_from_CSV(path,is_trace_enabled=False):
     files = listdir(path)
@@ -40,7 +43,7 @@ def extract_from_CSV(path,is_trace_enabled=False):
         merge_test_score.append(s1)
         sort_test_score.append(s2)
 
-        c1, c2, r1, r2 = extract_comparison(c)
+        c1, c2, r1, r2 = extract_comparison(c,"\'")
         merge_test_comparison.append(c1)
         sort_test_comparison.append(c2)
         merge_test_comparison_records.append(r1)
@@ -64,7 +67,7 @@ def extract_from_CSV(path,is_trace_enabled=False):
     print('merge test score: ' + str(merge_test_score))
     print('sort test score: ' + str(sort_test_score))
     print('merge test comparison: ' + str(merge_test_comparison))
-    print('merge test comparison records: ' + str(np.array(merge_test_comparison_records)))
+    # print('merge test comparison records: ' + str(np.array(merge_test_comparison_records)))
     print('sort test comparison: ' + str(sort_test_comparison))
     print('sort test comparison records: ' + str(np.array(sort_test_comparison_records)))
     print('strategy reflection: ' + str(free_res))
@@ -116,13 +119,13 @@ def containLabels(labels, ans):
 def labels2Ints(labels,ints,res):
     return [ints[labels.index(r)] for r in res]
 
-def extract_comparison(input):
+def extract_comparison(input,label_pad):
     merge_test_com_col = input[0].index("merge_test_compareN")
     merge_test_com_records = input[0].index("merge_test_compare_records")
     sort_test_com_col = input[0].index("sort_test_compareN")
     sort_test_com_records = input[0].index("sort_test_compare_records")
 
-    return [int(line[merge_test_com_col]) for line in input[1:] if line[merge_test_com_col] != ''], [int(line[sort_test_com_col]) for line in input[1:] if line[sort_test_com_col] != ''],[line[merge_test_com_records].replace("\"","") for line in input[1:] if line[merge_test_com_records] != ''],[line[sort_test_com_records].replace("\"","") for line in input[1:] if line[sort_test_com_records] != '']
+    return [int(line[merge_test_com_col]) for line in input[1:] if line[merge_test_com_col] != ''], [int(line[sort_test_com_col]) for line in input[1:] if line[sort_test_com_col] != ''],[line[merge_test_com_records].replace("\"",label_pad) for line in input[1:] if line[merge_test_com_records] != ''],[line[sort_test_com_records].replace("\"",label_pad) for line in input[1:] if line[sort_test_com_records] != '']
 
 def extract_trace(input):
     sort_test_trace_col = input[0].index("sort_test_trace")
@@ -152,4 +155,5 @@ def reconstruct_trace(trace,path,name):
 
 # extract_from_CSV(DATA_DIR_CS)
 # extract_from_CSV(DATA_DIR_NON_CS)
-extract_from_CSV(DATA_DIR_PSY,is_trace_enabled=True)
+# extract_from_CSV(DATA_DIR_TEST2_PSYB)
+extract_from_CSV(DATA_DIR_TEST2_ADDITIONALB)
