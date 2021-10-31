@@ -7,3 +7,4 @@ node_modules
 /*.png
 /*.js
 data/**/*.png
+/*.csv
