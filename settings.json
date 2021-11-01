@@ -1,0 +1,40 @@
+{
+    "logging": {
+        "name": "sort strategy training",
+        "version": "1.0",
+        "filename": "sort training demo.csv",
+        "delim": ","
+    },
+
+    "duration": 300,
+
+    "task01": {
+        "order" : [5, 2, 4, 3, 1],
+        "mask" : ["B", "A", "C", "E", "D"],
+        "icon" : "images/apple.png"
+    },
+
+    "task02": {
+        "order" : [4, 5, 2, 3, 1],
+        "mask" : ["D", "C", "E", "A", "B"],
+        "icon" : "images/apple.png"
+    },
+
+    "task03": {
+        "order" : [7, 1, 6, 3, 4, 5, 2],
+        "mask" : ["D", "G", "B", "F", "A", "E", "C"],
+        "icon" : "images/apple.png"
+    },
+
+    "task04": {
+        "order" : [4, 6, 2, 7, 5, 3, 1],
+        "mask" : ["D", "A", "C", "B", "E", "G", "F"],
+        "icon" : "images/apple.png"
+    },
+
+    "task05": {
+        "order" : [8, 6, 4, 3, 2, 10, 9, 7, 1, 5],
+        "mask" : ["G", "C", "E", "J", "I", "H", "F", "B", "D", "A"],
+        "icon" : "images/apple.png"
+    }
+}
