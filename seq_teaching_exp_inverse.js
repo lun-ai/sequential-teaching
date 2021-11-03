@@ -42,10 +42,11 @@ const white = [1.0, 1.0, 1.0];
 const traceSaveAtFrame = 20;
 const introTimeL = 120;
 const mergeTestTimeL = 90;
-const mergeTrainTimeL = 60;
-const mergeExplTimeL = 30;
+const mergeTrainTimeL = 90;
+const mergeExplTimeL = 60;
 const sortTestTimeL = 300;
-const sortTrainTimeL = 240;
+const sortTrainTimeL = 300;
+const structureTrainTimeL = 300;
 const sortExplTimeL = 60;
 var routineT = 0;
 var comparePressedT = 0.0;
@@ -122,22 +123,20 @@ function compare(scale, listValues, labels, compareBtn, instr, scaleLeft, scaleR
     timeSleep(sleepTime);
     if ((state[0] > 3)) {
         instr.color = green;
+        instr.height = 0.05;
         if ((state[0] === 4)) {
             instr.text = state[1] + " > " + state[2];
-            instr.height = 0.05;
             scale.image = scaleGtPath;
         } else {
             if ((state[0] === 5)) {
                 instr.text = state[1] + " < " + state[2];
-                instr.height = 0.05;
                 scale.image = scaleLtPath;
             } else {
                 instr.text = state[1] + " = " + state[2];
-                instr.height = 0.05;
                 scale.image = scaleEqPath;
             }
         }
-        compareBtn.image = "materials/merge_sort/imgs/compare_selected.png";
+        compareBtn.image = "materials/merge_sort/imgs/compare_clicked.png";
         return [1,state[1],state[2]];
     } else {
         if ((state[0] === 1)) {
@@ -168,7 +167,8 @@ var values;
 var correctValues;
 function checkSortTrainAns(input, labels, res, feedback_1, feedback_2) {
     var correct, correctValues, submitted, values;
-    correct = getSortTrace(input, labels);
+    const inputValues = input.map(x=>parseInt(x));
+    correct = getSortTrace(inputValues, labels);
     submitted = res.replace(" ", "");
     values = res.replace(",", "");
     correctValues = correct.replace(",", "");
@@ -200,6 +200,7 @@ function getSortTrace(input, labels) {
         i = _pj_a[_pj_c];
         temp.push([i]);
     }
+    console.log(temp);
     while ((temp.length > 1)) {
         sublists = [];
         for (var i = 0, _pj_a = Number.parseInt((temp.length / 2)); (i < _pj_a); i += 1) {
@@ -343,6 +344,280 @@ function updateTrace(itemPos, newItemPos) {
     }
     return updated;
 }
+_pj = {};
+_pj_snippets(_pj);
+
+function checkSublistFormatValid(leftInput, rightInput, labels, instr) {
+    timeSleep(sleepTime);
+    if (((leftInput.text.length === 0) || (rightInput.text.length === 0))) {
+        instr.text = "Please provide labels in correct format for both LHS and RHS";
+        instr.color = red;
+        return false;
+    } else {
+        if (((leftInput.text.length > 1) || (rightInput.text.length > 1))) {
+            instr.text = "Please enter labels as single capitals";
+            instr.color = red;
+            return false;
+        } else {
+            if (((! _pj.in_es6(leftInput.text, labels)) || (! _pj.in_es6(rightInput.text, labels)))) {
+                instr.text = "Please enter the leftmost label of chosen collections";
+                instr.color = red;
+                return false;
+            }
+        }
+    }
+    instr.text = "Apply the BLUE STAR by typing leftmost fruit labels of two grey boxes in both LHS and RHS textboxes";
+    instr.color = white;
+    return true;
+}
+
+class Task {
+    constructor(input,labels,imgPath,win) {
+        /*
+        Loads necessary information to manage the task.
+
+        PARAMETERS
+        ----------
+        task : dictionary containing the scrambled order, letter encryption and icon path
+        win : PsychoPy Window
+        */
+        var a, list, masks;
+        this.win = psychoJS.window;
+        list = input;
+        this.nitems = list.length;
+        this.background = [];
+        this.fruits = [];
+        this.labels = [];
+        this.list = [];
+        this.mask = [];
+        this.background_rects = [];
+        for (var i, _pj_c = 0, _pj_a = util.range(list.length), _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            this.list.push([list[i]]);
+            const newRect = new visual.Rect({"win": this.win, "fillColor": "grey", "lineColor": "grey", "lineWidth": 0})
+            newRect.setAutoDraw(true);
+            this.background_rects.push(newRect);
+            const newImg = new visual.ImageStim({"win": this.win, "image": imgPath})
+            newImg.setAutoDraw(true);
+            this.fruits.push(newImg);
+            const newTxt = new visual.TextStim({"win": this.win, "color": "black", "text": ""})
+            newTxt.setAutoDraw(true);
+            this.labels.push(newTxt);
+            this.mask.push([labels[i].replaceAll("'","")]);
+        }
+        this.names = [...labels];
+    }
+    update() {
+        /*
+        Sets up the visuals for the tasks and re-does it from scratch whenever called.
+        */
+        var SQUARE_DIST, SQUARE_HEIGHT, SQUARE_SIZE, background, fruit, i_i, i_j, label, position;
+        SQUARE_SIZE = 0.08;
+        SQUARE_HEIGHT = ((SQUARE_SIZE * 16) / 9);
+        SQUARE_DIST = 0.03;
+        var currentPos = ((- ((this.nitems * SQUARE_SIZE) / 2) + 0.3) + 0.045);
+        var cnt = 0;
+        for (var i, _pj_c = 0, _pj_a = this.list, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            const len = (2 * i.length - 1) * SQUARE_SIZE + 0.02;
+            const cent = currentPos - 0.04 + (i.length * SQUARE_SIZE / 2);
+            for (var j, _pj_f = 0, _pj_d = i, _pj_e = _pj_d.length; (_pj_f < _pj_e); _pj_f += 1) {
+                j = _pj_d[_pj_f];
+                this.background_rects[cnt + _pj_f].pos = [currentPos, 0.225];
+                this.background_rects[cnt + _pj_f].size = [0, 0];
+                this.fruits[cnt + _pj_f].pos = [currentPos, 0.225];
+                this.fruits[cnt + _pj_f].size = [SQUARE_SIZE, SQUARE_SIZE];
+                this.labels[cnt + _pj_f].pos = [currentPos, 0.075];
+                this.labels[cnt + _pj_f].height = SQUARE_DIST;
+                this.labels[cnt + _pj_f].text = this.mask[_pj_c][_pj_f];
+                currentPos += SQUARE_SIZE;
+            }
+            this.background_rects[cnt].pos = [cent, 0.225];
+            this.background_rects[cnt].size = [len, SQUARE_HEIGHT];
+            cnt += i.length;
+        }
+    }
+    clean() {
+        for (var i, _pj_c = 0, _pj_a = this.background_rects, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            i.setAutoDraw(false);
+        }        
+        for (var i, _pj_c = 0, _pj_a = this.fruits, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            i.setAutoDraw(false);
+        }
+        for (var i, _pj_c = 0, _pj_a = this.labels, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            i.setAutoDraw(false);
+        }
+    }
+    draw() {
+        /*
+        Draws all the visuals of the task.
+        */
+        for (var i, _pj_c = 0, _pj_a = this.background_rects, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            i.draw();
+        }        
+        for (var i, _pj_c = 0, _pj_a = this.fruits, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            i.opacity = 0;
+            i.draw();
+            i.opacity = 1.0;
+            i.draw();
+        }
+        for (var i, _pj_c = 0, _pj_a = this.labels, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            i.draw();
+        }
+    }
+    merge(x, y) {
+        /*
+        Merges the two sublists with the given labels. Returns True if it actually did anything.
+
+        PARAMETERS
+        ---------
+        x : string
+        y : string
+
+        RETURNS
+        -------
+        bool
+        */
+        var a, a_mask, b, b_mask, i_x, i_y, merged_list, merged_mask;
+        if ((((x === y) || (! _pj.in_es6(x, this.names))) || (! _pj.in_es6(y, this.names)))) {
+            return false;
+        }
+        i_x = util.index(this.names, x);
+        i_y = util.index(this.names, y);
+        a = this.list[i_x];
+        b = this.list[i_y];
+        a_mask = this.mask[i_x];
+        b_mask = this.mask[i_y];
+        const a_mask_c = [...a_mask];
+        const b_mask_c = [...b_mask];
+        merged_list = [];
+        merged_mask = [];
+        while (((a.length > 0) || (b.length > 0))) {
+            if (((a.length > 0) && (b.length > 0))) {
+                if ((a[0] > b[0])) {
+                    merged_list.push(b[0]);
+                    merged_mask.push(b_mask[0]);
+                    b.splice(0,1);
+                    b_mask.splice(0,1);
+                } else {
+                    merged_list.push(a[0]);
+                    merged_mask.push(a_mask[0]);
+                    a.splice(0,1);
+                    a_mask.splice(0,1);
+                }
+            } else {
+                if ((a.length > 0)) {
+                    for (var i, _pj_c = 0, _pj_a = a, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+                        i = _pj_a[_pj_c];
+                        merged_list.push(i);
+                    }
+                    for (var j, _pj_c = 0, _pj_a = a_mask, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+                        j = _pj_a[_pj_c];
+                        merged_mask.push(j);
+                    }
+                    a = [];
+                    a_mask = [];
+                } else {
+                    if ((b.length > 0)) {
+                        for (var i, _pj_c = 0, _pj_a = b, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+                            i = _pj_a[_pj_c];
+                            merged_list.push(i);
+                        }
+                        for (var j, _pj_c = 0, _pj_a = b_mask, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+                            j = _pj_a[_pj_c];
+                            merged_mask.push(j);
+                        }
+                        b = [];
+                        b_mask = [];
+                    }
+                }
+            }
+        }
+        if ((i_x > i_y)) {
+            this.list.splice(i_x,1);
+            this.list.splice(i_y,1);
+            this.mask.splice(i_x,1);
+            this.mask.splice(i_y,1);
+            this.list.splice(i_y, 0, merged_list);
+            this.mask.splice(i_y, 0, merged_mask);
+            this.names.splice(i_x,1);
+            this.names.splice(i_y,1);
+            this.names.splice(i_y, 0, merged_mask[0]);
+        } else {
+            if ((i_x < i_y)) {
+                this.list.splice(i_y,1);
+                this.list.splice(i_x,1);
+                this.mask.splice(i_y,1);
+                this.mask.splice(i_x,1);
+                this.list.splice(i_x, 0, merged_list);
+                this.mask.splice(i_x, 0, merged_mask);
+                this.names.splice(i_y,1);
+                this.names.splice(i_x,1);
+                this.names.splice(i_x, 0, merged_mask[0]);
+            }
+        }
+        const l = [];
+        for (var i, _pj_c = 0, _pj_a = this.mask, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            l.push([...i]);
+        }
+        return [true,a_mask_c,b_mask_c,l];
+    }
+    merge_cost(x, y) {
+        /*
+        Calculates the cost of the merge action without actually performing merge
+        on the active task.
+
+        PARAMTETERS:
+        ------------
+        x : String
+        y : String
+
+        RETRUNS:
+        --------
+        cost : int
+        */
+        var a, b, cost, i_x, i_y;
+        if ((((x === y) || (! _pj.in_es6(x, this.names))) || (! _pj.in_es6(y, this.names)))) {
+            return 0;
+        }
+        cost = 0;
+        i_x = util.index(this.names, x);
+        i_y = util.index(this.names, y);
+        a = [];
+        b = [];
+        for (var i, _pj_c = 0, _pj_a = this.list[i_x], _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            a.push(i);
+        }
+        for (var i, _pj_c = 0, _pj_a = this.list[i_y], _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            b.push(i);
+        }
+        while (((a.length > 0) || (b.length > 0))) {
+            if (((a.length > 0) && (b.length > 0))) {
+                if ((a[0] > b[0])) {
+                    b.splice(0,1);
+                    cost += 1;
+                } else {
+                    a.splice(0,1);
+                    cost += 1;
+                }
+            } else {
+                a = [];
+                b = [];
+            }
+        }
+        return cost;
+    }
+}
+
 // init psychoJS:
 const psychoJS = new PsychoJS({
   debug: true
@@ -380,6 +655,13 @@ flowScheduler.add(HINTRoutineEnd());
 flowScheduler.add(SORT_INTRORoutineBegin());
 flowScheduler.add(SORT_INTRORoutineEachFrame());
 flowScheduler.add(SORT_INTRORoutineEnd());
+const TRAIN_1LoopScheduler = new Scheduler(psychoJS);
+flowScheduler.add(TRAIN_1LoopBegin(TRAIN_1LoopScheduler));
+flowScheduler.add(TRAIN_1LoopScheduler);
+flowScheduler.add(TRAIN_1LoopEnd);
+flowScheduler.add(STRUCTURE_INTRORoutineBegin());
+flowScheduler.add(STRUCTURE_INTRORoutineEachFrame());
+flowScheduler.add(STRUCTURE_INTRORoutineEnd());
 const TRAIN_2LoopScheduler = new Scheduler(psychoJS);
 flowScheduler.add(TRAIN_2LoopBegin(TRAIN_2LoopScheduler));
 flowScheduler.add(TRAIN_2LoopScheduler);
@@ -387,10 +669,10 @@ flowScheduler.add(TRAIN_2LoopEnd);
 flowScheduler.add(MERGE_INTRORoutineBegin());
 flowScheduler.add(MERGE_INTRORoutineEachFrame());
 flowScheduler.add(MERGE_INTRORoutineEnd());
-const TRAIN_1LoopScheduler = new Scheduler(psychoJS);
-flowScheduler.add(TRAIN_1LoopBegin(TRAIN_1LoopScheduler));
-flowScheduler.add(TRAIN_1LoopScheduler);
-flowScheduler.add(TRAIN_1LoopEnd);
+const TRAIN_3LoopScheduler = new Scheduler(psychoJS);
+flowScheduler.add(TRAIN_3LoopBegin(TRAIN_3LoopScheduler));
+flowScheduler.add(TRAIN_3LoopScheduler);
+flowScheduler.add(TRAIN_3LoopEnd);
 flowScheduler.add(MERGE_TEST_INTRORoutineBegin());
 flowScheduler.add(MERGE_TEST_INTRORoutineEachFrame());
 flowScheduler.add(MERGE_TEST_INTRORoutineEnd());
@@ -420,143 +702,150 @@ psychoJS.start({
   expName: expName,
   expInfo: expInfo,
   resources: [
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
-    {'name': 'materials/imgs/prefer_not_to_say.png', 'path': 'materials/imgs/prefer_not_to_say.png'},
-    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
-    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
-    {'name': 'materials/imgs/prefer_not_to_say_selected.png', 'path': 'materials/imgs/prefer_not_to_say_selected.png'},
-    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
-    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
-    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
-    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
     {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
-    {'name': 'materials/imgs/arrow.png', 'path': 'materials/imgs/arrow.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
-    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
-    {'name': 'materials/imgs/other_gender.png', 'path': 'materials/imgs/other_gender.png'},
-    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_test_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_test_example.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
-    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
-    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
-    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
-    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
-    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
-    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
-    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
-    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
-    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
-    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
-    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
-    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
-    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
     {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
     {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
-    {'name': 'materials/merge_sort/imgs/compare_selected.png', 'path': 'materials/merge_sort/imgs/compare_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
     {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
+    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
+    {'name': 'materials/merge_sort/imgs/blue_star.png', 'path': 'materials/merge_sort/imgs/blue_star.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
+    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
+    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
+    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
+    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
+    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
+    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
+    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
     {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
+    {'name': 'materials/imgs/waiting2.png', 'path': 'materials/imgs/waiting2.png'},
+    {'name': 'materials/imgs/other_gender.png', 'path': 'materials/imgs/other_gender.png'},
+    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
+    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon.png', 'path': 'materials/merge_sort/imgs/fruits/melon.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
+    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
+    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
+    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
+    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
+    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
+    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
+    {'name': 'materials/imgs/arrow.png', 'path': 'materials/imgs/arrow.png'},
+    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
+    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
+    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
+    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
+    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
+    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
     {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
     {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/blue_star_clicked.png', 'path': 'materials/merge_sort/imgs/blue_star_clicked.png'},
+    {'name': 'materials/imgs/prefer_not_to_say_selected.png', 'path': 'materials/imgs/prefer_not_to_say_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
     {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
-    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
-    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
-    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
-    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
-    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
-    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
-    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
-    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
-    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'},
-    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
-    {'name': 'materials/imgs/other_gender_selected.png', 'path': 'materials/imgs/other_gender_selected.png'},
-    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
-    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
-    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
     {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
-    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
+    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
+    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
     {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
+    {'name': 'materials/imgs/prefer_not_to_say.png', 'path': 'materials/imgs/prefer_not_to_say.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
+    {'name': 'materials/merge_sort/imgs/compare_clicked.png', 'path': 'materials/merge_sort/imgs/compare_clicked.png'},
+    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
+    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
+    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
+    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
+    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
-    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
+    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
     {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
+    {'name': 'materials/merge_sort/imgs/structure_train/structure_train_example.png', 'path': 'materials/merge_sort/imgs/structure_train/structure_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
     {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'}
+    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
+    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_test_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_test_example.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
+    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
+    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
+    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple.png', 'path': 'materials/merge_sort/imgs/fruits/apple.png'},
+    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
+    {'name': 'materials/structure_train_cond.csv', 'path': 'materials/structure_train_cond.csv'},
+    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
+    {'name': 'materials/imgs/other_gender_selected.png', 'path': 'materials/imgs/other_gender_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
+    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'}
   ]
 });
 
@@ -687,6 +976,26 @@ var sort_expl_compare;
 var sort_expl_mouse;
 var sort_expl_timer;
 var sort_expl_hint;
+var STRUCTURE_INTROClock;
+var intro_text_9;
+var alice_6;
+var structure_example;
+var door_10;
+var structure_intro_btn;
+var structure_intro_mouse;
+var STRUCTURE_TRAINClock;
+var structure_train_merge_instr;
+var structure_train_feedback_1;
+var structure_train_feedback_2;
+var structure_train_instr;
+var structure_train_sublist_right;
+var structure_train_sublist_left;
+var structure_train_sep;
+var structure_train_board;
+var structure_train_btn;
+var structure_train_merge;
+var structure_train_mouse;
+var structure_train_timer;
 var MERGE_INTROClock;
 var intro_text_2;
 var alice_2;
@@ -1448,8 +1757,8 @@ async function experimentInit() {
     text: '',
     font: 'Open Sans',
     units: undefined, 
-    pos: [0.5, (- 0.25)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
+    pos: [0.5, (- 0.22)], height: 0.04,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('yellow'),  opacity: undefined,
     depth: -32.0 
   });
   
@@ -1727,9 +2036,195 @@ async function experimentInit() {
     text: '',
     font: 'Open Sans',
     units: undefined, 
-    pos: [0.5, (- 0.25)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
+    pos: [0.5, (- 0.22)], height: 0.04,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('yellow'),  opacity: undefined,
     depth: -32.0 
+  });
+  
+  // Initialize components for Routine "STRUCTURE_INTRO"
+  STRUCTURE_INTROClock = new util.Clock();
+  intro_text_9 = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'intro_text_9',
+    text: 'ALICE: OOOooO ... The BLUE STAR is an OPERATOR for arranging fruits and incurs a COMPARISON COST after each use.\n\n1. You need to arrange a PILE of fruits that is most likely UNORDERED into ONE COLLECTION\n\n2. EACH BLUE STAR operation combines TWO COLLECTIONS at a time, apply iteratively to combine ALL COLLECTIONS\n\nMINIMISE the cost and try different ways of applying the BLUE STAR',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, (- 0.15)], height: 0.03,  wrapWidth: 1.2, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: 0.0 
+  });
+  
+  alice_6 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'alice_6', units : undefined, 
+    image : 'materials/merge_sort/imgs/alice.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.25), 0.25], size : [0.2, 0.2],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -1.0 
+  });
+  structure_example = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'structure_example', units : undefined, 
+    image : 'materials/merge_sort/imgs/structure_train/structure_train_example.png', mask : undefined,
+    ori : 0.0, pos : [0.3, 0.25], size : [0.7, 0.4],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -2.0 
+  });
+  door_10 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'door_10', units : undefined, 
+    image : 'materials/merge_sort/imgs/door.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.45), 0.25], size : [0.15, 0.3],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -3.0 
+  });
+  structure_intro_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'structure_intro_btn', units : undefined, 
+    image : 'materials/imgs/continue.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -4.0 
+  });
+  structure_intro_mouse = new core.Mouse({
+    win: psychoJS.window,
+  });
+  structure_intro_mouse.mouseClock = new util.Clock();
+  // Initialize components for Routine "STRUCTURE_TRAIN"
+  STRUCTURE_TRAINClock = new util.Clock();
+  structure_train_merge_instr = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'structure_train_merge_instr',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [(- 0.55), 0.42], height: 1.0,  wrapWidth: 0.4, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -6.0 
+  });
+  
+  structure_train_feedback_1 = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'structure_train_feedback_1',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [(- 0.45), (- 0.35)], height: 0.05,  wrapWidth: 0.4, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -7.0 
+  });
+  
+  structure_train_feedback_2 = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'structure_train_feedback_2',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0.1, (- 0.35)], height: 0.05,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -8.0 
+  });
+  
+  structure_train_instr = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'structure_train_instr',
+    text: '1. You need to arrange a PILE of fruits that is most likely UNORDERED into ONE COLLECTION with fruits of INCREASING weights from left to right\n\n2. PRESS the button with the BLUE STAR icon to combine TWO COLLECTIONS at a time\n\n3. You can see the NUMBER OF COMPARISONS ALICE uses as a reference and you have 300 SECS to SUBMIT!',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [(- 0.55), 0], height: 0.02,  wrapWidth: 0.4, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -9.0 
+  });
+  
+  structure_train_sublist_right = new visual.TextBox({
+    win: psychoJS.window,
+    name: 'structure_train_sublist_right',
+    text: '',
+    font: 'Open Sans',
+    pos: [(- 0.45), 0.35], letterHeight: 0.03,
+    size: [0.15, 0.07],  units: undefined, 
+    color: 'black', colorSpace: 'rgb',
+    fillColor: 'white', borderColor: undefined,
+    bold: false, italic: false,
+    opacity: undefined,
+    padding: undefined,
+    editable: true,
+    multiline: true,
+    anchor: 'top-center',
+    depth: -10.0 
+  });
+  
+  structure_train_sublist_left = new visual.TextBox({
+    win: psychoJS.window,
+    name: 'structure_train_sublist_left',
+    text: '',
+    font: 'Open Sans',
+    pos: [(- 0.65), 0.35], letterHeight: 0.03,
+    size: [0.15, 0.07],  units: undefined, 
+    color: 'black', colorSpace: 'rgb',
+    fillColor: 'white', borderColor: undefined,
+    bold: false, italic: false,
+    opacity: undefined,
+    padding: undefined,
+    editable: true,
+    multiline: true,
+    anchor: 'top-center',
+    depth: -11.0 
+  });
+  
+  structure_train_sep = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'structure_train_sep', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.2)], size : [1.5, 0.005],
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -12.0 
+  });
+  structure_train_board = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'structure_train_board', units : undefined, 
+    image : undefined, mask : undefined,
+    ori : 0.0, pos : [0.3, 0.15], size : [1, 0.6],
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -13.0 
+  });
+  structure_train_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'structure_train_btn', units : undefined, 
+    image : 'materials/imgs/waiting2.png', mask : undefined,
+    ori : 0.0, pos : [0.6, (- 0.35)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -14.0 
+  });
+  structure_train_merge = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'structure_train_merge', units : undefined, 
+    image : 'materials/merge_sort/imgs/blue_star.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.55), 0.2], size : [0.3, 0.09],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -15.0 
+  });
+  structure_train_mouse = new core.Mouse({
+    win: psychoJS.window,
+  });
+  structure_train_mouse.mouseClock = new util.Clock();
+  structure_train_timer = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'structure_train_timer',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [(- 0.55), (- 0.15)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('orange'),  opacity: undefined,
+    depth: -17.0 
   });
   
   // Initialize components for Routine "MERGE_INTRO"
@@ -1962,7 +2457,7 @@ async function experimentInit() {
     text: '',
     font: 'Open Sans',
     units: undefined, 
-    pos: [(- 0.55), 0.15], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    pos: [(- 0.55), 0.12], height: 0.05,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: -1.0 
   });
@@ -1973,7 +2468,7 @@ async function experimentInit() {
     text: '',
     font: 'Open Sans',
     units: undefined, 
-    pos: [(- 0.55), (- 0.25)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    pos: [(- 0.55), (- 0.27)], height: 0.05,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: -2.0 
   });
@@ -3657,8 +4152,49 @@ function SORT_INTRORoutineEnd() {
 }
 
 
-var TRAIN_2;
+var TRAIN_1;
 var currentLoop;
+function TRAIN_1LoopBegin(TRAIN_1LoopScheduler, snapshot) {
+  return async function() {
+    TrialHandler.fromSnapshot(snapshot); // update internal variables (.thisN etc) of the loop
+    
+    // set up handler to look after randomisation of conditions etc
+    TRAIN_1 = new TrialHandler({
+      psychoJS: psychoJS,
+      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
+      extraInfo: expInfo, originPath: undefined,
+      trialList: 'materials/sort_train_cond.csv',
+      seed: undefined, name: 'TRAIN_1'
+    });
+    psychoJS.experiment.addLoop(TRAIN_1); // add the loop to the experiment
+    currentLoop = TRAIN_1;  // we're now the current loop
+    
+    // Schedule all the trials in the trialList:
+    for (const thisTRAIN_1 of TRAIN_1) {
+      const snapshot = TRAIN_1.getSnapshot();
+      TRAIN_1LoopScheduler.add(importConditions(snapshot));
+      TRAIN_1LoopScheduler.add(SORT_TRAINRoutineBegin(snapshot));
+      TRAIN_1LoopScheduler.add(SORT_TRAINRoutineEachFrame());
+      TRAIN_1LoopScheduler.add(SORT_TRAINRoutineEnd());
+      TRAIN_1LoopScheduler.add(SORT_EXPLRoutineBegin(snapshot));
+      TRAIN_1LoopScheduler.add(SORT_EXPLRoutineEachFrame());
+      TRAIN_1LoopScheduler.add(SORT_EXPLRoutineEnd());
+      TRAIN_1LoopScheduler.add(endLoopIteration(TRAIN_1LoopScheduler, snapshot));
+    }
+    
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+async function TRAIN_1LoopEnd() {
+  psychoJS.experiment.removeLoop(TRAIN_1);
+
+  return Scheduler.Event.NEXT;
+}
+
+
+var TRAIN_2;
 function TRAIN_2LoopBegin(TRAIN_2LoopScheduler, snapshot) {
   return async function() {
     TrialHandler.fromSnapshot(snapshot); // update internal variables (.thisN etc) of the loop
@@ -3668,7 +4204,7 @@ function TRAIN_2LoopBegin(TRAIN_2LoopScheduler, snapshot) {
       psychoJS: psychoJS,
       nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
-      trialList: 'materials/sort_train_cond.csv',
+      trialList: 'materials/structure_train_cond.csv',
       seed: undefined, name: 'TRAIN_2'
     });
     psychoJS.experiment.addLoop(TRAIN_2); // add the loop to the experiment
@@ -3678,12 +4214,9 @@ function TRAIN_2LoopBegin(TRAIN_2LoopScheduler, snapshot) {
     for (const thisTRAIN_2 of TRAIN_2) {
       const snapshot = TRAIN_2.getSnapshot();
       TRAIN_2LoopScheduler.add(importConditions(snapshot));
-      TRAIN_2LoopScheduler.add(SORT_TRAINRoutineBegin(snapshot));
-      TRAIN_2LoopScheduler.add(SORT_TRAINRoutineEachFrame());
-      TRAIN_2LoopScheduler.add(SORT_TRAINRoutineEnd());
-      TRAIN_2LoopScheduler.add(SORT_EXPLRoutineBegin(snapshot));
-      TRAIN_2LoopScheduler.add(SORT_EXPLRoutineEachFrame());
-      TRAIN_2LoopScheduler.add(SORT_EXPLRoutineEnd());
+      TRAIN_2LoopScheduler.add(STRUCTURE_TRAINRoutineBegin(snapshot));
+      TRAIN_2LoopScheduler.add(STRUCTURE_TRAINRoutineEachFrame());
+      TRAIN_2LoopScheduler.add(STRUCTURE_TRAINRoutineEnd());
       TRAIN_2LoopScheduler.add(endLoopIteration(TRAIN_2LoopScheduler, snapshot));
     }
     
@@ -3699,33 +4232,33 @@ async function TRAIN_2LoopEnd() {
 }
 
 
-var TRAIN_1;
-function TRAIN_1LoopBegin(TRAIN_1LoopScheduler, snapshot) {
+var TRAIN_3;
+function TRAIN_3LoopBegin(TRAIN_3LoopScheduler, snapshot) {
   return async function() {
     TrialHandler.fromSnapshot(snapshot); // update internal variables (.thisN etc) of the loop
     
     // set up handler to look after randomisation of conditions etc
-    TRAIN_1 = new TrialHandler({
+    TRAIN_3 = new TrialHandler({
       psychoJS: psychoJS,
       nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: 'materials/merge_train_cond.csv',
-      seed: undefined, name: 'TRAIN_1'
+      seed: undefined, name: 'TRAIN_3'
     });
-    psychoJS.experiment.addLoop(TRAIN_1); // add the loop to the experiment
-    currentLoop = TRAIN_1;  // we're now the current loop
+    psychoJS.experiment.addLoop(TRAIN_3); // add the loop to the experiment
+    currentLoop = TRAIN_3;  // we're now the current loop
     
     // Schedule all the trials in the trialList:
-    for (const thisTRAIN_1 of TRAIN_1) {
-      const snapshot = TRAIN_1.getSnapshot();
-      TRAIN_1LoopScheduler.add(importConditions(snapshot));
-      TRAIN_1LoopScheduler.add(MERGE_TRAINRoutineBegin(snapshot));
-      TRAIN_1LoopScheduler.add(MERGE_TRAINRoutineEachFrame());
-      TRAIN_1LoopScheduler.add(MERGE_TRAINRoutineEnd());
-      TRAIN_1LoopScheduler.add(MERGE_EXPLRoutineBegin(snapshot));
-      TRAIN_1LoopScheduler.add(MERGE_EXPLRoutineEachFrame());
-      TRAIN_1LoopScheduler.add(MERGE_EXPLRoutineEnd());
-      TRAIN_1LoopScheduler.add(endLoopIteration(TRAIN_1LoopScheduler, snapshot));
+    for (const thisTRAIN_3 of TRAIN_3) {
+      const snapshot = TRAIN_3.getSnapshot();
+      TRAIN_3LoopScheduler.add(importConditions(snapshot));
+      TRAIN_3LoopScheduler.add(MERGE_TRAINRoutineBegin(snapshot));
+      TRAIN_3LoopScheduler.add(MERGE_TRAINRoutineEachFrame());
+      TRAIN_3LoopScheduler.add(MERGE_TRAINRoutineEnd());
+      TRAIN_3LoopScheduler.add(MERGE_EXPLRoutineBegin(snapshot));
+      TRAIN_3LoopScheduler.add(MERGE_EXPLRoutineEachFrame());
+      TRAIN_3LoopScheduler.add(MERGE_EXPLRoutineEnd());
+      TRAIN_3LoopScheduler.add(endLoopIteration(TRAIN_3LoopScheduler, snapshot));
     }
     
     return Scheduler.Event.NEXT;
@@ -3733,8 +4266,8 @@ function TRAIN_1LoopBegin(TRAIN_1LoopScheduler, snapshot) {
 }
 
 
-async function TRAIN_1LoopEnd() {
-  psychoJS.experiment.removeLoop(TRAIN_1);
+async function TRAIN_3LoopEnd() {
+  psychoJS.experiment.removeLoop(TRAIN_3);
 
   return Scheduler.Event.NEXT;
 }
@@ -3847,12 +4380,14 @@ function SORT_TRAINRoutineBegin(snapshot) {
     SORT_TRAINClock.reset(); // clock
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
-    routineTimer.add(240.000000);
+    routineTimer.add(300.000000);
     // update component parameters for each repeat
     sort_train_scale_instr.setColor(new util.Color('white'));
     sort_train_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
     sort_train_scale_instr.setHeight(0.02);
     sort_train_scale_right.setText('');
+    sort_train_scale_right.setText('');
+    sort_train_scale_left.setText('');
     sort_train_scale_left.setText('');
     sort_train_res.setText('');
     sort_train_board.setImage('materials/merge_sort/imgs/purple_diamond.png');
@@ -3883,6 +4418,7 @@ function SORT_TRAINRoutineBegin(snapshot) {
     sort_train_ex_12.setPos([0.3, 0.3]);
     // setup some python lists for storing info about the sort_train_mouse
     gotValidClick = false; // until a click is received
+    sort_train_timer.setText('');
     sort_train_hint.setText('');
     items = [];
     frameCnt = 0;
@@ -3977,7 +4513,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_scale_instr.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (sort_train_scale_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       sort_train_scale_instr.setAutoDraw(false);
     }
@@ -3991,7 +4527,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ans_instr.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (sort_train_ans_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       sort_train_ans_instr.setAutoDraw(false);
     }
@@ -4005,7 +4541,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_instr.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (sort_train_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       sort_train_instr.setAutoDraw(false);
     }
@@ -4019,7 +4555,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_scale_right.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (sort_train_scale_right.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       sort_train_scale_right.setAutoDraw(false);
     }
@@ -4033,7 +4569,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_scale_left.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (sort_train_scale_left.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       sort_train_scale_left.setAutoDraw(false);
     }
@@ -4047,7 +4583,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_res.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (sort_train_res.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       sort_train_res.setAutoDraw(false);
     }
@@ -4061,7 +4597,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_sep.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (sort_train_sep.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       sort_train_sep.setAutoDraw(false);
     }
@@ -4075,7 +4611,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_board.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (sort_train_board.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       sort_train_board.setAutoDraw(false);
     }
@@ -4089,7 +4625,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_scale.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 240.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (sort_train_scale.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       sort_train_scale.setAutoDraw(false);
     }
@@ -4103,7 +4639,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_1.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_ex_1.status === PsychoJS.Status.STARTED || sort_train_ex_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_1.setAutoDraw(false);
     }
@@ -4117,7 +4653,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_2.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_ex_2.status === PsychoJS.Status.STARTED || sort_train_ex_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_2.setAutoDraw(false);
     }
@@ -4131,7 +4667,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_3.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_ex_3.status === PsychoJS.Status.STARTED || sort_train_ex_3.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_3.setAutoDraw(false);
     }
@@ -4145,7 +4681,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_4.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_ex_4.status === PsychoJS.Status.STARTED || sort_train_ex_4.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_4.setAutoDraw(false);
     }
@@ -4159,7 +4695,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_5.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_ex_5.status === PsychoJS.Status.STARTED || sort_train_ex_5.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_5.setAutoDraw(false);
     }
@@ -4173,7 +4709,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_6.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_ex_6.status === PsychoJS.Status.STARTED || sort_train_ex_6.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_6.setAutoDraw(false);
     }
@@ -4187,7 +4723,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_7.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_ex_7.status === PsychoJS.Status.STARTED || sort_train_ex_7.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_7.setAutoDraw(false);
     }
@@ -4201,7 +4737,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_8.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_ex_8.status === PsychoJS.Status.STARTED || sort_train_ex_8.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_8.setAutoDraw(false);
     }
@@ -4215,7 +4751,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_9.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_ex_9.status === PsychoJS.Status.STARTED || sort_train_ex_9.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_9.setAutoDraw(false);
     }
@@ -4229,7 +4765,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_10.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_ex_10.status === PsychoJS.Status.STARTED || sort_train_ex_10.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_10.setAutoDraw(false);
     }
@@ -4243,7 +4779,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_11.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_ex_11.status === PsychoJS.Status.STARTED || sort_train_ex_11.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_11.setAutoDraw(false);
     }
@@ -4257,7 +4793,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_ex_12.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_ex_12.status === PsychoJS.Status.STARTED || sort_train_ex_12.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_ex_12.setAutoDraw(false);
     }
@@ -4271,7 +4807,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_btn.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_btn.status === PsychoJS.Status.STARTED || sort_train_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_btn.setAutoDraw(false);
     }
@@ -4285,7 +4821,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_compare.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_compare.status === PsychoJS.Status.STARTED || sort_train_compare.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_compare.setAutoDraw(false);
     }
@@ -4299,7 +4835,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_timer.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_timer.status === PsychoJS.Status.STARTED || sort_train_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_timer.setAutoDraw(false);
     }
@@ -4313,7 +4849,7 @@ function SORT_TRAINRoutineEachFrame() {
       sort_train_hint.setAutoDraw(true);
     }
 
-    frameRemains = 240.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((sort_train_hint.status === PsychoJS.Status.STARTED || sort_train_hint.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       sort_train_hint.setAutoDraw(false);
     }
@@ -4349,7 +4885,7 @@ function SORT_TRAINRoutineEachFrame() {
                         sort_train_mouse.status = PsychoJS.Status.FINISHED;
                         continueRoutine = false;
                     } else {
-                        if(sort_train_mouse.isPressedIn(obj)) {
+                        if(sort_train_mouse.isPressedIn(obj) && !isComparePressed) {
                             if(obj.name === "sort_train_compare") {
                                 const compareStatus = compare(sort_train_scale, sort_train_input, sort_train_labels, sort_train_compare, sort_train_scale_instr, sort_train_scale_left, sort_train_scale_right);
                                 sort_train_compareN = (sort_train_compareN + compareStatus[0]);
@@ -4477,6 +5013,8 @@ function SORT_EXPLRoutineBegin(snapshot) {
     sort_expl_feedback_2.setColor(new util.Color('white'));
     sort_expl_feedback_2.setText('');
     sort_expl_scale_right.setText('');
+    sort_expl_scale_right.setText('');
+    sort_expl_scale_left.setText('');
     sort_expl_scale_left.setText('');
     sort_expl_res.setText('');
     sort_expl_board.setImage('materials/merge_sort/imgs/purple_diamond.png');
@@ -4507,6 +5045,7 @@ function SORT_EXPLRoutineBegin(snapshot) {
     sort_expl_ex_12.setPos([0.3, 0.3]);
     // setup some python lists for storing info about the sort_expl_mouse
     gotValidClick = false; // until a click is received
+    sort_expl_timer.setText('');
     sort_expl_hint.setText('');
     positions = [];
     for (var u, _pj_c = 0, _pj_a = items, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
@@ -4985,7 +5524,7 @@ function SORT_EXPLRoutineEachFrame() {
                         sort_expl_mouse.status = PsychoJS.Status.FINISHED;
                         continueRoutine = false;
                     } else {
-                        if(sort_expl_mouse.isPressedIn(obj)) {
+                        if(sort_expl_mouse.isPressedIn(obj) && !isComparePressed) {
                             if(obj.name === "sort_expl_compare") {
                                 const compareStatus = compare(sort_expl_scale, sort_expl_input, sort_expl_labels, sort_expl_compare, sort_expl_scale_instr, sort_expl_scale_left, sort_expl_scale_right);
                                 sort_expl_compareN = (sort_expl_compareN + compareStatus[0]);
@@ -5078,6 +5617,556 @@ function SORT_EXPLRoutineEnd() {
     psychoJS.experiment.addData("sort_expl_compare_records",sort_expl_compare_records);
     psychoJS.experiment.addData("sort_expl.tStart",sort_expl_ex_1.tStart);
     psychoJS.experiment.addData("sort_expl.tEnd",routineT);
+    return Scheduler.Event.NEXT;
+  };
+}
+
+
+var STRUCTURE_INTROComponents;
+function STRUCTURE_INTRORoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //------Prepare to start Routine 'STRUCTURE_INTRO'-------
+    t = 0;
+    STRUCTURE_INTROClock.reset(); // clock
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    routineTimer.add(120.000000);
+    // update component parameters for each repeat
+    // setup some python lists for storing info about the structure_intro_mouse
+    gotValidClick = false; // until a click is received
+    routineT = 0;
+    // keep track of which components have finished
+    STRUCTURE_INTROComponents = [];
+    STRUCTURE_INTROComponents.push(intro_text_9);
+    STRUCTURE_INTROComponents.push(alice_6);
+    STRUCTURE_INTROComponents.push(structure_example);
+    STRUCTURE_INTROComponents.push(door_10);
+    STRUCTURE_INTROComponents.push(structure_intro_btn);
+    STRUCTURE_INTROComponents.push(structure_intro_mouse);
+    
+    for (const thisComponent of STRUCTURE_INTROComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function STRUCTURE_INTRORoutineEachFrame() {
+  return async function () {
+    //------Loop for each frame of Routine 'STRUCTURE_INTRO'-------
+    // get current time
+    t = STRUCTURE_INTROClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *intro_text_9* updates
+    if (t >= 0.0 && intro_text_9.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      intro_text_9.tStart = t;  // (not accounting for frame time here)
+      intro_text_9.frameNStart = frameN;  // exact frame index
+      
+      intro_text_9.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (intro_text_9.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      intro_text_9.setAutoDraw(false);
+    }
+    
+    // *alice_6* updates
+    if (t >= 0.0 && alice_6.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      alice_6.tStart = t;  // (not accounting for frame time here)
+      alice_6.frameNStart = frameN;  // exact frame index
+      
+      alice_6.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (alice_6.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      alice_6.setAutoDraw(false);
+    }
+    
+    // *structure_example* updates
+    if (t >= 0.0 && structure_example.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_example.tStart = t;  // (not accounting for frame time here)
+      structure_example.frameNStart = frameN;  // exact frame index
+      
+      structure_example.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (structure_example.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      structure_example.setAutoDraw(false);
+    }
+    
+    // *door_10* updates
+    if (t >= 0.0 && door_10.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      door_10.tStart = t;  // (not accounting for frame time here)
+      door_10.frameNStart = frameN;  // exact frame index
+      
+      door_10.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (door_10.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      door_10.setAutoDraw(false);
+    }
+    
+    // *structure_intro_btn* updates
+    if (t >= 0.5 && structure_intro_btn.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_intro_btn.tStart = t;  // (not accounting for frame time here)
+      structure_intro_btn.frameNStart = frameN;  // exact frame index
+      
+      structure_intro_btn.setAutoDraw(true);
+    }
+
+    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((structure_intro_btn.status === PsychoJS.Status.STARTED || structure_intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      structure_intro_btn.setAutoDraw(false);
+    }
+    if (((t >= 0.5) && (structure_intro_mouse.status === PsychoJS.Status.NOT_STARTED))) {
+        structure_intro_mouse.tStart = t;
+        structure_intro_mouse.frameNStart = frameN;
+        structure_intro_mouse.status = PsychoJS.Status.STARTED;
+        structure_intro_mouse.mouseClock.reset();
+    }
+    if (((structure_intro_mouse.isPressedIn(structure_intro_btn) && (structure_intro_mouse.status === PsychoJS.Status.STARTED)) && (structure_intro_btn.status === PsychoJS.Status.STARTED))) {
+        structure_intro_mouse.status = PsychoJS.Status.FINISHED;
+        continueRoutine = false;
+    }
+    if ((structure_intro_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        structure_intro_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    routineT = t;
+    
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of STRUCTURE_INTROComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine && routineTimer.getTime() > 0) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function STRUCTURE_INTRORoutineEnd() {
+  return async function () {
+    //------Ending Routine 'STRUCTURE_INTRO'-------
+    for (const thisComponent of STRUCTURE_INTROComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    // store data for psychoJS.experiment (ExperimentHandler)
+    _mouseXYs = structure_intro_mouse.getPos();
+    _mouseButtons = structure_intro_mouse.getPressed();
+    psychoJS.experiment.addData('structure_intro_mouse.x', _mouseXYs[0]);
+    psychoJS.experiment.addData('structure_intro_mouse.y', _mouseXYs[1]);
+    psychoJS.experiment.addData('structure_intro_mouse.leftButton', _mouseButtons[0]);
+    psychoJS.experiment.addData('structure_intro_mouse.midButton', _mouseButtons[1]);
+    psychoJS.experiment.addData('structure_intro_mouse.rightButton', _mouseButtons[2]);
+    psychoJS.experiment.addData("structure_intro.tEnd",routineT);
+    return Scheduler.Event.NEXT;
+  };
+}
+
+
+var isMergePressed;
+var initiated;
+var mergePressedT;
+var structure_train_input;
+var structure_train_labels;
+var structure_train_compareN;
+var structure_train_merge_trace;
+var structure_train_merge_records;
+var structure_train_merge_limit;
+var structure_train_path_base;
+var currentTask;
+var STRUCTURE_TRAINComponents;
+function STRUCTURE_TRAINRoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //------Prepare to start Routine 'STRUCTURE_TRAIN'-------
+    t = 0;
+    STRUCTURE_TRAINClock.reset(); // clock
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    routineTimer.add(300.000000);
+    // update component parameters for each repeat
+    structure_train_merge_instr.setColor(new util.Color('white'));
+    structure_train_merge_instr.setText('Apply the BLUE STAR by typing leftmost fruit labels of two grey boxes in both LHS and RHS textboxes');
+    structure_train_merge_instr.setHeight(0.025);
+    structure_train_feedback_1.setText('');
+    structure_train_feedback_2.setText('');
+    structure_train_sublist_right.setText('');
+    structure_train_sublist_right.setText('');
+    structure_train_sublist_left.setText('');
+    structure_train_sublist_left.setText('');
+    structure_train_board.setImage('materials/merge_sort/imgs/white_BG.png');
+    structure_train_btn.setOpacity(1.0);
+    // setup some python lists for storing info about the structure_train_mouse
+    gotValidClick = false; // until a click is received
+    structure_train_timer.setText('');
+    routineT = 0;
+    isMergePressed = false;
+    initiated = false;
+    mergePressedT = 0.0;
+    structure_train_input = input.map(x=>parseInt(x));
+    structure_train_labels = encryption.map(x=>x.replaceAll("'",""));
+    structure_train_compareN = 0;
+    structure_train_merge_trace = [];
+    structure_train_merge_records = [];
+    structure_train_merge_limit = ms_compare;
+    structure_train_path_base = img_path_base;
+    currentTask = new Task(structure_train_input,structure_train_labels,structure_train_path_base+".png",psychoJS.window);
+    
+    structure_train_sublist_left.refresh();
+    structure_train_sublist_right.refresh();
+    
+    structure_train_feedback_2.text = "Alice uses " + structure_train_merge_limit.toString() + " comparisons\nYou have used in total: 0";
+    
+    const structure_train_mouse_btns = structure_train_mouse.psychoJS.eventManager.getMouseInfo().buttons;
+    for (const b of [0,1,2]){
+        structure_train_mouse_btns.pressed[b] = 0;
+        structure_train_mouse_btns.clocks[b].reset();
+        structure_train_mouse_btns.times[b] = 0.0;
+    }
+    
+    // keep track of which components have finished
+    STRUCTURE_TRAINComponents = [];
+    STRUCTURE_TRAINComponents.push(structure_train_merge_instr);
+    STRUCTURE_TRAINComponents.push(structure_train_feedback_1);
+    STRUCTURE_TRAINComponents.push(structure_train_feedback_2);
+    STRUCTURE_TRAINComponents.push(structure_train_instr);
+    STRUCTURE_TRAINComponents.push(structure_train_sublist_right);
+    STRUCTURE_TRAINComponents.push(structure_train_sublist_left);
+    STRUCTURE_TRAINComponents.push(structure_train_sep);
+    STRUCTURE_TRAINComponents.push(structure_train_board);
+    STRUCTURE_TRAINComponents.push(structure_train_btn);
+    STRUCTURE_TRAINComponents.push(structure_train_merge);
+    STRUCTURE_TRAINComponents.push(structure_train_mouse);
+    STRUCTURE_TRAINComponents.push(structure_train_timer);
+    
+    for (const thisComponent of STRUCTURE_TRAINComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function STRUCTURE_TRAINRoutineEachFrame() {
+  return async function () {
+    //------Loop for each frame of Routine 'STRUCTURE_TRAIN'-------
+    // get current time
+    t = STRUCTURE_TRAINClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *structure_train_merge_instr* updates
+    if (t >= 0.0 && structure_train_merge_instr.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_train_merge_instr.tStart = t;  // (not accounting for frame time here)
+      structure_train_merge_instr.frameNStart = frameN;  // exact frame index
+      
+      structure_train_merge_instr.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (structure_train_merge_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      structure_train_merge_instr.setAutoDraw(false);
+    }
+    
+    // *structure_train_feedback_1* updates
+    if (t >= 0.0 && structure_train_feedback_1.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_train_feedback_1.tStart = t;  // (not accounting for frame time here)
+      structure_train_feedback_1.frameNStart = frameN;  // exact frame index
+      
+      structure_train_feedback_1.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (structure_train_feedback_1.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      structure_train_feedback_1.setAutoDraw(false);
+    }
+    
+    // *structure_train_feedback_2* updates
+    if (t >= 0.0 && structure_train_feedback_2.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_train_feedback_2.tStart = t;  // (not accounting for frame time here)
+      structure_train_feedback_2.frameNStart = frameN;  // exact frame index
+      
+      structure_train_feedback_2.setAutoDraw(true);
+    }
+
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((structure_train_feedback_2.status === PsychoJS.Status.STARTED || structure_train_feedback_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      structure_train_feedback_2.setAutoDraw(false);
+    }
+    
+    // *structure_train_instr* updates
+    if (t >= 0.0 && structure_train_instr.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_train_instr.tStart = t;  // (not accounting for frame time here)
+      structure_train_instr.frameNStart = frameN;  // exact frame index
+      
+      structure_train_instr.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (structure_train_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      structure_train_instr.setAutoDraw(false);
+    }
+    
+    // *structure_train_sublist_right* updates
+    if (t >= 0.0 && structure_train_sublist_right.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_train_sublist_right.tStart = t;  // (not accounting for frame time here)
+      structure_train_sublist_right.frameNStart = frameN;  // exact frame index
+      
+      structure_train_sublist_right.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (structure_train_sublist_right.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      structure_train_sublist_right.setAutoDraw(false);
+    }
+    
+    // *structure_train_sublist_left* updates
+    if (t >= 0.0 && structure_train_sublist_left.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_train_sublist_left.tStart = t;  // (not accounting for frame time here)
+      structure_train_sublist_left.frameNStart = frameN;  // exact frame index
+      
+      structure_train_sublist_left.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (structure_train_sublist_left.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      structure_train_sublist_left.setAutoDraw(false);
+    }
+    
+    // *structure_train_sep* updates
+    if (t >= 0.0 && structure_train_sep.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_train_sep.tStart = t;  // (not accounting for frame time here)
+      structure_train_sep.frameNStart = frameN;  // exact frame index
+      
+      structure_train_sep.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (structure_train_sep.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      structure_train_sep.setAutoDraw(false);
+    }
+    
+    // *structure_train_board* updates
+    if (t >= 0.0 && structure_train_board.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_train_board.tStart = t;  // (not accounting for frame time here)
+      structure_train_board.frameNStart = frameN;  // exact frame index
+      
+      structure_train_board.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 300.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (structure_train_board.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      structure_train_board.setAutoDraw(false);
+    }
+    
+    // *structure_train_btn* updates
+    if (t >= 0.5 && structure_train_btn.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_train_btn.tStart = t;  // (not accounting for frame time here)
+      structure_train_btn.frameNStart = frameN;  // exact frame index
+      
+      structure_train_btn.setAutoDraw(true);
+    }
+
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((structure_train_btn.status === PsychoJS.Status.STARTED || structure_train_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      structure_train_btn.setAutoDraw(false);
+    }
+    
+    // *structure_train_merge* updates
+    if (t >= 0.5 && structure_train_merge.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_train_merge.tStart = t;  // (not accounting for frame time here)
+      structure_train_merge.frameNStart = frameN;  // exact frame index
+      
+      structure_train_merge.setAutoDraw(true);
+    }
+
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((structure_train_merge.status === PsychoJS.Status.STARTED || structure_train_merge.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      structure_train_merge.setAutoDraw(false);
+    }
+    
+    // *structure_train_timer* updates
+    if (t >= 0.0 && structure_train_timer.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      structure_train_timer.tStart = t;  // (not accounting for frame time here)
+      structure_train_timer.frameNStart = frameN;  // exact frame index
+      
+      structure_train_timer.setAutoDraw(true);
+    }
+
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((structure_train_timer.status === PsychoJS.Status.STARTED || structure_train_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      structure_train_timer.setAutoDraw(false);
+    }
+    if (!initiated) {
+        STRUCTURE_TRAINComponents.concat(currentTask.background_rects);
+        STRUCTURE_TRAINComponents.concat(currentTask.labels);
+        STRUCTURE_TRAINComponents.concat(currentTask.fruits);
+        currentTask.update();
+        initiated = true;
+    }
+    
+    if (t >= 0.5 && structure_train_mouse.status === PsychoJS.Status.NOT_STARTED) {
+          structure_train_mouse.tStart = t;
+          structure_train_mouse.frameNStart = frameN;  
+          
+          structure_train_mouse.status = PsychoJS.Status.STARTED;
+          structure_train_mouse.mouseClock.reset();
+          prevButtonState = structure_train_mouse.getPressed();
+    }
+    
+    if ((structure_train_mouse.status === PsychoJS.Status.STARTED || sort_test_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+          structure_train_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    
+    if (t >= 0.5 && structure_train_mouse.status === PsychoJS.Status.STARTED) {
+        _mouseButtons = structure_train_mouse.getPressed();
+        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
+            prevButtonState = _mouseButtons;
+            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
+                for (const obj of [structure_train_btn,structure_train_merge]) {
+                    if (structure_train_mouse.isPressedIn(obj) && obj.name === "structure_train_btn" && currentTask.names.length == 1) {
+    //                if (structure_train_mouse.isPressedIn(obj) && obj.name === "structure_train_btn") {
+                        structure_train_mouse.status = PsychoJS.Status.FINISHED;
+                        continueRoutine = false;
+                    } else {
+                        if(structure_train_mouse.isPressedIn(obj) && !isMergePressed) {
+                            if(obj.name === "structure_train_merge" && obj.status !== PsychoJS.Status.FINISHED) {
+                                if (checkSublistFormatValid(structure_train_sublist_left, structure_train_sublist_right, structure_train_labels, structure_train_merge_instr)) {
+                                    const cost = currentTask.merge_cost(structure_train_sublist_left.text,structure_train_sublist_right.text);
+                                    if (cost > 0) {
+                                        const res = currentTask.merge(structure_train_sublist_left.text,structure_train_sublist_right.text);
+                                        if (res[0]) {
+                                            structure_train_compareN += cost;
+                                            structure_train_merge_instr.text = "(" + res[1].toString() + ") combined with (" + res[2].toString() + ")";
+                                            structure_train_merge_instr.color = green;
+                                            structure_train_feedback_1.text = ("Comparison cost of last use: " + cost.toString());
+                                            structure_train_feedback_2.text = "Alice uses " + structure_train_merge_limit.toString() + " comparisons\nYou have used in total: " + structure_train_compareN.toString();
+                                            structure_train_merge_trace.push(res[3]);
+                                            structure_train_merge_records.push([cost,res[1],res[2]]);
+                                        }
+                                    }
+                                    mergePressedT = t;
+                                    isMergePressed = true;
+                                    structure_train_merge.image = "materials/merge_sort/imgs/blue_star_clicked.png";
+                                    currentTask.update();
+                                    currentTask.draw();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    structure_train_timer.text = timerWarning(structureTrainTimeL, t);
+    routineT = t;
+    
+    if (isMergePressed && (routineT - mergePressedT) >= 0.1) {
+        structure_train_merge.image = "materials/merge_sort/imgs/blue_star.png";
+        isMergePressed = false;
+    }
+    
+    if (currentTask.names.length == 1) {
+        structure_train_btn.image = "materials/imgs/continue.png";
+    }
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of STRUCTURE_TRAINComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine && routineTimer.getTime() > 0) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function STRUCTURE_TRAINRoutineEnd() {
+  return async function () {
+    //------Ending Routine 'STRUCTURE_TRAIN'-------
+    for (const thisComponent of STRUCTURE_TRAINComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    psychoJS.experiment.addData('structure_train_sublist_right.text',structure_train_sublist_right.text)
+    psychoJS.experiment.addData('structure_train_sublist_left.text',structure_train_sublist_left.text)
+    // store data for psychoJS.experiment (ExperimentHandler)
+    _mouseXYs = structure_train_mouse.getPos();
+    _mouseButtons = structure_train_mouse.getPressed();
+    psychoJS.experiment.addData('structure_train_mouse.x', _mouseXYs[0]);
+    psychoJS.experiment.addData('structure_train_mouse.y', _mouseXYs[1]);
+    psychoJS.experiment.addData('structure_train_mouse.leftButton', _mouseButtons[0]);
+    psychoJS.experiment.addData('structure_train_mouse.midButton', _mouseButtons[1]);
+    psychoJS.experiment.addData('structure_train_mouse.rightButton', _mouseButtons[2]);
+    currentTask.clean();
+    psychoJS.experiment.addData("structure_train_input",structure_train_input);
+    psychoJS.experiment.addData("structure_train_labels",structure_train_labels);
+    psychoJS.experiment.addData("structure_train_compareN",structure_train_compareN);
+    psychoJS.experiment.addData("structure_train_merge_records",structure_train_merge_records);
+    psychoJS.experiment.addData("structure_train_merge_trace",structure_train_merge_trace);
+    psychoJS.experiment.addData("structure_train.tStart",structure_train_merge.tStart);
+    psychoJS.experiment.addData("structure_train.tEnd",routineT);
     return Scheduler.Event.NEXT;
   };
 }
@@ -5273,12 +6362,14 @@ function MERGE_TRAINRoutineBegin(snapshot) {
     MERGE_TRAINClock.reset(); // clock
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
-    routineTimer.add(60.000000);
+    routineTimer.add(90.000000);
     // update component parameters for each repeat
     merge_train_scale_instr.setColor(new util.Color('white'));
     merge_train_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
     merge_train_scale_instr.setHeight(0.02);
     merge_train_scale_right.setText('');
+    merge_train_scale_right.setText('');
+    merge_train_scale_left.setText('');
     merge_train_scale_left.setText('');
     merge_train.setImage(img_path);
     merge_train_mc_1.setImage('materials/merge_sort/imgs/white_BG.png');
@@ -5287,6 +6378,7 @@ function MERGE_TRAINRoutineBegin(snapshot) {
     // setup some python lists for storing info about the merge_train_mouse
     merge_train_mouse.clicked_name = [];
     gotValidClick = false; // until a click is received
+    merge_train_timer.setText('');
     merge_train_input = input;
     mc_order = [];
     merge_train_compare_records = [];
@@ -5351,7 +6443,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_scale_instr.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (merge_train_scale_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       merge_train_scale_instr.setAutoDraw(false);
     }
@@ -5365,7 +6457,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_ans_instr.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (merge_ans_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       merge_ans_instr.setAutoDraw(false);
     }
@@ -5379,7 +6471,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_instr.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (merge_train_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       merge_train_instr.setAutoDraw(false);
     }
@@ -5393,7 +6485,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_scale_right.setAutoDraw(true);
     }
 
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_train_scale_right.status === PsychoJS.Status.STARTED || merge_train_scale_right.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_train_scale_right.setAutoDraw(false);
     }
@@ -5407,7 +6499,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_scale_left.setAutoDraw(true);
     }
 
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_train_scale_left.status === PsychoJS.Status.STARTED || merge_train_scale_left.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_train_scale_left.setAutoDraw(false);
     }
@@ -5421,7 +6513,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_sep.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (merge_train_sep.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       merge_train_sep.setAutoDraw(false);
     }
@@ -5435,7 +6527,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train.setAutoDraw(true);
     }
 
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_train.status === PsychoJS.Status.STARTED || merge_train.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_train.setAutoDraw(false);
     }
@@ -5449,7 +6541,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_mc_1.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (merge_train_mc_1.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       merge_train_mc_1.setAutoDraw(false);
     }
@@ -5463,7 +6555,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_mc_2.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (merge_train_mc_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       merge_train_mc_2.setAutoDraw(false);
     }
@@ -5477,7 +6569,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_scale.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (merge_train_scale.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       merge_train_scale.setAutoDraw(false);
     }
@@ -5491,7 +6583,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_btn_1.setAutoDraw(true);
     }
 
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_train_btn_1.status === PsychoJS.Status.STARTED || merge_train_btn_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_train_btn_1.setAutoDraw(false);
     }
@@ -5505,7 +6597,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_btn_2.setAutoDraw(true);
     }
 
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_train_btn_2.status === PsychoJS.Status.STARTED || merge_train_btn_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_train_btn_2.setAutoDraw(false);
     }
@@ -5519,7 +6611,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_compare.setAutoDraw(true);
     }
 
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_train_compare.status === PsychoJS.Status.STARTED || merge_train_compare.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_train_compare.setAutoDraw(false);
     }
@@ -5533,7 +6625,7 @@ function MERGE_TRAINRoutineEachFrame() {
       merge_train_timer.setAutoDraw(true);
     }
 
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_train_timer.status === PsychoJS.Status.STARTED || merge_train_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_train_timer.setAutoDraw(false);
     }
@@ -5566,7 +6658,7 @@ function MERGE_TRAINRoutineEachFrame() {
                         merge_train_mouse.status = PsychoJS.Status.FINISHED;
                         continueRoutine = false;
                     } else {
-                        if(merge_train_mouse.isPressedIn(obj)) {
+                        if(merge_train_mouse.isPressedIn(obj) && !isComparePressed) {
                             if(obj.name === "merge_train_compare") {
                                 const compareStatus = compare(merge_train_scale, merge_train_input, merge_train_labels, merge_train_compare, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right);
                                 merge_train_compareN = (merge_train_compareN + compareStatus[0]);
@@ -5661,7 +6753,7 @@ function MERGE_EXPLRoutineBegin(snapshot) {
     MERGE_EXPLClock.reset(); // clock
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
-    routineTimer.add(30.000000);
+    routineTimer.add(60.000000);
     // update component parameters for each repeat
     merge_expl_1.setImage('materials/merge_sort/imgs/white_BG.png');
     merge_expl_2.setImage('materials/merge_sort/imgs/white_BG.png');
@@ -5669,6 +6761,7 @@ function MERGE_EXPLRoutineBegin(snapshot) {
     merge_expl_mc_2.setImage('materials/merge_sort/imgs/white_BG.png');
     // setup some python lists for storing info about the merge_expl_mouse
     gotValidClick = false; // until a click is received
+    merge_expl_timer.setText('');
     var _pj;
     function _pj_snippets(container) {
         function in_es6(left, right) {
@@ -5737,7 +6830,7 @@ function MERGE_EXPLRoutineEachFrame() {
       merge_expl_instr.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 30.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (merge_expl_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       merge_expl_instr.setAutoDraw(false);
     }
@@ -5751,7 +6844,7 @@ function MERGE_EXPLRoutineEachFrame() {
       merge_expl_feedback_1.setAutoDraw(true);
     }
 
-    frameRemains = 30.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_expl_feedback_1.status === PsychoJS.Status.STARTED || merge_expl_feedback_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_expl_feedback_1.setAutoDraw(false);
     }
@@ -5765,7 +6858,7 @@ function MERGE_EXPLRoutineEachFrame() {
       merge_expl_feedback_2.setAutoDraw(true);
     }
 
-    frameRemains = 30.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_expl_feedback_2.status === PsychoJS.Status.STARTED || merge_expl_feedback_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_expl_feedback_2.setAutoDraw(false);
     }
@@ -5779,7 +6872,7 @@ function MERGE_EXPLRoutineEachFrame() {
       merge_expl_sep.setAutoDraw(true);
     }
 
-    frameRemains = 0.0 + 30.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if (merge_expl_sep.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       merge_expl_sep.setAutoDraw(false);
     }
@@ -5793,7 +6886,7 @@ function MERGE_EXPLRoutineEachFrame() {
       merge_expl_1.setAutoDraw(true);
     }
 
-    frameRemains = 30.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_expl_1.status === PsychoJS.Status.STARTED || merge_expl_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_expl_1.setAutoDraw(false);
     }
@@ -5807,7 +6900,7 @@ function MERGE_EXPLRoutineEachFrame() {
       merge_expl_2.setAutoDraw(true);
     }
 
-    frameRemains = 30.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_expl_2.status === PsychoJS.Status.STARTED || merge_expl_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_expl_2.setAutoDraw(false);
     }
@@ -5821,7 +6914,7 @@ function MERGE_EXPLRoutineEachFrame() {
       merge_expl_mc_1.setAutoDraw(true);
     }
 
-    frameRemains = 30.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_expl_mc_1.status === PsychoJS.Status.STARTED || merge_expl_mc_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_expl_mc_1.setAutoDraw(false);
     }
@@ -5835,7 +6928,7 @@ function MERGE_EXPLRoutineEachFrame() {
       merge_expl_mc_2.setAutoDraw(true);
     }
 
-    frameRemains = 30.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_expl_mc_2.status === PsychoJS.Status.STARTED || merge_expl_mc_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_expl_mc_2.setAutoDraw(false);
     }
@@ -5849,7 +6942,7 @@ function MERGE_EXPLRoutineEachFrame() {
       merge_expl_btn.setAutoDraw(true);
     }
 
-    frameRemains = 30.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_expl_btn.status === PsychoJS.Status.STARTED || merge_expl_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_expl_btn.setAutoDraw(false);
     }
@@ -5863,7 +6956,7 @@ function MERGE_EXPLRoutineEachFrame() {
       merge_expl_timer.setAutoDraw(true);
     }
 
-    frameRemains = 30.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
     if ((merge_expl_timer.status === PsychoJS.Status.STARTED || merge_expl_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
       merge_expl_timer.setAutoDraw(false);
     }
@@ -6141,12 +7234,15 @@ function MERGE_TESTRoutineBegin(snapshot) {
     merge_test_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
     merge_test_scale_instr.setHeight(0.02);
     merge_test_scale_right.setText('');
+    merge_test_scale_right.setText('');
+    merge_test_scale_left.setText('');
     merge_test_scale_left.setText('');
     merge_test_res.setText('');
     merge_test.setImage(img_path);
     merge_test_scale.setImage(scaleEqPath);
     // setup some python lists for storing info about the merge_test_mouse
     gotValidClick = false; // until a click is received
+    merge_test_timer.setText('');
     merge_test_input = input;
     merge_test_labels = encryption;
     merge_test_compareN = 0;
@@ -6388,7 +7484,7 @@ function MERGE_TESTRoutineEachFrame() {
                         merge_test_mouse.status = PsychoJS.Status.FINISHED;
                         continueRoutine = false;
                     } else {
-                        if(merge_test_mouse.isPressedIn(obj)) {
+                        if(merge_test_mouse.isPressedIn(obj) && !isComparePressed) {
                             if(obj.name === "merge_test_compare") {
                                 const compareStatus = compare(merge_test_scale, merge_test_input, merge_test_labels, merge_test_compare, merge_test_scale_instr, merge_test_scale_left, merge_test_scale_right);
                                 merge_test_compareN = (merge_test_compareN + compareStatus[0]);
@@ -6664,6 +7760,8 @@ function SORT_TESTRoutineBegin(snapshot) {
     sort_test_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
     sort_test_scale_instr.setHeight(0.02);
     sort_test_scale_right.setText('');
+    sort_test_scale_right.setText('');
+    sort_test_scale_left.setText('');
     sort_test_scale_left.setText('');
     sort_test_res.setText('');
     sort_test_board.setImage('materials/merge_sort/imgs/purple_diamond.png');
@@ -6694,6 +7792,7 @@ function SORT_TESTRoutineBegin(snapshot) {
     sort_test_ex_12.setPos([0.3, 0.3]);
     // setup some python lists for storing info about the sort_test_mouse
     gotValidClick = false; // until a click is received
+    sort_test_timer.setText('');
     items = [];
     frameCnt = 0;
     routineT = 0;
@@ -7139,7 +8238,7 @@ function SORT_TESTRoutineEachFrame() {
                         sort_test_mouse.status = PsychoJS.Status.FINISHED;
                         continueRoutine = false;
                     } else {
-                        if(sort_expl_mouse.isPressedIn(obj)) {
+                        if(sort_test_mouse.isPressedIn(obj) && !isComparePressed) {
                             if(obj.name === "sort_test_compare") {
                                 const compareStatus = compare(sort_test_scale, sort_test_input, sort_test_labels, sort_test_compare, sort_test_scale_instr, sort_test_scale_left, sort_test_scale_right);
                                 sort_test_compareN = (sort_test_compareN + compareStatus[0]);
@@ -7542,6 +8641,16 @@ async function quitPsychoJS(message, isCompleted) {
   if (psychoJS.experiment.isEntryEmpty()) {
     psychoJS.experiment.nextEntry();
   }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
