@@ -211,6 +211,22 @@ def comp_spearman_sim(machine_trace, human_trace, labels):
     print("h trace order: " + str(vh.values()))
     return stats.spearmanr(list(vm.values()),list(vh.values()))[0]
 
+# def comp_weighted_long_subseq_sim(machine_trace, human_trace, labels):
+#     vm, vh = vectorise_trace(machine_trace, human_trace, labels)
+#     return longest_common_subseq(vm, vh, len(vm), len(vh))[0] / len(vm)
+#
+# def longest_common_subseq(x, y, m, n):
+#     if m == 0 or n == 0:
+#         return 0, ""
+#     elif x[m-1] == y[n-1]:
+#         r = longest_common_subseq(x, y, m - 1, n - 1)
+#         return 1 + r[0], r[1] + str(x[m-1])
+#     else:
+#         r1 = longest_common_subseq(x, y, m, n - 1)
+#         r2 = longest_common_subseq(x, y, m - 1, n)
+#         return r1 if r1[0] > r2[0] else r2
+
+
 def get_similarity(method,algorithm,input,labels,ht):
     mt = get_machine_trace(algorithm,input,labels)
     if method == "euc":

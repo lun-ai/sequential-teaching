@@ -7245,11 +7245,11 @@
     <Routine name="BACKGROUND"/>
     <Routine name="INTRO"/>
     <Routine name="HINT"/>
-    <Routine name="MERGE_INTRO"/>
+    <Routine name="SORT_INTRO"/>
     <LoopInitiator loopType="TrialHandler" name="TRAIN_1">
       <Param name="Selected rows" updates="None" val="" valType="str"/>
-      <Param name="conditions" updates="None" val="[OrderedDict([('img_path', 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'), ('labels', ['A', 'B']), ('input', [4, 2]), ('mc_path_1', 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'), ('mc_path_2', 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png')]), OrderedDict([('img_path', 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'), ('labels', ['A', 'B', 'D', 'C']), ('input', [1, 4, 2, 3]), ('mc_path_1', 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'), ('mc_path_2', 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png')]), OrderedDict([('img_path', 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'), ('labels', ['A', 'B', 'D', 'C']), ('input', [1, 4, 2, 3]), ('mc_path_1', 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'), ('mc_path_2', 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png')]), OrderedDict([('img_path', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'), ('labels', ['C', 'D', 'B', 'A', 'G', 'E', 'F']), ('input', [1, 2, 5, 7, 3, 4, 6]), ('mc_path_1', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'), ('mc_path_2', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png')]), OrderedDict([('img_path', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'), ('labels', ['C', 'D', 'B', 'A', 'G', 'E', 'F']), ('input', [1, 2, 5, 7, 3, 4, 6]), ('mc_path_1', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'), ('mc_path_2', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png')]), OrderedDict([('img_path', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'), ('labels', ['C', 'D', 'B', 'A', 'G', 'E', 'F']), ('input', [1, 2, 5, 7, 3, 4, 6]), ('mc_path_1', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'), ('mc_path_2', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png')])]" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="materials/merge_train_cond.csv" valType="file"/>
+      <Param name="conditions" updates="None" val="None" valType="str"/>
+      <Param name="conditionsFile" updates="None" val="materials/sort_train_cond.csv" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
       <Param name="loopType" updates="None" val="sequential" valType="str"/>
@@ -7257,23 +7257,9 @@
       <Param name="name" updates="None" val="TRAIN_1" valType="code"/>
       <Param name="random seed" updates="None" val="" valType="code"/>
     </LoopInitiator>
-    <Routine name="MERGE_TRAIN"/>
-    <Routine name="MERGE_EXPL"/>
+    <Routine name="SORT_TRAIN"/>
+    <Routine name="SORT_EXPL"/>
     <LoopTerminator name="TRAIN_1"/>
-    <Routine name="MERGE_TEST_INTRO"/>
-    <LoopInitiator loopType="TrialHandler" name="TEST_1">
-      <Param name="Selected rows" updates="None" val="" valType="str"/>
-      <Param name="conditions" updates="None" val="[OrderedDict([('img_path', 'materials/merge_sort/demo_imgs/merge_test_ex_1.png'), ('input', [6, 2])]), OrderedDict([('img_path', 'materials/merge_sort/demo_imgs/merge_test_ex_2.png'), ('input', [5, 7, 8, 2, 3, 10])])]" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="materials/merge_test_cond.csv" valType="file"/>
-      <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
-      <Param name="isTrials" updates="None" val="True" valType="bool"/>
-      <Param name="loopType" updates="None" val="sequential" valType="str"/>
-      <Param name="nReps" updates="None" val="1" valType="num"/>
-      <Param name="name" updates="None" val="TEST_1" valType="code"/>
-      <Param name="random seed" updates="None" val="" valType="code"/>
-    </LoopInitiator>
-    <Routine name="MERGE_TEST"/>
-    <LoopTerminator name="TEST_1"/>
     <Routine name="STRUCTURE_INTRO"/>
     <LoopInitiator loopType="TrialHandler" name="TRAIN_2">
       <Param name="Selected rows" updates="None" val="" valType="str"/>
@@ -7288,11 +7274,11 @@
     </LoopInitiator>
     <Routine name="STRUCTURE_TRAIN"/>
     <LoopTerminator name="TRAIN_2"/>
-    <Routine name="SORT_INTRO"/>
+    <Routine name="MERGE_INTRO"/>
     <LoopInitiator loopType="TrialHandler" name="TRAIN_3">
       <Param name="Selected rows" updates="None" val="" valType="str"/>
-      <Param name="conditions" updates="None" val="[OrderedDict([('img_path_base', 'materials/merge_sort/demo_imgs/fruits/apple'), ('input', [7, 1, 6, 3, 4, 5, 2]), ('labels', ['D', 'G', 'B', 'F', 'A', 'E', 'C'])])]" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="materials/sort_train_cond.csv" valType="file"/>
+      <Param name="conditions" updates="None" val="[OrderedDict([('img_path', 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'), ('labels', ['A', 'B']), ('input', [4, 2]), ('mc_path_1', 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'), ('mc_path_2', 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png')]), OrderedDict([('img_path', 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'), ('labels', ['A', 'B', 'D', 'C']), ('input', [1, 4, 2, 3]), ('mc_path_1', 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'), ('mc_path_2', 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png')]), OrderedDict([('img_path', 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'), ('labels', ['A', 'B', 'D', 'C']), ('input', [1, 4, 2, 3]), ('mc_path_1', 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'), ('mc_path_2', 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png')]), OrderedDict([('img_path', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'), ('labels', ['C', 'D', 'B', 'A', 'G', 'E', 'F']), ('input', [1, 2, 5, 7, 3, 4, 6]), ('mc_path_1', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'), ('mc_path_2', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png')]), OrderedDict([('img_path', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'), ('labels', ['C', 'D', 'B', 'A', 'G', 'E', 'F']), ('input', [1, 2, 5, 7, 3, 4, 6]), ('mc_path_1', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'), ('mc_path_2', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png')]), OrderedDict([('img_path', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'), ('labels', ['C', 'D', 'B', 'A', 'G', 'E', 'F']), ('input', [1, 2, 5, 7, 3, 4, 6]), ('mc_path_1', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'), ('mc_path_2', 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png')])]" valType="str"/>
+      <Param name="conditionsFile" updates="None" val="materials/merge_train_cond.csv" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
       <Param name="loopType" updates="None" val="sequential" valType="str"/>
@@ -7300,9 +7286,23 @@
       <Param name="name" updates="None" val="TRAIN_3" valType="code"/>
       <Param name="random seed" updates="None" val="" valType="code"/>
     </LoopInitiator>
-    <Routine name="SORT_TRAIN"/>
-    <Routine name="SORT_EXPL"/>
+    <Routine name="MERGE_TRAIN"/>
+    <Routine name="MERGE_EXPL"/>
     <LoopTerminator name="TRAIN_3"/>
+    <Routine name="MERGE_TEST_INTRO"/>
+    <LoopInitiator loopType="TrialHandler" name="TEST_1">
+      <Param name="Selected rows" updates="None" val="" valType="str"/>
+      <Param name="conditions" updates="None" val="[OrderedDict([('img_path', 'materials/merge_sort/demo_imgs/merge_test_ex_1.png'), ('input', [6, 2])]), OrderedDict([('img_path', 'materials/merge_sort/demo_imgs/merge_test_ex_2.png'), ('input', [5, 7, 8, 2, 3, 10])])]" valType="str"/>
+      <Param name="conditionsFile" updates="None" val="materials/merge_test_cond.csv" valType="file"/>
+      <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
+      <Param name="isTrials" updates="None" val="True" valType="bool"/>
+      <Param name="loopType" updates="None" val="sequential" valType="str"/>
+      <Param name="nReps" updates="None" val="1" valType="num"/>
+      <Param name="name" updates="None" val="TEST_1" valType="code"/>
+      <Param name="random seed" updates="None" val="" valType="code"/>
+    </LoopInitiator>
+    <Routine name="MERGE_TEST"/>
+    <LoopTerminator name="TEST_1"/>
     <Routine name="SORT_TEST_INTRO"/>
     <LoopInitiator loopType="TrialHandler" name="TEST_2">
       <Param name="Selected rows" updates="None" val="" valType="str"/>
