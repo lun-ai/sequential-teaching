@@ -1,71 +1,71 @@
 # insertion sort with traverses from the front to search the position of insertion
 
 structure train:
-entry: <values> <encryption> <isort_front> <bumsort>
-entry: [3, 1, 2, 4, 5, 6] [B, A, F, C, E, D] 15 10
+entry: <values> <encryption> <isort_front> <botupsort>
+entry: [3, 1, 2, 4, 5, 6] ['B', 'A', 'F', 'C', 'E', 'D'] 15 10
 
-entry: [2, 1, 4, 3, 5, 6] [F, D, C, E, A, B] 15 9
+entry: [2, 1, 4, 3, 5, 6] ['F', 'D', 'C', 'E', 'A', 'B'] 15 9
 
-entry: [5, 2, 1, 3, 4, 6, 7] [D, G, B, F, A, E, C] 20 13
+entry: [5, 2, 1, 3, 4, 6, 7] ['D', 'G', 'B', 'F', 'A', 'E', 'C'] 20 13
 
-entry: [2, 1, 4, 5, 3, 6, 7] [D, A, C, B, E, G, F] 20 12
+entry: [2, 1, 4, 5, 3, 6, 7] ['D', 'A', 'C', 'B', 'E', 'G', 'F'] 20 12
 
-entry: [2, 1, 6, 7, 5, 3, 9, 8, 10, 4] [G, C, E, J, I, H, F, B, D, A] 37 24
+entry: [2, 1, 6, 7, 5, 3, 9, 8, 10, 4] ['G', 'C', 'E', 'J', 'I', 'H', 'F', 'B', 'D', 'A'] 37 24
 
 sort train:
-entry: <values> <encryption> <isort_front> <bumsort>
-entry: [2, 1, 3, 4, 6, 5] [A, D, B, C, E, F] 15 9
+entry: <values> <encryption> <isort_front> <botupsort>
+entry: [2, 1, 3, 4, 6, 5] ['A', 'D', 'B', 'C', 'E', 'F'] 15 9
 
-entry: [3, 2, 1, 4, 7, 5, 6] [C, B, E, D, A, F, G] 20 12
+entry: [3, 2, 1, 4, 7, 5, 6] ['C', 'B', 'E', 'D', 'A', 'F', 'G'] 20 12
 
-entry: [7, 6, 5, 8, 4, 3, 2, 1] [B, A, E, G, F, D, H, C] 9 13
+entry: [7, 6, 5, 8, 4, 3, 2, 1] ['B', 'A', 'E', 'G', 'F', 'D', 'H', 'C'] 9 13
 
-entry: [1, 2, 3, 4, 6, 9, 8, 10, 5, 7] [G, C, E, J, I, H, F, B, D, A] 40 21
+entry: [1, 2, 3, 4, 6, 9, 8, 10, 5, 7] ['G', 'C', 'E', 'J', 'I', 'H', 'F', 'B', 'D', 'A'] 40 21
 
 sort test:
-entry: <values> <encryption> <isort_front> <bumsort>
-entry: [4, 1, 2, 3, 6, 5] [E, B, C, A, F, D] 15 10
+entry: <values> <encryption> <isort_front> <botupsort>
+entry: [4, 1, 2, 3, 6, 5] ['E', 'B', 'C', 'A', 'F', 'D'] 15 10
 
-entry: [1, 2, 4, 3, 6, 5] [A, D, C, B, F, E] 15 9
+entry: [1, 2, 4, 3, 6, 5] ['A', 'D', 'C', 'B', 'F', 'E'] 15 9
 
-entry: [5, 2, 1, 3, 4, 7, 6] [B, F, E, D, G, A, C] 20 13
+entry: [5, 2, 1, 3, 4, 7, 6] ['B', 'F', 'E', 'D', 'G', 'A', 'C'] 20 13
 
-entry: [1, 3, 4, 2, 7, 5, 6] [E, D, G, A, C, B, F] 20 12
+entry: [1, 3, 4, 2, 7, 5, 6] ['E', 'D', 'G', 'A', 'C', 'B', 'F'] 20 12
 
-entry: [8, 7, 6, 5, 4, 3, 2, 1] [A, H, C, E, B, D, F, G] 7 12
+entry: [8, 7, 6, 5, 4, 3, 2, 1] ['A', 'H', 'C', 'E', 'B', 'D', 'F', 'G'] 7 12
 
-entry: [1, 2, 8, 3, 4, 5, 10, 9, 6, 7] [E, I, H, F, B, G, C, J, D, A] 41 22
+entry: [1, 2, 8, 3, 4, 5, 10, 9, 6, 7] ['E', 'I', 'H', 'F', 'B', 'G', 'C', 'J', 'D', 'A'] 41 22
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 # insertion sort with traverses from the back to search the position of insertion
 
 sort train:
-entry: <values> <encryption> <isort_back> <bumsort>
-entry: [5, 4, 6, 3, 1, 2] [A, D, B, C, E, F] 14 8
+entry: <values> <encryption> <isort_back> <botupsort>
+entry: [5, 4, 6, 3, 1, 2] ['A', 'D', 'B', 'C', 'E', 'F'] 14 8
 
-entry: [6, 2, 4, 7, 5, 3, 1] [C, B, E, D, A, F, G] 18 12
+entry: [6, 2, 4, 7, 5, 3, 1] ['C', 'B', 'E', 'D', 'A', 'F', 'G'] 18 12
 
-entry: [7, 6, 5, 8, 4, 3, 2, 1] [B, A, E, G, F, D, H, C] 26 13
+entry: [7, 6, 5, 8, 4, 3, 2, 1] ['B', 'A', 'E', 'G', 'F', 'D', 'H', 'C'] 26 13
 
-entry: [8, 6, 4, 3, 2, 10, 9, 7, 1, 5] [G, C, E, J, I, H, F, B, D, A] 31 21
+entry: [8, 6, 4, 3, 2, 10, 9, 7, 1, 5] ['G', 'C', 'E', 'J', 'I', 'H', 'F', 'B', 'D', 'A'] 31 21
 
 sort test:
-entry: <values> <encryption> <isort_back> <bumsort>
-entry: [6, 3, 5, 4, 2, 1] [E, B, C, A, F, D] 15 8
-D,F,B,A,C,E
+entry: <values> <encryption> <isort_back> <botupsort>
+entry: [6, 3, 5, 4, 2, 1] ['E', 'B', 'C', 'A', 'F', 'D'] 15 8
+'D','F','B','A','C','E'
 
-entry: [4, 6, 5, 2, 3, 1] [A, D, C, B, F, E] 15 9
-E,B,F,A,C,D
+entry: [4, 6, 5, 2, 3, 1] ['A', 'D', 'C', 'B', 'F', 'E'] 15 9
+'E','B','F','A','C','D'
 
-entry: [7, 5, 3, 6, 1, 4, 2] [B, F, E, D, G, A, C] 19 12
-G,C,E,A,F,D,B
+entry: [7, 5, 3, 6, 1, 4, 2] ['B', 'F', 'E', 'D', 'G', 'A', 'C'] 19 12
+'G','C','E','A','F','D','B'
 
-entry: [4, 7, 2, 6, 3, 5, 1] [E, D, G, A, C, B, F] 18 12
-F,G,C,E,B,A,D
+entry: [4, 7, 2, 6, 3, 5, 1] ['E', 'D', 'G', 'A', 'C', 'B', 'F'] 18 12
+'F','G','C','E','B','A','D'
 
-entry: [8, 7, 6, 5, 4, 3, 2, 1] [A, H, C, E, B, D, F, G] 28 12
-G,F,D,B,E,C,H,A
+entry: [8, 7, 6, 5, 4, 3, 2, 1] ['A', 'H', 'C', 'E', 'B', 'D', 'F', 'G'] 28 12
+'G','F','D','B','E','C','H','A'
 
-entry: [5, 7, 6, 1, 4, 9, 8, 10, 2, 3] [E, I, H, F, B, G, C, J, D, A] 30 19
-F,D,A,B,E,H,I,C,G,J
+entry: [5, 7, 6, 1, 4, 9, 8, 10, 2, 3] ['E', 'I', 'H', 'F', 'B', 'G', 'C', 'J', 'D', 'A'] 30 19
+'F','D','A','B','E','H','I','C','G','J'

@@ -2694,7 +2694,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/imgs/sort_train/sort_test_example.png" valType="file"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/imgs/sort_train/sort_train_example.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="sort_example_2" valType="code"/>
@@ -3647,7 +3647,7 @@
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Routine" updates="constant" val="psychoJS.experiment.addData(&quot;sort_train_input&quot;,sort_train_input);&amp;#10;psychoJS.experiment.addData(&quot;sort_train_labels&quot;,sort_train_labels);&amp;#10;psychoJS.experiment.addData(&quot;sort_train_trace&quot;,sort_train_trace);&amp;#10;psychoJS.experiment.addData(&quot;sort_train_compareN&quot;,sort_train_compareN);&amp;#10;psychoJS.experiment.addData(&quot;sort_train.tStart&quot;,sort_train_ex_1.tStart);&amp;#10;psychoJS.experiment.addData(&quot;sort_train.tEnd&quot;,routineT);&amp;#10;psychoJS.experiment.addData(&quot;sort_train_compare_records&quot;,sort_train_compare_records);" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="pass" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="sort_train_setup" valType="code"/>
       </CodeComponent>
@@ -6437,14 +6437,14 @@
         <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin JS Routine" updates="constant" val="routineT = 0;" valType="extendedCode"/>
-        <Param name="Begin Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="Begin Routine" updates="constant" val="pass" valType="extendedCode"/>
         <Param name="Code Type" updates="None" val="Both" valType="str"/>
         <Param name="Each Frame" updates="constant" val="if t &gt;= 0.5 and exp_check_mouse.status == PsychoJS.Status.NOT_STARTED:&amp;#10;      exp_check_mouse.tStart = t&amp;#10;      exp_check_mouse.frameNStart = frameN&amp;#10;      &amp;#10;      exp_check_mouse.status = PsychoJS.Status.STARTED&amp;#10;      exp_check_mouse.mouseClock.reset()&amp;#10;&amp;#10;if exp_check_mouse.isPressedIn(exp_check_btn) and exp_check_mouse.status == PsychoJS.Status.STARTED and exp_check_btn.status == STARTED:&amp;#10;    continueRoutine = False" valType="extendedCode"/>
         <Param name="Each JS Frame" updates="constant" val="if (((t &gt;= 0.5) &amp;&amp; (exp_check_mouse.status === PsychoJS.Status.NOT_STARTED))) {&amp;#10;    exp_check_mouse.tStart = t;&amp;#10;    exp_check_mouse.frameNStart = frameN;&amp;#10;    exp_check_mouse.status = PsychoJS.Status.STARTED;&amp;#10;    exp_check_mouse.mouseClock.reset();&amp;#10;}&amp;#10;if (((exp_check_mouse.isPressedIn(exp_check_btn) &amp;&amp; (exp_check_mouse.status === PsychoJS.Status.STARTED)) &amp;&amp; (exp_check_btn.status === PsychoJS.Status.STARTED))) {&amp;#10;    exp_check_mouse.status = PsychoJS.Status.FINISHED;&amp;#10;    continueRoutine = false;&amp;#10;}&amp;#10;routineT = t;&amp;#10;&amp;#10;if ((exp_check_mouse.status === PsychoJS.Status.STARTED) &amp;&amp; t &gt;= frameRemains) {&amp;#10;    exp_check_mouse.status = PsychoJS.Status.FINISHED;&amp;#10;}&amp;#10;" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Routine" updates="constant" val="psychoJS.experiment.addData(&quot;exp_check.tEnd&quot;,routineT);" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="pass" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="exp_check_code" valType="code"/>
       </CodeComponent>
@@ -7533,31 +7533,6 @@
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="0.7" valType="num"/>
       </TextComponent>
-      <TextComponent name="review_timer">
-        <Param name="color" updates="constant" val="orange" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="num"/>
-        <Param name="flip" updates="constant" val="None" valType="str"/>
-        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
-        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
-        <Param name="letterHeight" updates="constant" val="0.03" valType="num"/>
-        <Param name="name" updates="None" val="review_timer" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(-0.45, -0.2)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="startEstim" updates="None" val="" valType="num"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.0" valType="num"/>
-        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="120" valType="num"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="set every repeat" val="" valType="str"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-        <Param name="wrapWidth" updates="constant" val="0.7" valType="num"/>
-      </TextComponent>
       <TextComponent name="review_question">
         <Param name="color" updates="constant" val="white" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
@@ -7715,6 +7690,31 @@
         <Param name="syncScreenRefresh" updates="None" val="False" valType="bool"/>
         <Param name="timeRelativeTo" updates="constant" val="mouse onset" valType="str"/>
       </MouseComponent>
+      <TextComponent name="review_timer">
+        <Param name="color" updates="constant" val="orange" valType="color"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="contrast" updates="constant" val="1" valType="num"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="num"/>
+        <Param name="flip" updates="constant" val="None" valType="str"/>
+        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.03" valType="num"/>
+        <Param name="name" updates="None" val="review_timer" valType="code"/>
+        <Param name="opacity" updates="constant" val="" valType="num"/>
+        <Param name="ori" updates="constant" val="0" valType="num"/>
+        <Param name="pos" updates="constant" val="(-0.45, -0.2)" valType="list"/>
+        <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
+        <Param name="startEstim" updates="None" val="" valType="num"/>
+        <Param name="startType" updates="None" val="time (s)" valType="str"/>
+        <Param name="startVal" updates="None" val="0.0" valType="num"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="120" valType="num"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="set every repeat" val="" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+        <Param name="wrapWidth" updates="constant" val="0.7" valType="num"/>
+      </TextComponent>
       <CodeComponent name="review_code">
         <Param name="Before Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Before JS Experiment" updates="constant" val="" valType="extendedCode"/>

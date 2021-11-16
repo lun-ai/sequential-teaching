@@ -2694,7 +2694,7 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/imgs/sort_train/sort_test_example.png" valType="file"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/imgs/sort_train/sort_train_example.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="sort_example_2" valType="code"/>
