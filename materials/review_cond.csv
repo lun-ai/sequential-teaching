@@ -1,5 +1,17 @@
 r_question,img_path1,img_path2
-"Describe your approach for arranging a SMALL pile of fruits? (120 secs to answer)",materials/merge_sort/imgs/sort_test/small_input_review.png,materials/merge_sort/imgs/sort_test/small_input_review.png
-"Describe your approach for arranging a LARGE pile of fruits? (120 secs to answer)",materials/merge_sort/imgs/sort_test/large_input_review.png,materials/merge_sort/imgs/sort_test/large_input_review.png
-"Do you have an idea why STRATEGY 1 is advantageous over STRATEGY 2? (120 secs to answer)",materials/merge_sort/imgs/merge_train/optimal_merge.png,materials/merge_sort/imgs/merge_train/suboptimal_merge.png
-"If you used information you learned from the BLUE STAR operator for the PURPLE DIAMOND, \nin which way did you use it? (120 secs to answer)",materials/merge_sort/imgs/merge_train/merge_train_example.png,materials/merge_sort/imgs/sort_train/sort_train_example.png
+"Shortly describe your approach of the PURPLE DIAMOND for arranging
+
+a SMALL pile of fruits
+
+in increasing weights from left to right? (120 secs to answer)",materials/merge_sort/imgs/sort_test/small_input_review.png,materials/merge_sort/imgs/sort_test/small_input_review.png
+"Shortly describe your approach of the PURPLE DIAMOND for arranging
+
+a LARGE pile of fruits
+
+in increasing weights from left to right? (120 secs to answer)",materials/merge_sort/imgs/sort_test/large_input_review.png,materials/merge_sort/imgs/sort_test/large_input_review.png
+"To obtain a sequence of fruits in increasing weights from left to right, do you have an idea why STRATEGY 1 is advantageous over STRATEGY 2?
+
+Refer to the strategy diagrams with weights (120 secs to answer)",materials/merge_sort/imgs/merge_train/optimal_merge_example.png,materials/merge_sort/imgs/merge_train/suboptimal_merge_example.png
+"If you used information you learned from the BLUE STAR operator for the PURPLE DIAMOND,
+
+shortly describe in which way did you use it for arranging fruits? (120 secs to answer)",materials/merge_sort/imgs/merge_train/merge_train_example.png,materials/merge_sort/imgs/sort_train/sort_train_example.png
