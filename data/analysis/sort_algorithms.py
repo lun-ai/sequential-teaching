@@ -57,7 +57,7 @@ def botup_msort_left_front(x):
             res.append(new)
         if len(old) % 2 == 1:
             res.append(old[-1])
-    return res, comps, compsN
+    return res[0], comps, compsN
 
 def botup_msort_right_front(x):
     '''
@@ -115,7 +115,7 @@ def botup_msort_right_front(x):
             res.append(new)
         if len(old) % 2 == 1:
             res.append(old[-1])
-    return res, comps, compsN
+    return res[0], comps, compsN
 
 def botup_msort_left_back(x):
     '''
@@ -173,7 +173,7 @@ def botup_msort_left_back(x):
             res = [new] + res
         if len(old) % 2 == 1:
             res = [old[0]] + res
-    return res, comps, compsN
+    return res[0], comps, compsN
 
 def botup_msort_right_back(x):
     '''
@@ -231,7 +231,7 @@ def botup_msort_right_back(x):
             res = [new] + res
         if len(old) % 2 == 1:
             res = [old[0]] + res
-    return res, comps, compsN
+    return res[0], comps, compsN
 
 def qsort_first(x):
     '''
@@ -384,7 +384,7 @@ def msort_left_front(x):
         if len(y) > 0 and len(z) > 0:
             if y[0] > z[0]:
                 result.append(z[0])
-                comps.append([y[0],z[0]])
+                comps.append([y[0], z[0]])
                 z.pop(0)
                 compsN = compsN + 1
             else:
@@ -393,13 +393,12 @@ def msort_left_front(x):
                 y.pop(0)
                 compsN = compsN + 1
         elif len(z) > 0:
-            for i in z:
-                result.append(i)
-                z.pop(0)
+            result = result + z
+            z = []
         else:
-            for i in y:
-                result.append(i)
-                y.pop(0)
+            result = result + y
+            y = []
+    # print(result)
     return result, comps, compsN
 
 def msort_right_front(x):
@@ -442,13 +441,11 @@ def msort_right_front(x):
                 y.pop(0)
                 compsN = compsN + 1
         elif len(z) > 0:
-            for i in z:
-                result.append(i)
-                z.pop(0)
+            result = result + z
+            z = []
         else:
-            for i in y:
-                result.append(i)
-                y.pop(0)
+            result = result + y
+            y = []
     return result, comps, compsN
 
 def msort_left_back(x):
@@ -652,7 +649,7 @@ def dict_sort_front(x):
         elif n > result[j]:
             comps.append([n, result[j]])
             compsN += 1
-            result.insert(j,n)
+            result.insert(j+1,n)
         else:
             comps.append([n, result[i]])
             comps.append([n, result[j]])
@@ -699,7 +696,7 @@ def dict_sort_back(x):
         if n > result[j]:
             comps.append([n, result[j]])
             compsN += 1
-            result.insert(j, n)
+            result.insert(j+1, n)
         elif n < result[i]:
             comps.append([n, result[i]])
             compsN += 1
@@ -725,3 +722,26 @@ def dict_sort_back(x):
 
 ALL_ALGORITHMS = [botup_msort_left_front, botup_msort_right_front, botup_msort_left_back, botup_msort_right_back, qsort_first, qsort_mid, qsort_last, isort_front, isort_back,
                   msort_left_front, msort_left_back, msort_left_back, msort_right_back, dict_sort_front, dict_sort_back]
+
+def recur_gen_list(test_lists,nrange):
+    newL = []
+    for l in test_lists:
+        k = l.copy()
+        for i in range(1, nrange + 1):
+            if i not in k:
+                newL = newL + [k + [i]]
+    return newL
+
+def test_all_alg(size,nrange):
+    lists = [[]]
+    failed_tests = {}
+    for i in range(0, size):
+        lists = recur_gen_list(lists,nrange)
+    for alg in ALL_ALGORITHMS:
+        for l in lists:
+            if alg(l)[0] != sorted(l):
+                if alg.__name__ not in failed_tests.keys():
+                    failed_tests[alg.__name__] = [l]
+                else:
+                    failed_tests[alg.__name__].append(l)
+    return failed_tests

@@ -14,7 +14,7 @@ DATA_DIR_TEST2_ADDITIONALA = "../test/Test_2/18_10_2021/merge_sort/"
 DATA_DIR_TEST2_ADDITIONALB = "../test/Test_2/18_10_2021/sort_merge/"
 
 
-def extract_from_CSV(paths, is_trace_enabled=False):
+def extract_from_CSV(paths, is_trace_enabled=False, show_records=True, show_sim=False, verbose=False):
     csv_list = []
     for path in paths:
         files = listdir(path)
@@ -36,6 +36,14 @@ def extract_from_CSV(paths, is_trace_enabled=False):
     sort_test_comparison_records = []
     free_res = []
 
+    merge_train_score = []
+    sort_train_score = []
+    merge_train_comparison = []
+    sort_train_comparison = []
+    merge_train_comparison_records = []
+    sort_train_comparison_records = []
+
+
     for c in csv_list:
         t1, t2 = extract_time(c)
         merge_test_response_time.append(t1)
@@ -51,6 +59,16 @@ def extract_from_CSV(paths, is_trace_enabled=False):
         merge_test_comparison_records.append(r1)
         sort_test_comparison_records.append(r2)
 
+        s3, s4 = extract_response(c)
+        merge_train_score.append(s3)
+        sort_train_score.append(s4)
+
+        c3, c4, r3, r4 = extract_train_comparison(c, "\'")
+        merge_train_comparison.append(c3)
+        sort_train_comparison.append(c4)
+        merge_train_comparison_records.append(r3)
+        sort_train_comparison_records.append(r4)
+
         e = extract_free_response(c)
         free_res.append(e)
 
@@ -63,25 +81,32 @@ def extract_from_CSV(paths, is_trace_enabled=False):
                 reconstruct_trace(d, path, name + "_" + str(i))
                 i += 1
 
-        # eval_alg_sim("lcs", c, verbose=True)
-        eval_alg_sim("lcs", c, verbose=False)
+        if show_sim:
+            eval_alg_sim("lcs", c, verbose)
 
-    print('merge test time: ' + str(merge_test_response_time))
-    print('sort test time: ' + str(sort_test_response_time))
-    print('merge test score: ' + str(merge_test_score))
-    print('sort test score: ' + str(sort_test_score))
-    print('merge test comparison: ' + str(merge_test_comparison))
-    # print('merge test comparison records: ' + str(np.array(merge_test_comparison_records)))
-    print('sort test comparison: ' + str(sort_test_comparison))
-    print('sort test comparison records: ' + str(np.array(sort_test_comparison_records)))
-    print('strategy reflection: ' + str(free_res))
+    if show_records:
+        print('>>>>>>>>>>>>>> TRAIN >>>>>>>>>>>>>>>>>>')
+        print('merge train score: ' + str(merge_train_score))
+        print('sort train score: ' + str(sort_train_score))
+        print('merge train comparison: ' + str(merge_train_comparison))
+        print('sort train comparison: ' + str(sort_train_comparison))
+        print('>>>>>>>>>>>>>> TEST >>>>>>>>>>>>>>>>>>')
+        print('merge test time: ' + str(merge_test_response_time))
+        print('sort test time: ' + str(sort_test_response_time))
+        print('merge test score: ' + str(merge_test_score))
+        print('sort test score: ' + str(sort_test_score))
+        print('merge test comparison: ' + str(merge_test_comparison))
+        # print('merge test comparison records: ' + str(np.array(merge_test_comparison_records)))
+        print('sort test comparison: ' + str(sort_test_comparison))
+        print('sort test comparison records: ' + str(np.array(sort_test_comparison_records)))
+        print('strategy reflection: ' + str(free_res))
 
-    print('\nmean merge response time: %s' % numpy.average(merge_test_response_time, axis=0))
-    print('mean sort response time: %s' % numpy.average(sort_test_response_time, axis=0))
-    print('mean merge test score: %s' % numpy.average(merge_test_score,axis=0))
-    print('mean sort test score: %s' % numpy.average(sort_test_score,axis=0))
-    print('mean merge comparison: %s' % numpy.average(merge_test_comparison, axis=0))
-    print('mean sort comparison: %s' % numpy.average(sort_test_comparison, axis=0))
+        print('\nmean merge response time: %s' % numpy.average(merge_test_response_time, axis=0))
+        print('mean sort response time: %s' % numpy.average(sort_test_response_time, axis=0))
+        print('mean merge test score: %s' % numpy.average(merge_test_score,axis=0))
+        print('mean sort test score: %s' % numpy.average(sort_test_score,axis=0))
+        print('mean merge comparison: %s' % numpy.average(merge_test_comparison, axis=0))
+        print('mean sort comparison: %s' % numpy.average(sort_test_comparison, axis=0))
 
 
 def extract_time(input):
@@ -95,6 +120,34 @@ def extract_time(input):
 
     return t1, t2
 
+def extract_train_response(input):
+    merge_test_input_col = input[0].index("merge_train_input")
+    sort_test_input_col = input[0].index("sort_train_input")
+    merge_test_labels_col = input[0].index("merge_train_labels")
+    sort_test_labels_col = input[0].index("sort_train_labels")
+    merge_test_ans_col = input[0].index("merge_train_res.text")
+    sort_test_ans_col = input[0].index("sort_train_res.text")
+
+    i1 = [list(map(int, parseStringLine(line[merge_test_input_col]))) for line in input[1:] if
+          line[merge_test_input_col] != '']
+    i2 = [list(map(int, parseStringLine(line[sort_test_input_col]))) for line in input[1:] if
+          line[sort_test_input_col] != '']
+
+    l1 = [parseStringLine(line[merge_test_labels_col]) for line in input[1:] if line[merge_test_labels_col] != '']
+    l2 = [parseStringLine(line[sort_test_labels_col]) for line in input[1:] if line[sort_test_labels_col] != '']
+
+    r1 = [parseStringLine(line[merge_test_ans_col]) for line in input[1:] if line[merge_test_ans_col] != '']
+    r2 = [parseStringLine(line[sort_test_ans_col]) for line in input[1:] if line[sort_test_ans_col] != '']
+
+    a1 = [labels2Ints(l1[i], i1[i], r1[i]) if containLabels(l1[i], r1[i]) else [] for i in range(min(len(l1), len(r1)))]
+    a2 = [labels2Ints(l2[i], i2[i], r2[i]) if containLabels(l2[i], r2[i]) else [] for i in range(min(len(l2), len(r2)))]
+
+    s1 = [round(stats.spearmanr(sorted(i1[i]), a1[i])[0], 3) if len(l1[i]) == len(r1[i]) else numpy.NaN for i in
+          range(min(len(i1), len(a1)))]
+    s2 = [round(stats.spearmanr(sorted(i2[i]), a2[i])[0], 3) if len(l2[i]) == len(r2[i]) else numpy.NaN for i in
+          range(min(len(i2), len(a2)))]
+
+    return s1, s2
 
 def extract_response(input):
     merge_test_input_col = input[0].index("merge_test_input")
@@ -143,6 +196,18 @@ def extract_comparison(input, label_pad):
     merge_test_com_records = input[0].index("merge_test_compare_records")
     sort_test_com_col = input[0].index("sort_test_compareN")
     sort_test_com_records = input[0].index("sort_test_compare_records")
+
+    return [int(line[merge_test_com_col]) for line in input[1:] if line[merge_test_com_col] != ''], [
+        int(line[sort_test_com_col]) for line in input[1:] if line[sort_test_com_col] != ''], [
+               line[merge_test_com_records].replace("\"", label_pad) for line in input[1:] if
+               line[merge_test_com_records] != ''], [line[sort_test_com_records].replace("\"", label_pad) for line in
+                                                     input[1:] if line[sort_test_com_records] != '']
+
+def extract_train_comparison(input, label_pad):
+    merge_test_com_col = input[0].index("merge_train_compareN")
+    merge_test_com_records = input[0].index("merge_train_compare_records")
+    sort_test_com_col = input[0].index("sort_train_compareN")
+    sort_test_com_records = input[0].index("sort_train_compare_records")
 
     return [int(line[merge_test_com_col]) for line in input[1:] if line[merge_test_com_col] != ''], [
         int(line[sort_test_com_col]) for line in input[1:] if line[sort_test_com_col] != ''], [
@@ -204,5 +269,5 @@ def string2pairlist(str):
 
 # extract_from_CSV([DATA_DIR_CS])
 # extract_from_CSV([DATA_DIR_NON_CS])
-# extract_from_CSV([DATA_DIR_TEST2_PSYB])
-extract_from_CSV([DATA_DIR_TEST2_ADDITIONALA, DATA_DIR_TEST2_ADDITIONALB])
+extract_from_CSV([DATA_DIR_TEST2_PSYA, DATA_DIR_TEST2_PSYB],show_records=False,show_sim=True)
+# extract_from_CSV([DATA_DIR_TEST2_ADDITIONALA, DATA_DIR_TEST2_ADDITIONALB],show_records=False,show_sim=True)
