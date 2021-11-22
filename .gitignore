@@ -1,8 +1,12 @@
-data/
+lib/
 .idea/
 __pycache__/
 env/
 node_modules
-/*.py
 /*.png
-/*legacy-browsers.js
+/*.js
+data/**/*.png
+/*.csv
+*browsers.js
+*lastrun.py
+test.*
