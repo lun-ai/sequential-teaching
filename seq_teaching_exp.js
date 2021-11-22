@@ -40,22 +40,115 @@ const green = [(- 0.0039), 1.0, (- 1.0)];
 const red = [1.0, (- 0.2235), (- 0.4431)];
 const white = [1.0, 1.0, 1.0];
 const traceSaveAtFrame = 20;
+
 const introTimeL = 120;
 const mergeTestTimeL = 90;
 const mergeTrainTimeL = 90;
 const mergeExplTimeL = 60;
 const sortTestTimeL = 300;
 const sortTrainTimeL = 300;
-const structureTrainTimeL = 300;
 const sortExplTimeL = 60;
-const optimalMergeTimeL = 120;
 const reviewTimeL = 120;
+
 var routineT = 0;
 var comparePressedT = 0.0;
 var isComparePressed = false;
+var progressBar;
 const scaleEqPath = "materials/merge_sort/imgs/scale_balanced.png";
 const scaleLtPath = "materials/merge_sort/imgs/scale_right.png";
 const scaleGtPath = "materials/merge_sort/imgs/scale_left.png";
+
+var expSetup = {
+            "BACKGROUND": [introTimeL, 1],
+            "INTRO": [introTimeL, 1],
+            "HINT": [introTimeL, 1],
+            "MERGE_INTRO": [introTimeL, 1],
+            "SORT_INTRO": [introTimeL, 1],
+            "MERGE_TEST_INTRO": [introTimeL, 1],
+            "SORT_TEST_INTRO": [introTimeL, 1],
+            "EXP_CHECK": [introTimeL, 1],
+            "REVIEW": [reviewTimeL, 4],
+            "MERGE_TRAIN": [mergeTrainTimeL,6],
+            "SORT_TRAIN": [sortTrainTimeL,4],
+            "MERGE_EXPL": [mergeExplTimeL,6],
+            "SORT_EXPL": [sortExplTimeL,4],
+            "MERGE_TEST": [mergeTestTimeL,5],
+            "SORT_TEST": [sortTestTimeL,6]
+        };
+
+class ProgressBar {
+    
+    // routine dict entry: [routineTime, routineRepeat]
+    
+    constructor (routines) {
+        
+        this.currentProgress = 0;
+        this.totalTime = 0;
+        this.routines = {};
+        this.name = null;
+        this.percent = null;
+        this.bar = null;
+        this.progress = null;
+        this.window = psychoJS.window;
+        this.routines = routines;
+        this.barWidth = 1.2;
+        this.barHeight = 0.05;
+        this.textXPos = 0.37;
+        this.textYPos = 0.48;
+        this.barXPos = 0.0;
+        this.barYPos = 0.48;
+        this.fontSize = 0.02;
+        
+        for (var key in this.routines){
+            this.totalTime += this.routines[key][0] * this.routines[key][1];
+        }
+        this.name = new visual.TextStim({
+            win: this.window,
+            name: 'progress',
+            text: 'Progress',
+            font: 'Open Sans',
+            pos: [-this.textXPos, this.textYPos], height: this.fontSize,
+            color: new util.Color('white')
+        });
+        this.name.setAutoDraw(true);
+        this.percent = new visual.TextStim({
+            win: this.window,
+            name: 'precent',
+            text: '0%',
+            font: 'Open Sans',
+            pos: [this.textXPos, this.textYPos], height: this.fontSize,
+            color: new util.Color('white') 
+        });
+        this.percent.setAutoDraw(true);
+        this.progress = new visual.Rect({
+           win: this.window,
+           name: "progress",
+           units: undefined,
+           pos: [0, this.barYPos],
+           size: [0, this.barHeight],
+           fillColor: new util.Color('black')
+        });
+        this.progress.setAutoDraw(true);
+        this.bar = new visual.Rect({
+           win: this.window,
+           name: "bar",
+           units: undefined,
+           pos: [this.barXPos, this.barYPos],
+           size: [this.barWidth, this.barHeight],
+           fillColor: new util.Color('white')
+        });
+        this.bar.setAutoDraw(true);
+    }
+    
+    updateProgressBar(routineName) {
+        this.currentProgress += this.routines[routineName][0];
+        let p = 0 + (this.currentProgress / this.totalTime).toFixed(2);
+        this.progress.size = [p * this.barWidth, this.barHeight];
+        this.progress.pos = [this.barXPos - 0.25 * (1 - p) * this.barWidth, this.barYPos];
+        this.percent.text = (p * 100).toFixed(0) + "%";
+    }
+}
+
 
 function moveItem(mouse, grabbed) {
     var u, v;
@@ -428,152 +521,152 @@ psychoJS.start({
   expName: expName,
   expInfo: expInfo,
   resources: [
-    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
-    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
-    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
-    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/blue_star_clicked.png', 'path': 'materials/merge_sort/imgs/blue_star_clicked.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
-    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
-    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
-    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
-    {'name': 'materials/imgs/arrow.png', 'path': 'materials/imgs/arrow.png'},
-    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
-    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
-    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
-    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
-    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
     {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
-    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
-    {'name': 'materials/imgs/prefer_not_to_say_selected.png', 'path': 'materials/imgs/prefer_not_to_say_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'},
-    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
-    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
+    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
+    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
+    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
+    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
     {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
-    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
-    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon.png', 'path': 'materials/merge_sort/imgs/fruits/melon.png'},
-    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
-    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/compare_clicked.png', 'path': 'materials/merge_sort/imgs/compare_clicked.png'},
-    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
-    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
-    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
-    {'name': 'materials/imgs/other_gender_selected.png', 'path': 'materials/imgs/other_gender_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
-    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
     {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
-    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
+    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
+    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
+    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
+    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
+    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
     {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png'},
-    {'name': 'materials/merge_sort/imgs/sort_test/small_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/small_input_review.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
-    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
-    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
-    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
-    {'name': 'materials/imgs/prefer_not_to_say.png', 'path': 'materials/imgs/prefer_not_to_say.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
     {'name': 'materials/imgs/other_gender.png', 'path': 'materials/imgs/other_gender.png'},
-    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
     {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple.png', 'path': 'materials/merge_sort/imgs/fruits/apple.png'},
-    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
-    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon.png', 'path': 'materials/merge_sort/imgs/fruits/melon.png'},
+    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/blue_star_clicked.png', 'path': 'materials/merge_sort/imgs/blue_star_clicked.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/suboptimal_merge_example.png', 'path': 'materials/merge_sort/imgs/merge_train/suboptimal_merge_example.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
+    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png'},
+    {'name': 'materials/merge_sort/imgs/sort_test/large_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/large_input_review.png'},
+    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
+    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
+    {'name': 'materials/merge_sort/imgs/sort_test/small_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/small_input_review.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
+    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
+    {'name': 'materials/imgs/arrow.png', 'path': 'materials/imgs/arrow.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple.png', 'path': 'materials/merge_sort/imgs/fruits/apple.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
+    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
+    {'name': 'materials/merge_sort/imgs/compare_clicked.png', 'path': 'materials/merge_sort/imgs/compare_clicked.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
+    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
+    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
+    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
+    {'name': 'materials/imgs/other_gender_selected.png', 'path': 'materials/imgs/other_gender_selected.png'},
+    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
+    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
+    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
     {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
     {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
-    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
     {'name': 'materials/review_cond.csv', 'path': 'materials/review_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
-    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
-    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
-    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
     {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
-    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
-    {'name': 'materials/merge_sort/imgs/sort_test/large_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/large_input_review.png'},
-    {'name': 'materials/merge_sort/imgs/door.png', 'path': 'materials/merge_sort/imgs/door.png'},
-    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
-    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
-    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
-    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
+    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
+    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
+    {'name': 'materials/imgs/prefer_not_to_say.png', 'path': 'materials/imgs/prefer_not_to_say.png'},
+    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
     {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'}
+    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
+    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
+    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
+    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
+    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
+    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
+    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
+    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
+    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
+    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
+    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
+    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
+    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
+    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
+    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
+    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
+    {'name': 'materials/imgs/prefer_not_to_say_selected.png', 'path': 'materials/imgs/prefer_not_to_say_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
+    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
+    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
+    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'}
   ]
 });
 
@@ -625,6 +718,7 @@ var doctorate;
 var other;
 var background_btn;
 var background_mouse;
+var progressBar;
 var INTROClock;
 var intro_text;
 var alice;
@@ -649,15 +743,6 @@ var merge_example;
 var door_3;
 var merge_intro_btn;
 var merge_intro_mouse;
-var OPTIMAL_MERGEClock;
-var optimal_merge_hint_1;
-var optimal_merge_hint_2;
-var alice_7;
-var merge;
-var insert;
-var optimal_merge_btn;
-var optimal_merge_mouse;
-var optimal_merge_timer;
 var MERGE_TRAINClock;
 var merge_train_scale_instr;
 var merge_ans_instr;
@@ -804,7 +889,7 @@ var sort_test_btn;
 var sort_test_compare;
 var sort_test_mouse;
 var sort_test_timer;
-var OPTIMAL_MERGE_REVIEWClock;
+var REVIEW_QUESTIONSClock;
 var review_instr;
 var review_question;
 var review_img_1;
@@ -1036,6 +1121,7 @@ async function experimentInit() {
     win: psychoJS.window,
   });
   background_mouse.mouseClock = new util.Clock();
+  progressBar = new ProgressBar(expSetup);
   // Initialize components for Routine "INTRO"
   INTROClock = new util.Clock();
   intro_text = new visual.TextStim({
@@ -1222,81 +1308,6 @@ async function experimentInit() {
     win: psychoJS.window,
   });
   merge_intro_mouse.mouseClock = new util.Clock();
-  // Initialize components for Routine "OPTIMAL_MERGE"
-  OPTIMAL_MERGEClock = new util.Clock();
-  optimal_merge_hint_1 = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'optimal_merge_hint_1',
-    text: 'STRATEGY 1 is ADVANTAGEOUS over STRATEGY 2',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [(- 0.2), 0.25], height: 0.03,  wrapWidth: 0.4, ori: 0.0,
-    color: new util.Color('yellow'),  opacity: undefined,
-    depth: 0.0 
-  });
-  
-  optimal_merge_hint_2 = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'optimal_merge_hint_2',
-    text: 'ALICE: If you want to be EFFECTIVE at the BLUE STAR, you need to take advantage of the fact that:\n\n*** the fruits in each of the two ORANGE boxes on which you apply the BLUE STAR are arranged in INCREASING weights from LEFT to RIGHT already ***',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [(- 0.45), (- 0.15)], height: 0.03,  wrapWidth: 0.7, ori: 0.0,
-    color: new util.Color('yellow'),  opacity: undefined,
-    depth: -1.0 
-  });
-  
-  alice_7 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'alice_7', units : undefined, 
-    image : 'materials/merge_sort/imgs/alice.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.6), 0.25], size : [0.2, 0.2],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -2.0 
-  });
-  merge = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge', units : undefined, 
-    image : 'materials/merge_sort/imgs/merge_train/optimal_merge.png', mask : undefined,
-    ori : 0.0, pos : [0.4, 0.3], size : [0.7, 0.35],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -3.0 
-  });
-  insert = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'insert', units : undefined, 
-    image : 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png', mask : undefined,
-    ori : 0.0, pos : [0.4, (- 0.15)], size : [0.7, 0.35],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -4.0 
-  });
-  optimal_merge_btn = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'optimal_merge_btn', units : undefined, 
-    image : 'materials/imgs/continue.png', mask : undefined,
-    ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -5.0 
-  });
-  optimal_merge_mouse = new core.Mouse({
-    win: psychoJS.window,
-  });
-  optimal_merge_mouse.mouseClock = new util.Clock();
-  optimal_merge_timer = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'optimal_merge_timer',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [(- 0.45), (- 0.4)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
-    color: new util.Color('orange'),  opacity: undefined,
-    depth: -7.0 
-  });
-  
   // Initialize components for Routine "MERGE_TRAIN"
   MERGE_TRAINClock = new util.Clock();
   merge_train_scale_instr = new visual.TextStim({
@@ -1316,7 +1327,7 @@ async function experimentInit() {
     text: 'Please SELECT the CONVEYOR BELT that has the correct fruit(s) on YELLOW position(s):',
     font: 'Open Sans',
     units: undefined, 
-    pos: [0, (- 0.15)], height: 0.03,  wrapWidth: 1.5, ori: 0.0,
+    pos: [0, (- 0.15)], height: 0.03,  wrapWidth: 1.6, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: -8.0 
   });
@@ -1651,7 +1662,7 @@ async function experimentInit() {
     text: 'Put fruits on the CONVEYOR BELT by entering their labels as  X,X,X,X, ... ,X',
     font: 'Open Sans',
     units: undefined, 
-    pos: [(- 0.25), (- 0.25)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    pos: [(- 0.25), (- 0.25)], height: 0.03,  wrapWidth: 1.6, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: -5.0 
   });
@@ -1853,7 +1864,7 @@ async function experimentInit() {
     text: 'Put fruits into the SHIPPING CRATE by entering their labels as  X,X,X,X, ... ,X',
     font: 'Open Sans',
     units: undefined, 
-    pos: [(- 0.25), (- 0.25)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    pos: [(- 0.25), (- 0.25)], height: 0.03,  wrapWidth: 1.6, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: -8.0 
   });
@@ -2453,7 +2464,7 @@ async function experimentInit() {
     text: 'Put fruits into the SHIPPING CRATE by entering their labels as  X,X,X,X, ... ,X',
     font: 'Open Sans',
     units: undefined, 
-    pos: [(- 0.25), (- 0.25)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    pos: [(- 0.25), (- 0.25)], height: 0.03,  wrapWidth: 1.6, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: -7.0 
   });
@@ -2691,8 +2702,8 @@ async function experimentInit() {
     depth: -30.0 
   });
   
-  // Initialize components for Routine "OPTIMAL_MERGE_REVIEW"
-  OPTIMAL_MERGE_REVIEWClock = new util.Clock();
+  // Initialize components for Routine "REVIEW_QUESTIONS"
+  REVIEW_QUESTIONSClock = new util.Clock();
   review_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'review_instr',
@@ -2880,6 +2891,8 @@ function BACKGROUNDRoutineBegin(snapshot) {
     age_groups = [_18_24, _25_34, _35_44, _45_54, _55_64, _65];
     education_groups = [less_than_high_school, high_school_equivalent, college, bachelor, graduate, doctorate, other];
     routineT = 0;
+    
+    
     // keep track of which components have finished
     BACKGROUNDComponents = [];
     BACKGROUNDComponents.push(background_instr);
@@ -3307,6 +3320,7 @@ function BACKGROUNDRoutineEnd() {
     psychoJS.experiment.addData('demographic_education',demographic_education);
     psychoJS.experiment.addData('demographic_gender',demographic_gender);
     psychoJS.experiment.addData("background.tEnd",routineT);
+    progressBar.updateProgressBar("BACKGROUND");
     return Scheduler.Event.NEXT;
   };
 }
@@ -3494,6 +3508,7 @@ function INTRORoutineEnd() {
     psychoJS.experiment.addData('intro_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('intro_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("intro.tEnd",routineT);
+    progressBar.updateProgressBar("INTRO");
     return Scheduler.Event.NEXT;
   };
 }
@@ -3696,6 +3711,7 @@ function HINTRoutineEnd() {
     psychoJS.experiment.addData('hint_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('hint_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("hint.tEnd",routineT);
+    progressBar.updateProgressBar("HINT");
     return Scheduler.Event.NEXT;
   };
 }
@@ -3869,6 +3885,7 @@ function MERGE_INTRORoutineEnd() {
     psychoJS.experiment.addData('merge_intro_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('merge_intro_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("merge_intro.tEnd",routineT);
+    progressBar.updateProgressBar("MERGE_INTRO");
     return Scheduler.Event.NEXT;
   };
 }
@@ -3883,7 +3900,7 @@ function TRAIN_1LoopBegin(TRAIN_1LoopScheduler, snapshot) {
     // set up handler to look after randomisation of conditions etc
     TRAIN_1 = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
+      nReps: 0, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: 'materials/merge_train_cond.csv',
       seed: undefined, name: 'TRAIN_1'
@@ -3895,9 +3912,6 @@ function TRAIN_1LoopBegin(TRAIN_1LoopScheduler, snapshot) {
     for (const thisTRAIN_1 of TRAIN_1) {
       const snapshot = TRAIN_1.getSnapshot();
       TRAIN_1LoopScheduler.add(importConditions(snapshot));
-      TRAIN_1LoopScheduler.add(OPTIMAL_MERGERoutineBegin(snapshot));
-      TRAIN_1LoopScheduler.add(OPTIMAL_MERGERoutineEachFrame());
-      TRAIN_1LoopScheduler.add(OPTIMAL_MERGERoutineEnd());
       TRAIN_1LoopScheduler.add(MERGE_TRAINRoutineBegin(snapshot));
       TRAIN_1LoopScheduler.add(MERGE_TRAINRoutineEachFrame());
       TRAIN_1LoopScheduler.add(MERGE_TRAINRoutineEnd());
@@ -3927,7 +3941,7 @@ function TEST_1LoopBegin(TEST_1LoopScheduler, snapshot) {
     // set up handler to look after randomisation of conditions etc
     TEST_1 = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
+      nReps: 0, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: 'materials/merge_test_cond.csv',
       seed: undefined, name: 'TEST_1'
@@ -3965,7 +3979,7 @@ function TRAIN_3LoopBegin(TRAIN_3LoopScheduler, snapshot) {
     // set up handler to look after randomisation of conditions etc
     TRAIN_3 = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
+      nReps: 0, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: 'materials/sort_train_cond.csv',
       seed: undefined, name: 'TRAIN_3'
@@ -4006,7 +4020,7 @@ function TEST_2LoopBegin(TEST_2LoopScheduler, snapshot) {
     // set up handler to look after randomisation of conditions etc
     TEST_2 = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
+      nReps: 0, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: 'materials/sort_test_cond.csv',
       seed: undefined, name: 'TEST_2'
@@ -4056,9 +4070,9 @@ function REVIEWLoopBegin(REVIEWLoopScheduler, snapshot) {
     for (const thisREVIEW of REVIEW) {
       const snapshot = REVIEW.getSnapshot();
       REVIEWLoopScheduler.add(importConditions(snapshot));
-      REVIEWLoopScheduler.add(OPTIMAL_MERGE_REVIEWRoutineBegin(snapshot));
-      REVIEWLoopScheduler.add(OPTIMAL_MERGE_REVIEWRoutineEachFrame());
-      REVIEWLoopScheduler.add(OPTIMAL_MERGE_REVIEWRoutineEnd());
+      REVIEWLoopScheduler.add(REVIEW_QUESTIONSRoutineBegin(snapshot));
+      REVIEWLoopScheduler.add(REVIEW_QUESTIONSRoutineEachFrame());
+      REVIEWLoopScheduler.add(REVIEW_QUESTIONSRoutineEnd());
       REVIEWLoopScheduler.add(endLoopIteration(REVIEWLoopScheduler, snapshot));
     }
     
@@ -4071,216 +4085,6 @@ async function REVIEWLoopEnd() {
   psychoJS.experiment.removeLoop(REVIEW);
 
   return Scheduler.Event.NEXT;
-}
-
-
-var OPTIMAL_MERGEComponents;
-function OPTIMAL_MERGERoutineBegin(snapshot) {
-  return async function () {
-    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
-    
-    //------Prepare to start Routine 'OPTIMAL_MERGE'-------
-    t = 0;
-    OPTIMAL_MERGEClock.reset(); // clock
-    frameN = -1;
-    continueRoutine = true; // until we're told otherwise
-    routineTimer.add(120.000000);
-    // update component parameters for each repeat
-    // setup some python lists for storing info about the optimal_merge_mouse
-    gotValidClick = false; // until a click is received
-    optimal_merge_timer.setText('');
-    routineT = 0;
-    if (TRAIN_1.thisTrialN !== 3) {
-        continueRoutine = false;
-    }
-    // keep track of which components have finished
-    OPTIMAL_MERGEComponents = [];
-    OPTIMAL_MERGEComponents.push(optimal_merge_hint_1);
-    OPTIMAL_MERGEComponents.push(optimal_merge_hint_2);
-    OPTIMAL_MERGEComponents.push(alice_7);
-    OPTIMAL_MERGEComponents.push(merge);
-    OPTIMAL_MERGEComponents.push(insert);
-    OPTIMAL_MERGEComponents.push(optimal_merge_btn);
-    OPTIMAL_MERGEComponents.push(optimal_merge_mouse);
-    OPTIMAL_MERGEComponents.push(optimal_merge_timer);
-    
-    for (const thisComponent of OPTIMAL_MERGEComponents)
-      if ('status' in thisComponent)
-        thisComponent.status = PsychoJS.Status.NOT_STARTED;
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-function OPTIMAL_MERGERoutineEachFrame() {
-  return async function () {
-    //------Loop for each frame of Routine 'OPTIMAL_MERGE'-------
-    // get current time
-    t = OPTIMAL_MERGEClock.getTime();
-    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
-    // update/draw components on each frame
-    
-    // *optimal_merge_hint_1* updates
-    if (t >= 0.0 && optimal_merge_hint_1.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      optimal_merge_hint_1.tStart = t;  // (not accounting for frame time here)
-      optimal_merge_hint_1.frameNStart = frameN;  // exact frame index
-      
-      optimal_merge_hint_1.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (optimal_merge_hint_1.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      optimal_merge_hint_1.setAutoDraw(false);
-    }
-    
-    // *optimal_merge_hint_2* updates
-    if (t >= 0.0 && optimal_merge_hint_2.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      optimal_merge_hint_2.tStart = t;  // (not accounting for frame time here)
-      optimal_merge_hint_2.frameNStart = frameN;  // exact frame index
-      
-      optimal_merge_hint_2.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (optimal_merge_hint_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      optimal_merge_hint_2.setAutoDraw(false);
-    }
-    
-    // *alice_7* updates
-    if (t >= 0.0 && alice_7.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      alice_7.tStart = t;  // (not accounting for frame time here)
-      alice_7.frameNStart = frameN;  // exact frame index
-      
-      alice_7.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (alice_7.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      alice_7.setAutoDraw(false);
-    }
-    
-    // *merge* updates
-    if (t >= 0.0 && merge.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge.tStart = t;  // (not accounting for frame time here)
-      merge.frameNStart = frameN;  // exact frame index
-      
-      merge.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge.setAutoDraw(false);
-    }
-    
-    // *insert* updates
-    if (t >= 0.0 && insert.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      insert.tStart = t;  // (not accounting for frame time here)
-      insert.frameNStart = frameN;  // exact frame index
-      
-      insert.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (insert.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      insert.setAutoDraw(false);
-    }
-    
-    // *optimal_merge_btn* updates
-    if (t >= 0.5 && optimal_merge_btn.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      optimal_merge_btn.tStart = t;  // (not accounting for frame time here)
-      optimal_merge_btn.frameNStart = frameN;  // exact frame index
-      
-      optimal_merge_btn.setAutoDraw(true);
-    }
-
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((optimal_merge_btn.status === PsychoJS.Status.STARTED || optimal_merge_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      optimal_merge_btn.setAutoDraw(false);
-    }
-    
-    // *optimal_merge_timer* updates
-    if (t >= 0.0 && optimal_merge_timer.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      optimal_merge_timer.tStart = t;  // (not accounting for frame time here)
-      optimal_merge_timer.frameNStart = frameN;  // exact frame index
-      
-      optimal_merge_timer.setAutoDraw(true);
-    }
-
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((optimal_merge_timer.status === PsychoJS.Status.STARTED || optimal_merge_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      optimal_merge_timer.setAutoDraw(false);
-    }
-    if (((t >= 0.5) && (optimal_merge_mouse.status === PsychoJS.Status.NOT_STARTED))) {
-        optimal_merge_mouse.tStart = t;
-        optimal_merge_mouse.frameNStart = frameN;
-        optimal_merge_mouse.status = PsychoJS.Status.STARTED;
-        optimal_merge_mouse.mouseClock.reset();
-    }
-    if (((optimal_merge_mouse.isPressedIn(optimal_merge_btn) && (optimal_merge_mouse.status === PsychoJS.Status.STARTED)) && (optimal_merge_btn.status === PsychoJS.Status.STARTED))) {
-        optimal_merge_mouse.status = PsychoJS.Status.FINISHED;
-        continueRoutine = false;
-    }
-    if ((optimal_merge_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
-        optimal_merge_mouse.status = PsychoJS.Status.FINISHED;
-    }
-    if (optimal_merge_timer.status !== PsychoJS.Status.FINISHED && continueRoutine === true) {
-        optimal_merge_timer.text = timerWarning(optimalMergeTimeL, t);
-    }
-    routineT = t;
-    
-    // check for quit (typically the Esc key)
-    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
-      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
-    }
-    
-    // check if the Routine should terminate
-    if (!continueRoutine) {  // a component has requested a forced-end of Routine
-      return Scheduler.Event.NEXT;
-    }
-    
-    continueRoutine = false;  // reverts to True if at least one component still running
-    for (const thisComponent of OPTIMAL_MERGEComponents)
-      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
-        continueRoutine = true;
-        break;
-      }
-    
-    // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
-      return Scheduler.Event.FLIP_REPEAT;
-    } else {
-      return Scheduler.Event.NEXT;
-    }
-  };
-}
-
-
-function OPTIMAL_MERGERoutineEnd() {
-  return async function () {
-    //------Ending Routine 'OPTIMAL_MERGE'-------
-    for (const thisComponent of OPTIMAL_MERGEComponents) {
-      if (typeof thisComponent.setAutoDraw === 'function') {
-        thisComponent.setAutoDraw(false);
-      }
-    }
-    // store data for psychoJS.experiment (ExperimentHandler)
-    _mouseXYs = optimal_merge_mouse.getPos();
-    _mouseButtons = optimal_merge_mouse.getPressed();
-    psychoJS.experiment.addData('optimal_merge_mouse.x', _mouseXYs[0]);
-    psychoJS.experiment.addData('optimal_merge_mouse.y', _mouseXYs[1]);
-    psychoJS.experiment.addData('optimal_merge_mouse.leftButton', _mouseButtons[0]);
-    psychoJS.experiment.addData('optimal_merge_mouse.midButton', _mouseButtons[1]);
-    psychoJS.experiment.addData('optimal_merge_mouse.rightButton', _mouseButtons[2]);
-    psychoJS.experiment.addData("optimal_merge.tEnd",routineT);
-    return Scheduler.Event.NEXT;
-  };
 }
 
 
@@ -4677,6 +4481,7 @@ function MERGE_TRAINRoutineEnd() {
     psychoJS.experiment.addData("merge_train_compare_records",merge_train_compare_records);
     psychoJS.experiment.addData("merge_train_mouse_clicked",merge_train_mouse.clicked_name);
     psychoJS.experiment.addData("merge_train.tEnd",routineT);
+    progressBar.updateProgressBar("MERGE_TRAIN");
     return Scheduler.Event.NEXT;
   };
 }
@@ -5022,6 +4827,7 @@ function MERGE_EXPLRoutineEnd() {
     psychoJS.experiment.addData('merge_expl_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("merge_expl.tStart",merge_expl_mc_1.tStart);
     psychoJS.experiment.addData("merge_expl.tEnd",routineT);
+    progressBar.updateProgressBar("MERGE_EXPL");
     return Scheduler.Event.NEXT;
   };
 }
@@ -5195,6 +5001,8 @@ function MERGE_TEST_INTRORoutineEnd() {
     psychoJS.experiment.addData('merge_test_intro_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('merge_test_intro_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("merge_test_intro.tEnd",routineT);
+    progressBar.updateProgressBar("MERGE_TEST_INTRO");
+    
     return Scheduler.Event.NEXT;
   };
 }
@@ -5546,6 +5354,7 @@ function MERGE_TESTRoutineEnd() {
     psychoJS.experiment.addData("merge_test_compare_records",merge_test_compare_records);
     psychoJS.experiment.addData("merge_test.tStart",merge_test.tStart);
     psychoJS.experiment.addData("merge_test.tEnd",routineT);
+    progressBar.updateProgressBar("MERGE_TEST");
     return Scheduler.Event.NEXT;
   };
 }
@@ -5718,6 +5527,7 @@ function SORT_INTRORoutineEnd() {
     psychoJS.experiment.addData('sort_intro_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('sort_intro_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("sort_intro.tEnd",routineT);
+    progressBar.updateProgressBar("SORT_INTRO");
     return Scheduler.Event.NEXT;
   };
 }
@@ -6352,6 +6162,7 @@ function SORT_TRAINRoutineEnd() {
     psychoJS.experiment.addData("sort_train.tStart",sort_train_ex_1.tStart);
     psychoJS.experiment.addData("sort_train.tEnd",routineT);
     psychoJS.experiment.addData("sort_train_compare_records",sort_train_compare_records);
+    progressBar.updateProgressBar("SORT_TRAIN");
     return Scheduler.Event.NEXT;
   };
 }
@@ -6988,6 +6799,7 @@ function SORT_EXPLRoutineEnd() {
     psychoJS.experiment.addData("sort_expl_compare_records",sort_expl_compare_records);
     psychoJS.experiment.addData("sort_expl.tStart",sort_expl_ex_1.tStart);
     psychoJS.experiment.addData("sort_expl.tEnd",routineT);
+    progressBar.updateProgressBar("SORT_EXPL");
     return Scheduler.Event.NEXT;
   };
 }
@@ -7160,6 +6972,7 @@ function SORT_TEST_INTRORoutineEnd() {
     psychoJS.experiment.addData('sort_test_intro_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('sort_test_intro_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("sort_test_intro.tEnd",routineT);
+    progressBar.updateProgressBar("SORT_TEST_INTRO");
     return Scheduler.Event.NEXT;
   };
 }
@@ -7762,19 +7575,20 @@ function SORT_TESTRoutineEnd() {
     psychoJS.experiment.addData("sort_test_compareN",sort_test_compareN);
     psychoJS.experiment.addData("sort_test.tStart",sort_test_ex_1.tStart);
     psychoJS.experiment.addData("sort_test.tEnd",routineT);
+    progressBar.updateProgressBar("SORT_TEST");
     return Scheduler.Event.NEXT;
   };
 }
 
 
-var OPTIMAL_MERGE_REVIEWComponents;
-function OPTIMAL_MERGE_REVIEWRoutineBegin(snapshot) {
+var REVIEW_QUESTIONSComponents;
+function REVIEW_QUESTIONSRoutineBegin(snapshot) {
   return async function () {
     TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
     
-    //------Prepare to start Routine 'OPTIMAL_MERGE_REVIEW'-------
+    //------Prepare to start Routine 'REVIEW_QUESTIONS'-------
     t = 0;
-    OPTIMAL_MERGE_REVIEWClock.reset(); // clock
+    REVIEW_QUESTIONSClock.reset(); // clock
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
     routineTimer.add(120.000000);
@@ -7782,7 +7596,7 @@ function OPTIMAL_MERGE_REVIEWRoutineBegin(snapshot) {
     review_instr.setText('A recommendation was given earlier that \n\n(STRATEGY 1) applying the BLUE STAR operator on boxes of fruits of SIMILAR sizes \n\nis ADVANTAGEOUS over \n\n(STRATEGY 2) applying the BLUE STAR operator iteratively on a large box of fruits and a box of size 1.');
     review_question.setPos([(- 0.45), (- 0.07)]);
     review_question.setText('');
-    review_img_1.setPos([0.4, 0.3]);
+    review_img_1.setPos([0.4, 0.25]);
     review_img_1.setImage(img_path1);
     review_img_2.setPos([0.4, (- 0.15)]);
     review_img_2.setImage(img_path2);
@@ -7805,17 +7619,17 @@ function OPTIMAL_MERGE_REVIEWRoutineBegin(snapshot) {
         review_question.pos = [-0.45, 0.1];
     }
     // keep track of which components have finished
-    OPTIMAL_MERGE_REVIEWComponents = [];
-    OPTIMAL_MERGE_REVIEWComponents.push(review_instr);
-    OPTIMAL_MERGE_REVIEWComponents.push(review_question);
-    OPTIMAL_MERGE_REVIEWComponents.push(review_img_1);
-    OPTIMAL_MERGE_REVIEWComponents.push(review_img_2);
-    OPTIMAL_MERGE_REVIEWComponents.push(review_btn);
-    OPTIMAL_MERGE_REVIEWComponents.push(review_res);
-    OPTIMAL_MERGE_REVIEWComponents.push(review_mouse);
-    OPTIMAL_MERGE_REVIEWComponents.push(review_timer);
+    REVIEW_QUESTIONSComponents = [];
+    REVIEW_QUESTIONSComponents.push(review_instr);
+    REVIEW_QUESTIONSComponents.push(review_question);
+    REVIEW_QUESTIONSComponents.push(review_img_1);
+    REVIEW_QUESTIONSComponents.push(review_img_2);
+    REVIEW_QUESTIONSComponents.push(review_btn);
+    REVIEW_QUESTIONSComponents.push(review_res);
+    REVIEW_QUESTIONSComponents.push(review_mouse);
+    REVIEW_QUESTIONSComponents.push(review_timer);
     
-    for (const thisComponent of OPTIMAL_MERGE_REVIEWComponents)
+    for (const thisComponent of REVIEW_QUESTIONSComponents)
       if ('status' in thisComponent)
         thisComponent.status = PsychoJS.Status.NOT_STARTED;
     return Scheduler.Event.NEXT;
@@ -7823,11 +7637,11 @@ function OPTIMAL_MERGE_REVIEWRoutineBegin(snapshot) {
 }
 
 
-function OPTIMAL_MERGE_REVIEWRoutineEachFrame() {
+function REVIEW_QUESTIONSRoutineEachFrame() {
   return async function () {
-    //------Loop for each frame of Routine 'OPTIMAL_MERGE_REVIEW'-------
+    //------Loop for each frame of Routine 'REVIEW_QUESTIONS'-------
     // get current time
-    t = OPTIMAL_MERGE_REVIEWClock.getTime();
+    t = REVIEW_QUESTIONSClock.getTime();
     frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
     // update/draw components on each frame
     
@@ -7956,7 +7770,7 @@ function OPTIMAL_MERGE_REVIEWRoutineEachFrame() {
     }
     
     continueRoutine = false;  // reverts to True if at least one component still running
-    for (const thisComponent of OPTIMAL_MERGE_REVIEWComponents)
+    for (const thisComponent of REVIEW_QUESTIONSComponents)
       if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
         continueRoutine = true;
         break;
@@ -7972,10 +7786,10 @@ function OPTIMAL_MERGE_REVIEWRoutineEachFrame() {
 }
 
 
-function OPTIMAL_MERGE_REVIEWRoutineEnd() {
+function REVIEW_QUESTIONSRoutineEnd() {
   return async function () {
-    //------Ending Routine 'OPTIMAL_MERGE_REVIEW'-------
-    for (const thisComponent of OPTIMAL_MERGE_REVIEWComponents) {
+    //------Ending Routine 'REVIEW_QUESTIONS'-------
+    for (const thisComponent of REVIEW_QUESTIONSComponents) {
       if (typeof thisComponent.setAutoDraw === 'function') {
         thisComponent.setAutoDraw(false);
       }
@@ -7990,6 +7804,7 @@ function OPTIMAL_MERGE_REVIEWRoutineEnd() {
     psychoJS.experiment.addData('review_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('review_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("review.tEnd",routineT);
+    progressBar.updateProgressBar("REVIEW");
     return Scheduler.Event.NEXT;
   };
 }
@@ -8136,6 +7951,7 @@ function EXP_CHECKRoutineEnd() {
     psychoJS.experiment.addData('exp_check_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('exp_check_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("exp_check.tEnd",routineT);
+    progressBar.updateProgressBar("EXP_CHECK");
     return Scheduler.Event.NEXT;
   };
 }
