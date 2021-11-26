@@ -12,8 +12,8 @@ in increasing weights from left to right? (120 secs to answer)",materials/merge_
 "If you used information you learned from the BLUE STAR operator for the PURPLE DIAMOND,
 
 shortly describe in which way did you use the BLUE STAR for arranging fruits with the PURPLE DIAMOND? (120 secs to answer)",materials/merge_sort/imgs/merge_train/merge_train_example.png,materials/merge_sort/imgs/sort_train/sort_train_example.png
-"Strategy 1 applies the BLUE STAR operator on boxes of fruits with a less-than-one capacity difference,
+"Strategy 1 applies the BLUE STAR operator on boxes that differ by no more than one in the number of fruits contained
+whereas Strategy 2 applies the BLUE STAR operator on boxes with a larger difference in the number of fruits contained.
 
-whereas Strategy 2 applies the BLUE STAR operator on boxes of fruits with a larger difference in capacity.
-
-Which one of the two Strategies is the closest to your application of the BLUE STAR? (120 secs to answer)",materials/merge_sort/imgs/merge_train/optimal_merge.png,materials/merge_sort/imgs/merge_train/suboptimal_merge.png
+If you used information you learned from the BLUE STAR operator for the PURPLE DIAMOND, which one of the two
+strategies is the closest to your application of the BLUE STAR? (120 secs to answer)",materials/merge_sort/imgs/merge_train/optimal_merge.png,materials/merge_sort/imgs/merge_train/suboptimal_merge.png
