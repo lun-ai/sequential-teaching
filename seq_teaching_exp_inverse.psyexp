@@ -1119,7 +1119,7 @@
         <Param name="Begin Routine" updates="constant" val="merge_train_input = input&amp;#10;mc_order = [] &amp;#10;merge_train_labels = encryption&amp;#10;merge_train_compareN = 0&amp;#10;merge_train_mc_path_2 = mc_path_2&amp;#10;merge_train_mc_path_1 = mc_path_1" valType="extendedCode"/>
         <Param name="Code Type" updates="None" val="Both" valType="str"/>
         <Param name="Each Frame" updates="constant" val="if mc_order == []:&amp;#10;    mc_order = getCorrectMCOrder(TRAIN_1.thisTrialN,merge_train_mc_path_1,merge_train_mc_path_2,merge_train_mc_1,merge_train_mc_2)&amp;#10;&amp;#10;if merge_train_mouse.isPressedIn(merge_train_compare) and merge_train_compare.status == STARTED:&amp;#10;    merge_train_compareN = merge_train_compareN + compare(merge_train_scale,merge_train_input,merge_train_labels,merge_train_scale_instr,merge_train_scale_left,merge_train_scale_right)&amp;#10;&amp;#10;merge_train_timer.text = timerWarning(mergeTrainTimeL,t) &amp;#10;&amp;#10;if merge_train_mouse.isPressedIn(merge_train_btn_1) and merge_train_btn_1.status == STARTED:&amp;#10;    #merge_train_mouse.clicked_name.append(merge_train_btn_1.name)&amp;#10;    continueRoutine = False&amp;#10;if merge_train_mouse.isPressedIn(merge_train_btn_2) and merge_train_btn_2.status == STARTED:&amp;#10;    #merge_train_mouse.clicked_name.append(merge_train_btn_2.name)&amp;#10;    continueRoutine = False" valType="extendedCode"/>
-        <Param name="Each JS Frame" updates="constant" val="if ((mc_order.length === 0)) {&amp;#10;    mc_order = getCorrectMCOrder(TRAIN_1.thisTrialN, merge_train_mc_path_1, merge_train_mc_path_2, merge_train_mc_1, merge_train_mc_2);&amp;#10;}&amp;#10;&amp;#10;if (t &gt;= 0.5 &amp;&amp; merge_train_mouse.status === PsychoJS.Status.NOT_STARTED) {&amp;#10;      // keep track of start time/frame for later&amp;#10;      merge_train_mouse.tStart = t;  // (not accounting for frame time here)&amp;#10;      merge_train_mouse.frameNStart = frameN;  // exact frame index&amp;#10;      &amp;#10;      merge_train_mouse.status = PsychoJS.Status.STARTED;&amp;#10;      merge_train_mouse.mouseClock.reset();&amp;#10;      prevButtonState = merge_train_mouse.getPressed();  // if button is down already this ISN'T a new click&amp;#10;}&amp;#10;&amp;#10;if ((merge_train_mouse.status === PsychoJS.Status.STARTED || merge_train_mouse.status === PsychoJS.Status.FINISHED) &amp;&amp; t &gt;= frameRemains) {&amp;#10;      merge_train_mouse.status = PsychoJS.Status.FINISHED;&amp;#10;}&amp;#10;&amp;#10;if (t &gt;= 0.5 &amp;&amp; merge_train_mouse.status === PsychoJS.Status.STARTED) {&amp;#10;    _mouseButtons = merge_train_mouse.getPressed();&amp;#10;    if (!_mouseButtons.every( (e,i,) =&gt; (e == prevButtonState[i]) )) {&amp;#10;        prevButtonState = _mouseButtons;&amp;#10;        if (_mouseButtons.reduce( (e, acc) =&gt; (e+acc) ) &gt; 0) { &amp;#10;            for (const obj of [merge_train_btn_1,merge_train_btn_2,merge_train_compare]) {&amp;#10;                if (merge_train_mouse.isPressedIn(obj) &amp;&amp; (obj.name === &quot;merge_train_btn_1&quot; || obj.name === &quot;merge_train_btn_2&quot;)) {&amp;#10;                    merge_train_mouse.clicked_name.push(obj.name);&amp;#10;                    merge_train_mouse.status = PsychoJS.Status.FINISHED;&amp;#10;                    continueRoutine = false;&amp;#10;                } else {&amp;#10;                    if(merge_train_mouse.isPressedIn(obj) &amp;&amp; !isComparePressed) {&amp;#10;                        if(obj.name === &quot;merge_train_compare&quot;) {&amp;#10;                            const compareStatus = compare(merge_train_scale, merge_train_input, merge_train_labels, merge_train_compare, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right);&amp;#10;                            merge_train_compareN = (merge_train_compareN + compareStatus[0]);&amp;#10;                            if (compareStatus[0] !== 0) {&amp;#10;                                merge_train_compare_records.push([compareStatus[1],compareStatus[2]]);&amp;#10;                            }&amp;#10;                            comparePressedT = t;&amp;#10;                            isComparePressed = true;&amp;#10;                        }&amp;#10;                    }&amp;#10;                }&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;&amp;#10;merge_train_timer.text = timerWarning(mergeTrainTimeL, t);&amp;#10;routineT = t;&amp;#10;&amp;#10;if (isComparePressed &amp;&amp; (routineT - comparePressedT) &gt;= 0.1) {&amp;#10;    merge_train_compare.image = &quot;materials/merge_sort/imgs/compare.png&quot;;&amp;#10;    isComparePressed = false;&amp;#10;}" valType="extendedCode"/>
+        <Param name="Each JS Frame" updates="constant" val="if ((mc_order.length === 0)) {&amp;#10;    mc_order = getCorrectMCOrder(TRAIN_1.thisTrialN, merge_train_mc_path_1, merge_train_mc_path_2, merge_train_mc_1, merge_train_mc_2);&amp;#10;}&amp;#10;&amp;#10;if (t &gt;= 0.5 &amp;&amp; merge_train_mouse.status === PsychoJS.Status.NOT_STARTED) {&amp;#10;      // keep track of start time/frame for later&amp;#10;      merge_train_mouse.tStart = t;  // (not accounting for frame time here)&amp;#10;      merge_train_mouse.frameNStart = frameN;  // exact frame index&amp;#10;      &amp;#10;      merge_train_mouse.status = PsychoJS.Status.STARTED;&amp;#10;      merge_train_mouse.mouseClock.reset();&amp;#10;      prevButtonState = merge_train_mouse.getPressed();  // if button is down already this ISN'T a new click&amp;#10;}&amp;#10;&amp;#10;if ((merge_train_mouse.status === PsychoJS.Status.STARTED || merge_train_mouse.status === PsychoJS.Status.FINISHED) &amp;&amp; t &gt;= frameRemains) {&amp;#10;      merge_train_mouse.status = PsychoJS.Status.FINISHED;&amp;#10;}&amp;#10;&amp;#10;if (t &gt;= 0.5 &amp;&amp; merge_train_mouse.status === PsychoJS.Status.STARTED) {&amp;#10;    _mouseButtons = merge_train_mouse.getPressed();&amp;#10;    if (!_mouseButtons.every( (e,i,) =&gt; (e == prevButtonState[i]) )) {&amp;#10;        prevButtonState = _mouseButtons;&amp;#10;        if (_mouseButtons.reduce( (e, acc) =&gt; (e+acc) ) &gt; 0) { &amp;#10;            for (const obj of [merge_train_btn_1,merge_train_btn_2,merge_train_compare,merge_train_scale_left,merge_train_scale_right]) {&amp;#10;                if (merge_train_mouse.isPressedIn(obj) &amp;&amp; (obj.name === &quot;merge_train_btn_1&quot; || obj.name === &quot;merge_train_btn_2&quot;)) {&amp;#10;                    merge_train_mouse.clicked_name.push(obj.name);&amp;#10;                    merge_train_mouse.status = PsychoJS.Status.FINISHED;&amp;#10;                    continueRoutine = false;&amp;#10;                } else {&amp;#10;                    if(merge_train_mouse.isPressedIn(obj) &amp;&amp; !isComparePressed) {&amp;#10;                        if(obj.name === &quot;merge_train_compare&quot;) {&amp;#10;                            const compareStatus = compare(merge_train_scale, merge_train_input, merge_train_labels, merge_train_compare, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right);&amp;#10;                            merge_train_compareN = (merge_train_compareN + compareStatus[0]);&amp;#10;                            if (compareStatus[0] !== 0) {&amp;#10;                                merge_train_compare_records.push([compareStatus[1],compareStatus[2]]);&amp;#10;                            }&amp;#10;                            comparePressedT = t;&amp;#10;                            isComparePressed = true;&amp;#10;                        }&amp;#10;                    }&amp;#10;                }&amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;&amp;#10;merge_train_timer.text = timerWarning(mergeTrainTimeL, t);&amp;#10;routineT = t;&amp;#10;&amp;#10;if (isComparePressed &amp;&amp; (routineT - comparePressedT) &gt;= 0.1) {&amp;#10;    merge_train_compare.image = &quot;materials/merge_sort/imgs/compare.png&quot;;&amp;#10;    isComparePressed = false;&amp;#10;}" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Routine" updates="constant" val="psychoJS.experiment.addData(&quot;merge_train.tStart&quot;, merge_train.tStart);&amp;#10;psychoJS.experiment.addData(&quot;mc_order&quot;,mc_order);&amp;#10;psychoJS.experiment.addData(&quot;merge_train_compareN&quot;,merge_train_compareN);&amp;#10;psychoJS.experiment.addData(&quot;merge_train_labels&quot;,merge_train_labels);&amp;#10;psychoJS.experiment.addData(&quot;merge_train_input&quot;,merge_train_input);&amp;#10;psychoJS.experiment.addData(&quot;merge_train_compare_records&quot;,merge_train_compare_records);&amp;#10;psychoJS.experiment.addData(&quot;merge_train_mouse_clicked&quot;,merge_train_mouse.clicked_name);&amp;#10;psychoJS.experiment.addData(&quot;merge_train.tEnd&quot;,routineT);&amp;#10;progressBar.updateProgressBar(&quot;MERGE_TRAIN&quot;);" valType="extendedCode"/>
@@ -1423,7 +1423,7 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
-      <ImageComponent name="blue_star_door_3">
+      <ImageComponent name="door_3">
         <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
         <Param name="contrast" updates="constant" val="1" valType="num"/>
@@ -1431,15 +1431,15 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/imgs/blue_star_door.png" valType="file"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/imgs/door.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="blue_star_door_3" valType="code"/>
+        <Param name="name" updates="None" val="door_3" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(-0.45, 0.25)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.15, 0.35)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.15, 0.3)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -1533,7 +1533,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="120" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="Today, you will learn how to help our robot friends ALICE &amp; BOB to package fruits for shipment. &amp;#10;&amp;#10;You will visit two warehouses &quot;rooms&quot;, learn and perform the BLUE STAR operator and the PURPLE DIAMOND operator. &amp;#10;&amp;#10;ALICE and BOB will first help you learn these operators and then test your knowledge afterwards." valType="str"/>
+        <Param name="text" updates="constant" val="Today, you will learn how to help our robot trader friends ALICE &amp; BOB to package fruits for shipment. &amp;#10;&amp;#10;You will visit two warehouses &quot;rooms&quot;, learn and perform the BLUE STAR operator and the PURPLE DIAMOND operator. &amp;#10;&amp;#10;ALICE and BOB will first help you learn these operators and then test your knowledge afterwards." valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="num"/>
       </TextComponent>
@@ -1589,7 +1589,7 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
-      <ImageComponent name="blue_star_door">
+      <ImageComponent name="door_1">
         <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
         <Param name="contrast" updates="constant" val="1" valType="num"/>
@@ -1597,15 +1597,15 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/imgs/blue_star_door.png" valType="file"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/imgs/door.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="blue_star_door" valType="code"/>
+        <Param name="name" updates="None" val="door_1" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(-0.4, 0.2)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.15, 0.35)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.15, 0.3)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -1615,7 +1615,7 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
-      <ImageComponent name="purple_diamond_door">
+      <ImageComponent name="door_2">
         <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
         <Param name="contrast" updates="constant" val="1" valType="num"/>
@@ -1623,15 +1623,15 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/imgs/purple_diamond_door.png" valType="file"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/imgs/door.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="purple_diamond_door" valType="code"/>
+        <Param name="name" updates="None" val="door_2" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0.4, 0.2)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.15, 0.35)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.15, 0.3)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -1698,7 +1698,7 @@
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Routine" updates="constant" val="psychoJS.experiment.addData(&quot;intro.tEnd&quot;,routineT);&amp;#10;progressBar.updateProgressBar(&quot;INTRO&quot;);" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="pass" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="intro_code" valType="code"/>
       </CodeComponent>
@@ -1725,7 +1725,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="120" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="BOB: CLIKKKK ... SOOO GOOooD to see you!&amp;#10;&amp;#10;1. You need to arrange a PILE of fruits that is most likely UNORDERED&amp;#10;&amp;#10;2. The PURPLE DIAMOND arranges fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT&amp;#10;&amp;#10;LEARN the PURPLE DIAMOND with BOB and use the information provided by BOB as a reference. " valType="str"/>
+        <Param name="text" updates="constant" val="BOB: CLIKKKK ... SOOO GOOooD to see you!&amp;#10;&amp;#10;1. You need to arrange a PILE of fruits that is most likely UNORDERED&amp;#10;&amp;#10;2. The PURPLE DIAMOND arranges fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT&amp;#10;&amp;#10;LEARN with BOB the PURPLE DIAMOND operation in steps and master it. " valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="1.2" valType="num"/>
       </TextComponent>
@@ -1781,7 +1781,7 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
-      <ImageComponent name="purple_diamond_door_3">
+      <ImageComponent name="door_4">
         <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
         <Param name="contrast" updates="constant" val="1" valType="num"/>
@@ -1789,15 +1789,15 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/imgs/purple_diamond_door.png" valType="file"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/imgs/door.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="purple_diamond_door_3" valType="code"/>
+        <Param name="name" updates="None" val="door_4" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0.45, 0.25)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.15, 0.35)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.15, 0.3)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -2546,7 +2546,7 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
-      <ImageComponent name="blue_star_door_4">
+      <ImageComponent name="door_6">
         <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
         <Param name="contrast" updates="constant" val="1" valType="num"/>
@@ -2554,15 +2554,15 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/imgs/blue_star_door.png" valType="file"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/imgs/door.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="blue_star_door_4" valType="code"/>
+        <Param name="name" updates="None" val="door_6" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(-0.45, 0.25)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.15, 0.35)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.15, 0.3)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -2656,7 +2656,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="120" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="BOB: CLIKKKK ... Now is time to apply the knowledge you learned about the PURPLE DIAMOND&amp;#10;&amp;#10;1. You need to arrange a PILE of fruits that is most likely UNORDERED&amp;#10;&amp;#10;2. The PURPLE DIAMOND arranges fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT&amp;#10;&amp;#10;Work through some questions on PURPLE DIAMOND but BOB would not give you information for reference this time!" valType="str"/>
+        <Param name="text" updates="constant" val="BOB: CLIKKKK ... Now is time to apply the knowledge you learned about the PURPLE DIAMOND&amp;#10;&amp;#10;1. You need to arrange a PILE of fruits that is most likely UNORDERED&amp;#10;&amp;#10;2. The PURPLE DIAMOND arranges fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="num"/>
       </TextComponent>
@@ -2712,7 +2712,7 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
-      <ImageComponent name="purple_diamond_door_4">
+      <ImageComponent name="door_7">
         <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
         <Param name="contrast" updates="constant" val="1" valType="num"/>
@@ -2720,15 +2720,15 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/imgs/purple_diamond_door.png" valType="file"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/imgs/door.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="purple_diamond_door_4" valType="code"/>
+        <Param name="name" updates="None" val="door_7" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0.45, 0.25)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.15, 0.35)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.15, 0.3)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -3012,7 +3012,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300.0" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels&amp;#10;&amp;#10;2. You are given a PILE of fruits that is most likely UNORDERED and you can move fruits freely on the MONITOR in the middle to help you arrange fruits&amp;#10;&amp;#10;3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT&amp;#10;&amp;#10;4. You can see the NUMBER OF COMPARISONS BOB uses as a reference and you have 300 SECS to SUBMIT!" valType="str"/>
+        <Param name="text" updates="constant" val="1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels&amp;#10;&amp;#10;2. You are given a PILE of fruits that is most likely UNORDERED and you can move fruits freely on the MONITOR in the middle&amp;#10;&amp;#10;3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT&amp;#10;&amp;#10;4. You can see the NUMBER OF COMPARISONS BOB uses as a reference and you have 300 SECS to SUBMIT!" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="0.4" valType="num"/>
       </TextComponent>
@@ -5366,7 +5366,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="300" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels&amp;#10;&amp;#10;2. You are given a PILE of fruits that is most likely UNORDERED and you can move fruits freely on the MONITOR in the middle help you arrange fruits&amp;#10;&amp;#10;3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT&amp;#10;&amp;#10;You have 300 SECS to SUBMIT!" valType="str"/>
+        <Param name="text" updates="constant" val="1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels&amp;#10;&amp;#10;2. You are given a PILE of fruits that is most likely UNORDERED and you can move fruits freely on the MONITOR in the middle&amp;#10;&amp;#10;3. The PURPLE DIAMOND puts fruits from the PILE into the SHIPPING CRATE in INCREASING weights from LEFT to RIGHT&amp;#10;&amp;#10;You have 300 SECS to SUBMIT!" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="0.4" valType="num"/>
       </TextComponent>
@@ -6507,7 +6507,7 @@
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
         <Param name="stopVal" updates="constant" val="120" valType="num"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="*** What ALICE teaches you about the BLUE STAR might help you better learn and work through BOB's PURPLE DIAMOND ***" valType="str"/>
+        <Param name="text" updates="constant" val="*** What ALICE teaches you about the BLUE STAR might help you better learn and work throgh BOB's the PURPLE DIAMOND ***" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="num"/>
       </TextComponent>
@@ -6589,7 +6589,7 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
-      <ImageComponent name="blue_star_door_2">
+      <ImageComponent name="door_8">
         <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
         <Param name="contrast" updates="constant" val="1" valType="num"/>
@@ -6597,15 +6597,15 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/imgs/blue_star_door.png" valType="file"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/imgs/door.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="blue_star_door_2" valType="code"/>
+        <Param name="name" updates="None" val="door_8" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(-0.5, 0.2)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.15, 0.35)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.15, 0.3)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -6615,7 +6615,7 @@
         <Param name="texture resolution" updates="constant" val="128" valType="num"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
       </ImageComponent>
-      <ImageComponent name="purple_diamond_door_2">
+      <ImageComponent name="door_9">
         <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
         <Param name="contrast" updates="constant" val="1" valType="num"/>
@@ -6623,15 +6623,15 @@
         <Param name="durationEstim" updates="None" val="" valType="num"/>
         <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
         <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/merge_sort/imgs/purple_diamond_door.png" valType="file"/>
+        <Param name="image" updates="constant" val="materials/merge_sort/imgs/door.png" valType="file"/>
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="purple_diamond_door_2" valType="code"/>
+        <Param name="name" updates="None" val="door_9" valType="code"/>
         <Param name="opacity" updates="constant" val="" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0.5, 0.2)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.15, 0.35)" valType="list"/>
+        <Param name="size" updates="constant" val="(0.15, 0.3)" valType="list"/>
         <Param name="startEstim" updates="None" val="" valType="num"/>
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="num"/>
@@ -7744,291 +7744,9 @@
         <Param name="name" updates="None" val="review_code" valType="code"/>
       </CodeComponent>
     </Routine>
-    <Routine name="CONSENT">
-      <TextComponent name="consent">
-        <Param name="color" updates="constant" val="white" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="True" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="code"/>
-        <Param name="flip" updates="constant" val="None" valType="str"/>
-        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
-        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
-        <Param name="letterHeight" updates="constant" val="0.1" valType="num"/>
-        <Param name="name" updates="None" val="consent" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(0, 0)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="startEstim" updates="None" val="" valType="code"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.0" valType="code"/>
-        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="180.0" valType="code"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="Your answers will be stored anonymously and you will not be asked for any information that can be used to identify you. Your participation in this study is completely voluntary and you can withdraw at any time by PRESSING the ESC key TWICE.&amp;#10;&amp;#10;By clicking “I agree” below you are indicating that you are AT LEAST 18 years old, have read and understood this consent form and agree to participate in this research study." valType="str"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-        <Param name="wrapWidth" updates="constant" val="" valType="num"/>
-      </TextComponent>
-      <SliderComponent name="consent_check">
-        <Param name="borderColor" updates="constant" val="White" valType="color"/>
-        <Param name="color" updates="constant" val="LightGray" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="True" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="code"/>
-        <Param name="fillColor" updates="constant" val="Red" valType="color"/>
-        <Param name="flip" updates="constant" val="False" valType="bool"/>
-        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
-        <Param name="forceEndRoutine" updates="constant" val="False" valType="bool"/>
-        <Param name="granularity" updates="constant" val="1" valType="num"/>
-        <Param name="initVal" updates="None" val="" valType="code"/>
-        <Param name="labels" updates="constant" val="(&quot;I agree&quot;, &quot;Exit&quot;)" valType="list"/>
-        <Param name="letterHeight" updates="constant" val="0.05" valType="num"/>
-        <Param name="name" updates="None" val="consent_check" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(0, -0.4)" valType="list"/>
-        <Param name="readOnly" updates="constant" val="False" valType="bool"/>
-        <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="size" updates="constant" val="(1.0, 0.1)" valType="list"/>
-        <Param name="startEstim" updates="None" val="" valType="code"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.0" valType="code"/>
-        <Param name="stopType" updates="None" val="time (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="180.0" valType="code"/>
-        <Param name="storeHistory" updates="constant" val="False" valType="bool"/>
-        <Param name="storeRating" updates="constant" val="True" valType="bool"/>
-        <Param name="storeRatingTime" updates="constant" val="False" valType="bool"/>
-        <Param name="styleTweaks" updates="constant" val="()" valType="list"/>
-        <Param name="styles" updates="constant" val="rating" valType="str"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="ticks" updates="constant" val="(1, 2)" valType="list"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-      </SliderComponent>
-    </Routine>
-    <Routine name="PRE_TEST_INTRO">
-      <TextComponent name="pre_test_intro">
-        <Param name="color" updates="constant" val="white" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="code"/>
-        <Param name="flip" updates="constant" val="None" valType="str"/>
-        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
-        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
-        <Param name="letterHeight" updates="constant" val="0.1" valType="num"/>
-        <Param name="name" updates="None" val="pre_test_intro" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(0, 0)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="startEstim" updates="None" val="" valType="code"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.0" valType="code"/>
-        <Param name="stopType" updates="None" val="time (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="120.0" valType="code"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="text" updates="constant" val="In the following section, you will be shown a 3x3 grid containing a pattern of shapes. &amp;#10;&amp;#10;They relate to each other in one or more of these aspects: colour, size, position and shape. Choose the one of the 4 provided options that will correctly complete the grid.&amp;#10;&amp;#10;Try to answer as many as you can!" valType="str"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-        <Param name="wrapWidth" updates="constant" val="" valType="num"/>
-      </TextComponent>
-      <ImageComponent name="pre_test_intro_btn">
-        <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="num"/>
-        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
-        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="constant" val="materials/imgs/continue.png" valType="file"/>
-        <Param name="interpolate" updates="constant" val="linear" valType="str"/>
-        <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="pre_test_intro_btn" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(0, -0.4)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="size" updates="constant" val="[0.28,0.1]" valType="list"/>
-        <Param name="startEstim" updates="None" val="" valType="num"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.5" valType="num"/>
-        <Param name="stopType" updates="None" val="time (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="120" valType="num"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="texture resolution" updates="constant" val="128" valType="num"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-      </ImageComponent>
-    </Routine>
-    <Routine name="PRE_TEST">
-      <ImageComponent name="item">
-        <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="code"/>
-        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
-        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="set every repeat" val="materials\imgs\MaRs_IB\00_task_01_md_a.png" valType="file"/>
-        <Param name="interpolate" updates="constant" val="linear" valType="str"/>
-        <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="item" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(0, 0.06)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.66, 0.72)" valType="list"/>
-        <Param name="startEstim" updates="None" val="" valType="code"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.6" valType="code"/>
-        <Param name="stopType" updates="None" val="time (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="30.6" valType="code"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="texture resolution" updates="constant" val="128" valType="num"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-      </ImageComponent>
-      <ImageComponent name="whitescreen">
-        <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="code"/>
-        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
-        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="set every repeat" val="materials\merge_sort\imgs\white_BG.png" valType="file"/>
-        <Param name="interpolate" updates="constant" val="linear" valType="str"/>
-        <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="whitescreen" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(0, 0.06)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.66, 0.72)" valType="list"/>
-        <Param name="startEstim" updates="None" val="" valType="code"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.5" valType="code"/>
-        <Param name="stopType" updates="None" val="time (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="0.6" valType="code"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="texture resolution" updates="constant" val="128" valType="num"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-      </ImageComponent>
-      <ImageComponent name="fixation">
-        <Param name="color" updates="constant" val="$[1,1,1]" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="code"/>
-        <Param name="flipHoriz" updates="constant" val="False" valType="bool"/>
-        <Param name="flipVert" updates="constant" val="False" valType="bool"/>
-        <Param name="image" updates="set every repeat" val="materials\imgs\MaRs_IB\fixation.png" valType="file"/>
-        <Param name="interpolate" updates="constant" val="linear" valType="str"/>
-        <Param name="mask" updates="constant" val="" valType="str"/>
-        <Param name="name" updates="None" val="fixation" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(0, 0.06)" valType="list"/>
-        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.66, 0.72)" valType="list"/>
-        <Param name="startEstim" updates="None" val="" valType="code"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.0" valType="code"/>
-        <Param name="stopType" updates="None" val="time (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="0.5" valType="code"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="texture resolution" updates="constant" val="128" valType="num"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-      </ImageComponent>
-      <SliderComponent name="slider">
-        <Param name="borderColor" updates="constant" val="white" valType="color"/>
-        <Param name="color" updates="constant" val="white" valType="color"/>
-        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
-        <Param name="contrast" updates="constant" val="1" valType="num"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="code"/>
-        <Param name="fillColor" updates="constant" val="black" valType="color"/>
-        <Param name="flip" updates="constant" val="False" valType="bool"/>
-        <Param name="font" updates="constant" val="Open Sans" valType="str"/>
-        <Param name="forceEndRoutine" updates="constant" val="False" valType="bool"/>
-        <Param name="granularity" updates="constant" val="1" valType="num"/>
-        <Param name="initVal" updates="None" val="" valType="code"/>
-        <Param name="labels" updates="constant" val="" valType="list"/>
-        <Param name="letterHeight" updates="constant" val="0.05" valType="num"/>
-        <Param name="name" updates="None" val="slider" valType="code"/>
-        <Param name="opacity" updates="constant" val="" valType="num"/>
-        <Param name="ori" updates="constant" val="0" valType="num"/>
-        <Param name="pos" updates="constant" val="(0, -0.4)" valType="list"/>
-        <Param name="readOnly" updates="constant" val="False" valType="bool"/>
-        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
-        <Param name="size" updates="constant" val="(0.48, 0.04)" valType="list"/>
-        <Param name="startEstim" updates="None" val="" valType="code"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.6" valType="code"/>
-        <Param name="stopType" updates="None" val="time (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="30.6" valType="code"/>
-        <Param name="storeHistory" updates="constant" val="False" valType="bool"/>
-        <Param name="storeRating" updates="constant" val="True" valType="bool"/>
-        <Param name="storeRatingTime" updates="constant" val="True" valType="bool"/>
-        <Param name="styleTweaks" updates="constant" val="()" valType="list"/>
-        <Param name="styles" updates="constant" val="radio" valType="str"/>
-        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
-        <Param name="ticks" updates="constant" val="(1, 2, 3, 4)" valType="list"/>
-        <Param name="units" updates="None" val="from exp settings" valType="str"/>
-      </SliderComponent>
-      <CodeComponent name="pre_test_code">
-        <Param name="Before Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="Before JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="Begin Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="Begin JS Routine" updates="constant" val="if (PRE_TEST.thisTrialN &lt; 10) {&amp;#10;    trainCnt.text = &quot;Train question &quot; + PRE_TEST.thisTrialN + &quot;/10&quot;;&amp;#10;} else {&amp;#10;    skip.status = psychojs.Status.FINISHED;&amp;#10;    skip.size = [0,0];&amp;#10;    trainCnt.text = &quot;&quot;;&amp;#10;}" valType="extendedCode"/>
-        <Param name="Begin Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="Code Type" updates="None" val="JS" valType="str"/>
-        <Param name="Each Frame" updates="constant" val="" valType="extendedCode"/>
-        <Param name="Each JS Frame" updates="constant" val="if (t &gt;= 0.6 &amp;&amp; pre_test_mouse.status === PsychoJS.Status.NOT_STARTED) {&amp;#10;      pre_test_mouse.tStart = t;  &amp;#10;      pre_test_mouse.frameNStart = frameN; &amp;#10;      &amp;#10;      pre_test_mouse.status = PsychoJS.Status.STARTED;&amp;#10;      pre_test_mouse.mouseClock.reset();&amp;#10;      prevButtonState = pre_test_mouse.getPressed(); &amp;#10;}&amp;#10;&amp;#10;if ((pre_test_mouse.status === PsychoJS.Status.STARTED || pre_test_mouse.status === PsychoJS.Status.FINISHED) &amp;&amp; t &gt;= frameRemains) {&amp;#10;      pre_test_mouse.status = PsychoJS.Status.FINISHED;&amp;#10;}&amp;#10;&amp;#10;if (t &gt;= 0.6 &amp;&amp; pre_test_mouse.status === PsychoJS.Status.STARTED) {&amp;#10;    _mouseButtons = pre_test_mouse.getPressed();&amp;#10;    if (!_mouseButtons.every( (e,i,) =&gt; (e == prevButtonState[i]) )) {&amp;#10;        prevButtonState = _mouseButtons;&amp;#10;        if (_mouseButtons.reduce( (e, acc) =&gt; (e+acc) ) &gt; 0) { &amp;#10;            for (const obj of [skip]) {&amp;#10;                if (pre_test_mouse.isPressedIn(obj) &amp;&amp; (obj.name === &quot;skip&quot;)) {&amp;#10;                    // switch to the 11th question&amp;#10;                    continueRoutine = false;&amp;#10;                } &amp;#10;            }&amp;#10;        }&amp;#10;    }&amp;#10;}&amp;#10;&amp;#10;if (t &gt; 25) {&amp;#10;    pre_test_timer = &quot;Remaining time for question: &quot; + (30 - t);&amp;#10;}&amp;#10;&amp;#10;if (t &gt;= 29 &amp;&amp; PRE_TEST.thisTrialN &lt; 10) {&amp;#10;    if (slider.response !== null) {&amp;#10;    } else {&amp;#10;        //item.image&amp;#10;    }&amp;#10;}&amp;#10;&amp;#10;if (slider.response !== null &amp;&amp; PRE_TEST.thisTrialN &gt;= 10) {&amp;#10;    continueRoutine = false;&amp;#10;}" valType="extendedCode"/>
-        <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="name" updates="None" val="pre_test_code" valType="code"/>
-      </CodeComponent>
-      <MouseComponent name="pre_test_mouse">
-        <Param name="clickable" updates="constant" val="" valType="list"/>
-        <Param name="disabled" updates="None" val="False" valType="bool"/>
-        <Param name="durationEstim" updates="None" val="" valType="code"/>
-        <Param name="forceEndRoutineOnPress" updates="constant" val="never" valType="str"/>
-        <Param name="name" updates="None" val="pre_test_mouse" valType="code"/>
-        <Param name="newClicksOnly" updates="constant" val="True" valType="bool"/>
-        <Param name="saveMouseState" updates="None" val="final" valType="str"/>
-        <Param name="saveParamsClickable" updates="constant" val="name," valType="list"/>
-        <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
-        <Param name="startEstim" updates="None" val="" valType="code"/>
-        <Param name="startType" updates="None" val="time (s)" valType="str"/>
-        <Param name="startVal" updates="None" val="0.0" valType="code"/>
-        <Param name="stopType" updates="None" val="time (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="30.6" valType="code"/>
-        <Param name="syncScreenRefresh" updates="None" val="False" valType="bool"/>
-        <Param name="timeRelativeTo" updates="constant" val="mouse onset" valType="str"/>
-      </MouseComponent>
-    </Routine>
   </Routines>
   <Flow>
-    <Routine name="CONSENT"/>
     <Routine name="BACKGROUND"/>
-    <Routine name="PRE_TEST_INTRO"/>
-    <LoopInitiator loopType="TrialHandler" name="MaRs_IB">
-      <Param name="Selected rows" updates="None" val="" valType="str"/>
-      <Param name="conditions" updates="None" val="None" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="" valType="file"/>
-      <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
-      <Param name="isTrials" updates="None" val="True" valType="bool"/>
-      <Param name="loopType" updates="None" val="sequential" valType="str"/>
-      <Param name="nReps" updates="None" val="1" valType="num"/>
-      <Param name="name" updates="None" val="MaRs_IB" valType="code"/>
-      <Param name="random seed" updates="None" val="" valType="code"/>
-    </LoopInitiator>
-    <Routine name="PRE_TEST"/>
-    <LoopTerminator name="MaRs_IB"/>
     <Routine name="INTRO"/>
     <Routine name="HINT"/>
     <Routine name="MERGE_INTRO"/>
