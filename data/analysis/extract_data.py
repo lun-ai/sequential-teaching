@@ -14,16 +14,18 @@ DATA_DIR_TEST2_ADDITIONALA = "../test/Test_2/18_10_2021/merge_sort/"
 DATA_DIR_TEST2_ADDITIONALB = "../test/Test_2/18_10_2021/sort_merge/"
 
 
-def extract_from_CSV(paths, is_trace_enabled=False, show_records=True, show_sim=False, verbose=False):
+def extract_from_CSV(paths, is_trace_enabled=False, train_only=False, show_records=True, sim="lcs",show_sim=False, verbose=False):
     csv_list = []
+    filenames = []
     for path in paths:
         files = listdir(path)
         csv_files = sorted([file for file in files if file.endswith(".csv")])
         for filename in csv_files:
+            filenames.append(filename)
             with open(path + filename) as file:
                 csv_list.append(list(csv.reader(file)))
 
-    print('files: ' + str(csv_files))
+    print('files: ' + str(filenames))
 
     merge_test_response_time = []
     sort_test_response_time = []
@@ -82,7 +84,7 @@ def extract_from_CSV(paths, is_trace_enabled=False, show_records=True, show_sim=
                 i += 1
 
         if show_sim:
-            eval_alg_sim("lcs", c, verbose)
+            eval_alg_sim(sim, c, verbose=verbose,train_only=train_only)
 
     if show_records:
         print('>>>>>>>>>>>>>> TRAIN >>>>>>>>>>>>>>>>>>')
@@ -247,20 +249,35 @@ def reconstruct_trace(trace, path, name):
     plt.close()
 
 
-def eval_alg_sim(method, input, verbose=True):
-    sort_test_input_col = input[0].index("sort_test_input")
-    sort_test_labels_col = input[0].index("sort_test_labels")
-    sort_test_com_records = input[0].index("sort_test_compare_records")
+def eval_alg_sim(method, input, train_only=False, verbose=True):
+    sort_train_input_col = input[0].index("sort_train_input")
+    sort_train_labels_col = input[0].index("sort_train_labels")
+    sort_train_com_records = input[0].index("sort_train_compare_records")
 
-    i = [list(map(int, parseStringLine(line[sort_test_input_col]))) for line in input[1:] if
-         line[sort_test_input_col] != '']
-    l = [parseStringLine(line[sort_test_labels_col]) for line in input[1:] if line[sort_test_labels_col] != '']
-    r = [string2pairlist(line[sort_test_com_records].replace("\"", "\'", )) for line in input[1:] if
-         line[sort_test_com_records] != '']
-
+    i = [list(map(int, parseStringLine(line[sort_train_input_col]))) for line in input[1:] if
+         line[sort_train_input_col] != '']
+    l = [parseStringLine(line[sort_train_labels_col]) for line in input[1:] if line[sort_train_labels_col] != '']
+    r = [string2pairlist(line[sort_train_com_records].replace("\"", "\'", )) for line in input[1:] if
+         line[sort_train_com_records] != '']
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n>>> Sort train phase similarity, No. train questions = " + str(len(i)))
     for u in range(len(i)):
         find_similar_algo(method, i[u], l[u], r[u], verbose)
-    print("")
+
+    if not train_only:
+        sort_test_input_col = input[0].index("sort_test_input")
+        sort_test_labels_col = input[0].index("sort_test_labels")
+        sort_test_com_records = input[0].index("sort_test_compare_records")
+
+        i = [list(map(int, parseStringLine(line[sort_test_input_col]))) for line in input[1:] if
+             line[sort_test_input_col] != '']
+        l = [parseStringLine(line[sort_test_labels_col]) for line in input[1:] if line[sort_test_labels_col] != '']
+        r = [string2pairlist(line[sort_test_com_records].replace("\"", "\'", )) for line in input[1:] if
+             line[sort_test_com_records] != '']
+
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n>>> Sort test phase similarity, No. test questions = " + str(len(i)))
+        for u in range(len(i)):
+            find_similar_algo(method, i[u], l[u], r[u], verbose)
+        print("")
 
 def string2pairlist(str):
     labels = parseStringLine(str)
@@ -269,5 +286,9 @@ def string2pairlist(str):
 
 # extract_from_CSV([DATA_DIR_CS])
 # extract_from_CSV([DATA_DIR_NON_CS])
-extract_from_CSV([DATA_DIR_TEST2_PSYA, DATA_DIR_TEST2_PSYB],show_records=False,show_sim=True)
-# extract_from_CSV([DATA_DIR_TEST2_ADDITIONALA, DATA_DIR_TEST2_ADDITIONALB],show_records=False,show_sim=True)
+# extract_from_CSV([DATA_DIR_TEST2_PSYA, DATA_DIR_TEST2_PSYB],train_only=True,show_records=False,show_sim=True)
+# extract_from_CSV([DATA_DIR_TEST2_PSYB, DATA_DIR_TEST2_ADDITIONALB],sim="lcs",train_only=True,show_records=False,show_sim=True)
+extract_from_CSV([DATA_DIR_TEST2_PSYB, DATA_DIR_TEST2_ADDITIONALB],sim="weighted-lcs",train_only=True,show_records=False,show_sim=True)
+# extract_from_CSV([DATA_DIR_TEST2_PSYB, DATA_DIR_TEST2_ADDITIONALB],sim="lcs-conse",train_only=True,show_records=False,show_sim=True)
+# extract_from_CSV([DATA_DIR_TEST2_PSYB, DATA_DIR_TEST2_ADDITIONALB],sim="weighted-lcs-conse",train_only=True,show_records=False,show_sim=True)
+# extract_from_CSV([DATA_DIR_TEST2_ADDITIONALA, DATA_DIR_TEST2_ADDITIONALB],train_only=True,show_records=False,show_sim=True)

@@ -38,12 +38,12 @@ def botup_msort_left_front(x):
                 if len(y) > 0 and len(z) > 0:
                     if y[0] > z[0]:
                         new.append(z[0])
-                        comps.append([y[0],z[0]])
+                        comps.append([y[0], z[0]])
                         z.pop(0)
                         compsN += 1
                     else:
                         new.append(y[0])
-                        comps.append([z[0],y[0]])
+                        comps.append([z[0], y[0]])
                         y.pop(0)
                         compsN += 1
                 elif len(z) > 0:
@@ -58,6 +58,7 @@ def botup_msort_left_front(x):
         if len(old) % 2 == 1:
             res.append(old[-1])
     return res[0], comps, compsN
+
 
 def botup_msort_right_front(x):
     '''
@@ -117,6 +118,7 @@ def botup_msort_right_front(x):
             res.append(old[-1])
     return res[0], comps, compsN
 
+
 def botup_msort_left_back(x):
     '''
     Applies bottom-up merge sort by popping the back of sublists and merge sublists from left to right
@@ -154,12 +156,12 @@ def botup_msort_left_back(x):
                 if len(y) > 0 and len(z) > 0:
                     if y[0] > z[0]:
                         new.append(z[0])
-                        comps.append([y[0],z[0]])
+                        comps.append([y[0], z[0]])
                         z.pop(0)
                         compsN += 1
                     else:
                         new.append(y[0])
-                        comps.append([z[0],y[0]])
+                        comps.append([z[0], y[0]])
                         y.pop(0)
                         compsN += 1
                 elif len(z) > 0:
@@ -174,6 +176,7 @@ def botup_msort_left_back(x):
         if len(old) % 2 == 1:
             res = [old[0]] + res
     return res[0], comps, compsN
+
 
 def botup_msort_right_back(x):
     '''
@@ -233,6 +236,7 @@ def botup_msort_right_back(x):
             res = [old[0]] + res
     return res[0], comps, compsN
 
+
 def qsort_first(x):
     '''
     Applies quicksort by consistently selecting the first as pivot
@@ -260,17 +264,18 @@ def qsort_first(x):
             continue
         elif x[i] < x[pivot]:
             left.append(x[i])
-            comps.append([x[i],x[pivot]])
+            comps.append([x[i], x[pivot]])
             compsN += 1
         else:
             right.append(x[i])
-            comps.append([x[pivot],x[i]])
+            comps.append([x[pivot], x[i]])
             compsN += 1
 
-    l1,c1,n1 = qsort_first(left)
-    l2,c2,n2 = qsort_first(right)
+    l1, c1, n1 = qsort_first(left)
+    l2, c2, n2 = qsort_first(right)
 
     return l1 + [x[pivot]] + l2, comps + c1 + c2, compsN + n1 + n2
+
 
 def qsort_mid(x):
     '''
@@ -299,17 +304,18 @@ def qsort_mid(x):
             continue
         elif x[i] < x[pivot]:
             left.append(x[i])
-            comps.append([x[i],x[pivot]])
+            comps.append([x[i], x[pivot]])
             compsN += 1
         else:
             right.append(x[i])
-            comps.append([x[pivot],x[i]])
+            comps.append([x[pivot], x[i]])
             compsN += 1
 
-    l1,c1,n1 = qsort_mid(left)
-    l2,c2,n2 = qsort_mid(right)
+    l1, c1, n1 = qsort_mid(left)
+    l2, c2, n2 = qsort_mid(right)
 
     return l1 + [x[pivot]] + l2, comps + c1 + c2, compsN + n1 + n2
+
 
 def qsort_last(x):
     '''
@@ -338,15 +344,15 @@ def qsort_last(x):
             continue
         elif x[i] < x[pivot]:
             left.append(x[i])
-            comps.append([x[i],x[pivot]])
+            comps.append([x[i], x[pivot]])
             compsN += 1
         else:
             right.append(x[i])
-            comps.append([x[pivot],x[i]])
+            comps.append([x[pivot], x[i]])
             compsN += 1
 
-    l1,c1,n1 = qsort_last(left)
-    l2,c2,n2 = qsort_last(right)
+    l1, c1, n1 = qsort_last(left)
+    l2, c2, n2 = qsort_last(right)
 
     return l1 + [x[pivot]] + l2, comps + c1 + c2, compsN + n1 + n2
 
@@ -401,6 +407,7 @@ def msort_left_front(x):
     # print(result)
     return result, comps, compsN
 
+
 def msort_right_front(x):
     '''
     Applies the conventional merge sort which compares the right branch of the tree
@@ -432,7 +439,7 @@ def msort_right_front(x):
         if len(y) > 0 and len(z) > 0:
             if y[0] > z[0]:
                 result.append(z[0])
-                comps.append([y[0],z[0]])
+                comps.append([y[0], z[0]])
                 z.pop(0)
                 compsN = compsN + 1
             else:
@@ -447,6 +454,7 @@ def msort_right_front(x):
             result = result + y
             y = []
     return result, comps, compsN
+
 
 def msort_left_back(x):
     '''
@@ -483,7 +491,7 @@ def msort_left_back(x):
         if len(y) > 0 and len(z) > 0:
             if y[i] < z[j]:
                 result = [z[j]] + result
-                comps.append([y[i],z[j]])
+                comps.append([y[i], z[j]])
                 z.pop(j)
                 compsN = compsN + 1
             else:
@@ -498,6 +506,7 @@ def msort_left_back(x):
             result = y + result
             y = []
     return result, comps, compsN
+
 
 def msort_right_back(x):
     '''
@@ -548,6 +557,69 @@ def msort_right_back(x):
             y = []
     return result, comps, compsN
 
+
+def bubsort_front(x):
+    '''
+        Applies bubble sort by initiating the swaps from the front of the list
+
+        Tested
+
+        PARAMETERS
+        ----------
+        x : list
+
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
+    '''
+
+    n = len(x)
+    comps = []
+    compsN = 0
+
+    for i in range(n - 1):
+        for j in range(0, n - i - 1):
+            if x[j] > x[j + 1]:
+                comps.append([x[j], x[j + 1]])
+                compsN += 1
+                x[j], x[j + 1] = x[j + 1], x[j]
+            else:
+                comps.append([x[j + 1], x[j]])
+                compsN += 1
+    return x, comps, compsN
+
+
+def bubsort_back(x):
+    '''
+        Applies bubble sort by initiating the swaps from the back of the list
+
+        Tested
+
+        PARAMETERS
+        ----------
+        x : list
+
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
+    '''
+
+    n = len(x)
+    comps = []
+    compsN = 0
+
+    for i in range(n - 1):
+        for j in range(0, n - i - 1):
+            if x[n - 1 - j] < x[n - j - 2]:
+                comps.append([x[n - 1 - j], x[n - j - 2]])
+                compsN += 1
+                x[n - 1 - j], x[n - j - 2] = x[n - j - 2], x[n - 1 - j]
+            else:
+                comps.append([x[n - j - 2], x[n - 1 - j]])
+                compsN += 1
+    return x, comps, compsN
+
+
 def isort_front(x):
     '''
     Applies insertion sort by initiating the traverse from the front of the list
@@ -562,6 +634,7 @@ def isort_front(x):
     -------
     list : [sorted list, comps, compsN]
     '''
+
     result = []
     comps = []
     compsN = 0
@@ -583,6 +656,7 @@ def isort_front(x):
             dist = 0
     return result, comps, compsN
 
+
 def isort_back(x):
     '''
     Applies insertion sort by initiating the traverse from the back of the list
@@ -597,26 +671,29 @@ def isort_back(x):
     -------
     list : [sorted list, comps, compsN]
     '''
+
     result = []
     comps = []
     compsN = 0
     dist = 1
+
     for i in range(len(x)):
         if i == 0:
             result.append(x[i])
         else:
-            while (i-dist >= 0) and (x[i] < result[i - dist]):
+            while (i - dist >= 0) and (x[i] < result[i - dist]):
                 comps.append([x[i], result[i - dist]])
                 compsN = compsN + 1
                 dist = dist + 1
 
-            if (i-dist >= 0) and (x[i] >= result[i - dist]):
+            if (i - dist >= 0) and (x[i] >= result[i - dist]):
                 comps.append([result[i - dist], x[i]])
                 compsN = compsN + 1
 
             result.insert(i - dist + 1, x[i])
             dist = 1
     return result, comps, compsN
+
 
 def dict_sort_front(x):
     '''
@@ -632,6 +709,7 @@ def dict_sort_front(x):
     -------
     list : [sorted list, comps, compsN]
     '''
+
     result = []
     comps = []
     compsN = 0
@@ -645,11 +723,11 @@ def dict_sort_front(x):
         if n < result[i]:
             comps.append([n, result[i]])
             compsN += 1
-            result.insert(i,n)
+            result.insert(i, n)
         elif n > result[j]:
             comps.append([n, result[j]])
             compsN += 1
-            result.insert(j+1,n)
+            result.insert(j + 1, n)
         else:
             comps.append([n, result[i]])
             comps.append([n, result[j]])
@@ -665,9 +743,10 @@ def dict_sort_front(x):
                     compsN += 1
                     i = k
                 if i >= j - 1:
-                    result.insert(j,n)
+                    result.insert(j, n)
                     break
     return result, comps, compsN
+
 
 def dict_sort_back(x):
     '''
@@ -683,6 +762,7 @@ def dict_sort_back(x):
     -------
     list : [sorted list, comps, compsN]
     '''
+
     result = []
     comps = []
     compsN = 0
@@ -696,11 +776,11 @@ def dict_sort_back(x):
         if n > result[j]:
             comps.append([n, result[j]])
             compsN += 1
-            result.insert(j+1, n)
+            result.insert(j + 1, n)
         elif n < result[i]:
             comps.append([n, result[i]])
             compsN += 1
-            result.insert(i,n)
+            result.insert(i, n)
         else:
             comps.append([n, result[i]])
             comps.append([n, result[j]])
@@ -716,14 +796,18 @@ def dict_sort_back(x):
                     compsN += 1
                     i = k
                 if i >= j - 1:
-                    result.insert(j,n)
+                    result.insert(j, n)
                     break
     return result, comps, compsN
 
-ALL_ALGORITHMS = [botup_msort_left_front, botup_msort_right_front, botup_msort_left_back, botup_msort_right_back, qsort_first, qsort_mid, qsort_last, isort_front, isort_back,
-                  msort_left_front, msort_left_back, msort_left_back, msort_right_back, dict_sort_front, dict_sort_back]
 
-def recur_gen_list(test_lists,nrange):
+ALL_ALGORITHMS = [botup_msort_left_front, botup_msort_right_front, botup_msort_left_back, botup_msort_right_back,
+                  qsort_first, qsort_mid, qsort_last, isort_front, isort_back,
+                  msort_left_front, msort_left_back, msort_left_back, msort_right_back, dict_sort_front, dict_sort_back,
+                  bubsort_front, bubsort_back]
+
+
+def recur_gen_list(test_lists, nrange):
     newL = []
     for l in test_lists:
         k = l.copy()
@@ -732,11 +816,12 @@ def recur_gen_list(test_lists,nrange):
                 newL = newL + [k + [i]]
     return newL
 
-def test_all_alg(size,nrange):
+
+def test_all_alg(size, nrange):
     lists = [[]]
     failed_tests = {}
     for i in range(0, size):
-        lists = recur_gen_list(lists,nrange)
+        lists = recur_gen_list(lists, nrange)
     for alg in ALL_ALGORITHMS:
         for l in lists:
             if alg(l)[0] != sorted(l):
@@ -744,4 +829,6 @@ def test_all_alg(size,nrange):
                     failed_tests[alg.__name__] = [l]
                 else:
                     failed_tests[alg.__name__].append(l)
-    return failed_tests
+    print(failed_tests)
+
+# test_all_alg(7,7)
