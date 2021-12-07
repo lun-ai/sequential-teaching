@@ -5540,7 +5540,7 @@
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="merge_expl_1" valType="code"/>
-        <Param name="opacity" updates="constant" val="1" valType="num"/>
+        <Param name="opacity" updates="constant" val="0" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0.45, 0.25)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
@@ -5566,7 +5566,7 @@
         <Param name="interpolate" updates="constant" val="linear" valType="str"/>
         <Param name="mask" updates="constant" val="" valType="str"/>
         <Param name="name" updates="None" val="merge_expl_2" valType="code"/>
-        <Param name="opacity" updates="constant" val="1" valType="num"/>
+        <Param name="opacity" updates="constant" val="0" valType="num"/>
         <Param name="ori" updates="constant" val="0" valType="num"/>
         <Param name="pos" updates="constant" val="(0.45, -0.15)" valType="list"/>
         <Param name="saveStartStop" updates="None" val="False" valType="bool"/>
