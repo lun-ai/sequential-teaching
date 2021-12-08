@@ -1,12 +1,12 @@
 r_question,img_path1,img_path2
 "Shortly describe your approach of the PURPLE DIAMOND for arranging
 
-a SMALL pile of fruits
+a SMALLER pile of fruits (shown on right)
 
 in increasing weights from left to right? (180 secs to answer)",materials/merge_sort/imgs/sort_test/small_input_review.png,materials/merge_sort/imgs/sort_test/small_input_review.png
 "Shortly describe your approach of the PURPLE DIAMOND for arranging
 
-a LARGE pile of fruits
+a LARGER pile of fruits (shown on right)
 
 in increasing weights from left to right? (180 secs to answer)",materials/merge_sort/imgs/sort_test/large_input_review.png,materials/merge_sort/imgs/sort_test/large_input_review.png
 "If you used information you learned from the BLUE STAR operator for the PURPLE DIAMOND,
