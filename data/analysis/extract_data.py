@@ -6,13 +6,6 @@ import csv
 import matplotlib.pyplot as plt
 from eval_trace import find_similar_algo
 
-DATA_DIR_CS = "../test/Test_1/CS/"
-DATA_DIR_NON_CS = "../test/Test_1/non_CS/"
-DATA_DIR_TEST2_PSYA = "../test/Test_2/10_10_2021/merge_sort/"
-DATA_DIR_TEST2_PSYB = "../test/Test_2/10_10_2021/sort_merge/"
-DATA_DIR_TEST2_ADDITIONALA = "../test/Test_2/18_10_2021/merge_sort/"
-DATA_DIR_TEST2_ADDITIONALB = "../test/Test_2/18_10_2021/sort_merge/"
-
 
 def extract_from_CSV(paths, is_trace_enabled=False, train_only=False, show_records=True, sim="lcs",show_sim=False, verbose=False):
     csv_list = []
@@ -182,7 +175,7 @@ def extract_response(input):
 
 
 def parseStringLine(line):
-    return str(line).replace("\'", "").replace(" ", "").replace("\"", "").replace("[", "").replace("]", "").split(",")
+    return list(filter(None,str(line).replace("\'", "").replace(" ", "").replace("\"", "").replace("[", "").replace("]", "").split(",")))
 
 
 def containLabels(labels, ans):
@@ -225,8 +218,9 @@ def extract_trace(input):
 
 
 def extract_free_response(input):
-    col = input[0].index("exp_check_res.text")
-    return [line[col] for line in input[1:] if line[col] != '']
+    exp_col = input[0].index("exp_check_res.text")
+    review_col = input[0].index("review_res.text")
+    return [[line[exp_col] for line in input[1:] if line[exp_col] != ''], [line[review_col] if line[review_col] != '' else 'Empty' for line in input[734:738]]]
 
 
 def parseTrace(line):
@@ -282,13 +276,3 @@ def eval_alg_sim(method, input, train_only=False, verbose=True):
 def string2pairlist(str):
     labels = parseStringLine(str)
     return [[labels[2 * i], labels[2 * i + 1]] for i in range(len(labels) // 2)]
-
-
-# extract_from_CSV([DATA_DIR_CS])
-# extract_from_CSV([DATA_DIR_NON_CS])
-# extract_from_CSV([DATA_DIR_TEST2_PSYA, DATA_DIR_TEST2_PSYB],train_only=True,show_records=False,show_sim=True)
-# extract_from_CSV([DATA_DIR_TEST2_PSYB, DATA_DIR_TEST2_ADDITIONALB],sim="lcs",train_only=True,show_records=False,show_sim=True)
-extract_from_CSV([DATA_DIR_TEST2_PSYB, DATA_DIR_TEST2_ADDITIONALB],sim="weighted-lcs",train_only=True,show_records=False,show_sim=True)
-# extract_from_CSV([DATA_DIR_TEST2_PSYB, DATA_DIR_TEST2_ADDITIONALB],sim="lcs-conse",train_only=True,show_records=False,show_sim=True)
-# extract_from_CSV([DATA_DIR_TEST2_PSYB, DATA_DIR_TEST2_ADDITIONALB],sim="weighted-lcs-conse",train_only=True,show_records=False,show_sim=True)
-# extract_from_CSV([DATA_DIR_TEST2_ADDITIONALA, DATA_DIR_TEST2_ADDITIONALB],train_only=True,show_records=False,show_sim=True)
