@@ -7,7 +7,7 @@
         $fp = fopen('data/'.$groupid.'_'.$partid.'.json', 'w');
         fwrite($fp, $record);
         fclose($fp);
-        echo "Submission successful. Thank you very much!";
+        echo "Submission successful. Thank you very much! You may exit now. ";
     } else {
         echo "Submission unsuccessful. Please contact the coordinator to return the record .csv file alternatively.";
     }

@@ -16,19 +16,23 @@
             $count += 1;
         }
 
-        if($currentSessionId != 0) {
+        if($currentSessionId > 0 and $currentSessionId <= 500) {
             $fp = fopen('./participant_code.csv', 'w');
             foreach ($data as $fields) {
                 fputcsv($fp, $fields);
             }
             fclose($fp);
+            $res = [];
+            $res[] = $currentSessionId;
+            $res[] = $data[$currentSessionId - 1];
+            return json_encode($res);
         }
-        return json_encode($currentSessionId);
+        header('HTTP/1.1 500 Internal Server Error');
     }
 
     if (isset($_POST['getCurrentSessionId'])) {
         $result = getCurrentSessionId();
-        if ($result != '0') {
+        if ($result[0] != '0') {
             echo $result;
         } else {
             header('HTTP/1.1 500 Internal Server Error');

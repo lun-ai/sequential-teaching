@@ -5,15 +5,15 @@
     <title>Submission</title>
 </head>
 <body>
-<h1 align="center">You can submit the record by pressing the submit button below ...</h1>
-<h2 align="center">If the record submission was unsuccessful, please return the downloaded .csv file back to the coordinator.
-</h2>
-<h2 align="center">.csv file download initiates 20 secs after reaching this page. </h2>
+<!--<h1 align="center">You can submit the record by pressing the submit button below ...</h1>-->
+<!--<h2 align="center">If the record submission was unsuccessful, please return the downloaded .csv file back to the coordinator.-->
+<!--</h2>-->
+<!--<h2 align="center">.csv file download initiates 20 secs after reaching this page. </h2>-->
 <form method="post" action="submission.php" align="center">
 	<input type="hidden" id="expRecord" name="record">
     	<input type="hidden" id="expParCode" name="participantCode">
 	<input type="hidden" id="expGroupId" name="groupid">
-        <button id="save" type="submit" style="font-size: 50px;">Submit</button>
+        <button id="recordSubmit" type="submit" style="font-size: 50px;"></button>
 </form>
 <script type='text/javascript'>
     // fetch records from sessionStorage
@@ -26,6 +26,7 @@
 	// recordInput.value = record;
 	codeInput.value = participantCode;
 	groupInput.value = groupid;
+	document.getElementById("recordSubmit").click();
 </script>
 </body>
 </html>
