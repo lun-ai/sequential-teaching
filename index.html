@@ -1,23 +1,27 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="user-scalable=no">
-    <title>seq_teaching_exp [PsychoPy]</title>
-    <!-- styles -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-ui-dist@1.12.1/jquery-ui.min.css">
-    <link rel="stylesheet" href="./lib/psychojs-2021.2.3.css">
-  </head>
-  <body>
-    <div id="root"></div>
-    <!-- external libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-ui-dist@1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/preloadjs@1.0.1/lib/preloadjs.min.js"></script>
-    <!-- experiment -->
-    <script src="./seq_teaching_exp.js" type="module"></script>
-    <!-- legacy browsers -->
-    <script src="./lib/psychojs-2021.2.3.iife.js" nomodule></script>
-    <script src="./seq_teaching_exp-legacy-browsers.js" nomodule></script>
-  </body>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Init</title>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script>
+    var currentSessionId;
+    $.ajax({
+          url: "./interface/backend/init.php",
+          type: "POST",
+          data: {"getCurrentSessionId":""},
+          success: function(currentSessionId) {
+                  sessionStorage.setItem("currentSessionId", currentSessionId);
+                  console.log(currentSessionId);
+                  const currentAddr = window.location.href;
+                  window.location.href = currentAddr.replace("index.html","") + "interface/";
+          },
+          error: function() {
+                  alert('There was some error initiating, please refresh or contact the coordinator!');
+          }
+    });
+</script>
+</body>
 </html>

@@ -1,7 +1,0 @@
-img_path,input,encryption,mc_path_1,mc_path_2
-materials/merge_sort/imgs/merge_train/merge_train_ex_1.png,"[4, 2]","['A', 'B']",materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png,materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png
-materials/merge_sort/imgs/merge_train/merge_train_ex_2.png,"[1, 4, 2, 3]","['A', 'B', 'D', 'C']",materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png,materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png
-materials/merge_sort/imgs/merge_train/merge_train_ex_2.png,"[1, 4, 2, 3]","['A', 'B', 'D', 'C']",materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png,materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png
-materials/merge_sort/imgs/merge_train/merge_train_ex_5.png,"[1, 2, 5, 7, 3, 4, 6]","['C', 'D', 'B', 'A', 'G', 'E', 'F']",materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png,materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png
-materials/merge_sort/imgs/merge_train/merge_train_ex_5.png,"[1, 2, 5, 7, 3, 4, 6]","['C', 'D', 'B', 'A', 'G', 'E', 'F']",materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png,materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png
-materials/merge_sort/imgs/merge_train/merge_train_ex_5.png,"[1, 2, 5, 7, 3, 4, 6]","['C', 'D', 'B', 'A', 'G', 'E', 'F']",materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png,materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png
