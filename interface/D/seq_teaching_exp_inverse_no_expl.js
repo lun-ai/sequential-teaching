@@ -1,6 +1,6 @@
-﻿/********************************* 
- * Seq_Teaching_Exp_Inverse Test *
- *********************************/
+﻿/***************************************** 
+ * Seq_Teaching_Exp_Inverse_No_Expl Test *
+ *****************************************/
 
 import { core, data, sound, util, visual } from './lib/psychojs-2021.2.3.js';
 const { PsychoJS } = core;
@@ -12,8 +12,8 @@ const { round } = util;
 
 
 // store info about the experiment session:
-let expName = 'seq_teaching_exp_inverse';  // from the Builder filename that created this script
-let expInfo = {'Session ID': '03'};
+let expName = 'seq_teaching_exp_inverse_no_expl';  // from the Builder filename that created this script
+let expInfo = {};
 
 // Start code blocks for 'Before Experiment'
 var _pj;
@@ -575,237 +575,237 @@ psychoJS.start({
   expName: expName,
   expInfo: expInfo,
   resources: [
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_07_md_b.png', 'path': 'materials/imgs/MaRs_IB/00_task_07_md_b.png'},
-    {'name': 'materials/pre_test_cond.csv', 'path': 'materials/pre_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
-    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/59_task_29_md_d.png', 'path': 'materials/imgs/MaRs_IB/59_task_29_md_d.png'},
-    {'name': 'materials/imgs/prefer_not_to_say_selected.png', 'path': 'materials/imgs/prefer_not_to_say_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/27_task_27_md_b.png', 'path': 'materials/imgs/MaRs_IB/27_task_27_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
-    {'name': 'materials/imgs/other_gender.png', 'path': 'materials/imgs/other_gender.png'},
-    {'name': 'materials/imgs/MaRs_IB/69_task_24_pd_c.png', 'path': 'materials/imgs/MaRs_IB/69_task_24_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/39_task_20_pd_c.png', 'path': 'materials/imgs/MaRs_IB/39_task_20_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/45_task_58_pd_a.png', 'path': 'materials/imgs/MaRs_IB/45_task_58_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/60_task_17_md_d.png', 'path': 'materials/imgs/MaRs_IB/60_task_17_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
-    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/17_task_45_md_d.png', 'path': 'materials/imgs/MaRs_IB/17_task_45_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/53_task_34_pd_a.png', 'path': 'materials/imgs/MaRs_IB/53_task_34_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png'},
-    {'name': 'materials/imgs/MaRs_IB/67_task_67_md_b.png', 'path': 'materials/imgs/MaRs_IB/67_task_67_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/56_task_56_pd_c.png', 'path': 'materials/imgs/MaRs_IB/56_task_56_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/14_task_50_pd_a.png', 'path': 'materials/imgs/MaRs_IB/14_task_50_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/48_task_12_pd_c.png', 'path': 'materials/imgs/MaRs_IB/48_task_12_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/43_task_13_md_d.png', 'path': 'materials/imgs/MaRs_IB/43_task_13_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/47_task_28_pd_c.png', 'path': 'materials/imgs/MaRs_IB/47_task_28_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_06_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_06_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
-    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
     {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_04_pd_c.png', 'path': 'materials/imgs/MaRs_IB/00_task_04_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/20_task_35_md_b.png', 'path': 'materials/imgs/MaRs_IB/20_task_35_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
-    {'name': 'materials/imgs/MaRs_IB/19_task_54_pd_a.png', 'path': 'materials/imgs/MaRs_IB/19_task_54_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
-    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
-    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
-    {'name': 'materials/imgs/MaRs_IB/06_task_53_md_d.png', 'path': 'materials/imgs/MaRs_IB/06_task_53_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
-    {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
-    {'name': 'materials/imgs/MaRs_IB/61_task_52_pd_c.png', 'path': 'materials/imgs/MaRs_IB/61_task_52_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
-    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
-    {'name': 'materials/imgs/MaRs_IB/51_task_37_md_d.png', 'path': 'materials/imgs/MaRs_IB/51_task_37_md_d.png'},
-    {'name': 'materials/imgs/skip.png', 'path': 'materials/imgs/skip.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
-    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
-    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
-    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
-    {'name': 'materials/imgs/MaRs_IB/68_task_62_pd_a.png', 'path': 'materials/imgs/MaRs_IB/68_task_62_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
-    {'name': 'materials/merge_sort/imgs/blue_star_clicked.png', 'path': 'materials/merge_sort/imgs/blue_star_clicked.png'},
-    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
-    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
-    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
-    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
-    {'name': 'materials/imgs/MaRs_IB/fixation.png', 'path': 'materials/imgs/MaRs_IB/fixation.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
-    {'name': 'materials/imgs/MaRs_IB/23_task_72_pd_c.png', 'path': 'materials/imgs/MaRs_IB/23_task_72_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
-    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
-    {'name': 'materials/imgs/MaRs_IB/07_task_60_pd_c.png', 'path': 'materials/imgs/MaRs_IB/07_task_60_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/58_task_23_md_b.png', 'path': 'materials/imgs/MaRs_IB/58_task_23_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/34_task_71_md_b.png', 'path': 'materials/imgs/MaRs_IB/34_task_71_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/02_task_38_pd_a.png', 'path': 'materials/imgs/MaRs_IB/02_task_38_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
-    {'name': 'materials/imgs/MaRs_IB/16_task_43_md_b.png', 'path': 'materials/imgs/MaRs_IB/16_task_43_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/36_task_36_pd_c.png', 'path': 'materials/imgs/MaRs_IB/36_task_36_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond_door.png', 'path': 'materials/merge_sort/imgs/purple_diamond_door.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
-    {'name': 'materials/imgs/MaRs_IB/50_task_39_md_b.png', 'path': 'materials/imgs/MaRs_IB/50_task_39_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/44_task_75_md_b.png', 'path': 'materials/imgs/MaRs_IB/44_task_75_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
     {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
-    {'name': 'materials/imgs/MaRs_IB/37_task_78_pd_a.png', 'path': 'materials/imgs/MaRs_IB/37_task_78_pd_a.png'},
-    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
-    {'name': 'materials/imgs/MaRs_IB/32_task_41_md_d.png', 'path': 'materials/imgs/MaRs_IB/32_task_41_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/66_task_51_md_b.png', 'path': 'materials/imgs/MaRs_IB/66_task_51_md_b.png'},
-    {'name': 'materials/imgs/arrow.png', 'path': 'materials/imgs/arrow.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
-    {'name': 'materials/imgs/MaRs_IB/40_task_48_pd_c.png', 'path': 'materials/imgs/MaRs_IB/40_task_48_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/64_task_25_md_d.png', 'path': 'materials/imgs/MaRs_IB/64_task_25_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
-    {'name': 'materials/imgs/MaRs_IB/52_task_69_md_d.png', 'path': 'materials/imgs/MaRs_IB/52_task_69_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_10_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_10_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/compare_clicked.png', 'path': 'materials/merge_sort/imgs/compare_clicked.png'},
-    {'name': 'materials/merge_sort/imgs/sort_test/small_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/small_input_review.png'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
-    {'name': 'materials/imgs/prefer_not_to_say.png', 'path': 'materials/imgs/prefer_not_to_say.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
-    {'name': 'materials/imgs/MaRs_IB/46_task_33_md_d.png', 'path': 'materials/imgs/MaRs_IB/46_task_33_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/29_task_46_pd_a.png', 'path': 'materials/imgs/MaRs_IB/29_task_46_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon.png', 'path': 'materials/merge_sort/imgs/fruits/melon.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
-    {'name': 'materials/imgs/MaRs_IB/31_task_18_pd_a.png', 'path': 'materials/imgs/MaRs_IB/31_task_18_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_08_pd_c.png', 'path': 'materials/imgs/MaRs_IB/00_task_08_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/63_task_57_md_d.png', 'path': 'materials/imgs/MaRs_IB/63_task_57_md_d.png'},
-    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
-    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/21_task_59_md_b.png', 'path': 'materials/imgs/MaRs_IB/21_task_59_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_05_md_d.png', 'path': 'materials/imgs/MaRs_IB/00_task_05_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_09_md_d.png', 'path': 'materials/imgs/MaRs_IB/00_task_09_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/49_task_80_pd_c.png', 'path': 'materials/imgs/MaRs_IB/49_task_80_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/01_task_19_md_b.png', 'path': 'materials/imgs/MaRs_IB/01_task_19_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/sort_test/large_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/large_input_review.png'},
+    {'name': 'materials/imgs/MaRs_IB/11_task_65_md_d.png', 'path': 'materials/imgs/MaRs_IB/11_task_65_md_d.png'},
     {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
+    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_03_md_b.png', 'path': 'materials/imgs/MaRs_IB/00_task_03_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/blue_star_clicked.png', 'path': 'materials/merge_sort/imgs/blue_star_clicked.png'},
+    {'name': 'materials/imgs/MaRs_IB/10_task_26_pd_a.png', 'path': 'materials/imgs/MaRs_IB/10_task_26_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
+    {'name': 'materials/imgs/MaRs_IB/24_task_21_md_d.png', 'path': 'materials/imgs/MaRs_IB/24_task_21_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/06_task_53_md_d.png', 'path': 'materials/imgs/MaRs_IB/06_task_53_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
+    {'name': 'materials/imgs/MaRs_IB/64_task_25_md_d.png', 'path': 'materials/imgs/MaRs_IB/64_task_25_md_d.png'},
+    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
+    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
+    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
+    {'name': 'materials/imgs/MaRs_IB/48_task_12_pd_c.png', 'path': 'materials/imgs/MaRs_IB/48_task_12_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/compare_clicked.png', 'path': 'materials/merge_sort/imgs/compare_clicked.png'},
+    {'name': 'materials/imgs/prefer_not_to_say.png', 'path': 'materials/imgs/prefer_not_to_say.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/01_task_19_md_b.png', 'path': 'materials/imgs/MaRs_IB/01_task_19_md_b.png'},
+    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_10_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_10_pd_a.png'},
+    {'name': 'materials/imgs/prefer_not_to_say_selected.png', 'path': 'materials/imgs/prefer_not_to_say_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
+    {'name': 'materials/imgs/MaRs_IB/61_task_52_pd_c.png', 'path': 'materials/imgs/MaRs_IB/61_task_52_pd_c.png'},
+    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_07_md_b.png', 'path': 'materials/imgs/MaRs_IB/00_task_07_md_b.png'},
+    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
+    {'name': 'materials/imgs/MaRs_IB/30_task_55_md_b.png', 'path': 'materials/imgs/MaRs_IB/30_task_55_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
+    {'name': 'materials/imgs/other_gender_selected.png', 'path': 'materials/imgs/other_gender_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
+    {'name': 'materials/imgs/MaRs_IB/22_task_16_pd_c.png', 'path': 'materials/imgs/MaRs_IB/22_task_16_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/57_task_61_md_d.png', 'path': 'materials/imgs/MaRs_IB/57_task_61_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
+    {'name': 'materials/imgs/MaRs_IB/40_task_48_pd_c.png', 'path': 'materials/imgs/MaRs_IB/40_task_48_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/45_task_58_pd_a.png', 'path': 'materials/imgs/MaRs_IB/45_task_58_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon.png', 'path': 'materials/merge_sort/imgs/fruits/melon.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
+    {'name': 'materials/imgs/MaRs_IB/62_task_31_md_b.png', 'path': 'materials/imgs/MaRs_IB/62_task_31_md_b.png'},
+    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/imgs/MaRs_IB/05_task_77_md_d.png', 'path': 'materials/imgs/MaRs_IB/05_task_77_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/purple_diamond_door.png', 'path': 'materials/merge_sort/imgs/purple_diamond_door.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_04_pd_c.png', 'path': 'materials/imgs/MaRs_IB/00_task_04_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/18_task_30_pd_a.png', 'path': 'materials/imgs/MaRs_IB/18_task_30_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
+    {'name': 'materials/imgs/MaRs_IB/69_task_24_pd_c.png', 'path': 'materials/imgs/MaRs_IB/69_task_24_pd_c.png'},
+    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
+    {'name': 'materials/imgs/MaRs_IB/32_task_41_md_d.png', 'path': 'materials/imgs/MaRs_IB/32_task_41_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/34_task_71_md_b.png', 'path': 'materials/imgs/MaRs_IB/34_task_71_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
+    {'name': 'materials/imgs/MaRs_IB/13_task_40_pd_c.png', 'path': 'materials/imgs/MaRs_IB/13_task_40_pd_c.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/suboptimal_merge_example.png', 'path': 'materials/merge_sort/imgs/merge_train/suboptimal_merge_example.png'},
-    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/50_task_39_md_b.png', 'path': 'materials/imgs/MaRs_IB/50_task_39_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/29_task_46_pd_a.png', 'path': 'materials/imgs/MaRs_IB/29_task_46_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/66_task_51_md_b.png', 'path': 'materials/imgs/MaRs_IB/66_task_51_md_b.png'},
+    {'name': 'materials/pre_test_cond.csv', 'path': 'materials/pre_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
+    {'name': 'materials/imgs/MaRs_IB/42_task_79_md_b.png', 'path': 'materials/imgs/MaRs_IB/42_task_79_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge.png'},
+    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/02_task_38_pd_a.png', 'path': 'materials/imgs/MaRs_IB/02_task_38_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
+    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
+    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/44_task_75_md_b.png', 'path': 'materials/imgs/MaRs_IB/44_task_75_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/07_task_60_pd_c.png', 'path': 'materials/imgs/MaRs_IB/07_task_60_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/31_task_18_pd_a.png', 'path': 'materials/imgs/MaRs_IB/31_task_18_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
+    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
+    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
+    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
+    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
+    {'name': 'materials/imgs/MaRs_IB/17_task_45_md_d.png', 'path': 'materials/imgs/MaRs_IB/17_task_45_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/59_task_29_md_d.png', 'path': 'materials/imgs/MaRs_IB/59_task_29_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_08_pd_c.png', 'path': 'materials/imgs/MaRs_IB/00_task_08_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
+    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
+    {'name': 'materials/imgs/MaRs_IB/53_task_34_pd_a.png', 'path': 'materials/imgs/MaRs_IB/53_task_34_pd_a.png'},
+    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/21_task_59_md_b.png', 'path': 'materials/imgs/MaRs_IB/21_task_59_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
+    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/36_task_36_pd_c.png', 'path': 'materials/imgs/MaRs_IB/36_task_36_pd_c.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
-    {'name': 'materials/review_cond.csv', 'path': 'materials/review_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
+    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
+    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
+    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
+    {'name': 'materials/imgs/MaRs_IB/27_task_27_md_b.png', 'path': 'materials/imgs/MaRs_IB/27_task_27_md_b.png'},
+    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
+    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/blue_star_door.png', 'path': 'materials/merge_sort/imgs/blue_star_door.png'},
+    {'name': 'materials/imgs/MaRs_IB/70_task_42_pd_a.png', 'path': 'materials/imgs/MaRs_IB/70_task_42_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/12_task_14_pd_a.png', 'path': 'materials/imgs/MaRs_IB/12_task_14_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
+    {'name': 'materials/imgs/MaRs_IB/39_task_20_pd_c.png', 'path': 'materials/imgs/MaRs_IB/39_task_20_pd_c.png'},
+    {'name': 'materials/imgs/arrow.png', 'path': 'materials/imgs/arrow.png'},
+    {'name': 'materials/imgs/MaRs_IB/46_task_33_md_d.png', 'path': 'materials/imgs/MaRs_IB/46_task_33_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/60_task_17_md_d.png', 'path': 'materials/imgs/MaRs_IB/60_task_17_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
+    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
+    {'name': 'materials/imgs/MaRs_IB/04_task_70_pd_a.png', 'path': 'materials/imgs/MaRs_IB/04_task_70_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_02_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_02_pd_a.png'},
+    {'name': 'materials/pre_test_train_cond.csv', 'path': 'materials/pre_test_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/26_task_68_pd_c.png', 'path': 'materials/imgs/MaRs_IB/26_task_68_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/49_task_80_pd_c.png', 'path': 'materials/imgs/MaRs_IB/49_task_80_pd_c.png'},
+    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/14_task_50_pd_a.png', 'path': 'materials/imgs/MaRs_IB/14_task_50_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/67_task_67_md_b.png', 'path': 'materials/imgs/MaRs_IB/67_task_67_md_b.png'},
+    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_01_md_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_01_md_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
     {'name': 'materials/imgs/MaRs_IB/33_task_44_pd_c.png', 'path': 'materials/imgs/MaRs_IB/33_task_44_pd_c.png'},
     {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
-    {'name': 'materials/imgs/MaRs_IB/08_task_11_md_b.png', 'path': 'materials/imgs/MaRs_IB/08_task_11_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/38_task_76_pd_c.png', 'path': 'materials/imgs/MaRs_IB/38_task_76_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_03_md_b.png', 'path': 'materials/imgs/MaRs_IB/00_task_03_md_b.png'},
-    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
-    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
-    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/28_task_66_pd_a.png', 'path': 'materials/imgs/MaRs_IB/28_task_66_pd_a.png'},
-    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/51_task_37_md_d.png', 'path': 'materials/imgs/MaRs_IB/51_task_37_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/16_task_43_md_b.png', 'path': 'materials/imgs/MaRs_IB/16_task_43_md_b.png'},
     {'name': 'materials/imgs/MaRs_IB/03_task_22_pd_a.png', 'path': 'materials/imgs/MaRs_IB/03_task_22_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
-    {'name': 'materials/imgs/MaRs_IB/65_task_15_md_b.png', 'path': 'materials/imgs/MaRs_IB/65_task_15_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/41_task_49_md_d.png', 'path': 'materials/imgs/MaRs_IB/41_task_49_md_d.png'},
-    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
-    {'name': 'materials/merge_sort/imgs/blue_star_door.png', 'path': 'materials/merge_sort/imgs/blue_star_door.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
-    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
-    {'name': 'materials/imgs/MaRs_IB/25_task_32_pd_c.png', 'path': 'materials/imgs/MaRs_IB/25_task_32_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/26_task_68_pd_c.png', 'path': 'materials/imgs/MaRs_IB/26_task_68_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
-    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
-    {'name': 'materials/pre_test_train_cond.csv', 'path': 'materials/pre_test_train_cond.csv'},
-    {'name': 'materials/imgs/MaRs_IB/35_task_63_md_b.png', 'path': 'materials/imgs/MaRs_IB/35_task_63_md_b.png'},
-    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
-    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
-    {'name': 'materials/imgs/MaRs_IB/04_task_70_pd_a.png', 'path': 'materials/imgs/MaRs_IB/04_task_70_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple.png', 'path': 'materials/merge_sort/imgs/fruits/apple.png'},
-    {'name': 'materials/imgs/MaRs_IB/57_task_61_md_d.png', 'path': 'materials/imgs/MaRs_IB/57_task_61_md_d.png'},
     {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
-    {'name': 'materials/imgs/MaRs_IB/62_task_31_md_b.png', 'path': 'materials/imgs/MaRs_IB/62_task_31_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/09_task_73_md_d.png', 'path': 'materials/imgs/MaRs_IB/09_task_73_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
-    {'name': 'materials/merge_sort/imgs/sort_test/large_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/large_input_review.png'},
-    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
-    {'name': 'materials/imgs/other_gender_selected.png', 'path': 'materials/imgs/other_gender_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
-    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
-    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_01_md_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_01_md_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/30_task_55_md_b.png', 'path': 'materials/imgs/MaRs_IB/30_task_55_md_b.png'},
-    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
-    {'name': 'materials/imgs/MaRs_IB/15_task_74_pd_a.png', 'path': 'materials/imgs/MaRs_IB/15_task_74_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/12_task_14_pd_a.png', 'path': 'materials/imgs/MaRs_IB/12_task_14_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/11_task_65_md_d.png', 'path': 'materials/imgs/MaRs_IB/11_task_65_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/55_task_64_pd_c.png', 'path': 'materials/imgs/MaRs_IB/55_task_64_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
-    {'name': 'materials/imgs/MaRs_IB/70_task_42_pd_a.png', 'path': 'materials/imgs/MaRs_IB/70_task_42_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/54_task_47_md_b.png', 'path': 'materials/imgs/MaRs_IB/54_task_47_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
+    {'name': 'materials/imgs/MaRs_IB/43_task_13_md_d.png', 'path': 'materials/imgs/MaRs_IB/43_task_13_md_d.png'},
     {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/10_task_26_pd_a.png', 'path': 'materials/imgs/MaRs_IB/10_task_26_pd_a.png'},
-    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
-    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge.png'},
-    {'name': 'materials/imgs/MaRs_IB/05_task_77_md_d.png', 'path': 'materials/imgs/MaRs_IB/05_task_77_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_02_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_02_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/18_task_30_pd_a.png', 'path': 'materials/imgs/MaRs_IB/18_task_30_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/42_task_79_md_b.png', 'path': 'materials/imgs/MaRs_IB/42_task_79_md_b.png'},
-    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
+    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
+    {'name': 'materials/imgs/MaRs_IB/54_task_47_md_b.png', 'path': 'materials/imgs/MaRs_IB/54_task_47_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
+    {'name': 'materials/imgs/MaRs_IB/52_task_69_md_d.png', 'path': 'materials/imgs/MaRs_IB/52_task_69_md_d.png'},
+    {'name': 'materials/review_cond.csv', 'path': 'materials/review_cond.csv'},
+    {'name': 'materials/imgs/MaRs_IB/38_task_76_pd_c.png', 'path': 'materials/imgs/MaRs_IB/38_task_76_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
+    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
+    {'name': 'materials/imgs/MaRs_IB/08_task_11_md_b.png', 'path': 'materials/imgs/MaRs_IB/08_task_11_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/65_task_15_md_b.png', 'path': 'materials/imgs/MaRs_IB/65_task_15_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
+    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
+    {'name': 'materials/imgs/skip.png', 'path': 'materials/imgs/skip.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
+    {'name': 'materials/imgs/MaRs_IB/19_task_54_pd_a.png', 'path': 'materials/imgs/MaRs_IB/19_task_54_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_09_md_d.png', 'path': 'materials/imgs/MaRs_IB/00_task_09_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_05_md_d.png', 'path': 'materials/imgs/MaRs_IB/00_task_05_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
+    {'name': 'materials/imgs/MaRs_IB/28_task_66_pd_a.png', 'path': 'materials/imgs/MaRs_IB/28_task_66_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_06_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_06_pd_a.png'},
+    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
+    {'name': 'materials/merge_sort/imgs/sort_test/small_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/small_input_review.png'},
+    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple.png', 'path': 'materials/merge_sort/imgs/fruits/apple.png'},
+    {'name': 'materials/imgs/MaRs_IB/56_task_56_pd_c.png', 'path': 'materials/imgs/MaRs_IB/56_task_56_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
+    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
+    {'name': 'materials/imgs/MaRs_IB/68_task_62_pd_a.png', 'path': 'materials/imgs/MaRs_IB/68_task_62_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/09_task_73_md_d.png', 'path': 'materials/imgs/MaRs_IB/09_task_73_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/47_task_28_pd_c.png', 'path': 'materials/imgs/MaRs_IB/47_task_28_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/35_task_63_md_b.png', 'path': 'materials/imgs/MaRs_IB/35_task_63_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/fixation.png', 'path': 'materials/imgs/MaRs_IB/fixation.png'},
+    {'name': 'materials/imgs/MaRs_IB/41_task_49_md_d.png', 'path': 'materials/imgs/MaRs_IB/41_task_49_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
     {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
-    {'name': 'materials/imgs/MaRs_IB/24_task_21_md_d.png', 'path': 'materials/imgs/MaRs_IB/24_task_21_md_d.png'},
-    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/13_task_40_pd_c.png', 'path': 'materials/imgs/MaRs_IB/13_task_40_pd_c.png'},
-    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/22_task_16_pd_c.png', 'path': 'materials/imgs/MaRs_IB/22_task_16_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
     {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
-    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'}
+    {'name': 'materials/imgs/MaRs_IB/15_task_74_pd_a.png', 'path': 'materials/imgs/MaRs_IB/15_task_74_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/55_task_64_pd_c.png', 'path': 'materials/imgs/MaRs_IB/55_task_64_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/58_task_23_md_b.png', 'path': 'materials/imgs/MaRs_IB/58_task_23_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/63_task_57_md_d.png', 'path': 'materials/imgs/MaRs_IB/63_task_57_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png'},
+    {'name': 'materials/imgs/MaRs_IB/23_task_72_pd_c.png', 'path': 'materials/imgs/MaRs_IB/23_task_72_pd_c.png'},
+    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
+    {'name': 'materials/imgs/other_gender.png', 'path': 'materials/imgs/other_gender.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/25_task_32_pd_c.png', 'path': 'materials/imgs/MaRs_IB/25_task_32_pd_c.png'},
+    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/20_task_35_md_b.png', 'path': 'materials/imgs/MaRs_IB/20_task_35_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
+    {'name': 'materials/imgs/MaRs_IB/37_task_78_pd_a.png', 'path': 'materials/imgs/MaRs_IB/37_task_78_pd_a.png'}
   ]
 });
 
@@ -1076,8 +1076,6 @@ var other;
 var background_btn;
 var background_mouse;
 var DEBRIEFClock;
-var intro_text_5;
-var debrief_mouse;
 var globalClock;
 var routineTimer;
 async function experimentInit() {
@@ -1104,6 +1102,15 @@ async function experimentInit() {
     flip: false,
   });
   
+    window.startHTML = (src) => {
+        $('body').append('<iframe id="iframe" src="' + src +'" style="width: 100%; height: 100%; position:absolute;z-index:1;top:0;left:0;border:0;"></iframe>');    
+        window.finishedHTML = false;
+    };
+        
+    window.finishHTML = () => {
+        $('#iframe').remove();
+        window.finishedHTML = true;
+    };
   progressBar = new ProgressBar(expSetup);
   // Initialize components for Routine "PRE_TEST_INTRO"
   PRE_TEST_INTROClock = new util.Clock();
@@ -2330,7 +2337,7 @@ async function experimentInit() {
     name : 'merge_expl_1', units : undefined, 
     image : undefined, mask : undefined,
     ori : 0.0, pos : [0.45, 0.25], size : [0.8, 0.4],
-    color : new util.Color([1, 1, 1]), opacity : 1.0,
+    color : new util.Color([1, 1, 1]), opacity : 0.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -6.0 
   });
@@ -2339,7 +2346,7 @@ async function experimentInit() {
     name : 'merge_expl_2', units : undefined, 
     image : undefined, mask : undefined,
     ori : 0.0, pos : [0.45, (- 0.15)], size : [0.8, 0.4],
-    color : new util.Color([1, 1, 1]), opacity : 1.0,
+    color : new util.Color([1, 1, 1]), opacity : 0.0,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : -7.0 
   });
@@ -3228,21 +3235,6 @@ async function experimentInit() {
   background_mouse.mouseClock = new util.Clock();
   // Initialize components for Routine "DEBRIEF"
   DEBRIEFClock = new util.Clock();
-  intro_text_5 = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'intro_text_5',
-    text: 'This is the end of the experiment!\n\nThank you very much for your time and effort!\n\nClick anywhere to exit!',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0, 0], height: 0.03,  wrapWidth: undefined, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: 0.0 
-  });
-  
-  debrief_mouse = new core.Mouse({
-    win: psychoJS.window,
-  });
-  debrief_mouse.mouseClock = new util.Clock();
   // Create some handy timers
   globalClock = new util.Clock();  // to track the time since experiment started
   routineTimer = new util.CountdownTimer();  // to track time remaining of each (non-slip) routine
@@ -9605,14 +9597,9 @@ function DEBRIEFRoutineBegin(snapshot) {
     DEBRIEFClock.reset(); // clock
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
-    routineTimer.add(120.000000);
     // update component parameters for each repeat
-    // setup some python lists for storing info about the debrief_mouse
-    gotValidClick = false; // until a click is received
     // keep track of which components have finished
     DEBRIEFComponents = [];
-    DEBRIEFComponents.push(intro_text_5);
-    DEBRIEFComponents.push(debrief_mouse);
     
     for (const thisComponent of DEBRIEFComponents)
       if ('status' in thisComponent)
@@ -9629,44 +9616,6 @@ function DEBRIEFRoutineEachFrame() {
     t = DEBRIEFClock.getTime();
     frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
     // update/draw components on each frame
-    
-    // *intro_text_5* updates
-    if (t >= 0.0 && intro_text_5.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      intro_text_5.tStart = t;  // (not accounting for frame time here)
-      intro_text_5.frameNStart = frameN;  // exact frame index
-      
-      intro_text_5.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (intro_text_5.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      intro_text_5.setAutoDraw(false);
-    }
-    // *debrief_mouse* updates
-    if (t >= 0.5 && debrief_mouse.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      debrief_mouse.tStart = t;  // (not accounting for frame time here)
-      debrief_mouse.frameNStart = frameN;  // exact frame index
-      
-      debrief_mouse.status = PsychoJS.Status.STARTED;
-      debrief_mouse.mouseClock.reset();
-      prevButtonState = debrief_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((debrief_mouse.status === PsychoJS.Status.STARTED || debrief_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      debrief_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (debrief_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = debrief_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // abort routine on response
-          continueRoutine = false;
-        }
-      }
-    }
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -9685,7 +9634,7 @@ function DEBRIEFRoutineEachFrame() {
       }
     
     // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
+    if (continueRoutine) {
       return Scheduler.Event.FLIP_REPEAT;
     } else {
       return Scheduler.Event.NEXT;
@@ -9702,14 +9651,9 @@ function DEBRIEFRoutineEnd() {
         thisComponent.setAutoDraw(false);
       }
     }
-    // store data for psychoJS.experiment (ExperimentHandler)
-    _mouseXYs = debrief_mouse.getPos();
-    _mouseButtons = debrief_mouse.getPressed();
-    psychoJS.experiment.addData('debrief_mouse.x', _mouseXYs[0]);
-    psychoJS.experiment.addData('debrief_mouse.y', _mouseXYs[1]);
-    psychoJS.experiment.addData('debrief_mouse.leftButton', _mouseButtons[0]);
-    psychoJS.experiment.addData('debrief_mouse.midButton', _mouseButtons[1]);
-    psychoJS.experiment.addData('debrief_mouse.rightButton', _mouseButtons[2]);
+    // the Routine "DEBRIEF" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset();
+    
     return Scheduler.Event.NEXT;
   };
 }
@@ -9766,6 +9710,10 @@ async function quitPsychoJS(message, isCompleted) {
   
   
   
+  
+  
+  window.startHTML('../backend/submission.html');
+  sessionStorage.setItem("record", JSON.stringify(psychoJS.experiment._trialsData));
   
   
   

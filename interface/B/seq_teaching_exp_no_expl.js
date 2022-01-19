@@ -1,6 +1,6 @@
-﻿/***************************************** 
- * Seq_Teaching_Exp_Inverse_No_Expl Test *
- *****************************************/
+﻿/********************************* 
+ * Seq_Teaching_Exp_No_Expl Test *
+ *********************************/
 
 import { core, data, sound, util, visual } from './lib/psychojs-2021.2.3.js';
 const { PsychoJS } = core;
@@ -12,8 +12,8 @@ const { round } = util;
 
 
 // store info about the experiment session:
-let expName = 'seq_teaching_exp_inverse_no_expl';  // from the Builder filename that created this script
-let expInfo = {'Session ID': '04'};
+let expName = 'seq_teaching_exp_no_expl';  // from the Builder filename that created this script
+let expInfo = {};
 
 // Start code blocks for 'Before Experiment'
 var _pj;
@@ -522,13 +522,6 @@ flowScheduler.add(INTRORoutineEnd());
 flowScheduler.add(HINTRoutineBegin());
 flowScheduler.add(HINTRoutineEachFrame());
 flowScheduler.add(HINTRoutineEnd());
-flowScheduler.add(SORT_INTRORoutineBegin());
-flowScheduler.add(SORT_INTRORoutineEachFrame());
-flowScheduler.add(SORT_INTRORoutineEnd());
-const TRAIN_2LoopScheduler = new Scheduler(psychoJS);
-flowScheduler.add(TRAIN_2LoopBegin(TRAIN_2LoopScheduler));
-flowScheduler.add(TRAIN_2LoopScheduler);
-flowScheduler.add(TRAIN_2LoopEnd);
 flowScheduler.add(MERGE_INTRORoutineBegin());
 flowScheduler.add(MERGE_INTRORoutineEachFrame());
 flowScheduler.add(MERGE_INTRORoutineEnd());
@@ -543,6 +536,13 @@ const TEST_1LoopScheduler = new Scheduler(psychoJS);
 flowScheduler.add(TEST_1LoopBegin(TEST_1LoopScheduler));
 flowScheduler.add(TEST_1LoopScheduler);
 flowScheduler.add(TEST_1LoopEnd);
+flowScheduler.add(SORT_INTRORoutineBegin());
+flowScheduler.add(SORT_INTRORoutineEachFrame());
+flowScheduler.add(SORT_INTRORoutineEnd());
+const TRAIN_2LoopScheduler = new Scheduler(psychoJS);
+flowScheduler.add(TRAIN_2LoopBegin(TRAIN_2LoopScheduler));
+flowScheduler.add(TRAIN_2LoopScheduler);
+flowScheduler.add(TRAIN_2LoopEnd);
 flowScheduler.add(BREAK_2RoutineBegin());
 flowScheduler.add(BREAK_2RoutineEachFrame());
 flowScheduler.add(BREAK_2RoutineEnd());
@@ -575,237 +575,237 @@ psychoJS.start({
   expName: expName,
   expInfo: expInfo,
   resources: [
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_07_md_b.png', 'path': 'materials/imgs/MaRs_IB/00_task_07_md_b.png'},
-    {'name': 'materials/pre_test_cond.csv', 'path': 'materials/pre_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
-    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/59_task_29_md_d.png', 'path': 'materials/imgs/MaRs_IB/59_task_29_md_d.png'},
-    {'name': 'materials/imgs/prefer_not_to_say_selected.png', 'path': 'materials/imgs/prefer_not_to_say_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/27_task_27_md_b.png', 'path': 'materials/imgs/MaRs_IB/27_task_27_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
-    {'name': 'materials/imgs/other_gender.png', 'path': 'materials/imgs/other_gender.png'},
-    {'name': 'materials/imgs/MaRs_IB/69_task_24_pd_c.png', 'path': 'materials/imgs/MaRs_IB/69_task_24_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/39_task_20_pd_c.png', 'path': 'materials/imgs/MaRs_IB/39_task_20_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/45_task_58_pd_a.png', 'path': 'materials/imgs/MaRs_IB/45_task_58_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/60_task_17_md_d.png', 'path': 'materials/imgs/MaRs_IB/60_task_17_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
-    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/17_task_45_md_d.png', 'path': 'materials/imgs/MaRs_IB/17_task_45_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/53_task_34_pd_a.png', 'path': 'materials/imgs/MaRs_IB/53_task_34_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png'},
-    {'name': 'materials/imgs/MaRs_IB/67_task_67_md_b.png', 'path': 'materials/imgs/MaRs_IB/67_task_67_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/56_task_56_pd_c.png', 'path': 'materials/imgs/MaRs_IB/56_task_56_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/14_task_50_pd_a.png', 'path': 'materials/imgs/MaRs_IB/14_task_50_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/48_task_12_pd_c.png', 'path': 'materials/imgs/MaRs_IB/48_task_12_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/43_task_13_md_d.png', 'path': 'materials/imgs/MaRs_IB/43_task_13_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/47_task_28_pd_c.png', 'path': 'materials/imgs/MaRs_IB/47_task_28_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_06_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_06_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
-    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
     {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_04_pd_c.png', 'path': 'materials/imgs/MaRs_IB/00_task_04_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/20_task_35_md_b.png', 'path': 'materials/imgs/MaRs_IB/20_task_35_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
-    {'name': 'materials/imgs/MaRs_IB/19_task_54_pd_a.png', 'path': 'materials/imgs/MaRs_IB/19_task_54_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
-    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
-    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
-    {'name': 'materials/imgs/MaRs_IB/06_task_53_md_d.png', 'path': 'materials/imgs/MaRs_IB/06_task_53_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
-    {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
-    {'name': 'materials/imgs/MaRs_IB/61_task_52_pd_c.png', 'path': 'materials/imgs/MaRs_IB/61_task_52_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
-    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
-    {'name': 'materials/imgs/MaRs_IB/51_task_37_md_d.png', 'path': 'materials/imgs/MaRs_IB/51_task_37_md_d.png'},
-    {'name': 'materials/imgs/skip.png', 'path': 'materials/imgs/skip.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
-    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
-    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
-    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
-    {'name': 'materials/imgs/MaRs_IB/68_task_62_pd_a.png', 'path': 'materials/imgs/MaRs_IB/68_task_62_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
-    {'name': 'materials/merge_sort/imgs/blue_star_clicked.png', 'path': 'materials/merge_sort/imgs/blue_star_clicked.png'},
-    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
-    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
-    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
-    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
-    {'name': 'materials/imgs/MaRs_IB/fixation.png', 'path': 'materials/imgs/MaRs_IB/fixation.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
-    {'name': 'materials/imgs/MaRs_IB/23_task_72_pd_c.png', 'path': 'materials/imgs/MaRs_IB/23_task_72_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
-    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
-    {'name': 'materials/imgs/MaRs_IB/07_task_60_pd_c.png', 'path': 'materials/imgs/MaRs_IB/07_task_60_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/58_task_23_md_b.png', 'path': 'materials/imgs/MaRs_IB/58_task_23_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/34_task_71_md_b.png', 'path': 'materials/imgs/MaRs_IB/34_task_71_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/02_task_38_pd_a.png', 'path': 'materials/imgs/MaRs_IB/02_task_38_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
-    {'name': 'materials/imgs/MaRs_IB/16_task_43_md_b.png', 'path': 'materials/imgs/MaRs_IB/16_task_43_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/36_task_36_pd_c.png', 'path': 'materials/imgs/MaRs_IB/36_task_36_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond_door.png', 'path': 'materials/merge_sort/imgs/purple_diamond_door.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
-    {'name': 'materials/imgs/MaRs_IB/50_task_39_md_b.png', 'path': 'materials/imgs/MaRs_IB/50_task_39_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/44_task_75_md_b.png', 'path': 'materials/imgs/MaRs_IB/44_task_75_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
     {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
-    {'name': 'materials/imgs/MaRs_IB/37_task_78_pd_a.png', 'path': 'materials/imgs/MaRs_IB/37_task_78_pd_a.png'},
-    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
-    {'name': 'materials/imgs/MaRs_IB/32_task_41_md_d.png', 'path': 'materials/imgs/MaRs_IB/32_task_41_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/66_task_51_md_b.png', 'path': 'materials/imgs/MaRs_IB/66_task_51_md_b.png'},
-    {'name': 'materials/imgs/arrow.png', 'path': 'materials/imgs/arrow.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
-    {'name': 'materials/imgs/MaRs_IB/40_task_48_pd_c.png', 'path': 'materials/imgs/MaRs_IB/40_task_48_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/64_task_25_md_d.png', 'path': 'materials/imgs/MaRs_IB/64_task_25_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
-    {'name': 'materials/imgs/MaRs_IB/52_task_69_md_d.png', 'path': 'materials/imgs/MaRs_IB/52_task_69_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_10_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_10_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/compare_clicked.png', 'path': 'materials/merge_sort/imgs/compare_clicked.png'},
-    {'name': 'materials/merge_sort/imgs/sort_test/small_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/small_input_review.png'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
-    {'name': 'materials/imgs/prefer_not_to_say.png', 'path': 'materials/imgs/prefer_not_to_say.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
-    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
-    {'name': 'materials/imgs/MaRs_IB/46_task_33_md_d.png', 'path': 'materials/imgs/MaRs_IB/46_task_33_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/29_task_46_pd_a.png', 'path': 'materials/imgs/MaRs_IB/29_task_46_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon.png', 'path': 'materials/merge_sort/imgs/fruits/melon.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
-    {'name': 'materials/imgs/MaRs_IB/31_task_18_pd_a.png', 'path': 'materials/imgs/MaRs_IB/31_task_18_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_08_pd_c.png', 'path': 'materials/imgs/MaRs_IB/00_task_08_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/63_task_57_md_d.png', 'path': 'materials/imgs/MaRs_IB/63_task_57_md_d.png'},
-    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
-    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/21_task_59_md_b.png', 'path': 'materials/imgs/MaRs_IB/21_task_59_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_05_md_d.png', 'path': 'materials/imgs/MaRs_IB/00_task_05_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_09_md_d.png', 'path': 'materials/imgs/MaRs_IB/00_task_09_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/49_task_80_pd_c.png', 'path': 'materials/imgs/MaRs_IB/49_task_80_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/01_task_19_md_b.png', 'path': 'materials/imgs/MaRs_IB/01_task_19_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/sort_test/large_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/large_input_review.png'},
+    {'name': 'materials/imgs/MaRs_IB/11_task_65_md_d.png', 'path': 'materials/imgs/MaRs_IB/11_task_65_md_d.png'},
     {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
+    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_03_md_b.png', 'path': 'materials/imgs/MaRs_IB/00_task_03_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/blue_star_clicked.png', 'path': 'materials/merge_sort/imgs/blue_star_clicked.png'},
+    {'name': 'materials/imgs/MaRs_IB/10_task_26_pd_a.png', 'path': 'materials/imgs/MaRs_IB/10_task_26_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
+    {'name': 'materials/imgs/MaRs_IB/24_task_21_md_d.png', 'path': 'materials/imgs/MaRs_IB/24_task_21_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/06_task_53_md_d.png', 'path': 'materials/imgs/MaRs_IB/06_task_53_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
+    {'name': 'materials/imgs/MaRs_IB/64_task_25_md_d.png', 'path': 'materials/imgs/MaRs_IB/64_task_25_md_d.png'},
+    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
+    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
+    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
+    {'name': 'materials/imgs/MaRs_IB/48_task_12_pd_c.png', 'path': 'materials/imgs/MaRs_IB/48_task_12_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/compare_clicked.png', 'path': 'materials/merge_sort/imgs/compare_clicked.png'},
+    {'name': 'materials/imgs/prefer_not_to_say.png', 'path': 'materials/imgs/prefer_not_to_say.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/01_task_19_md_b.png', 'path': 'materials/imgs/MaRs_IB/01_task_19_md_b.png'},
+    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_10_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_10_pd_a.png'},
+    {'name': 'materials/imgs/prefer_not_to_say_selected.png', 'path': 'materials/imgs/prefer_not_to_say_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
+    {'name': 'materials/imgs/MaRs_IB/61_task_52_pd_c.png', 'path': 'materials/imgs/MaRs_IB/61_task_52_pd_c.png'},
+    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_07_md_b.png', 'path': 'materials/imgs/MaRs_IB/00_task_07_md_b.png'},
+    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
+    {'name': 'materials/imgs/MaRs_IB/30_task_55_md_b.png', 'path': 'materials/imgs/MaRs_IB/30_task_55_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
+    {'name': 'materials/imgs/other_gender_selected.png', 'path': 'materials/imgs/other_gender_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
+    {'name': 'materials/imgs/MaRs_IB/22_task_16_pd_c.png', 'path': 'materials/imgs/MaRs_IB/22_task_16_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/57_task_61_md_d.png', 'path': 'materials/imgs/MaRs_IB/57_task_61_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
+    {'name': 'materials/imgs/MaRs_IB/40_task_48_pd_c.png', 'path': 'materials/imgs/MaRs_IB/40_task_48_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/45_task_58_pd_a.png', 'path': 'materials/imgs/MaRs_IB/45_task_58_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon.png', 'path': 'materials/merge_sort/imgs/fruits/melon.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
+    {'name': 'materials/imgs/MaRs_IB/62_task_31_md_b.png', 'path': 'materials/imgs/MaRs_IB/62_task_31_md_b.png'},
+    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/imgs/MaRs_IB/05_task_77_md_d.png', 'path': 'materials/imgs/MaRs_IB/05_task_77_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/purple_diamond_door.png', 'path': 'materials/merge_sort/imgs/purple_diamond_door.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_04_pd_c.png', 'path': 'materials/imgs/MaRs_IB/00_task_04_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/18_task_30_pd_a.png', 'path': 'materials/imgs/MaRs_IB/18_task_30_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
+    {'name': 'materials/imgs/MaRs_IB/69_task_24_pd_c.png', 'path': 'materials/imgs/MaRs_IB/69_task_24_pd_c.png'},
+    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
+    {'name': 'materials/imgs/MaRs_IB/32_task_41_md_d.png', 'path': 'materials/imgs/MaRs_IB/32_task_41_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/34_task_71_md_b.png', 'path': 'materials/imgs/MaRs_IB/34_task_71_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
+    {'name': 'materials/imgs/MaRs_IB/13_task_40_pd_c.png', 'path': 'materials/imgs/MaRs_IB/13_task_40_pd_c.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/suboptimal_merge_example.png', 'path': 'materials/merge_sort/imgs/merge_train/suboptimal_merge_example.png'},
-    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/50_task_39_md_b.png', 'path': 'materials/imgs/MaRs_IB/50_task_39_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/29_task_46_pd_a.png', 'path': 'materials/imgs/MaRs_IB/29_task_46_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/66_task_51_md_b.png', 'path': 'materials/imgs/MaRs_IB/66_task_51_md_b.png'},
+    {'name': 'materials/pre_test_cond.csv', 'path': 'materials/pre_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
+    {'name': 'materials/imgs/MaRs_IB/42_task_79_md_b.png', 'path': 'materials/imgs/MaRs_IB/42_task_79_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge.png'},
+    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/02_task_38_pd_a.png', 'path': 'materials/imgs/MaRs_IB/02_task_38_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
+    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
+    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/44_task_75_md_b.png', 'path': 'materials/imgs/MaRs_IB/44_task_75_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/07_task_60_pd_c.png', 'path': 'materials/imgs/MaRs_IB/07_task_60_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/31_task_18_pd_a.png', 'path': 'materials/imgs/MaRs_IB/31_task_18_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
+    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
+    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
+    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
+    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
+    {'name': 'materials/imgs/MaRs_IB/17_task_45_md_d.png', 'path': 'materials/imgs/MaRs_IB/17_task_45_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/59_task_29_md_d.png', 'path': 'materials/imgs/MaRs_IB/59_task_29_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_08_pd_c.png', 'path': 'materials/imgs/MaRs_IB/00_task_08_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
+    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
+    {'name': 'materials/imgs/MaRs_IB/53_task_34_pd_a.png', 'path': 'materials/imgs/MaRs_IB/53_task_34_pd_a.png'},
+    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/21_task_59_md_b.png', 'path': 'materials/imgs/MaRs_IB/21_task_59_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
+    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/36_task_36_pd_c.png', 'path': 'materials/imgs/MaRs_IB/36_task_36_pd_c.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
-    {'name': 'materials/review_cond.csv', 'path': 'materials/review_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
+    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
+    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
+    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
+    {'name': 'materials/imgs/MaRs_IB/27_task_27_md_b.png', 'path': 'materials/imgs/MaRs_IB/27_task_27_md_b.png'},
+    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
+    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/blue_star_door.png', 'path': 'materials/merge_sort/imgs/blue_star_door.png'},
+    {'name': 'materials/imgs/MaRs_IB/70_task_42_pd_a.png', 'path': 'materials/imgs/MaRs_IB/70_task_42_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/12_task_14_pd_a.png', 'path': 'materials/imgs/MaRs_IB/12_task_14_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
+    {'name': 'materials/imgs/MaRs_IB/39_task_20_pd_c.png', 'path': 'materials/imgs/MaRs_IB/39_task_20_pd_c.png'},
+    {'name': 'materials/imgs/arrow.png', 'path': 'materials/imgs/arrow.png'},
+    {'name': 'materials/imgs/MaRs_IB/46_task_33_md_d.png', 'path': 'materials/imgs/MaRs_IB/46_task_33_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/60_task_17_md_d.png', 'path': 'materials/imgs/MaRs_IB/60_task_17_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
+    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
+    {'name': 'materials/imgs/MaRs_IB/04_task_70_pd_a.png', 'path': 'materials/imgs/MaRs_IB/04_task_70_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_02_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_02_pd_a.png'},
+    {'name': 'materials/pre_test_train_cond.csv', 'path': 'materials/pre_test_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/26_task_68_pd_c.png', 'path': 'materials/imgs/MaRs_IB/26_task_68_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/49_task_80_pd_c.png', 'path': 'materials/imgs/MaRs_IB/49_task_80_pd_c.png'},
+    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/14_task_50_pd_a.png', 'path': 'materials/imgs/MaRs_IB/14_task_50_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/67_task_67_md_b.png', 'path': 'materials/imgs/MaRs_IB/67_task_67_md_b.png'},
+    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_01_md_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_01_md_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
     {'name': 'materials/imgs/MaRs_IB/33_task_44_pd_c.png', 'path': 'materials/imgs/MaRs_IB/33_task_44_pd_c.png'},
     {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
-    {'name': 'materials/imgs/MaRs_IB/08_task_11_md_b.png', 'path': 'materials/imgs/MaRs_IB/08_task_11_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/38_task_76_pd_c.png', 'path': 'materials/imgs/MaRs_IB/38_task_76_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_03_md_b.png', 'path': 'materials/imgs/MaRs_IB/00_task_03_md_b.png'},
-    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
-    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
-    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/28_task_66_pd_a.png', 'path': 'materials/imgs/MaRs_IB/28_task_66_pd_a.png'},
-    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/51_task_37_md_d.png', 'path': 'materials/imgs/MaRs_IB/51_task_37_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/16_task_43_md_b.png', 'path': 'materials/imgs/MaRs_IB/16_task_43_md_b.png'},
     {'name': 'materials/imgs/MaRs_IB/03_task_22_pd_a.png', 'path': 'materials/imgs/MaRs_IB/03_task_22_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
-    {'name': 'materials/imgs/MaRs_IB/65_task_15_md_b.png', 'path': 'materials/imgs/MaRs_IB/65_task_15_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/41_task_49_md_d.png', 'path': 'materials/imgs/MaRs_IB/41_task_49_md_d.png'},
-    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
-    {'name': 'materials/merge_sort/imgs/blue_star_door.png', 'path': 'materials/merge_sort/imgs/blue_star_door.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
-    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
-    {'name': 'materials/imgs/MaRs_IB/25_task_32_pd_c.png', 'path': 'materials/imgs/MaRs_IB/25_task_32_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/26_task_68_pd_c.png', 'path': 'materials/imgs/MaRs_IB/26_task_68_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
-    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
-    {'name': 'materials/pre_test_train_cond.csv', 'path': 'materials/pre_test_train_cond.csv'},
-    {'name': 'materials/imgs/MaRs_IB/35_task_63_md_b.png', 'path': 'materials/imgs/MaRs_IB/35_task_63_md_b.png'},
-    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
-    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
-    {'name': 'materials/imgs/MaRs_IB/04_task_70_pd_a.png', 'path': 'materials/imgs/MaRs_IB/04_task_70_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple.png', 'path': 'materials/merge_sort/imgs/fruits/apple.png'},
-    {'name': 'materials/imgs/MaRs_IB/57_task_61_md_d.png', 'path': 'materials/imgs/MaRs_IB/57_task_61_md_d.png'},
     {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
-    {'name': 'materials/imgs/MaRs_IB/62_task_31_md_b.png', 'path': 'materials/imgs/MaRs_IB/62_task_31_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/09_task_73_md_d.png', 'path': 'materials/imgs/MaRs_IB/09_task_73_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
-    {'name': 'materials/merge_sort/imgs/sort_test/large_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/large_input_review.png'},
-    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
-    {'name': 'materials/imgs/other_gender_selected.png', 'path': 'materials/imgs/other_gender_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
-    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
-    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_01_md_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_01_md_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/30_task_55_md_b.png', 'path': 'materials/imgs/MaRs_IB/30_task_55_md_b.png'},
-    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
-    {'name': 'materials/imgs/MaRs_IB/15_task_74_pd_a.png', 'path': 'materials/imgs/MaRs_IB/15_task_74_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/12_task_14_pd_a.png', 'path': 'materials/imgs/MaRs_IB/12_task_14_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/11_task_65_md_d.png', 'path': 'materials/imgs/MaRs_IB/11_task_65_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/55_task_64_pd_c.png', 'path': 'materials/imgs/MaRs_IB/55_task_64_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
-    {'name': 'materials/imgs/MaRs_IB/70_task_42_pd_a.png', 'path': 'materials/imgs/MaRs_IB/70_task_42_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/54_task_47_md_b.png', 'path': 'materials/imgs/MaRs_IB/54_task_47_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
+    {'name': 'materials/imgs/MaRs_IB/43_task_13_md_d.png', 'path': 'materials/imgs/MaRs_IB/43_task_13_md_d.png'},
     {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/10_task_26_pd_a.png', 'path': 'materials/imgs/MaRs_IB/10_task_26_pd_a.png'},
-    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
-    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge.png'},
-    {'name': 'materials/imgs/MaRs_IB/05_task_77_md_d.png', 'path': 'materials/imgs/MaRs_IB/05_task_77_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_02_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_02_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/18_task_30_pd_a.png', 'path': 'materials/imgs/MaRs_IB/18_task_30_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/42_task_79_md_b.png', 'path': 'materials/imgs/MaRs_IB/42_task_79_md_b.png'},
-    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
+    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
+    {'name': 'materials/imgs/MaRs_IB/54_task_47_md_b.png', 'path': 'materials/imgs/MaRs_IB/54_task_47_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
+    {'name': 'materials/imgs/MaRs_IB/52_task_69_md_d.png', 'path': 'materials/imgs/MaRs_IB/52_task_69_md_d.png'},
+    {'name': 'materials/review_cond.csv', 'path': 'materials/review_cond.csv'},
+    {'name': 'materials/imgs/MaRs_IB/38_task_76_pd_c.png', 'path': 'materials/imgs/MaRs_IB/38_task_76_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
+    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
+    {'name': 'materials/imgs/MaRs_IB/08_task_11_md_b.png', 'path': 'materials/imgs/MaRs_IB/08_task_11_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/65_task_15_md_b.png', 'path': 'materials/imgs/MaRs_IB/65_task_15_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
+    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
+    {'name': 'materials/imgs/skip.png', 'path': 'materials/imgs/skip.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
+    {'name': 'materials/imgs/MaRs_IB/19_task_54_pd_a.png', 'path': 'materials/imgs/MaRs_IB/19_task_54_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_09_md_d.png', 'path': 'materials/imgs/MaRs_IB/00_task_09_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_05_md_d.png', 'path': 'materials/imgs/MaRs_IB/00_task_05_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
+    {'name': 'materials/imgs/MaRs_IB/28_task_66_pd_a.png', 'path': 'materials/imgs/MaRs_IB/28_task_66_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_06_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_06_pd_a.png'},
+    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
+    {'name': 'materials/merge_sort/imgs/sort_test/small_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/small_input_review.png'},
+    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple.png', 'path': 'materials/merge_sort/imgs/fruits/apple.png'},
+    {'name': 'materials/imgs/MaRs_IB/56_task_56_pd_c.png', 'path': 'materials/imgs/MaRs_IB/56_task_56_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
+    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
+    {'name': 'materials/imgs/MaRs_IB/68_task_62_pd_a.png', 'path': 'materials/imgs/MaRs_IB/68_task_62_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/09_task_73_md_d.png', 'path': 'materials/imgs/MaRs_IB/09_task_73_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/47_task_28_pd_c.png', 'path': 'materials/imgs/MaRs_IB/47_task_28_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/35_task_63_md_b.png', 'path': 'materials/imgs/MaRs_IB/35_task_63_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/fixation.png', 'path': 'materials/imgs/MaRs_IB/fixation.png'},
+    {'name': 'materials/imgs/MaRs_IB/41_task_49_md_d.png', 'path': 'materials/imgs/MaRs_IB/41_task_49_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
     {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
-    {'name': 'materials/imgs/MaRs_IB/24_task_21_md_d.png', 'path': 'materials/imgs/MaRs_IB/24_task_21_md_d.png'},
-    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/13_task_40_pd_c.png', 'path': 'materials/imgs/MaRs_IB/13_task_40_pd_c.png'},
-    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/22_task_16_pd_c.png', 'path': 'materials/imgs/MaRs_IB/22_task_16_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
     {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
-    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'}
+    {'name': 'materials/imgs/MaRs_IB/15_task_74_pd_a.png', 'path': 'materials/imgs/MaRs_IB/15_task_74_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/55_task_64_pd_c.png', 'path': 'materials/imgs/MaRs_IB/55_task_64_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/58_task_23_md_b.png', 'path': 'materials/imgs/MaRs_IB/58_task_23_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/63_task_57_md_d.png', 'path': 'materials/imgs/MaRs_IB/63_task_57_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png'},
+    {'name': 'materials/imgs/MaRs_IB/23_task_72_pd_c.png', 'path': 'materials/imgs/MaRs_IB/23_task_72_pd_c.png'},
+    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
+    {'name': 'materials/imgs/other_gender.png', 'path': 'materials/imgs/other_gender.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/25_task_32_pd_c.png', 'path': 'materials/imgs/MaRs_IB/25_task_32_pd_c.png'},
+    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/20_task_35_md_b.png', 'path': 'materials/imgs/MaRs_IB/20_task_35_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
+    {'name': 'materials/imgs/MaRs_IB/37_task_78_pd_a.png', 'path': 'materials/imgs/MaRs_IB/37_task_78_pd_a.png'}
   ]
 });
 
@@ -884,6 +884,63 @@ var blue_star_door_2;
 var purple_diamond_door_2;
 var hint_btn;
 var hint_mouse;
+var MERGE_INTROClock;
+var intro_text_2;
+var alice_2;
+var merge_example;
+var blue_star_door_3;
+var merge_intro_btn;
+var merge_intro_mouse;
+var MERGE_TRAINClock;
+var merge_train_scale_instr;
+var merge_ans_instr;
+var merge_train_instr;
+var merge_train_scale_right;
+var merge_train_scale_left;
+var merge_train_sep;
+var merge_train;
+var merge_train_mc_1;
+var merge_train_mc_2;
+var merge_train_scale;
+var merge_train_btn_1;
+var merge_train_btn_2;
+var merge_train_compare;
+var merge_train_mouse;
+var merge_train_timer;
+var MERGE_EXPLClock;
+var merge_expl_initial_state;
+var merge_expl_feedback;
+var merge_expl_feedback_1;
+var merge_expl_feedback_2;
+var merge_expl_ex;
+var merge_expl_sep;
+var merge_expl_1;
+var merge_expl_2;
+var merge_expl_mc_1;
+var merge_expl_mc_2;
+var merge_expl_btn;
+var merge_expl_mouse;
+var merge_expl_timer;
+var MERGE_TEST_INTROClock;
+var intro_text_6;
+var alice_4;
+var merge_example_2;
+var blue_star_door_4;
+var merge_test_intro_btn;
+var merge_test_intro_mouse;
+var MERGE_TESTClock;
+var merge_test_scale_instr;
+var merge_test_ans_instr;
+var merge_test_instr;
+var merge_test_scale_right;
+var merge_test_scale_left;
+var merge_test_sep;
+var merge_test;
+var merge_test_scale;
+var merge_test_btn;
+var merge_test_compare;
+var merge_test_mouse;
+var merge_test_timer;
 var SORT_INTROClock;
 var intro_text_3;
 var bob_2;
@@ -944,63 +1001,6 @@ var sort_expl_compare;
 var sort_expl_mouse;
 var sort_expl_timer;
 var sort_expl_hint;
-var MERGE_INTROClock;
-var intro_text_2;
-var alice_2;
-var merge_example;
-var blue_star_door_3;
-var merge_intro_btn;
-var merge_intro_mouse;
-var MERGE_TRAINClock;
-var merge_train_scale_instr;
-var merge_ans_instr;
-var merge_train_instr;
-var merge_train_scale_right;
-var merge_train_scale_left;
-var merge_train_sep;
-var merge_train;
-var merge_train_mc_1;
-var merge_train_mc_2;
-var merge_train_scale;
-var merge_train_btn_1;
-var merge_train_btn_2;
-var merge_train_compare;
-var merge_train_mouse;
-var merge_train_timer;
-var MERGE_EXPLClock;
-var merge_expl_initial_state;
-var merge_expl_feedback;
-var merge_expl_feedback_1;
-var merge_expl_feedback_2;
-var merge_expl_ex;
-var merge_expl_sep;
-var merge_expl_1;
-var merge_expl_2;
-var merge_expl_mc_1;
-var merge_expl_mc_2;
-var merge_expl_btn;
-var merge_expl_mouse;
-var merge_expl_timer;
-var MERGE_TEST_INTROClock;
-var intro_text_6;
-var alice_4;
-var merge_example_2;
-var blue_star_door_4;
-var merge_test_intro_btn;
-var merge_test_intro_mouse;
-var MERGE_TESTClock;
-var merge_test_scale_instr;
-var merge_test_ans_instr;
-var merge_test_instr;
-var merge_test_scale_right;
-var merge_test_scale_left;
-var merge_test_sep;
-var merge_test;
-var merge_test_scale;
-var merge_test_btn;
-var merge_test_compare;
-var merge_test_mouse;
-var merge_test_timer;
 var BREAK_2Clock;
 var break_2_instr;
 var break_2_mouse;
@@ -1076,8 +1076,6 @@ var other;
 var background_btn;
 var background_mouse;
 var DEBRIEFClock;
-var intro_text_5;
-var debrief_mouse;
 var globalClock;
 var routineTimer;
 async function experimentInit() {
@@ -1104,6 +1102,15 @@ async function experimentInit() {
     flip: false,
   });
   
+    window.startHTML = (src) => {
+        $('body').append('<iframe id="iframe" src="' + src +'" style="width: 100%; height: 100%; position:absolute;z-index:1;top:0;left:0;border:0;"></iframe>');    
+        window.finishedHTML = false;
+    };
+      
+    window.finishHTML = () => {
+        $('#iframe').remove();
+        window.finishedHTML = true;
+     };
   progressBar = new ProgressBar(expSetup);
   // Initialize components for Routine "PRE_TEST_INTRO"
   PRE_TEST_INTROClock = new util.Clock();
@@ -1486,6 +1493,525 @@ async function experimentInit() {
     win: psychoJS.window,
   });
   hint_mouse.mouseClock = new util.Clock();
+  // Initialize components for Routine "MERGE_INTRO"
+  MERGE_INTROClock = new util.Clock();
+  intro_text_2 = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'intro_text_2',
+    text: 'ALICE: BIZZ ... Thank you for coming to help! We have fruits in some boxes to be put on a conveyor.\n\n1. The fruits in EACH ORANGE box INCREASE in weight from LEFT to RIGHT\n\n2. The BLUE STAR puts fruits from two ORANGE boxes on the CONVEYOR BELT in INCREASING weights from LEFT to RIGHT \n\nLEARN the BLUE STAR operation in steps and master it. ',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, (- 0.15)], height: 0.03,  wrapWidth: 1.2, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: 0.0 
+  });
+  
+  alice_2 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'alice_2', units : undefined, 
+    image : 'materials/merge_sort/imgs/alice.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.25), 0.25], size : [0.2, 0.2],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -1.0 
+  });
+  merge_example = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_example', units : undefined, 
+    image : 'materials/merge_sort/imgs/merge_train/merge_train_example.png', mask : undefined,
+    ori : 0.0, pos : [0.3, 0.25], size : [0.7, 0.4],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -2.0 
+  });
+  blue_star_door_3 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'blue_star_door_3', units : undefined, 
+    image : 'materials/merge_sort/imgs/blue_star_door.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.45), 0.25], size : [0.15, 0.35],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -3.0 
+  });
+  merge_intro_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_intro_btn', units : undefined, 
+    image : 'materials/imgs/continue.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -4.0 
+  });
+  merge_intro_mouse = new core.Mouse({
+    win: psychoJS.window,
+  });
+  merge_intro_mouse.mouseClock = new util.Clock();
+  // Initialize components for Routine "MERGE_TRAIN"
+  MERGE_TRAINClock = new util.Clock();
+  merge_train_scale_instr = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_train_scale_instr',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [(- 0.65), 0.45], height: 1.0,  wrapWidth: 0.3, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -7.0 
+  });
+  
+  merge_ans_instr = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_ans_instr',
+    text: 'Please SELECT the CONVEYOR BELT that has the correct fruit(s) on YELLOW position(s):',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, (- 0.15)], height: 0.03,  wrapWidth: 1.6, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -8.0 
+  });
+  
+  merge_train_instr = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_train_instr',
+    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. In EACH ORANGE box, fruits are arranged in INCREASING weights from LEFT to RIGHT\n\n3. Fruits on the CONVEYOR BELT are arranged in INCREASING weights from LEFT to RIGHT\n\nYou have 90 SECS to SUBMIT!',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -9.0 
+  });
+  
+  merge_train_scale_right = new visual.TextBox({
+    win: psychoJS.window,
+    name: 'merge_train_scale_right',
+    text: '',
+    font: 'Open Sans',
+    pos: [(- 0.55), 0.4], letterHeight: 0.03,
+    size: [0.1, 0.07],  units: undefined, 
+    color: 'black', colorSpace: 'rgb',
+    fillColor: 'white', borderColor: undefined,
+    bold: false, italic: false,
+    opacity: undefined,
+    padding: undefined,
+    editable: true,
+    multiline: true,
+    anchor: 'top-center',
+    depth: -10.0 
+  });
+  
+  merge_train_scale_left = new visual.TextBox({
+    win: psychoJS.window,
+    name: 'merge_train_scale_left',
+    text: '',
+    font: 'Open Sans',
+    pos: [(- 0.75), 0.4], letterHeight: 0.03,
+    size: [0.1, 0.07],  units: undefined, 
+    color: 'black', colorSpace: 'rgb',
+    fillColor: 'white', borderColor: undefined,
+    bold: false, italic: false,
+    opacity: undefined,
+    padding: undefined,
+    editable: true,
+    multiline: true,
+    anchor: 'top-center',
+    depth: -11.0 
+  });
+  
+  merge_train_sep = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_train_sep', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.11)], size : [1.5, 0.005],
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -12.0 
+  });
+  merge_train = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_train', units : undefined, 
+    image : undefined, mask : undefined,
+    ori : 0.0, pos : [0, 0.2], size : [0.8, 0.4],
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -13.0 
+  });
+  merge_train_mc_1 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_train_mc_1', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.3), (- 0.25)], size : [0.7, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -14.0 
+  });
+  merge_train_mc_2 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_train_mc_2', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.3), (- 0.4)], size : [0.7, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -15.0 
+  });
+  merge_train_scale = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_train_scale', units : undefined, 
+    image : undefined, mask : undefined,
+    ori : 0.0, pos : [(- 0.65), 0.15], size : [0.3, 0.3],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -16.0 
+  });
+  merge_train_btn_1 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_train_btn_1', units : undefined, 
+    image : 'materials/imgs/submit.png', mask : undefined,
+    ori : 0.0, pos : [0.5, (- 0.25)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -17.0 
+  });
+  merge_train_btn_2 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_train_btn_2', units : undefined, 
+    image : 'materials/imgs/submit.png', mask : undefined,
+    ori : 0.0, pos : [0.5, (- 0.4)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -18.0 
+  });
+  merge_train_compare = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_train_compare', units : undefined, 
+    image : 'materials/merge_sort/imgs/compare.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.65), (- 0.05)], size : [0.16, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -19.0 
+  });
+  merge_train_mouse = new core.Mouse({
+    win: psychoJS.window,
+  });
+  merge_train_mouse.mouseClock = new util.Clock();
+  merge_train_timer = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_train_timer',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0.65, (- 0.05)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('orange'),  opacity: undefined,
+    depth: -21.0 
+  });
+  
+  // Initialize components for Routine "MERGE_EXPL"
+  MERGE_EXPLClock = new util.Clock();
+  merge_expl_initial_state = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_expl_initial_state',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [(- 0.625), (- 0.1)], height: 0.03,  wrapWidth: 0.6, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: 0.0 
+  });
+  
+  merge_expl_feedback = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_expl_feedback',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [(- 0.375), 0.4], height: 0.03,  wrapWidth: 0.8, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -1.0 
+  });
+  
+  merge_expl_feedback_1 = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_expl_feedback_1',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [(- 0.15), 0.12], height: 0.035,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -2.0 
+  });
+  
+  merge_expl_feedback_2 = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_expl_feedback_2',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [(- 0.15), (- 0.27)], height: 0.035,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -3.0 
+  });
+  
+  merge_expl_ex = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_expl_ex', units : undefined, 
+    image : undefined, mask : undefined,
+    ori : 0.0, pos : [(- 0.625), 0.05], size : [0.4, 0.2],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -4.0 
+  });
+  merge_expl_sep = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_expl_sep', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.375), 0], size : [0.005, 0.7],
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -5.0 
+  });
+  merge_expl_1 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_expl_1', units : undefined, 
+    image : undefined, mask : undefined,
+    ori : 0.0, pos : [0.45, 0.25], size : [0.8, 0.4],
+    color : new util.Color([1, 1, 1]), opacity : 0.0,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -6.0 
+  });
+  merge_expl_2 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_expl_2', units : undefined, 
+    image : undefined, mask : undefined,
+    ori : 0.0, pos : [0.45, (- 0.15)], size : [0.8, 0.4],
+    color : new util.Color([1, 1, 1]), opacity : 0.0,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -7.0 
+  });
+  merge_expl_mc_1 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_expl_mc_1', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.15), 0.25], size : [0.3, 0.075],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -8.0 
+  });
+  merge_expl_mc_2 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_expl_mc_2', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.15), (- 0.15)], size : [0.3, 0.075],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -9.0 
+  });
+  merge_expl_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_expl_btn', units : undefined, 
+    image : 'materials/imgs/continue.png', mask : undefined,
+    ori : 0.0, pos : [0.35, (- 0.42)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -10.0 
+  });
+  merge_expl_mouse = new core.Mouse({
+    win: psychoJS.window,
+  });
+  merge_expl_mouse.mouseClock = new util.Clock();
+  merge_expl_timer = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_expl_timer',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [(- 0.375), (- 0.42)], height: 0.03,  wrapWidth: 0.5, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -12.0 
+  });
+  
+  // Initialize components for Routine "MERGE_TEST_INTRO"
+  MERGE_TEST_INTROClock = new util.Clock();
+  intro_text_6 = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'intro_text_6',
+    text: 'ALICE: BIZZ ... Now is time to apply the knowledge you learned about the BLUE STAR\n\n1. The fruits in EACH ORANGE box INCREASE in weight from LEFT to RIGHT\n\n2. The BLUE STAR puts fruits from two ORANGE boxes on the CONVEYOR BELT in INCREASING weights from LEFT to RIGHT',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, (- 0.15)], height: 0.03,  wrapWidth: 1.2, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: 0.0 
+  });
+  
+  alice_4 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'alice_4', units : undefined, 
+    image : 'materials/merge_sort/imgs/alice.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.25), 0.25], size : [0.2, 0.2],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -1.0 
+  });
+  merge_example_2 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_example_2', units : undefined, 
+    image : 'materials/merge_sort/imgs/merge_train/merge_train_example.png', mask : undefined,
+    ori : 0.0, pos : [0.3, 0.25], size : [0.7, 0.4],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -2.0 
+  });
+  blue_star_door_4 = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'blue_star_door_4', units : undefined, 
+    image : 'materials/merge_sort/imgs/blue_star_door.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.45), 0.25], size : [0.15, 0.35],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -3.0 
+  });
+  merge_test_intro_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_test_intro_btn', units : undefined, 
+    image : 'materials/imgs/continue.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -4.0 
+  });
+  merge_test_intro_mouse = new core.Mouse({
+    win: psychoJS.window,
+  });
+  merge_test_intro_mouse.mouseClock = new util.Clock();
+  // Initialize components for Routine "MERGE_TEST"
+  MERGE_TESTClock = new util.Clock();
+  merge_test_scale_instr = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_test_scale_instr',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [(- 0.65), 0.45], height: 1.0,  wrapWidth: 0.3, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -4.0 
+  });
+  
+  merge_test_ans_instr = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_test_ans_instr',
+    text: 'Put fruits on the CONVEYOR BELT by entering their labels one by one into the following boxes with WEIGHT INCREASING from LEFT to RIGHT',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [(- 0.25), (- 0.22)], height: 0.025,  wrapWidth: 0.9, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -5.0 
+  });
+  
+  merge_test_instr = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_test_instr',
+    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. In EACH ORANGE box, fruits are arranged in INCREASING weights from LEFT to RIGHT\n\n3. Fruits on the CONVEYOR BELT are arranged in INCREASING weights from LEFT to RIGHT\n\nYou have 90 SECS to SUBMIT!',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -6.0 
+  });
+  
+  merge_test_scale_right = new visual.TextBox({
+    win: psychoJS.window,
+    name: 'merge_test_scale_right',
+    text: '',
+    font: 'Open Sans',
+    pos: [(- 0.55), 0.4], letterHeight: 0.03,
+    size: [0.1, 0.07],  units: undefined, 
+    color: 'black', colorSpace: 'rgb',
+    fillColor: 'white', borderColor: undefined,
+    bold: false, italic: false,
+    opacity: undefined,
+    padding: undefined,
+    editable: true,
+    multiline: true,
+    anchor: 'top-center',
+    depth: -7.0 
+  });
+  
+  merge_test_scale_left = new visual.TextBox({
+    win: psychoJS.window,
+    name: 'merge_test_scale_left',
+    text: '',
+    font: 'Open Sans',
+    pos: [(- 0.75), 0.4], letterHeight: 0.03,
+    size: [0.1, 0.07],  units: undefined, 
+    color: 'black', colorSpace: 'rgb',
+    fillColor: 'white', borderColor: undefined,
+    bold: false, italic: false,
+    opacity: undefined,
+    padding: undefined,
+    editable: true,
+    multiline: true,
+    anchor: 'top-center',
+    depth: -8.0 
+  });
+  
+  merge_test_sep = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_test_sep', units : undefined, 
+    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.15)], size : [1.5, 0.005],
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -9.0 
+  });
+  merge_test = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_test', units : undefined, 
+    image : undefined, mask : undefined,
+    ori : 0.0, pos : [0, 0.2], size : [0.8, 0.4],
+    color : new util.Color([1, 1, 1]), opacity : 1.0,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -10.0 
+  });
+  merge_test_scale = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_test_scale', units : undefined, 
+    image : undefined, mask : undefined,
+    ori : 0.0, pos : [(- 0.65), 0.15], size : [0.3, 0.3],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -11.0 
+  });
+  merge_test_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_test_btn', units : undefined, 
+    image : 'materials/imgs/submit.png', mask : undefined,
+    ori : 0.0, pos : [0.5, (- 0.35)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -12.0 
+  });
+  merge_test_compare = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'merge_test_compare', units : undefined, 
+    image : 'materials/merge_sort/imgs/compare.png', mask : undefined,
+    ori : 0.0, pos : [(- 0.65), (- 0.05)], size : [0.16, 0.07],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : -13.0 
+  });
+  merge_test_mouse = new core.Mouse({
+    win: psychoJS.window,
+  });
+  merge_test_mouse.mouseClock = new util.Clock();
+  merge_test_timer = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'merge_test_timer',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0.65, (- 0.05)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('orange'),  opacity: undefined,
+    depth: -15.0 
+  });
+  
   // Initialize components for Routine "SORT_INTRO"
   SORT_INTROClock = new util.Clock();
   intro_text_3 = new visual.TextStim({
@@ -2048,525 +2574,6 @@ async function experimentInit() {
     pos: [0.5, (- 0.22)], height: 0.04,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('yellow'),  opacity: undefined,
     depth: -31.0 
-  });
-  
-  // Initialize components for Routine "MERGE_INTRO"
-  MERGE_INTROClock = new util.Clock();
-  intro_text_2 = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'intro_text_2',
-    text: 'ALICE: BIZZ ... Thank you for coming to help! We have fruits in some boxes to be put on a conveyor.\n\n1. The fruits in EACH ORANGE box INCREASE in weight from LEFT to RIGHT\n\n2. The BLUE STAR puts fruits from two ORANGE boxes on the CONVEYOR BELT in INCREASING weights from LEFT to RIGHT \n\nLEARN the BLUE STAR operation in steps and master it. ',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0, (- 0.15)], height: 0.03,  wrapWidth: 1.2, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: 0.0 
-  });
-  
-  alice_2 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'alice_2', units : undefined, 
-    image : 'materials/merge_sort/imgs/alice.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.25), 0.25], size : [0.2, 0.2],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -1.0 
-  });
-  merge_example = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_example', units : undefined, 
-    image : 'materials/merge_sort/imgs/merge_train/merge_train_example.png', mask : undefined,
-    ori : 0.0, pos : [0.3, 0.25], size : [0.7, 0.4],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -2.0 
-  });
-  blue_star_door_3 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'blue_star_door_3', units : undefined, 
-    image : 'materials/merge_sort/imgs/blue_star_door.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.45), 0.25], size : [0.15, 0.35],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -3.0 
-  });
-  merge_intro_btn = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_intro_btn', units : undefined, 
-    image : 'materials/imgs/continue.png', mask : undefined,
-    ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -4.0 
-  });
-  merge_intro_mouse = new core.Mouse({
-    win: psychoJS.window,
-  });
-  merge_intro_mouse.mouseClock = new util.Clock();
-  // Initialize components for Routine "MERGE_TRAIN"
-  MERGE_TRAINClock = new util.Clock();
-  merge_train_scale_instr = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_train_scale_instr',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [(- 0.65), 0.45], height: 1.0,  wrapWidth: 0.3, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -7.0 
-  });
-  
-  merge_ans_instr = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_ans_instr',
-    text: 'Please SELECT the CONVEYOR BELT that has the correct fruit(s) on YELLOW position(s):',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0, (- 0.15)], height: 0.03,  wrapWidth: 1.6, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -8.0 
-  });
-  
-  merge_train_instr = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_train_instr',
-    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. In EACH ORANGE box, fruits are arranged in INCREASING weights from LEFT to RIGHT\n\n3. Fruits on the CONVEYOR BELT are arranged in INCREASING weights from LEFT to RIGHT\n\nYou have 90 SECS to SUBMIT!',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -9.0 
-  });
-  
-  merge_train_scale_right = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'merge_train_scale_right',
-    text: '',
-    font: 'Open Sans',
-    pos: [(- 0.55), 0.4], letterHeight: 0.03,
-    size: [0.1, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: true,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -10.0 
-  });
-  
-  merge_train_scale_left = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'merge_train_scale_left',
-    text: '',
-    font: 'Open Sans',
-    pos: [(- 0.75), 0.4], letterHeight: 0.03,
-    size: [0.1, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: true,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -11.0 
-  });
-  
-  merge_train_sep = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_train_sep', units : undefined, 
-    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
-    ori : 0.0, pos : [0, (- 0.11)], size : [1.5, 0.005],
-    color : new util.Color([1, 1, 1]), opacity : 1.0,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -12.0 
-  });
-  merge_train = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_train', units : undefined, 
-    image : undefined, mask : undefined,
-    ori : 0.0, pos : [0, 0.2], size : [0.8, 0.4],
-    color : new util.Color([1, 1, 1]), opacity : 1.0,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -13.0 
-  });
-  merge_train_mc_1 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_train_mc_1', units : undefined, 
-    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.3), (- 0.25)], size : [0.7, 0.1],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -14.0 
-  });
-  merge_train_mc_2 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_train_mc_2', units : undefined, 
-    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.3), (- 0.4)], size : [0.7, 0.1],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -15.0 
-  });
-  merge_train_scale = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_train_scale', units : undefined, 
-    image : undefined, mask : undefined,
-    ori : 0.0, pos : [(- 0.65), 0.15], size : [0.3, 0.3],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -16.0 
-  });
-  merge_train_btn_1 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_train_btn_1', units : undefined, 
-    image : 'materials/imgs/submit.png', mask : undefined,
-    ori : 0.0, pos : [0.5, (- 0.25)], size : [0.24, 0.1],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -17.0 
-  });
-  merge_train_btn_2 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_train_btn_2', units : undefined, 
-    image : 'materials/imgs/submit.png', mask : undefined,
-    ori : 0.0, pos : [0.5, (- 0.4)], size : [0.24, 0.1],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -18.0 
-  });
-  merge_train_compare = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_train_compare', units : undefined, 
-    image : 'materials/merge_sort/imgs/compare.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.65), (- 0.05)], size : [0.16, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -19.0 
-  });
-  merge_train_mouse = new core.Mouse({
-    win: psychoJS.window,
-  });
-  merge_train_mouse.mouseClock = new util.Clock();
-  merge_train_timer = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_train_timer',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0.65, (- 0.05)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
-    color: new util.Color('orange'),  opacity: undefined,
-    depth: -21.0 
-  });
-  
-  // Initialize components for Routine "MERGE_EXPL"
-  MERGE_EXPLClock = new util.Clock();
-  merge_expl_initial_state = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_expl_initial_state',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [(- 0.625), (- 0.1)], height: 0.03,  wrapWidth: 0.6, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: 0.0 
-  });
-  
-  merge_expl_feedback = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_expl_feedback',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [(- 0.375), 0.4], height: 0.03,  wrapWidth: 0.8, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -1.0 
-  });
-  
-  merge_expl_feedback_1 = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_expl_feedback_1',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [(- 0.15), 0.12], height: 0.035,  wrapWidth: undefined, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -2.0 
-  });
-  
-  merge_expl_feedback_2 = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_expl_feedback_2',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [(- 0.15), (- 0.27)], height: 0.035,  wrapWidth: undefined, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -3.0 
-  });
-  
-  merge_expl_ex = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_expl_ex', units : undefined, 
-    image : undefined, mask : undefined,
-    ori : 0.0, pos : [(- 0.625), 0.05], size : [0.4, 0.2],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -4.0 
-  });
-  merge_expl_sep = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_expl_sep', units : undefined, 
-    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.375), 0], size : [0.005, 0.7],
-    color : new util.Color([1, 1, 1]), opacity : 1.0,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -5.0 
-  });
-  merge_expl_1 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_expl_1', units : undefined, 
-    image : undefined, mask : undefined,
-    ori : 0.0, pos : [0.45, 0.25], size : [0.8, 0.4],
-    color : new util.Color([1, 1, 1]), opacity : 0.0,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -6.0 
-  });
-  merge_expl_2 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_expl_2', units : undefined, 
-    image : undefined, mask : undefined,
-    ori : 0.0, pos : [0.45, (- 0.15)], size : [0.8, 0.4],
-    color : new util.Color([1, 1, 1]), opacity : 0.0,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -7.0 
-  });
-  merge_expl_mc_1 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_expl_mc_1', units : undefined, 
-    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.15), 0.25], size : [0.3, 0.075],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -8.0 
-  });
-  merge_expl_mc_2 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_expl_mc_2', units : undefined, 
-    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.15), (- 0.15)], size : [0.3, 0.075],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -9.0 
-  });
-  merge_expl_btn = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_expl_btn', units : undefined, 
-    image : 'materials/imgs/continue.png', mask : undefined,
-    ori : 0.0, pos : [0.35, (- 0.42)], size : [0.28, 0.1],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -10.0 
-  });
-  merge_expl_mouse = new core.Mouse({
-    win: psychoJS.window,
-  });
-  merge_expl_mouse.mouseClock = new util.Clock();
-  merge_expl_timer = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_expl_timer',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [(- 0.375), (- 0.42)], height: 0.03,  wrapWidth: 0.5, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -12.0 
-  });
-  
-  // Initialize components for Routine "MERGE_TEST_INTRO"
-  MERGE_TEST_INTROClock = new util.Clock();
-  intro_text_6 = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'intro_text_6',
-    text: 'ALICE: BIZZ ... Now is time to apply the knowledge you learned about the BLUE STAR\n\n1. The fruits in EACH ORANGE box INCREASE in weight from LEFT to RIGHT\n\n2. The BLUE STAR puts fruits from two ORANGE boxes on the CONVEYOR BELT in INCREASING weights from LEFT to RIGHT',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0, (- 0.15)], height: 0.03,  wrapWidth: 1.2, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: 0.0 
-  });
-  
-  alice_4 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'alice_4', units : undefined, 
-    image : 'materials/merge_sort/imgs/alice.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.25), 0.25], size : [0.2, 0.2],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -1.0 
-  });
-  merge_example_2 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_example_2', units : undefined, 
-    image : 'materials/merge_sort/imgs/merge_train/merge_train_example.png', mask : undefined,
-    ori : 0.0, pos : [0.3, 0.25], size : [0.7, 0.4],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -2.0 
-  });
-  blue_star_door_4 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'blue_star_door_4', units : undefined, 
-    image : 'materials/merge_sort/imgs/blue_star_door.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.45), 0.25], size : [0.15, 0.35],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -3.0 
-  });
-  merge_test_intro_btn = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_test_intro_btn', units : undefined, 
-    image : 'materials/imgs/continue.png', mask : undefined,
-    ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -4.0 
-  });
-  merge_test_intro_mouse = new core.Mouse({
-    win: psychoJS.window,
-  });
-  merge_test_intro_mouse.mouseClock = new util.Clock();
-  // Initialize components for Routine "MERGE_TEST"
-  MERGE_TESTClock = new util.Clock();
-  merge_test_scale_instr = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_test_scale_instr',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [(- 0.65), 0.45], height: 1.0,  wrapWidth: 0.3, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -4.0 
-  });
-  
-  merge_test_ans_instr = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_test_ans_instr',
-    text: 'Put fruits on the CONVEYOR BELT by entering their labels one by one into the following boxes with WEIGHT INCREASING from LEFT to RIGHT',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [(- 0.25), (- 0.22)], height: 0.025,  wrapWidth: 0.9, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -5.0 
-  });
-  
-  merge_test_instr = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_test_instr',
-    text: '1. Use the scale on the left to COMPARE weights of TWO fruits by entering the alphabetic CAPITAL labels\n\n2. In EACH ORANGE box, fruits are arranged in INCREASING weights from LEFT to RIGHT\n\n3. Fruits on the CONVEYOR BELT are arranged in INCREASING weights from LEFT to RIGHT\n\nYou have 90 SECS to SUBMIT!',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0.65, 0.2], height: 0.025,  wrapWidth: 0.4, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: -6.0 
-  });
-  
-  merge_test_scale_right = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'merge_test_scale_right',
-    text: '',
-    font: 'Open Sans',
-    pos: [(- 0.55), 0.4], letterHeight: 0.03,
-    size: [0.1, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: true,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -7.0 
-  });
-  
-  merge_test_scale_left = new visual.TextBox({
-    win: psychoJS.window,
-    name: 'merge_test_scale_left',
-    text: '',
-    font: 'Open Sans',
-    pos: [(- 0.75), 0.4], letterHeight: 0.03,
-    size: [0.1, 0.07],  units: undefined, 
-    color: 'black', colorSpace: 'rgb',
-    fillColor: 'white', borderColor: undefined,
-    bold: false, italic: false,
-    opacity: undefined,
-    padding: undefined,
-    editable: true,
-    multiline: true,
-    anchor: 'top-center',
-    depth: -8.0 
-  });
-  
-  merge_test_sep = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_test_sep', units : undefined, 
-    image : 'materials/merge_sort/imgs/white_BG.png', mask : undefined,
-    ori : 0.0, pos : [0, (- 0.15)], size : [1.5, 0.005],
-    color : new util.Color([1, 1, 1]), opacity : 1.0,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -9.0 
-  });
-  merge_test = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_test', units : undefined, 
-    image : undefined, mask : undefined,
-    ori : 0.0, pos : [0, 0.2], size : [0.8, 0.4],
-    color : new util.Color([1, 1, 1]), opacity : 1.0,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -10.0 
-  });
-  merge_test_scale = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_test_scale', units : undefined, 
-    image : undefined, mask : undefined,
-    ori : 0.0, pos : [(- 0.65), 0.15], size : [0.3, 0.3],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -11.0 
-  });
-  merge_test_btn = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_test_btn', units : undefined, 
-    image : 'materials/imgs/submit.png', mask : undefined,
-    ori : 0.0, pos : [0.5, (- 0.35)], size : [0.24, 0.1],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -12.0 
-  });
-  merge_test_compare = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'merge_test_compare', units : undefined, 
-    image : 'materials/merge_sort/imgs/compare.png', mask : undefined,
-    ori : 0.0, pos : [(- 0.65), (- 0.05)], size : [0.16, 0.07],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -13.0 
-  });
-  merge_test_mouse = new core.Mouse({
-    win: psychoJS.window,
-  });
-  merge_test_mouse.mouseClock = new util.Clock();
-  merge_test_timer = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'merge_test_timer',
-    text: '',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0.65, (- 0.05)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
-    color: new util.Color('orange'),  opacity: undefined,
-    depth: -15.0 
   });
   
   // Initialize components for Routine "BREAK_2"
@@ -3228,21 +3235,6 @@ async function experimentInit() {
   background_mouse.mouseClock = new util.Clock();
   // Initialize components for Routine "DEBRIEF"
   DEBRIEFClock = new util.Clock();
-  intro_text_5 = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'intro_text_5',
-    text: 'This is the end of the experiment!\n\nThank you very much for your time and effort!\n\nClick anywhere to exit!',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0, 0], height: 0.03,  wrapWidth: undefined, ori: 0.0,
-    color: new util.Color('white'),  opacity: undefined,
-    depth: 0.0 
-  });
-  
-  debrief_mouse = new core.Mouse({
-    win: psychoJS.window,
-  });
-  debrief_mouse.mouseClock = new util.Clock();
   // Create some handy timers
   globalClock = new util.Clock();  // to track the time since experiment started
   routineTimer = new util.CountdownTimer();  // to track time remaining of each (non-slip) routine
@@ -3584,47 +3576,6 @@ async function MaRs_IB_2LoopEnd() {
 }
 
 
-var TRAIN_2;
-function TRAIN_2LoopBegin(TRAIN_2LoopScheduler, snapshot) {
-  return async function() {
-    TrialHandler.fromSnapshot(snapshot); // update internal variables (.thisN etc) of the loop
-    
-    // set up handler to look after randomisation of conditions etc
-    TRAIN_2 = new TrialHandler({
-      psychoJS: psychoJS,
-      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
-      extraInfo: expInfo, originPath: undefined,
-      trialList: 'materials/sort_train_cond.csv',
-      seed: undefined, name: 'TRAIN_2'
-    });
-    psychoJS.experiment.addLoop(TRAIN_2); // add the loop to the experiment
-    currentLoop = TRAIN_2;  // we're now the current loop
-    
-    // Schedule all the trials in the trialList:
-    for (const thisTRAIN_2 of TRAIN_2) {
-      const snapshot = TRAIN_2.getSnapshot();
-      TRAIN_2LoopScheduler.add(importConditions(snapshot));
-      TRAIN_2LoopScheduler.add(SORT_TRAINRoutineBegin(snapshot));
-      TRAIN_2LoopScheduler.add(SORT_TRAINRoutineEachFrame());
-      TRAIN_2LoopScheduler.add(SORT_TRAINRoutineEnd());
-      TRAIN_2LoopScheduler.add(SORT_EXPLRoutineBegin(snapshot));
-      TRAIN_2LoopScheduler.add(SORT_EXPLRoutineEachFrame());
-      TRAIN_2LoopScheduler.add(SORT_EXPLRoutineEnd());
-      TRAIN_2LoopScheduler.add(endLoopIteration(TRAIN_2LoopScheduler, snapshot));
-    }
-    
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-async function TRAIN_2LoopEnd() {
-  psychoJS.experiment.removeLoop(TRAIN_2);
-
-  return Scheduler.Event.NEXT;
-}
-
-
 var TRAIN_1;
 function TRAIN_1LoopBegin(TRAIN_1LoopScheduler, snapshot) {
   return async function() {
@@ -3699,6 +3650,47 @@ function TEST_1LoopBegin(TEST_1LoopScheduler, snapshot) {
 
 async function TEST_1LoopEnd() {
   psychoJS.experiment.removeLoop(TEST_1);
+
+  return Scheduler.Event.NEXT;
+}
+
+
+var TRAIN_2;
+function TRAIN_2LoopBegin(TRAIN_2LoopScheduler, snapshot) {
+  return async function() {
+    TrialHandler.fromSnapshot(snapshot); // update internal variables (.thisN etc) of the loop
+    
+    // set up handler to look after randomisation of conditions etc
+    TRAIN_2 = new TrialHandler({
+      psychoJS: psychoJS,
+      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
+      extraInfo: expInfo, originPath: undefined,
+      trialList: 'materials/sort_train_cond.csv',
+      seed: undefined, name: 'TRAIN_2'
+    });
+    psychoJS.experiment.addLoop(TRAIN_2); // add the loop to the experiment
+    currentLoop = TRAIN_2;  // we're now the current loop
+    
+    // Schedule all the trials in the trialList:
+    for (const thisTRAIN_2 of TRAIN_2) {
+      const snapshot = TRAIN_2.getSnapshot();
+      TRAIN_2LoopScheduler.add(importConditions(snapshot));
+      TRAIN_2LoopScheduler.add(SORT_TRAINRoutineBegin(snapshot));
+      TRAIN_2LoopScheduler.add(SORT_TRAINRoutineEachFrame());
+      TRAIN_2LoopScheduler.add(SORT_TRAINRoutineEnd());
+      TRAIN_2LoopScheduler.add(SORT_EXPLRoutineBegin(snapshot));
+      TRAIN_2LoopScheduler.add(SORT_EXPLRoutineEachFrame());
+      TRAIN_2LoopScheduler.add(SORT_EXPLRoutineEnd());
+      TRAIN_2LoopScheduler.add(endLoopIteration(TRAIN_2LoopScheduler, snapshot));
+    }
+    
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+async function TRAIN_2LoopEnd() {
+  psychoJS.experiment.removeLoop(TRAIN_2);
 
   return Scheduler.Event.NEXT;
 }
@@ -4881,6 +4873,1466 @@ function HINTRoutineEnd() {
 }
 
 
+var MERGE_INTROComponents;
+function MERGE_INTRORoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //------Prepare to start Routine 'MERGE_INTRO'-------
+    t = 0;
+    MERGE_INTROClock.reset(); // clock
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    routineTimer.add(120.000000);
+    // update component parameters for each repeat
+    // setup some python lists for storing info about the merge_intro_mouse
+    gotValidClick = false; // until a click is received
+    routineT = 0;
+    // keep track of which components have finished
+    MERGE_INTROComponents = [];
+    MERGE_INTROComponents.push(intro_text_2);
+    MERGE_INTROComponents.push(alice_2);
+    MERGE_INTROComponents.push(merge_example);
+    MERGE_INTROComponents.push(blue_star_door_3);
+    MERGE_INTROComponents.push(merge_intro_btn);
+    MERGE_INTROComponents.push(merge_intro_mouse);
+    
+    for (const thisComponent of MERGE_INTROComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function MERGE_INTRORoutineEachFrame() {
+  return async function () {
+    //------Loop for each frame of Routine 'MERGE_INTRO'-------
+    // get current time
+    t = MERGE_INTROClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *intro_text_2* updates
+    if (t >= 0.0 && intro_text_2.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      intro_text_2.tStart = t;  // (not accounting for frame time here)
+      intro_text_2.frameNStart = frameN;  // exact frame index
+      
+      intro_text_2.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (intro_text_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      intro_text_2.setAutoDraw(false);
+    }
+    
+    // *alice_2* updates
+    if (t >= 0.0 && alice_2.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      alice_2.tStart = t;  // (not accounting for frame time here)
+      alice_2.frameNStart = frameN;  // exact frame index
+      
+      alice_2.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (alice_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      alice_2.setAutoDraw(false);
+    }
+    
+    // *merge_example* updates
+    if (t >= 0.0 && merge_example.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_example.tStart = t;  // (not accounting for frame time here)
+      merge_example.frameNStart = frameN;  // exact frame index
+      
+      merge_example.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_example.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_example.setAutoDraw(false);
+    }
+    
+    // *blue_star_door_3* updates
+    if (t >= 0.0 && blue_star_door_3.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      blue_star_door_3.tStart = t;  // (not accounting for frame time here)
+      blue_star_door_3.frameNStart = frameN;  // exact frame index
+      
+      blue_star_door_3.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (blue_star_door_3.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      blue_star_door_3.setAutoDraw(false);
+    }
+    
+    // *merge_intro_btn* updates
+    if (t >= 0.5 && merge_intro_btn.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_intro_btn.tStart = t;  // (not accounting for frame time here)
+      merge_intro_btn.frameNStart = frameN;  // exact frame index
+      
+      merge_intro_btn.setAutoDraw(true);
+    }
+
+    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_intro_btn.status === PsychoJS.Status.STARTED || merge_intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_intro_btn.setAutoDraw(false);
+    }
+    if (((t >= 0.5) && (merge_intro_mouse.status === PsychoJS.Status.NOT_STARTED))) {
+        merge_intro_mouse.tStart = t;
+        merge_intro_mouse.frameNStart = frameN;
+        merge_intro_mouse.status = PsychoJS.Status.STARTED;
+        merge_intro_mouse.mouseClock.reset();
+    }
+    if (((merge_intro_mouse.isPressedIn(merge_intro_btn) && (merge_intro_mouse.status === PsychoJS.Status.STARTED)) && (merge_intro_btn.status === PsychoJS.Status.STARTED))) {
+        merge_intro_mouse.status = PsychoJS.Status.FINISHED;
+        continueRoutine = false;
+    }
+    if ((merge_intro_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        merge_intro_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    routineT = t;
+    
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of MERGE_INTROComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine && routineTimer.getTime() > 0) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function MERGE_INTRORoutineEnd() {
+  return async function () {
+    //------Ending Routine 'MERGE_INTRO'-------
+    for (const thisComponent of MERGE_INTROComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    // store data for psychoJS.experiment (ExperimentHandler)
+    _mouseXYs = merge_intro_mouse.getPos();
+    _mouseButtons = merge_intro_mouse.getPressed();
+    psychoJS.experiment.addData('merge_intro_mouse.x', _mouseXYs[0]);
+    psychoJS.experiment.addData('merge_intro_mouse.y', _mouseXYs[1]);
+    psychoJS.experiment.addData('merge_intro_mouse.leftButton', _mouseButtons[0]);
+    psychoJS.experiment.addData('merge_intro_mouse.midButton', _mouseButtons[1]);
+    psychoJS.experiment.addData('merge_intro_mouse.rightButton', _mouseButtons[2]);
+    psychoJS.experiment.addData("merge_intro.tEnd",routineT);
+    progressBar.update("MERGE_INTRO");
+    return Scheduler.Event.NEXT;
+  };
+}
+
+
+var merge_train_input;
+var mc_order;
+var merge_train_compare_records;
+var merge_train_labels;
+var merge_train_compareN;
+var merge_train_mc_path_2;
+var merge_train_mc_path_1;
+var isComparePressed;
+var comparePressedT;
+var MERGE_TRAINComponents;
+function MERGE_TRAINRoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //------Prepare to start Routine 'MERGE_TRAIN'-------
+    t = 0;
+    MERGE_TRAINClock.reset(); // clock
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    routineTimer.add(90.000000);
+    // update component parameters for each repeat
+    merge_train_scale_instr.setColor(new util.Color('white'));
+    merge_train_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
+    merge_train_scale_instr.setHeight(0.02);
+    merge_train_scale_right.setText('');
+    merge_train_scale_right.setText('');
+    merge_train_scale_left.setText('');
+    merge_train_scale_left.setText('');
+    merge_train.setImage(img_path);
+    merge_train_scale.setImage(scaleEqPath);
+    // setup some python lists for storing info about the merge_train_mouse
+    merge_train_mouse.clicked_name = [];
+    gotValidClick = false; // until a click is received
+    merge_train_timer.setText('');
+    merge_train_input = input;
+    mc_order = [];
+    merge_train_compare_records = [];
+    merge_train_labels = encryption;
+    merge_train_compareN = 0;
+    merge_train_mc_path_2 = mc_path_2;
+    merge_train_mc_path_1 = mc_path_1;
+    
+    merge_train_scale_left.refresh();
+    merge_train_scale_right.refresh();
+    
+    routineT = 0;
+    isComparePressed = false;
+    comparePressedT = 0.0;
+    
+    const merge_train_mouse_btns = merge_train_mouse.psychoJS.eventManager.getMouseInfo().buttons;
+    for (const b of [0,1,2]){
+        merge_train_mouse_btns.pressed[b] = 0;
+        merge_train_mouse_btns.clocks[b].reset();
+        merge_train_mouse_btns.times[b] = 0.0;
+    }
+    // keep track of which components have finished
+    MERGE_TRAINComponents = [];
+    MERGE_TRAINComponents.push(merge_train_scale_instr);
+    MERGE_TRAINComponents.push(merge_ans_instr);
+    MERGE_TRAINComponents.push(merge_train_instr);
+    MERGE_TRAINComponents.push(merge_train_scale_right);
+    MERGE_TRAINComponents.push(merge_train_scale_left);
+    MERGE_TRAINComponents.push(merge_train_sep);
+    MERGE_TRAINComponents.push(merge_train);
+    MERGE_TRAINComponents.push(merge_train_mc_1);
+    MERGE_TRAINComponents.push(merge_train_mc_2);
+    MERGE_TRAINComponents.push(merge_train_scale);
+    MERGE_TRAINComponents.push(merge_train_btn_1);
+    MERGE_TRAINComponents.push(merge_train_btn_2);
+    MERGE_TRAINComponents.push(merge_train_compare);
+    MERGE_TRAINComponents.push(merge_train_mouse);
+    MERGE_TRAINComponents.push(merge_train_timer);
+    
+    for (const thisComponent of MERGE_TRAINComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function MERGE_TRAINRoutineEachFrame() {
+  return async function () {
+    //------Loop for each frame of Routine 'MERGE_TRAIN'-------
+    // get current time
+    t = MERGE_TRAINClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *merge_train_scale_instr* updates
+    if (t >= 0.0 && merge_train_scale_instr.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train_scale_instr.tStart = t;  // (not accounting for frame time here)
+      merge_train_scale_instr.frameNStart = frameN;  // exact frame index
+      
+      merge_train_scale_instr.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_train_scale_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_train_scale_instr.setAutoDraw(false);
+    }
+    
+    // *merge_ans_instr* updates
+    if (t >= 0.0 && merge_ans_instr.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_ans_instr.tStart = t;  // (not accounting for frame time here)
+      merge_ans_instr.frameNStart = frameN;  // exact frame index
+      
+      merge_ans_instr.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_ans_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_ans_instr.setAutoDraw(false);
+    }
+    
+    // *merge_train_instr* updates
+    if (t >= 0.0 && merge_train_instr.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train_instr.tStart = t;  // (not accounting for frame time here)
+      merge_train_instr.frameNStart = frameN;  // exact frame index
+      
+      merge_train_instr.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_train_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_train_instr.setAutoDraw(false);
+    }
+    
+    // *merge_train_scale_right* updates
+    if (t >= 0.0 && merge_train_scale_right.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train_scale_right.tStart = t;  // (not accounting for frame time here)
+      merge_train_scale_right.frameNStart = frameN;  // exact frame index
+      
+      merge_train_scale_right.setAutoDraw(true);
+    }
+
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_train_scale_right.status === PsychoJS.Status.STARTED || merge_train_scale_right.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_train_scale_right.setAutoDraw(false);
+    }
+    
+    // *merge_train_scale_left* updates
+    if (t >= 0.0 && merge_train_scale_left.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train_scale_left.tStart = t;  // (not accounting for frame time here)
+      merge_train_scale_left.frameNStart = frameN;  // exact frame index
+      
+      merge_train_scale_left.setAutoDraw(true);
+    }
+
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_train_scale_left.status === PsychoJS.Status.STARTED || merge_train_scale_left.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_train_scale_left.setAutoDraw(false);
+    }
+    
+    // *merge_train_sep* updates
+    if (t >= 0.0 && merge_train_sep.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train_sep.tStart = t;  // (not accounting for frame time here)
+      merge_train_sep.frameNStart = frameN;  // exact frame index
+      
+      merge_train_sep.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_train_sep.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_train_sep.setAutoDraw(false);
+    }
+    
+    // *merge_train* updates
+    if (t >= 0.5 && merge_train.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train.tStart = t;  // (not accounting for frame time here)
+      merge_train.frameNStart = frameN;  // exact frame index
+      
+      merge_train.setAutoDraw(true);
+    }
+
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_train.status === PsychoJS.Status.STARTED || merge_train.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_train.setAutoDraw(false);
+    }
+    
+    // *merge_train_mc_1* updates
+    if (t >= 0.0 && merge_train_mc_1.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train_mc_1.tStart = t;  // (not accounting for frame time here)
+      merge_train_mc_1.frameNStart = frameN;  // exact frame index
+      
+      merge_train_mc_1.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_train_mc_1.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_train_mc_1.setAutoDraw(false);
+    }
+    
+    // *merge_train_mc_2* updates
+    if (t >= 0.0 && merge_train_mc_2.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train_mc_2.tStart = t;  // (not accounting for frame time here)
+      merge_train_mc_2.frameNStart = frameN;  // exact frame index
+      
+      merge_train_mc_2.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_train_mc_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_train_mc_2.setAutoDraw(false);
+    }
+    
+    // *merge_train_scale* updates
+    if (t >= 0.0 && merge_train_scale.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train_scale.tStart = t;  // (not accounting for frame time here)
+      merge_train_scale.frameNStart = frameN;  // exact frame index
+      
+      merge_train_scale.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_train_scale.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_train_scale.setAutoDraw(false);
+    }
+    
+    // *merge_train_btn_1* updates
+    if (t >= 0.5 && merge_train_btn_1.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train_btn_1.tStart = t;  // (not accounting for frame time here)
+      merge_train_btn_1.frameNStart = frameN;  // exact frame index
+      
+      merge_train_btn_1.setAutoDraw(true);
+    }
+
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_train_btn_1.status === PsychoJS.Status.STARTED || merge_train_btn_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_train_btn_1.setAutoDraw(false);
+    }
+    
+    // *merge_train_btn_2* updates
+    if (t >= 0.5 && merge_train_btn_2.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train_btn_2.tStart = t;  // (not accounting for frame time here)
+      merge_train_btn_2.frameNStart = frameN;  // exact frame index
+      
+      merge_train_btn_2.setAutoDraw(true);
+    }
+
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_train_btn_2.status === PsychoJS.Status.STARTED || merge_train_btn_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_train_btn_2.setAutoDraw(false);
+    }
+    
+    // *merge_train_compare* updates
+    if (t >= 0.5 && merge_train_compare.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train_compare.tStart = t;  // (not accounting for frame time here)
+      merge_train_compare.frameNStart = frameN;  // exact frame index
+      
+      merge_train_compare.setAutoDraw(true);
+    }
+
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_train_compare.status === PsychoJS.Status.STARTED || merge_train_compare.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_train_compare.setAutoDraw(false);
+    }
+    
+    // *merge_train_timer* updates
+    if (t >= 0.0 && merge_train_timer.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_train_timer.tStart = t;  // (not accounting for frame time here)
+      merge_train_timer.frameNStart = frameN;  // exact frame index
+      
+      merge_train_timer.setAutoDraw(true);
+    }
+
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_train_timer.status === PsychoJS.Status.STARTED || merge_train_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_train_timer.setAutoDraw(false);
+    }
+    if ((mc_order.length === 0)) {
+        mc_order = getCorrectMCOrder(TRAIN_1.thisTrialN, merge_train_mc_path_1, merge_train_mc_path_2, merge_train_mc_1, merge_train_mc_2);
+    }
+    
+    if (t >= 0.5 && merge_train_mouse.status === PsychoJS.Status.NOT_STARTED) {
+          merge_train_mouse.tStart = t;  
+          merge_train_mouse.frameNStart = frameN;  
+          
+          merge_train_mouse.status = PsychoJS.Status.STARTED;
+          merge_train_mouse.mouseClock.reset();
+          prevButtonState = merge_train_mouse.getPressed();  
+    }
+    
+    if ((merge_train_mouse.status === PsychoJS.Status.STARTED || merge_train_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+          merge_train_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    
+    if (t >= 0.5 && merge_train_mouse.status === PsychoJS.Status.STARTED) {
+        _mouseButtons = merge_train_mouse.getPressed();
+        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
+            prevButtonState = _mouseButtons;
+            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
+                for (const obj of [merge_train_btn_1,merge_train_btn_2,merge_train_compare]) {
+                    if (merge_train_mouse.isPressedIn(obj) && (obj.name === "merge_train_btn_1" || obj.name === "merge_train_btn_2")) {
+                        merge_train_mouse.clicked_name.push(obj.name);
+                        merge_train_mouse.status = PsychoJS.Status.FINISHED;
+                        continueRoutine = false;
+                    } else {
+                        if(merge_train_mouse.isPressedIn(obj) && !isComparePressed) {
+                            if(obj.name === "merge_train_compare") {
+                                const compareStatus = compare(merge_train_scale, merge_train_input, merge_train_labels, merge_train_compare, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right);
+                                merge_train_compareN = (merge_train_compareN + compareStatus[0]);
+                                if (compareStatus[0] !== 0) {
+                                    merge_train_compare_records.push([compareStatus[1],compareStatus[2]]);
+                                }
+                                comparePressedT = t;
+                                isComparePressed = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    merge_train_timer.text = timerWarning(mergeTrainTimeL, t);
+    routineT = t;
+    
+    if (isComparePressed && (routineT - comparePressedT) >= 0.1) {
+        merge_train_compare.image = "materials/merge_sort/imgs/compare.png";
+        isComparePressed = false;
+    }
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of MERGE_TRAINComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine && routineTimer.getTime() > 0) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function MERGE_TRAINRoutineEnd() {
+  return async function () {
+    //------Ending Routine 'MERGE_TRAIN'-------
+    for (const thisComponent of MERGE_TRAINComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    psychoJS.experiment.addData('merge_train_scale_right.text',merge_train_scale_right.text)
+    psychoJS.experiment.addData('merge_train_scale_left.text',merge_train_scale_left.text)
+    // store data for psychoJS.experiment (ExperimentHandler)
+    _mouseXYs = merge_train_mouse.getPos();
+    _mouseButtons = merge_train_mouse.getPressed();
+    psychoJS.experiment.addData('merge_train_mouse.x', _mouseXYs[0]);
+    psychoJS.experiment.addData('merge_train_mouse.y', _mouseXYs[1]);
+    psychoJS.experiment.addData('merge_train_mouse.leftButton', _mouseButtons[0]);
+    psychoJS.experiment.addData('merge_train_mouse.midButton', _mouseButtons[1]);
+    psychoJS.experiment.addData('merge_train_mouse.rightButton', _mouseButtons[2]);
+    if (merge_train_mouse.clicked_name.length > 0) {
+      psychoJS.experiment.addData('merge_train_mouse.clicked_name', merge_train_mouse.clicked_name[0]);}
+    psychoJS.experiment.addData("merge_train.tStart", merge_train.tStart);
+    psychoJS.experiment.addData("mc_order",mc_order);
+    psychoJS.experiment.addData("merge_train_compareN",merge_train_compareN);
+    psychoJS.experiment.addData("merge_train_labels",merge_train_labels);
+    psychoJS.experiment.addData("merge_train_input",merge_train_input);
+    psychoJS.experiment.addData("merge_train_compare_records",merge_train_compare_records);
+    psychoJS.experiment.addData("merge_train_mouse_clicked",merge_train_mouse.clicked_name);
+    psychoJS.experiment.addData("merge_train.tEnd",routineT);
+    progressBar.update("MERGE_TRAIN");
+    return Scheduler.Event.NEXT;
+  };
+}
+
+
+var _pj;
+var MERGE_EXPLComponents;
+function MERGE_EXPLRoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //------Prepare to start Routine 'MERGE_EXPL'-------
+    t = 0;
+    MERGE_EXPLClock.reset(); // clock
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    routineTimer.add(60.000000);
+    // update component parameters for each repeat
+    merge_expl_initial_state.setColor(new util.Color('white'));
+    merge_expl_initial_state.setText('Initial state');
+    merge_expl_feedback.setColor(new util.Color('white'));
+    merge_expl_feedback.setText('');
+    merge_expl_ex.setImage(img_path);
+    merge_expl_1.setImage('materials/merge_sort/imgs/white_BG.png');
+    merge_expl_2.setImage('materials/merge_sort/imgs/white_BG.png');
+    // setup some python lists for storing info about the merge_expl_mouse
+    gotValidClick = false; // until a click is received
+    merge_expl_timer.setColor(new util.Color('white'));
+    merge_expl_timer.setText('Read the feedback and continue whenever you are ready (60 SECS)');
+    var _pj;
+    function _pj_snippets(container) {
+        function in_es6(left, right) {
+            if (((right instanceof Array) || ((typeof right) === "string"))) {
+                return (right.indexOf(left) > (- 1));
+            } else {
+                if (((right instanceof Map) || (right instanceof Set) || (right instanceof WeakMap) || (right instanceof WeakSet))) {
+                    return right.has(left);
+                } else {
+                    return (left in right);
+                }
+            }
+        }
+        container["in_es6"] = in_es6;
+        return container;
+    }
+    _pj = {};
+    _pj_snippets(_pj);
+    submitted = 2;
+    if (_pj.in_es6("merge_train_btn_1", merge_train_mouse.clicked_name)) {
+        submitted = 0;
+    } else {
+        if (_pj.in_es6("merge_train_btn_2", merge_train_mouse.clicked_name)) {
+            submitted = 1;
+        }
+    }
+    if (showMergeExpl(submitted, merge_expl_feedback_1, merge_expl_feedback_2, merge_expl_mc_1, merge_expl_mc_2, merge_train_mc_path_1, merge_train_mc_path_2, merge_expl_1, merge_expl_2)){
+        merge_expl_feedback.text = "You answer is CORRECT!";
+        merge_expl_feedback.color = green;
+    } else {
+        if (submitted !== 2) {
+            merge_expl_feedback.text = "You answer is WRONG!";
+            merge_expl_feedback.color = red;
+        }
+    }
+    
+    routineT = 0;
+    // keep track of which components have finished
+    MERGE_EXPLComponents = [];
+    MERGE_EXPLComponents.push(merge_expl_initial_state);
+    MERGE_EXPLComponents.push(merge_expl_feedback);
+    MERGE_EXPLComponents.push(merge_expl_feedback_1);
+    MERGE_EXPLComponents.push(merge_expl_feedback_2);
+    MERGE_EXPLComponents.push(merge_expl_ex);
+    MERGE_EXPLComponents.push(merge_expl_sep);
+    MERGE_EXPLComponents.push(merge_expl_1);
+    MERGE_EXPLComponents.push(merge_expl_2);
+    MERGE_EXPLComponents.push(merge_expl_mc_1);
+    MERGE_EXPLComponents.push(merge_expl_mc_2);
+    MERGE_EXPLComponents.push(merge_expl_btn);
+    MERGE_EXPLComponents.push(merge_expl_mouse);
+    MERGE_EXPLComponents.push(merge_expl_timer);
+    
+    for (const thisComponent of MERGE_EXPLComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function MERGE_EXPLRoutineEachFrame() {
+  return async function () {
+    //------Loop for each frame of Routine 'MERGE_EXPL'-------
+    // get current time
+    t = MERGE_EXPLClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *merge_expl_initial_state* updates
+    if (t >= 0.0 && merge_expl_initial_state.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_expl_initial_state.tStart = t;  // (not accounting for frame time here)
+      merge_expl_initial_state.frameNStart = frameN;  // exact frame index
+      
+      merge_expl_initial_state.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_expl_initial_state.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_expl_initial_state.setAutoDraw(false);
+    }
+    
+    // *merge_expl_feedback* updates
+    if (t >= 0.0 && merge_expl_feedback.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_expl_feedback.tStart = t;  // (not accounting for frame time here)
+      merge_expl_feedback.frameNStart = frameN;  // exact frame index
+      
+      merge_expl_feedback.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_expl_feedback.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_expl_feedback.setAutoDraw(false);
+    }
+    
+    // *merge_expl_feedback_1* updates
+    if (t >= 0.5 && merge_expl_feedback_1.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_expl_feedback_1.tStart = t;  // (not accounting for frame time here)
+      merge_expl_feedback_1.frameNStart = frameN;  // exact frame index
+      
+      merge_expl_feedback_1.setAutoDraw(true);
+    }
+
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_expl_feedback_1.status === PsychoJS.Status.STARTED || merge_expl_feedback_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_expl_feedback_1.setAutoDraw(false);
+    }
+    
+    // *merge_expl_feedback_2* updates
+    if (t >= 0.5 && merge_expl_feedback_2.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_expl_feedback_2.tStart = t;  // (not accounting for frame time here)
+      merge_expl_feedback_2.frameNStart = frameN;  // exact frame index
+      
+      merge_expl_feedback_2.setAutoDraw(true);
+    }
+
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_expl_feedback_2.status === PsychoJS.Status.STARTED || merge_expl_feedback_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_expl_feedback_2.setAutoDraw(false);
+    }
+    
+    // *merge_expl_ex* updates
+    if (t >= 0.5 && merge_expl_ex.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_expl_ex.tStart = t;  // (not accounting for frame time here)
+      merge_expl_ex.frameNStart = frameN;  // exact frame index
+      
+      merge_expl_ex.setAutoDraw(true);
+    }
+
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_expl_ex.status === PsychoJS.Status.STARTED || merge_expl_ex.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_expl_ex.setAutoDraw(false);
+    }
+    
+    // *merge_expl_sep* updates
+    if (t >= 0.0 && merge_expl_sep.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_expl_sep.tStart = t;  // (not accounting for frame time here)
+      merge_expl_sep.frameNStart = frameN;  // exact frame index
+      
+      merge_expl_sep.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_expl_sep.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_expl_sep.setAutoDraw(false);
+    }
+    
+    // *merge_expl_1* updates
+    if (t >= 0.5 && merge_expl_1.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_expl_1.tStart = t;  // (not accounting for frame time here)
+      merge_expl_1.frameNStart = frameN;  // exact frame index
+      
+      merge_expl_1.setAutoDraw(true);
+    }
+
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_expl_1.status === PsychoJS.Status.STARTED || merge_expl_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_expl_1.setAutoDraw(false);
+    }
+    
+    // *merge_expl_2* updates
+    if (t >= 0.5 && merge_expl_2.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_expl_2.tStart = t;  // (not accounting for frame time here)
+      merge_expl_2.frameNStart = frameN;  // exact frame index
+      
+      merge_expl_2.setAutoDraw(true);
+    }
+
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_expl_2.status === PsychoJS.Status.STARTED || merge_expl_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_expl_2.setAutoDraw(false);
+    }
+    
+    // *merge_expl_mc_1* updates
+    if (t >= 0.5 && merge_expl_mc_1.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_expl_mc_1.tStart = t;  // (not accounting for frame time here)
+      merge_expl_mc_1.frameNStart = frameN;  // exact frame index
+      
+      merge_expl_mc_1.setAutoDraw(true);
+    }
+
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_expl_mc_1.status === PsychoJS.Status.STARTED || merge_expl_mc_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_expl_mc_1.setAutoDraw(false);
+    }
+    
+    // *merge_expl_mc_2* updates
+    if (t >= 0.5 && merge_expl_mc_2.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_expl_mc_2.tStart = t;  // (not accounting for frame time here)
+      merge_expl_mc_2.frameNStart = frameN;  // exact frame index
+      
+      merge_expl_mc_2.setAutoDraw(true);
+    }
+
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_expl_mc_2.status === PsychoJS.Status.STARTED || merge_expl_mc_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_expl_mc_2.setAutoDraw(false);
+    }
+    
+    // *merge_expl_btn* updates
+    if (t >= 0.5 && merge_expl_btn.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_expl_btn.tStart = t;  // (not accounting for frame time here)
+      merge_expl_btn.frameNStart = frameN;  // exact frame index
+      
+      merge_expl_btn.setAutoDraw(true);
+    }
+
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_expl_btn.status === PsychoJS.Status.STARTED || merge_expl_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_expl_btn.setAutoDraw(false);
+    }
+    
+    // *merge_expl_timer* updates
+    if (t >= 0.0 && merge_expl_timer.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_expl_timer.tStart = t;  // (not accounting for frame time here)
+      merge_expl_timer.frameNStart = frameN;  // exact frame index
+      
+      merge_expl_timer.setAutoDraw(true);
+    }
+
+    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_expl_timer.status === PsychoJS.Status.STARTED || merge_expl_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_expl_timer.setAutoDraw(false);
+    }
+    const timerString = timerWarning(mergeExplTimeL, t);
+    if (timerString !== "") {
+        merge_expl_timer.text = timerString;
+        merge_expl_timer.color = "orange";
+    }
+    
+    if (t >= 0.5 && merge_expl_mouse.status === PsychoJS.Status.NOT_STARTED) {
+          merge_expl_mouse.tStart = t;
+          merge_expl_mouse.frameNStart = frameN;
+          
+          merge_expl_mouse.status = PsychoJS.Status.STARTED;
+          merge_expl_mouse.mouseClock.reset();
+          prevButtonState = merge_expl_mouse.getPressed();
+    }
+    
+    if ((merge_expl_mouse.status === PsychoJS.Status.STARTED || merge_expl_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+          merge_expl_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    
+    if (merge_expl_mouse.status === PsychoJS.Status.STARTED) {
+        _mouseButtons = merge_expl_mouse.getPressed();
+        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
+            prevButtonState = _mouseButtons;
+            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
+                for (const obj of [merge_expl_btn]) {
+                    if (merge_expl_mouse.isPressedIn(obj) && (obj.name === "merge_expl_btn")) {
+                        merge_expl_mouse.status = PsychoJS.Status.FINISHED;
+                        continueRoutine = false;
+                    } 
+                }
+            }
+        }
+    }
+    
+    routineT = t;
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of MERGE_EXPLComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine && routineTimer.getTime() > 0) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function MERGE_EXPLRoutineEnd() {
+  return async function () {
+    //------Ending Routine 'MERGE_EXPL'-------
+    for (const thisComponent of MERGE_EXPLComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    // store data for psychoJS.experiment (ExperimentHandler)
+    _mouseXYs = merge_expl_mouse.getPos();
+    _mouseButtons = merge_expl_mouse.getPressed();
+    psychoJS.experiment.addData('merge_expl_mouse.x', _mouseXYs[0]);
+    psychoJS.experiment.addData('merge_expl_mouse.y', _mouseXYs[1]);
+    psychoJS.experiment.addData('merge_expl_mouse.leftButton', _mouseButtons[0]);
+    psychoJS.experiment.addData('merge_expl_mouse.midButton', _mouseButtons[1]);
+    psychoJS.experiment.addData('merge_expl_mouse.rightButton', _mouseButtons[2]);
+    psychoJS.experiment.addData("merge_expl.tStart",merge_expl_mc_1.tStart);
+    psychoJS.experiment.addData("merge_expl.tEnd",routineT);
+    progressBar.update("MERGE_EXPL");
+    return Scheduler.Event.NEXT;
+  };
+}
+
+
+var MERGE_TEST_INTROComponents;
+function MERGE_TEST_INTRORoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //------Prepare to start Routine 'MERGE_TEST_INTRO'-------
+    t = 0;
+    MERGE_TEST_INTROClock.reset(); // clock
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    routineTimer.add(120.000000);
+    // update component parameters for each repeat
+    // setup some python lists for storing info about the merge_test_intro_mouse
+    gotValidClick = false; // until a click is received
+    routineT = 0;
+    // keep track of which components have finished
+    MERGE_TEST_INTROComponents = [];
+    MERGE_TEST_INTROComponents.push(intro_text_6);
+    MERGE_TEST_INTROComponents.push(alice_4);
+    MERGE_TEST_INTROComponents.push(merge_example_2);
+    MERGE_TEST_INTROComponents.push(blue_star_door_4);
+    MERGE_TEST_INTROComponents.push(merge_test_intro_btn);
+    MERGE_TEST_INTROComponents.push(merge_test_intro_mouse);
+    
+    for (const thisComponent of MERGE_TEST_INTROComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function MERGE_TEST_INTRORoutineEachFrame() {
+  return async function () {
+    //------Loop for each frame of Routine 'MERGE_TEST_INTRO'-------
+    // get current time
+    t = MERGE_TEST_INTROClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *intro_text_6* updates
+    if (t >= 0.0 && intro_text_6.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      intro_text_6.tStart = t;  // (not accounting for frame time here)
+      intro_text_6.frameNStart = frameN;  // exact frame index
+      
+      intro_text_6.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (intro_text_6.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      intro_text_6.setAutoDraw(false);
+    }
+    
+    // *alice_4* updates
+    if (t >= 0.0 && alice_4.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      alice_4.tStart = t;  // (not accounting for frame time here)
+      alice_4.frameNStart = frameN;  // exact frame index
+      
+      alice_4.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (alice_4.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      alice_4.setAutoDraw(false);
+    }
+    
+    // *merge_example_2* updates
+    if (t >= 0.0 && merge_example_2.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_example_2.tStart = t;  // (not accounting for frame time here)
+      merge_example_2.frameNStart = frameN;  // exact frame index
+      
+      merge_example_2.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_example_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_example_2.setAutoDraw(false);
+    }
+    
+    // *blue_star_door_4* updates
+    if (t >= 0.0 && blue_star_door_4.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      blue_star_door_4.tStart = t;  // (not accounting for frame time here)
+      blue_star_door_4.frameNStart = frameN;  // exact frame index
+      
+      blue_star_door_4.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (blue_star_door_4.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      blue_star_door_4.setAutoDraw(false);
+    }
+    
+    // *merge_test_intro_btn* updates
+    if (t >= 0.5 && merge_test_intro_btn.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_test_intro_btn.tStart = t;  // (not accounting for frame time here)
+      merge_test_intro_btn.frameNStart = frameN;  // exact frame index
+      
+      merge_test_intro_btn.setAutoDraw(true);
+    }
+
+    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_test_intro_btn.status === PsychoJS.Status.STARTED || merge_test_intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_test_intro_btn.setAutoDraw(false);
+    }
+    if (((t >= 0.5) && (merge_test_intro_mouse.status === PsychoJS.Status.NOT_STARTED))) {
+        merge_test_intro_mouse.tStart = t;
+        merge_test_intro_mouse.frameNStart = frameN;
+        merge_test_intro_mouse.status = PsychoJS.Status.STARTED;
+        merge_test_intro_mouse.mouseClock.reset();
+    }
+    if (((merge_test_intro_mouse.isPressedIn(merge_test_intro_btn) && (merge_test_intro_mouse.status === PsychoJS.Status.STARTED)) && (merge_test_intro_btn.status === PsychoJS.Status.STARTED))) {
+        merge_test_intro_mouse.status = PsychoJS.Status.FINISHED;
+        continueRoutine = false;
+    }
+    routineT = t;
+    
+    if ((merge_test_intro_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        merge_test_intro_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of MERGE_TEST_INTROComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine && routineTimer.getTime() > 0) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function MERGE_TEST_INTRORoutineEnd() {
+  return async function () {
+    //------Ending Routine 'MERGE_TEST_INTRO'-------
+    for (const thisComponent of MERGE_TEST_INTROComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    // store data for psychoJS.experiment (ExperimentHandler)
+    _mouseXYs = merge_test_intro_mouse.getPos();
+    _mouseButtons = merge_test_intro_mouse.getPressed();
+    psychoJS.experiment.addData('merge_test_intro_mouse.x', _mouseXYs[0]);
+    psychoJS.experiment.addData('merge_test_intro_mouse.y', _mouseXYs[1]);
+    psychoJS.experiment.addData('merge_test_intro_mouse.leftButton', _mouseButtons[0]);
+    psychoJS.experiment.addData('merge_test_intro_mouse.midButton', _mouseButtons[1]);
+    psychoJS.experiment.addData('merge_test_intro_mouse.rightButton', _mouseButtons[2]);
+    psychoJS.experiment.addData("merge_test_intro.tEnd",routineT);
+    progressBar.update("MERGE_TEST_INTRO");
+    
+    return Scheduler.Event.NEXT;
+  };
+}
+
+
+var merge_test_input;
+var merge_test_labels;
+var merge_test_compareN;
+var merge_test_compare_records;
+var merge_test_res_boxes;
+var MERGE_TESTComponents;
+function MERGE_TESTRoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //------Prepare to start Routine 'MERGE_TEST'-------
+    t = 0;
+    MERGE_TESTClock.reset(); // clock
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    routineTimer.add(90.000000);
+    // update component parameters for each repeat
+    merge_test_scale_instr.setColor(new util.Color('white'));
+    merge_test_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
+    merge_test_scale_instr.setHeight(0.02);
+    merge_test_scale_right.setText('');
+    merge_test_scale_right.setText('');
+    merge_test_scale_left.setText('');
+    merge_test_scale_left.setText('');
+    merge_test.setImage(img_path);
+    merge_test_scale.setImage(scaleEqPath);
+    // setup some python lists for storing info about the merge_test_mouse
+    gotValidClick = false; // until a click is received
+    merge_test_timer.setText('');
+    merge_test_input = input;
+    merge_test_labels = encryption;
+    merge_test_compareN = 0;
+    merge_test_compare_records = [];
+    merge_test_res_boxes = [];
+    merge_test_scale_left.refresh();
+    merge_test_scale_right.refresh();
+    
+    routineT = 0;
+    comparePressedT = 0.0;
+    isComparePressed = false;
+    
+    const merge_test_mouse_btns = merge_test_mouse.psychoJS.eventManager.getMouseInfo().buttons;
+    for (const b of [0,1,2]){
+        merge_test_mouse_btns.pressed[b] = 0;
+        merge_test_mouse_btns.clocks[b].reset();
+        merge_test_mouse_btns.times[b] = 0.0;
+    }
+    
+    for (var i = 0; i < merge_test_labels.length; i ++) {
+        let newTextBox = new visual.TextBox({
+            win: psychoJS.window,
+            name: '' + i,
+            text: '',
+            font: 'Open Sans',
+            pos: [(- 0.2) - (merge_test_labels.length * 0.08 / 2).toFixed(4) + i * 0.08, (- 0.3)], letterHeight: 0.04,
+            size: [0.07, 0.1],  units: undefined, 
+            color: 'black', colorSpace: 'rgb',
+            fillColor: 'white', borderColor: undefined,
+            bold: false, italic: false,
+            opacity: undefined,
+            padding: undefined,
+            editable: true,
+            multiline: true,
+            anchor: 'top-center',
+            depth: -9.0 
+        });
+        newTextBox.setAutoDraw(true);
+        merge_test_res_boxes.push(newTextBox);
+    }
+    
+    // keep track of which components have finished
+    MERGE_TESTComponents = [];
+    MERGE_TESTComponents.push(merge_test_scale_instr);
+    MERGE_TESTComponents.push(merge_test_ans_instr);
+    MERGE_TESTComponents.push(merge_test_instr);
+    MERGE_TESTComponents.push(merge_test_scale_right);
+    MERGE_TESTComponents.push(merge_test_scale_left);
+    MERGE_TESTComponents.push(merge_test_sep);
+    MERGE_TESTComponents.push(merge_test);
+    MERGE_TESTComponents.push(merge_test_scale);
+    MERGE_TESTComponents.push(merge_test_btn);
+    MERGE_TESTComponents.push(merge_test_compare);
+    MERGE_TESTComponents.push(merge_test_mouse);
+    MERGE_TESTComponents.push(merge_test_timer);
+    
+    for (const thisComponent of MERGE_TESTComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function MERGE_TESTRoutineEachFrame() {
+  return async function () {
+    //------Loop for each frame of Routine 'MERGE_TEST'-------
+    // get current time
+    t = MERGE_TESTClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *merge_test_scale_instr* updates
+    if (t >= 0.0 && merge_test_scale_instr.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_test_scale_instr.tStart = t;  // (not accounting for frame time here)
+      merge_test_scale_instr.frameNStart = frameN;  // exact frame index
+      
+      merge_test_scale_instr.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_test_scale_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_test_scale_instr.setAutoDraw(false);
+    }
+    
+    // *merge_test_ans_instr* updates
+    if (t >= 0.0 && merge_test_ans_instr.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_test_ans_instr.tStart = t;  // (not accounting for frame time here)
+      merge_test_ans_instr.frameNStart = frameN;  // exact frame index
+      
+      merge_test_ans_instr.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_test_ans_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_test_ans_instr.setAutoDraw(false);
+    }
+    
+    // *merge_test_instr* updates
+    if (t >= 0.0 && merge_test_instr.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_test_instr.tStart = t;  // (not accounting for frame time here)
+      merge_test_instr.frameNStart = frameN;  // exact frame index
+      
+      merge_test_instr.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_test_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_test_instr.setAutoDraw(false);
+    }
+    
+    // *merge_test_scale_right* updates
+    if (t >= 0.0 && merge_test_scale_right.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_test_scale_right.tStart = t;  // (not accounting for frame time here)
+      merge_test_scale_right.frameNStart = frameN;  // exact frame index
+      
+      merge_test_scale_right.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_test_scale_right.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_test_scale_right.setAutoDraw(false);
+    }
+    
+    // *merge_test_scale_left* updates
+    if (t >= 0.0 && merge_test_scale_left.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_test_scale_left.tStart = t;  // (not accounting for frame time here)
+      merge_test_scale_left.frameNStart = frameN;  // exact frame index
+      
+      merge_test_scale_left.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_test_scale_left.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_test_scale_left.setAutoDraw(false);
+    }
+    
+    // *merge_test_sep* updates
+    if (t >= 0.0 && merge_test_sep.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_test_sep.tStart = t;  // (not accounting for frame time here)
+      merge_test_sep.frameNStart = frameN;  // exact frame index
+      
+      merge_test_sep.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_test_sep.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_test_sep.setAutoDraw(false);
+    }
+    
+    // *merge_test* updates
+    if (t >= 0.5 && merge_test.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_test.tStart = t;  // (not accounting for frame time here)
+      merge_test.frameNStart = frameN;  // exact frame index
+      
+      merge_test.setAutoDraw(true);
+    }
+
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_test.status === PsychoJS.Status.STARTED || merge_test.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_test.setAutoDraw(false);
+    }
+    
+    // *merge_test_scale* updates
+    if (t >= 0.0 && merge_test_scale.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_test_scale.tStart = t;  // (not accounting for frame time here)
+      merge_test_scale.frameNStart = frameN;  // exact frame index
+      
+      merge_test_scale.setAutoDraw(true);
+    }
+
+    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (merge_test_scale.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      merge_test_scale.setAutoDraw(false);
+    }
+    
+    // *merge_test_btn* updates
+    if (t >= 0.5 && merge_test_btn.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_test_btn.tStart = t;  // (not accounting for frame time here)
+      merge_test_btn.frameNStart = frameN;  // exact frame index
+      
+      merge_test_btn.setAutoDraw(true);
+    }
+
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_test_btn.status === PsychoJS.Status.STARTED || merge_test_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_test_btn.setAutoDraw(false);
+    }
+    
+    // *merge_test_compare* updates
+    if (t >= 0.5 && merge_test_compare.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_test_compare.tStart = t;  // (not accounting for frame time here)
+      merge_test_compare.frameNStart = frameN;  // exact frame index
+      
+      merge_test_compare.setAutoDraw(true);
+    }
+
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_test_compare.status === PsychoJS.Status.STARTED || merge_test_compare.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_test_compare.setAutoDraw(false);
+    }
+    
+    // *merge_test_timer* updates
+    if (t >= 0.0 && merge_test_timer.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      merge_test_timer.tStart = t;  // (not accounting for frame time here)
+      merge_test_timer.frameNStart = frameN;  // exact frame index
+      
+      merge_test_timer.setAutoDraw(true);
+    }
+
+    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((merge_test_timer.status === PsychoJS.Status.STARTED || merge_test_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      merge_test_timer.setAutoDraw(false);
+    }
+    if (t >= 0.5 && merge_test_mouse.status === PsychoJS.Status.NOT_STARTED) {
+          merge_test_mouse.tStart = t;
+          merge_test_mouse.frameNStart = frameN;  
+          
+          merge_test_mouse.status = PsychoJS.Status.STARTED;
+          merge_test_mouse.mouseClock.reset();
+          prevButtonState = merge_test_mouse.getPressed();
+    }
+    
+    if ((merge_test_mouse.status === PsychoJS.Status.STARTED || merge_test_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+          merge_test_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    
+    if (t >= 0.5 && merge_test_mouse.status === PsychoJS.Status.STARTED) {
+        _mouseButtons = merge_test_mouse.getPressed();
+        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
+            prevButtonState = _mouseButtons;
+            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
+                for (const obj of [merge_test_btn,merge_test_compare]) {
+                    if (merge_test_mouse.isPressedIn(obj) && obj.name === "merge_test_btn") {
+                        merge_test_mouse.status = PsychoJS.Status.FINISHED;
+                        continueRoutine = false;
+                    } else {
+                        if(merge_test_mouse.isPressedIn(obj) && !isComparePressed) {
+                            if(obj.name === "merge_test_compare") {
+                                const compareStatus = compare(merge_test_scale, merge_test_input, merge_test_labels, merge_test_compare, merge_test_scale_instr, merge_test_scale_left, merge_test_scale_right);
+                                merge_test_compareN = (merge_test_compareN + compareStatus[0]);
+                                if (compareStatus[0] !== 0) {
+                                    merge_test_compare_records.push([compareStatus[1],compareStatus[2]]);
+                                }
+                                comparePressedT = t;
+                                isComparePressed = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    merge_test_timer.text = timerWarning(mergeTestTimeL, t);
+    routineT = t;
+    
+    if (isComparePressed && (routineT - comparePressedT) >= 0.1) {
+        merge_test_compare.image = "materials/merge_sort/imgs/compare.png";
+        isComparePressed = false;
+    }
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of MERGE_TESTComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine && routineTimer.getTime() > 0) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+var merge_test_res;
+function MERGE_TESTRoutineEnd() {
+  return async function () {
+    //------Ending Routine 'MERGE_TEST'-------
+    for (const thisComponent of MERGE_TESTComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    psychoJS.experiment.addData('merge_test_scale_right.text',merge_test_scale_right.text)
+    psychoJS.experiment.addData('merge_test_scale_left.text',merge_test_scale_left.text)
+    // store data for psychoJS.experiment (ExperimentHandler)
+    _mouseXYs = merge_test_mouse.getPos();
+    _mouseButtons = merge_test_mouse.getPressed();
+    psychoJS.experiment.addData('merge_test_mouse.x', _mouseXYs[0]);
+    psychoJS.experiment.addData('merge_test_mouse.y', _mouseXYs[1]);
+    psychoJS.experiment.addData('merge_test_mouse.leftButton', _mouseButtons[0]);
+    psychoJS.experiment.addData('merge_test_mouse.midButton', _mouseButtons[1]);
+    psychoJS.experiment.addData('merge_test_mouse.rightButton', _mouseButtons[2]);
+    merge_test_res = [];
+    
+    for (var i = 0; i < merge_test_labels.length; i ++) {
+        merge_test_res_boxes[i].setAutoDraw(false);
+        merge_test_res_boxes[i].status === PsychoJS.Status.FINISHED;
+        merge_test_res.push(merge_test_res_boxes[i].text);
+    }
+    psychoJS.experiment.addData("merge_test_res.text",merge_test_res.toString());
+    psychoJS.experiment.addData("merge_test_input",merge_test_input);
+    psychoJS.experiment.addData("merge_test_labels",merge_test_labels);
+    psychoJS.experiment.addData("merge_test_compareN",merge_test_compareN);
+    psychoJS.experiment.addData("merge_test_compare_records",merge_test_compare_records);
+    psychoJS.experiment.addData("merge_test.tStart",merge_test.tStart);
+    psychoJS.experiment.addData("merge_test.tEnd",routineT);
+    
+    progressBar.update("MERGE_TEST");
+    return Scheduler.Event.NEXT;
+  };
+}
+
+
 var SORT_INTROComponents;
 function SORT_INTRORoutineBegin(snapshot) {
   return async function () {
@@ -5056,8 +6508,6 @@ function SORT_INTRORoutineEnd() {
 
 var items;
 var frameCnt;
-var isComparePressed;
-var comparePressedT;
 var tracePos;
 var sort_train_input;
 var sort_train_labels;
@@ -6367,1464 +7817,6 @@ function SORT_EXPLRoutineEnd() {
     psychoJS.experiment.addData("sort_expl.tStart",sort_expl_ex_1.tStart);
     psychoJS.experiment.addData("sort_expl.tEnd",routineT);
     progressBar.update("SORT_EXPL");
-    return Scheduler.Event.NEXT;
-  };
-}
-
-
-var MERGE_INTROComponents;
-function MERGE_INTRORoutineBegin(snapshot) {
-  return async function () {
-    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
-    
-    //------Prepare to start Routine 'MERGE_INTRO'-------
-    t = 0;
-    MERGE_INTROClock.reset(); // clock
-    frameN = -1;
-    continueRoutine = true; // until we're told otherwise
-    routineTimer.add(120.000000);
-    // update component parameters for each repeat
-    // setup some python lists for storing info about the merge_intro_mouse
-    gotValidClick = false; // until a click is received
-    routineT = 0;
-    // keep track of which components have finished
-    MERGE_INTROComponents = [];
-    MERGE_INTROComponents.push(intro_text_2);
-    MERGE_INTROComponents.push(alice_2);
-    MERGE_INTROComponents.push(merge_example);
-    MERGE_INTROComponents.push(blue_star_door_3);
-    MERGE_INTROComponents.push(merge_intro_btn);
-    MERGE_INTROComponents.push(merge_intro_mouse);
-    
-    for (const thisComponent of MERGE_INTROComponents)
-      if ('status' in thisComponent)
-        thisComponent.status = PsychoJS.Status.NOT_STARTED;
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-function MERGE_INTRORoutineEachFrame() {
-  return async function () {
-    //------Loop for each frame of Routine 'MERGE_INTRO'-------
-    // get current time
-    t = MERGE_INTROClock.getTime();
-    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
-    // update/draw components on each frame
-    
-    // *intro_text_2* updates
-    if (t >= 0.0 && intro_text_2.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      intro_text_2.tStart = t;  // (not accounting for frame time here)
-      intro_text_2.frameNStart = frameN;  // exact frame index
-      
-      intro_text_2.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (intro_text_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      intro_text_2.setAutoDraw(false);
-    }
-    
-    // *alice_2* updates
-    if (t >= 0.0 && alice_2.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      alice_2.tStart = t;  // (not accounting for frame time here)
-      alice_2.frameNStart = frameN;  // exact frame index
-      
-      alice_2.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (alice_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      alice_2.setAutoDraw(false);
-    }
-    
-    // *merge_example* updates
-    if (t >= 0.0 && merge_example.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_example.tStart = t;  // (not accounting for frame time here)
-      merge_example.frameNStart = frameN;  // exact frame index
-      
-      merge_example.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_example.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_example.setAutoDraw(false);
-    }
-    
-    // *blue_star_door_3* updates
-    if (t >= 0.0 && blue_star_door_3.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      blue_star_door_3.tStart = t;  // (not accounting for frame time here)
-      blue_star_door_3.frameNStart = frameN;  // exact frame index
-      
-      blue_star_door_3.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (blue_star_door_3.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      blue_star_door_3.setAutoDraw(false);
-    }
-    
-    // *merge_intro_btn* updates
-    if (t >= 0.5 && merge_intro_btn.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_intro_btn.tStart = t;  // (not accounting for frame time here)
-      merge_intro_btn.frameNStart = frameN;  // exact frame index
-      
-      merge_intro_btn.setAutoDraw(true);
-    }
-
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_intro_btn.status === PsychoJS.Status.STARTED || merge_intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_intro_btn.setAutoDraw(false);
-    }
-    if (((t >= 0.5) && (merge_intro_mouse.status === PsychoJS.Status.NOT_STARTED))) {
-        merge_intro_mouse.tStart = t;
-        merge_intro_mouse.frameNStart = frameN;
-        merge_intro_mouse.status = PsychoJS.Status.STARTED;
-        merge_intro_mouse.mouseClock.reset();
-    }
-    if (((merge_intro_mouse.isPressedIn(merge_intro_btn) && (merge_intro_mouse.status === PsychoJS.Status.STARTED)) && (merge_intro_btn.status === PsychoJS.Status.STARTED))) {
-        merge_intro_mouse.status = PsychoJS.Status.FINISHED;
-        continueRoutine = false;
-    }
-    if ((merge_intro_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
-        merge_intro_mouse.status = PsychoJS.Status.FINISHED;
-    }
-    routineT = t;
-    
-    // check for quit (typically the Esc key)
-    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
-      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
-    }
-    
-    // check if the Routine should terminate
-    if (!continueRoutine) {  // a component has requested a forced-end of Routine
-      return Scheduler.Event.NEXT;
-    }
-    
-    continueRoutine = false;  // reverts to True if at least one component still running
-    for (const thisComponent of MERGE_INTROComponents)
-      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
-        continueRoutine = true;
-        break;
-      }
-    
-    // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
-      return Scheduler.Event.FLIP_REPEAT;
-    } else {
-      return Scheduler.Event.NEXT;
-    }
-  };
-}
-
-
-function MERGE_INTRORoutineEnd() {
-  return async function () {
-    //------Ending Routine 'MERGE_INTRO'-------
-    for (const thisComponent of MERGE_INTROComponents) {
-      if (typeof thisComponent.setAutoDraw === 'function') {
-        thisComponent.setAutoDraw(false);
-      }
-    }
-    // store data for psychoJS.experiment (ExperimentHandler)
-    _mouseXYs = merge_intro_mouse.getPos();
-    _mouseButtons = merge_intro_mouse.getPressed();
-    psychoJS.experiment.addData('merge_intro_mouse.x', _mouseXYs[0]);
-    psychoJS.experiment.addData('merge_intro_mouse.y', _mouseXYs[1]);
-    psychoJS.experiment.addData('merge_intro_mouse.leftButton', _mouseButtons[0]);
-    psychoJS.experiment.addData('merge_intro_mouse.midButton', _mouseButtons[1]);
-    psychoJS.experiment.addData('merge_intro_mouse.rightButton', _mouseButtons[2]);
-    psychoJS.experiment.addData("merge_intro.tEnd",routineT);
-    progressBar.update("MERGE_INTRO");
-    return Scheduler.Event.NEXT;
-  };
-}
-
-
-var merge_train_input;
-var mc_order;
-var merge_train_compare_records;
-var merge_train_labels;
-var merge_train_compareN;
-var merge_train_mc_path_2;
-var merge_train_mc_path_1;
-var MERGE_TRAINComponents;
-function MERGE_TRAINRoutineBegin(snapshot) {
-  return async function () {
-    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
-    
-    //------Prepare to start Routine 'MERGE_TRAIN'-------
-    t = 0;
-    MERGE_TRAINClock.reset(); // clock
-    frameN = -1;
-    continueRoutine = true; // until we're told otherwise
-    routineTimer.add(90.000000);
-    // update component parameters for each repeat
-    merge_train_scale_instr.setColor(new util.Color('white'));
-    merge_train_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
-    merge_train_scale_instr.setHeight(0.02);
-    merge_train_scale_right.setText('');
-    merge_train_scale_right.setText('');
-    merge_train_scale_left.setText('');
-    merge_train_scale_left.setText('');
-    merge_train.setImage(img_path);
-    merge_train_scale.setImage(scaleEqPath);
-    // setup some python lists for storing info about the merge_train_mouse
-    merge_train_mouse.clicked_name = [];
-    gotValidClick = false; // until a click is received
-    merge_train_timer.setText('');
-    merge_train_input = input;
-    mc_order = [];
-    merge_train_compare_records = [];
-    merge_train_labels = encryption;
-    merge_train_compareN = 0;
-    merge_train_mc_path_2 = mc_path_2;
-    merge_train_mc_path_1 = mc_path_1;
-    
-    merge_train_scale_left.refresh();
-    merge_train_scale_right.refresh();
-    
-    routineT = 0;
-    isComparePressed = false;
-    comparePressedT = 0.0;
-    
-    const merge_train_mouse_btns = merge_train_mouse.psychoJS.eventManager.getMouseInfo().buttons;
-    for (const b of [0,1,2]){
-        merge_train_mouse_btns.pressed[b] = 0;
-        merge_train_mouse_btns.clocks[b].reset();
-        merge_train_mouse_btns.times[b] = 0.0;
-    }
-    // keep track of which components have finished
-    MERGE_TRAINComponents = [];
-    MERGE_TRAINComponents.push(merge_train_scale_instr);
-    MERGE_TRAINComponents.push(merge_ans_instr);
-    MERGE_TRAINComponents.push(merge_train_instr);
-    MERGE_TRAINComponents.push(merge_train_scale_right);
-    MERGE_TRAINComponents.push(merge_train_scale_left);
-    MERGE_TRAINComponents.push(merge_train_sep);
-    MERGE_TRAINComponents.push(merge_train);
-    MERGE_TRAINComponents.push(merge_train_mc_1);
-    MERGE_TRAINComponents.push(merge_train_mc_2);
-    MERGE_TRAINComponents.push(merge_train_scale);
-    MERGE_TRAINComponents.push(merge_train_btn_1);
-    MERGE_TRAINComponents.push(merge_train_btn_2);
-    MERGE_TRAINComponents.push(merge_train_compare);
-    MERGE_TRAINComponents.push(merge_train_mouse);
-    MERGE_TRAINComponents.push(merge_train_timer);
-    
-    for (const thisComponent of MERGE_TRAINComponents)
-      if ('status' in thisComponent)
-        thisComponent.status = PsychoJS.Status.NOT_STARTED;
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-function MERGE_TRAINRoutineEachFrame() {
-  return async function () {
-    //------Loop for each frame of Routine 'MERGE_TRAIN'-------
-    // get current time
-    t = MERGE_TRAINClock.getTime();
-    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
-    // update/draw components on each frame
-    
-    // *merge_train_scale_instr* updates
-    if (t >= 0.0 && merge_train_scale_instr.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_scale_instr.tStart = t;  // (not accounting for frame time here)
-      merge_train_scale_instr.frameNStart = frameN;  // exact frame index
-      
-      merge_train_scale_instr.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_train_scale_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_train_scale_instr.setAutoDraw(false);
-    }
-    
-    // *merge_ans_instr* updates
-    if (t >= 0.0 && merge_ans_instr.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_ans_instr.tStart = t;  // (not accounting for frame time here)
-      merge_ans_instr.frameNStart = frameN;  // exact frame index
-      
-      merge_ans_instr.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_ans_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_ans_instr.setAutoDraw(false);
-    }
-    
-    // *merge_train_instr* updates
-    if (t >= 0.0 && merge_train_instr.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_instr.tStart = t;  // (not accounting for frame time here)
-      merge_train_instr.frameNStart = frameN;  // exact frame index
-      
-      merge_train_instr.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_train_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_train_instr.setAutoDraw(false);
-    }
-    
-    // *merge_train_scale_right* updates
-    if (t >= 0.0 && merge_train_scale_right.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_scale_right.tStart = t;  // (not accounting for frame time here)
-      merge_train_scale_right.frameNStart = frameN;  // exact frame index
-      
-      merge_train_scale_right.setAutoDraw(true);
-    }
-
-    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_train_scale_right.status === PsychoJS.Status.STARTED || merge_train_scale_right.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_train_scale_right.setAutoDraw(false);
-    }
-    
-    // *merge_train_scale_left* updates
-    if (t >= 0.0 && merge_train_scale_left.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_scale_left.tStart = t;  // (not accounting for frame time here)
-      merge_train_scale_left.frameNStart = frameN;  // exact frame index
-      
-      merge_train_scale_left.setAutoDraw(true);
-    }
-
-    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_train_scale_left.status === PsychoJS.Status.STARTED || merge_train_scale_left.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_train_scale_left.setAutoDraw(false);
-    }
-    
-    // *merge_train_sep* updates
-    if (t >= 0.0 && merge_train_sep.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_sep.tStart = t;  // (not accounting for frame time here)
-      merge_train_sep.frameNStart = frameN;  // exact frame index
-      
-      merge_train_sep.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_train_sep.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_train_sep.setAutoDraw(false);
-    }
-    
-    // *merge_train* updates
-    if (t >= 0.5 && merge_train.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train.tStart = t;  // (not accounting for frame time here)
-      merge_train.frameNStart = frameN;  // exact frame index
-      
-      merge_train.setAutoDraw(true);
-    }
-
-    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_train.status === PsychoJS.Status.STARTED || merge_train.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_train.setAutoDraw(false);
-    }
-    
-    // *merge_train_mc_1* updates
-    if (t >= 0.0 && merge_train_mc_1.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_mc_1.tStart = t;  // (not accounting for frame time here)
-      merge_train_mc_1.frameNStart = frameN;  // exact frame index
-      
-      merge_train_mc_1.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_train_mc_1.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_train_mc_1.setAutoDraw(false);
-    }
-    
-    // *merge_train_mc_2* updates
-    if (t >= 0.0 && merge_train_mc_2.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_mc_2.tStart = t;  // (not accounting for frame time here)
-      merge_train_mc_2.frameNStart = frameN;  // exact frame index
-      
-      merge_train_mc_2.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_train_mc_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_train_mc_2.setAutoDraw(false);
-    }
-    
-    // *merge_train_scale* updates
-    if (t >= 0.0 && merge_train_scale.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_scale.tStart = t;  // (not accounting for frame time here)
-      merge_train_scale.frameNStart = frameN;  // exact frame index
-      
-      merge_train_scale.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_train_scale.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_train_scale.setAutoDraw(false);
-    }
-    
-    // *merge_train_btn_1* updates
-    if (t >= 0.5 && merge_train_btn_1.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_btn_1.tStart = t;  // (not accounting for frame time here)
-      merge_train_btn_1.frameNStart = frameN;  // exact frame index
-      
-      merge_train_btn_1.setAutoDraw(true);
-    }
-
-    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_train_btn_1.status === PsychoJS.Status.STARTED || merge_train_btn_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_train_btn_1.setAutoDraw(false);
-    }
-    
-    // *merge_train_btn_2* updates
-    if (t >= 0.5 && merge_train_btn_2.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_btn_2.tStart = t;  // (not accounting for frame time here)
-      merge_train_btn_2.frameNStart = frameN;  // exact frame index
-      
-      merge_train_btn_2.setAutoDraw(true);
-    }
-
-    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_train_btn_2.status === PsychoJS.Status.STARTED || merge_train_btn_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_train_btn_2.setAutoDraw(false);
-    }
-    
-    // *merge_train_compare* updates
-    if (t >= 0.5 && merge_train_compare.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_compare.tStart = t;  // (not accounting for frame time here)
-      merge_train_compare.frameNStart = frameN;  // exact frame index
-      
-      merge_train_compare.setAutoDraw(true);
-    }
-
-    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_train_compare.status === PsychoJS.Status.STARTED || merge_train_compare.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_train_compare.setAutoDraw(false);
-    }
-    
-    // *merge_train_timer* updates
-    if (t >= 0.0 && merge_train_timer.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_train_timer.tStart = t;  // (not accounting for frame time here)
-      merge_train_timer.frameNStart = frameN;  // exact frame index
-      
-      merge_train_timer.setAutoDraw(true);
-    }
-
-    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_train_timer.status === PsychoJS.Status.STARTED || merge_train_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_train_timer.setAutoDraw(false);
-    }
-    if ((mc_order.length === 0)) {
-        mc_order = getCorrectMCOrder(TRAIN_1.thisTrialN, merge_train_mc_path_1, merge_train_mc_path_2, merge_train_mc_1, merge_train_mc_2);
-    }
-    
-    if (t >= 0.5 && merge_train_mouse.status === PsychoJS.Status.NOT_STARTED) {
-          merge_train_mouse.tStart = t;  
-          merge_train_mouse.frameNStart = frameN;  
-          
-          merge_train_mouse.status = PsychoJS.Status.STARTED;
-          merge_train_mouse.mouseClock.reset();
-          prevButtonState = merge_train_mouse.getPressed();  
-    }
-    
-    if ((merge_train_mouse.status === PsychoJS.Status.STARTED || merge_train_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-          merge_train_mouse.status = PsychoJS.Status.FINISHED;
-    }
-    
-    if (t >= 0.5 && merge_train_mouse.status === PsychoJS.Status.STARTED) {
-        _mouseButtons = merge_train_mouse.getPressed();
-        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
-            prevButtonState = _mouseButtons;
-            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
-                for (const obj of [merge_train_btn_1,merge_train_btn_2,merge_train_compare]) {
-                    if (merge_train_mouse.isPressedIn(obj) && (obj.name === "merge_train_btn_1" || obj.name === "merge_train_btn_2")) {
-                        merge_train_mouse.clicked_name.push(obj.name);
-                        merge_train_mouse.status = PsychoJS.Status.FINISHED;
-                        continueRoutine = false;
-                    } else {
-                        if(merge_train_mouse.isPressedIn(obj) && !isComparePressed) {
-                            if(obj.name === "merge_train_compare") {
-                                const compareStatus = compare(merge_train_scale, merge_train_input, merge_train_labels, merge_train_compare, merge_train_scale_instr, merge_train_scale_left, merge_train_scale_right);
-                                merge_train_compareN = (merge_train_compareN + compareStatus[0]);
-                                if (compareStatus[0] !== 0) {
-                                    merge_train_compare_records.push([compareStatus[1],compareStatus[2]]);
-                                }
-                                comparePressedT = t;
-                                isComparePressed = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    merge_train_timer.text = timerWarning(mergeTrainTimeL, t);
-    routineT = t;
-    
-    if (isComparePressed && (routineT - comparePressedT) >= 0.1) {
-        merge_train_compare.image = "materials/merge_sort/imgs/compare.png";
-        isComparePressed = false;
-    }
-    // check for quit (typically the Esc key)
-    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
-      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
-    }
-    
-    // check if the Routine should terminate
-    if (!continueRoutine) {  // a component has requested a forced-end of Routine
-      return Scheduler.Event.NEXT;
-    }
-    
-    continueRoutine = false;  // reverts to True if at least one component still running
-    for (const thisComponent of MERGE_TRAINComponents)
-      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
-        continueRoutine = true;
-        break;
-      }
-    
-    // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
-      return Scheduler.Event.FLIP_REPEAT;
-    } else {
-      return Scheduler.Event.NEXT;
-    }
-  };
-}
-
-
-function MERGE_TRAINRoutineEnd() {
-  return async function () {
-    //------Ending Routine 'MERGE_TRAIN'-------
-    for (const thisComponent of MERGE_TRAINComponents) {
-      if (typeof thisComponent.setAutoDraw === 'function') {
-        thisComponent.setAutoDraw(false);
-      }
-    }
-    psychoJS.experiment.addData('merge_train_scale_right.text',merge_train_scale_right.text)
-    psychoJS.experiment.addData('merge_train_scale_left.text',merge_train_scale_left.text)
-    // store data for psychoJS.experiment (ExperimentHandler)
-    _mouseXYs = merge_train_mouse.getPos();
-    _mouseButtons = merge_train_mouse.getPressed();
-    psychoJS.experiment.addData('merge_train_mouse.x', _mouseXYs[0]);
-    psychoJS.experiment.addData('merge_train_mouse.y', _mouseXYs[1]);
-    psychoJS.experiment.addData('merge_train_mouse.leftButton', _mouseButtons[0]);
-    psychoJS.experiment.addData('merge_train_mouse.midButton', _mouseButtons[1]);
-    psychoJS.experiment.addData('merge_train_mouse.rightButton', _mouseButtons[2]);
-    if (merge_train_mouse.clicked_name.length > 0) {
-      psychoJS.experiment.addData('merge_train_mouse.clicked_name', merge_train_mouse.clicked_name[0]);}
-    psychoJS.experiment.addData("merge_train.tStart", merge_train.tStart);
-    psychoJS.experiment.addData("mc_order",mc_order);
-    psychoJS.experiment.addData("merge_train_compareN",merge_train_compareN);
-    psychoJS.experiment.addData("merge_train_labels",merge_train_labels);
-    psychoJS.experiment.addData("merge_train_input",merge_train_input);
-    psychoJS.experiment.addData("merge_train_compare_records",merge_train_compare_records);
-    psychoJS.experiment.addData("merge_train_mouse_clicked",merge_train_mouse.clicked_name);
-    psychoJS.experiment.addData("merge_train.tEnd",routineT);
-    progressBar.update("MERGE_TRAIN");
-    return Scheduler.Event.NEXT;
-  };
-}
-
-
-var _pj;
-var MERGE_EXPLComponents;
-function MERGE_EXPLRoutineBegin(snapshot) {
-  return async function () {
-    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
-    
-    //------Prepare to start Routine 'MERGE_EXPL'-------
-    t = 0;
-    MERGE_EXPLClock.reset(); // clock
-    frameN = -1;
-    continueRoutine = true; // until we're told otherwise
-    routineTimer.add(60.000000);
-    // update component parameters for each repeat
-    merge_expl_initial_state.setColor(new util.Color('white'));
-    merge_expl_initial_state.setText('Initial state');
-    merge_expl_feedback.setColor(new util.Color('white'));
-    merge_expl_feedback.setText('');
-    merge_expl_ex.setImage(img_path);
-    merge_expl_1.setImage('materials/merge_sort/imgs/white_BG.png');
-    merge_expl_2.setImage('materials/merge_sort/imgs/white_BG.png');
-    // setup some python lists for storing info about the merge_expl_mouse
-    gotValidClick = false; // until a click is received
-    merge_expl_timer.setColor(new util.Color('white'));
-    merge_expl_timer.setText('Read the feedback and continue whenever you are ready (60 SECS)');
-    var _pj;
-    function _pj_snippets(container) {
-        function in_es6(left, right) {
-            if (((right instanceof Array) || ((typeof right) === "string"))) {
-                return (right.indexOf(left) > (- 1));
-            } else {
-                if (((right instanceof Map) || (right instanceof Set) || (right instanceof WeakMap) || (right instanceof WeakSet))) {
-                    return right.has(left);
-                } else {
-                    return (left in right);
-                }
-            }
-        }
-        container["in_es6"] = in_es6;
-        return container;
-    }
-    _pj = {};
-    _pj_snippets(_pj);
-    submitted = 2;
-    if (_pj.in_es6("merge_train_btn_1", merge_train_mouse.clicked_name)) {
-        submitted = 0;
-    } else {
-        if (_pj.in_es6("merge_train_btn_2", merge_train_mouse.clicked_name)) {
-            submitted = 1;
-        }
-    }
-    if (showMergeExpl(submitted, merge_expl_feedback_1, merge_expl_feedback_2, merge_expl_mc_1, merge_expl_mc_2, merge_train_mc_path_1, merge_train_mc_path_2, merge_expl_1, merge_expl_2)){
-        merge_expl_feedback.text = "You answer is CORRECT!";
-        merge_expl_feedback.color = green;
-    } else {
-        if (submitted !== 2) {
-            merge_expl_feedback.text = "You answer is WRONG!";
-            merge_expl_feedback.color = red;
-        }
-    }
-    
-    routineT = 0;
-    // keep track of which components have finished
-    MERGE_EXPLComponents = [];
-    MERGE_EXPLComponents.push(merge_expl_initial_state);
-    MERGE_EXPLComponents.push(merge_expl_feedback);
-    MERGE_EXPLComponents.push(merge_expl_feedback_1);
-    MERGE_EXPLComponents.push(merge_expl_feedback_2);
-    MERGE_EXPLComponents.push(merge_expl_ex);
-    MERGE_EXPLComponents.push(merge_expl_sep);
-    MERGE_EXPLComponents.push(merge_expl_1);
-    MERGE_EXPLComponents.push(merge_expl_2);
-    MERGE_EXPLComponents.push(merge_expl_mc_1);
-    MERGE_EXPLComponents.push(merge_expl_mc_2);
-    MERGE_EXPLComponents.push(merge_expl_btn);
-    MERGE_EXPLComponents.push(merge_expl_mouse);
-    MERGE_EXPLComponents.push(merge_expl_timer);
-    
-    for (const thisComponent of MERGE_EXPLComponents)
-      if ('status' in thisComponent)
-        thisComponent.status = PsychoJS.Status.NOT_STARTED;
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-function MERGE_EXPLRoutineEachFrame() {
-  return async function () {
-    //------Loop for each frame of Routine 'MERGE_EXPL'-------
-    // get current time
-    t = MERGE_EXPLClock.getTime();
-    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
-    // update/draw components on each frame
-    
-    // *merge_expl_initial_state* updates
-    if (t >= 0.0 && merge_expl_initial_state.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_initial_state.tStart = t;  // (not accounting for frame time here)
-      merge_expl_initial_state.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_initial_state.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_expl_initial_state.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_expl_initial_state.setAutoDraw(false);
-    }
-    
-    // *merge_expl_feedback* updates
-    if (t >= 0.0 && merge_expl_feedback.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_feedback.tStart = t;  // (not accounting for frame time here)
-      merge_expl_feedback.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_feedback.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_expl_feedback.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_expl_feedback.setAutoDraw(false);
-    }
-    
-    // *merge_expl_feedback_1* updates
-    if (t >= 0.5 && merge_expl_feedback_1.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_feedback_1.tStart = t;  // (not accounting for frame time here)
-      merge_expl_feedback_1.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_feedback_1.setAutoDraw(true);
-    }
-
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_expl_feedback_1.status === PsychoJS.Status.STARTED || merge_expl_feedback_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_expl_feedback_1.setAutoDraw(false);
-    }
-    
-    // *merge_expl_feedback_2* updates
-    if (t >= 0.5 && merge_expl_feedback_2.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_feedback_2.tStart = t;  // (not accounting for frame time here)
-      merge_expl_feedback_2.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_feedback_2.setAutoDraw(true);
-    }
-
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_expl_feedback_2.status === PsychoJS.Status.STARTED || merge_expl_feedback_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_expl_feedback_2.setAutoDraw(false);
-    }
-    
-    // *merge_expl_ex* updates
-    if (t >= 0.5 && merge_expl_ex.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_ex.tStart = t;  // (not accounting for frame time here)
-      merge_expl_ex.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_ex.setAutoDraw(true);
-    }
-
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_expl_ex.status === PsychoJS.Status.STARTED || merge_expl_ex.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_expl_ex.setAutoDraw(false);
-    }
-    
-    // *merge_expl_sep* updates
-    if (t >= 0.0 && merge_expl_sep.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_sep.tStart = t;  // (not accounting for frame time here)
-      merge_expl_sep.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_sep.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_expl_sep.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_expl_sep.setAutoDraw(false);
-    }
-    
-    // *merge_expl_1* updates
-    if (t >= 0.5 && merge_expl_1.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_1.tStart = t;  // (not accounting for frame time here)
-      merge_expl_1.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_1.setAutoDraw(true);
-    }
-
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_expl_1.status === PsychoJS.Status.STARTED || merge_expl_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_expl_1.setAutoDraw(false);
-    }
-    
-    // *merge_expl_2* updates
-    if (t >= 0.5 && merge_expl_2.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_2.tStart = t;  // (not accounting for frame time here)
-      merge_expl_2.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_2.setAutoDraw(true);
-    }
-
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_expl_2.status === PsychoJS.Status.STARTED || merge_expl_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_expl_2.setAutoDraw(false);
-    }
-    
-    // *merge_expl_mc_1* updates
-    if (t >= 0.5 && merge_expl_mc_1.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_mc_1.tStart = t;  // (not accounting for frame time here)
-      merge_expl_mc_1.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_mc_1.setAutoDraw(true);
-    }
-
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_expl_mc_1.status === PsychoJS.Status.STARTED || merge_expl_mc_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_expl_mc_1.setAutoDraw(false);
-    }
-    
-    // *merge_expl_mc_2* updates
-    if (t >= 0.5 && merge_expl_mc_2.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_mc_2.tStart = t;  // (not accounting for frame time here)
-      merge_expl_mc_2.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_mc_2.setAutoDraw(true);
-    }
-
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_expl_mc_2.status === PsychoJS.Status.STARTED || merge_expl_mc_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_expl_mc_2.setAutoDraw(false);
-    }
-    
-    // *merge_expl_btn* updates
-    if (t >= 0.5 && merge_expl_btn.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_btn.tStart = t;  // (not accounting for frame time here)
-      merge_expl_btn.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_btn.setAutoDraw(true);
-    }
-
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_expl_btn.status === PsychoJS.Status.STARTED || merge_expl_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_expl_btn.setAutoDraw(false);
-    }
-    
-    // *merge_expl_timer* updates
-    if (t >= 0.0 && merge_expl_timer.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_expl_timer.tStart = t;  // (not accounting for frame time here)
-      merge_expl_timer.frameNStart = frameN;  // exact frame index
-      
-      merge_expl_timer.setAutoDraw(true);
-    }
-
-    frameRemains = 60.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_expl_timer.status === PsychoJS.Status.STARTED || merge_expl_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_expl_timer.setAutoDraw(false);
-    }
-    const timerString = timerWarning(mergeExplTimeL, t);
-    if (timerString !== "") {
-        merge_expl_timer.text = timerString;
-        merge_expl_timer.color = "orange";
-    }
-    
-    if (t >= 0.5 && merge_expl_mouse.status === PsychoJS.Status.NOT_STARTED) {
-          merge_expl_mouse.tStart = t;
-          merge_expl_mouse.frameNStart = frameN;
-          
-          merge_expl_mouse.status = PsychoJS.Status.STARTED;
-          merge_expl_mouse.mouseClock.reset();
-          prevButtonState = merge_expl_mouse.getPressed();
-    }
-    
-    if ((merge_expl_mouse.status === PsychoJS.Status.STARTED || merge_expl_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-          merge_expl_mouse.status = PsychoJS.Status.FINISHED;
-    }
-    
-    if (merge_expl_mouse.status === PsychoJS.Status.STARTED) {
-        _mouseButtons = merge_expl_mouse.getPressed();
-        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
-            prevButtonState = _mouseButtons;
-            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
-                for (const obj of [merge_expl_btn]) {
-                    if (merge_expl_mouse.isPressedIn(obj) && (obj.name === "merge_expl_btn")) {
-                        merge_expl_mouse.status = PsychoJS.Status.FINISHED;
-                        continueRoutine = false;
-                    } 
-                }
-            }
-        }
-    }
-    
-    routineT = t;
-    // check for quit (typically the Esc key)
-    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
-      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
-    }
-    
-    // check if the Routine should terminate
-    if (!continueRoutine) {  // a component has requested a forced-end of Routine
-      return Scheduler.Event.NEXT;
-    }
-    
-    continueRoutine = false;  // reverts to True if at least one component still running
-    for (const thisComponent of MERGE_EXPLComponents)
-      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
-        continueRoutine = true;
-        break;
-      }
-    
-    // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
-      return Scheduler.Event.FLIP_REPEAT;
-    } else {
-      return Scheduler.Event.NEXT;
-    }
-  };
-}
-
-
-function MERGE_EXPLRoutineEnd() {
-  return async function () {
-    //------Ending Routine 'MERGE_EXPL'-------
-    for (const thisComponent of MERGE_EXPLComponents) {
-      if (typeof thisComponent.setAutoDraw === 'function') {
-        thisComponent.setAutoDraw(false);
-      }
-    }
-    // store data for psychoJS.experiment (ExperimentHandler)
-    _mouseXYs = merge_expl_mouse.getPos();
-    _mouseButtons = merge_expl_mouse.getPressed();
-    psychoJS.experiment.addData('merge_expl_mouse.x', _mouseXYs[0]);
-    psychoJS.experiment.addData('merge_expl_mouse.y', _mouseXYs[1]);
-    psychoJS.experiment.addData('merge_expl_mouse.leftButton', _mouseButtons[0]);
-    psychoJS.experiment.addData('merge_expl_mouse.midButton', _mouseButtons[1]);
-    psychoJS.experiment.addData('merge_expl_mouse.rightButton', _mouseButtons[2]);
-    psychoJS.experiment.addData("merge_expl.tStart",merge_expl_mc_1.tStart);
-    psychoJS.experiment.addData("merge_expl.tEnd",routineT);
-    progressBar.update("MERGE_EXPL");
-    return Scheduler.Event.NEXT;
-  };
-}
-
-
-var MERGE_TEST_INTROComponents;
-function MERGE_TEST_INTRORoutineBegin(snapshot) {
-  return async function () {
-    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
-    
-    //------Prepare to start Routine 'MERGE_TEST_INTRO'-------
-    t = 0;
-    MERGE_TEST_INTROClock.reset(); // clock
-    frameN = -1;
-    continueRoutine = true; // until we're told otherwise
-    routineTimer.add(120.000000);
-    // update component parameters for each repeat
-    // setup some python lists for storing info about the merge_test_intro_mouse
-    gotValidClick = false; // until a click is received
-    routineT = 0;
-    // keep track of which components have finished
-    MERGE_TEST_INTROComponents = [];
-    MERGE_TEST_INTROComponents.push(intro_text_6);
-    MERGE_TEST_INTROComponents.push(alice_4);
-    MERGE_TEST_INTROComponents.push(merge_example_2);
-    MERGE_TEST_INTROComponents.push(blue_star_door_4);
-    MERGE_TEST_INTROComponents.push(merge_test_intro_btn);
-    MERGE_TEST_INTROComponents.push(merge_test_intro_mouse);
-    
-    for (const thisComponent of MERGE_TEST_INTROComponents)
-      if ('status' in thisComponent)
-        thisComponent.status = PsychoJS.Status.NOT_STARTED;
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-function MERGE_TEST_INTRORoutineEachFrame() {
-  return async function () {
-    //------Loop for each frame of Routine 'MERGE_TEST_INTRO'-------
-    // get current time
-    t = MERGE_TEST_INTROClock.getTime();
-    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
-    // update/draw components on each frame
-    
-    // *intro_text_6* updates
-    if (t >= 0.0 && intro_text_6.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      intro_text_6.tStart = t;  // (not accounting for frame time here)
-      intro_text_6.frameNStart = frameN;  // exact frame index
-      
-      intro_text_6.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (intro_text_6.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      intro_text_6.setAutoDraw(false);
-    }
-    
-    // *alice_4* updates
-    if (t >= 0.0 && alice_4.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      alice_4.tStart = t;  // (not accounting for frame time here)
-      alice_4.frameNStart = frameN;  // exact frame index
-      
-      alice_4.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (alice_4.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      alice_4.setAutoDraw(false);
-    }
-    
-    // *merge_example_2* updates
-    if (t >= 0.0 && merge_example_2.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_example_2.tStart = t;  // (not accounting for frame time here)
-      merge_example_2.frameNStart = frameN;  // exact frame index
-      
-      merge_example_2.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_example_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_example_2.setAutoDraw(false);
-    }
-    
-    // *blue_star_door_4* updates
-    if (t >= 0.0 && blue_star_door_4.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      blue_star_door_4.tStart = t;  // (not accounting for frame time here)
-      blue_star_door_4.frameNStart = frameN;  // exact frame index
-      
-      blue_star_door_4.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (blue_star_door_4.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      blue_star_door_4.setAutoDraw(false);
-    }
-    
-    // *merge_test_intro_btn* updates
-    if (t >= 0.5 && merge_test_intro_btn.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_intro_btn.tStart = t;  // (not accounting for frame time here)
-      merge_test_intro_btn.frameNStart = frameN;  // exact frame index
-      
-      merge_test_intro_btn.setAutoDraw(true);
-    }
-
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_test_intro_btn.status === PsychoJS.Status.STARTED || merge_test_intro_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_test_intro_btn.setAutoDraw(false);
-    }
-    if (((t >= 0.5) && (merge_test_intro_mouse.status === PsychoJS.Status.NOT_STARTED))) {
-        merge_test_intro_mouse.tStart = t;
-        merge_test_intro_mouse.frameNStart = frameN;
-        merge_test_intro_mouse.status = PsychoJS.Status.STARTED;
-        merge_test_intro_mouse.mouseClock.reset();
-    }
-    if (((merge_test_intro_mouse.isPressedIn(merge_test_intro_btn) && (merge_test_intro_mouse.status === PsychoJS.Status.STARTED)) && (merge_test_intro_btn.status === PsychoJS.Status.STARTED))) {
-        merge_test_intro_mouse.status = PsychoJS.Status.FINISHED;
-        continueRoutine = false;
-    }
-    routineT = t;
-    
-    if ((merge_test_intro_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
-        merge_test_intro_mouse.status = PsychoJS.Status.FINISHED;
-    }
-    // check for quit (typically the Esc key)
-    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
-      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
-    }
-    
-    // check if the Routine should terminate
-    if (!continueRoutine) {  // a component has requested a forced-end of Routine
-      return Scheduler.Event.NEXT;
-    }
-    
-    continueRoutine = false;  // reverts to True if at least one component still running
-    for (const thisComponent of MERGE_TEST_INTROComponents)
-      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
-        continueRoutine = true;
-        break;
-      }
-    
-    // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
-      return Scheduler.Event.FLIP_REPEAT;
-    } else {
-      return Scheduler.Event.NEXT;
-    }
-  };
-}
-
-
-function MERGE_TEST_INTRORoutineEnd() {
-  return async function () {
-    //------Ending Routine 'MERGE_TEST_INTRO'-------
-    for (const thisComponent of MERGE_TEST_INTROComponents) {
-      if (typeof thisComponent.setAutoDraw === 'function') {
-        thisComponent.setAutoDraw(false);
-      }
-    }
-    // store data for psychoJS.experiment (ExperimentHandler)
-    _mouseXYs = merge_test_intro_mouse.getPos();
-    _mouseButtons = merge_test_intro_mouse.getPressed();
-    psychoJS.experiment.addData('merge_test_intro_mouse.x', _mouseXYs[0]);
-    psychoJS.experiment.addData('merge_test_intro_mouse.y', _mouseXYs[1]);
-    psychoJS.experiment.addData('merge_test_intro_mouse.leftButton', _mouseButtons[0]);
-    psychoJS.experiment.addData('merge_test_intro_mouse.midButton', _mouseButtons[1]);
-    psychoJS.experiment.addData('merge_test_intro_mouse.rightButton', _mouseButtons[2]);
-    psychoJS.experiment.addData("merge_test_intro.tEnd",routineT);
-    progressBar.update("MERGE_TEST_INTRO");
-    
-    return Scheduler.Event.NEXT;
-  };
-}
-
-
-var merge_test_input;
-var merge_test_labels;
-var merge_test_compareN;
-var merge_test_compare_records;
-var merge_test_res_boxes;
-var MERGE_TESTComponents;
-function MERGE_TESTRoutineBegin(snapshot) {
-  return async function () {
-    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
-    
-    //------Prepare to start Routine 'MERGE_TEST'-------
-    t = 0;
-    MERGE_TESTClock.reset(); // clock
-    frameN = -1;
-    continueRoutine = true; // until we're told otherwise
-    routineTimer.add(90.000000);
-    // update component parameters for each repeat
-    merge_test_scale_instr.setColor(new util.Color('white'));
-    merge_test_scale_instr.setText('COMPARE weights by typing fruit labels in both LHS and RHS textboxes');
-    merge_test_scale_instr.setHeight(0.02);
-    merge_test_scale_right.setText('');
-    merge_test_scale_right.setText('');
-    merge_test_scale_left.setText('');
-    merge_test_scale_left.setText('');
-    merge_test.setImage(img_path);
-    merge_test_scale.setImage(scaleEqPath);
-    // setup some python lists for storing info about the merge_test_mouse
-    gotValidClick = false; // until a click is received
-    merge_test_timer.setText('');
-    merge_test_input = input;
-    merge_test_labels = encryption;
-    merge_test_compareN = 0;
-    merge_test_compare_records = [];
-    merge_test_res_boxes = [];
-    merge_test_scale_left.refresh();
-    merge_test_scale_right.refresh();
-    
-    routineT = 0;
-    comparePressedT = 0.0;
-    isComparePressed = false;
-    
-    const merge_test_mouse_btns = merge_test_mouse.psychoJS.eventManager.getMouseInfo().buttons;
-    for (const b of [0,1,2]){
-        merge_test_mouse_btns.pressed[b] = 0;
-        merge_test_mouse_btns.clocks[b].reset();
-        merge_test_mouse_btns.times[b] = 0.0;
-    }
-    
-    for (var i = 0; i < merge_test_labels.length; i ++) {
-        let newTextBox = new visual.TextBox({
-            win: psychoJS.window,
-            name: '' + i,
-            text: '',
-            font: 'Open Sans',
-            pos: [(- 0.2) - (merge_test_labels.length * 0.08 / 2).toFixed(4) + i * 0.08, (- 0.3)], letterHeight: 0.04,
-            size: [0.07, 0.1],  units: undefined, 
-            color: 'black', colorSpace: 'rgb',
-            fillColor: 'white', borderColor: undefined,
-            bold: false, italic: false,
-            opacity: undefined,
-            padding: undefined,
-            editable: true,
-            multiline: true,
-            anchor: 'top-center',
-            depth: -9.0 
-        });
-        newTextBox.setAutoDraw(true);
-        merge_test_res_boxes.push(newTextBox);
-    }
-    
-    // keep track of which components have finished
-    MERGE_TESTComponents = [];
-    MERGE_TESTComponents.push(merge_test_scale_instr);
-    MERGE_TESTComponents.push(merge_test_ans_instr);
-    MERGE_TESTComponents.push(merge_test_instr);
-    MERGE_TESTComponents.push(merge_test_scale_right);
-    MERGE_TESTComponents.push(merge_test_scale_left);
-    MERGE_TESTComponents.push(merge_test_sep);
-    MERGE_TESTComponents.push(merge_test);
-    MERGE_TESTComponents.push(merge_test_scale);
-    MERGE_TESTComponents.push(merge_test_btn);
-    MERGE_TESTComponents.push(merge_test_compare);
-    MERGE_TESTComponents.push(merge_test_mouse);
-    MERGE_TESTComponents.push(merge_test_timer);
-    
-    for (const thisComponent of MERGE_TESTComponents)
-      if ('status' in thisComponent)
-        thisComponent.status = PsychoJS.Status.NOT_STARTED;
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-function MERGE_TESTRoutineEachFrame() {
-  return async function () {
-    //------Loop for each frame of Routine 'MERGE_TEST'-------
-    // get current time
-    t = MERGE_TESTClock.getTime();
-    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
-    // update/draw components on each frame
-    
-    // *merge_test_scale_instr* updates
-    if (t >= 0.0 && merge_test_scale_instr.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_scale_instr.tStart = t;  // (not accounting for frame time here)
-      merge_test_scale_instr.frameNStart = frameN;  // exact frame index
-      
-      merge_test_scale_instr.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_test_scale_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_test_scale_instr.setAutoDraw(false);
-    }
-    
-    // *merge_test_ans_instr* updates
-    if (t >= 0.0 && merge_test_ans_instr.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_ans_instr.tStart = t;  // (not accounting for frame time here)
-      merge_test_ans_instr.frameNStart = frameN;  // exact frame index
-      
-      merge_test_ans_instr.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_test_ans_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_test_ans_instr.setAutoDraw(false);
-    }
-    
-    // *merge_test_instr* updates
-    if (t >= 0.0 && merge_test_instr.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_instr.tStart = t;  // (not accounting for frame time here)
-      merge_test_instr.frameNStart = frameN;  // exact frame index
-      
-      merge_test_instr.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_test_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_test_instr.setAutoDraw(false);
-    }
-    
-    // *merge_test_scale_right* updates
-    if (t >= 0.0 && merge_test_scale_right.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_scale_right.tStart = t;  // (not accounting for frame time here)
-      merge_test_scale_right.frameNStart = frameN;  // exact frame index
-      
-      merge_test_scale_right.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_test_scale_right.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_test_scale_right.setAutoDraw(false);
-    }
-    
-    // *merge_test_scale_left* updates
-    if (t >= 0.0 && merge_test_scale_left.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_scale_left.tStart = t;  // (not accounting for frame time here)
-      merge_test_scale_left.frameNStart = frameN;  // exact frame index
-      
-      merge_test_scale_left.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_test_scale_left.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_test_scale_left.setAutoDraw(false);
-    }
-    
-    // *merge_test_sep* updates
-    if (t >= 0.0 && merge_test_sep.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_sep.tStart = t;  // (not accounting for frame time here)
-      merge_test_sep.frameNStart = frameN;  // exact frame index
-      
-      merge_test_sep.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_test_sep.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_test_sep.setAutoDraw(false);
-    }
-    
-    // *merge_test* updates
-    if (t >= 0.5 && merge_test.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test.tStart = t;  // (not accounting for frame time here)
-      merge_test.frameNStart = frameN;  // exact frame index
-      
-      merge_test.setAutoDraw(true);
-    }
-
-    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_test.status === PsychoJS.Status.STARTED || merge_test.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_test.setAutoDraw(false);
-    }
-    
-    // *merge_test_scale* updates
-    if (t >= 0.0 && merge_test_scale.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_scale.tStart = t;  // (not accounting for frame time here)
-      merge_test_scale.frameNStart = frameN;  // exact frame index
-      
-      merge_test_scale.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 90.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (merge_test_scale.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      merge_test_scale.setAutoDraw(false);
-    }
-    
-    // *merge_test_btn* updates
-    if (t >= 0.5 && merge_test_btn.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_btn.tStart = t;  // (not accounting for frame time here)
-      merge_test_btn.frameNStart = frameN;  // exact frame index
-      
-      merge_test_btn.setAutoDraw(true);
-    }
-
-    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_test_btn.status === PsychoJS.Status.STARTED || merge_test_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_test_btn.setAutoDraw(false);
-    }
-    
-    // *merge_test_compare* updates
-    if (t >= 0.5 && merge_test_compare.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_compare.tStart = t;  // (not accounting for frame time here)
-      merge_test_compare.frameNStart = frameN;  // exact frame index
-      
-      merge_test_compare.setAutoDraw(true);
-    }
-
-    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_test_compare.status === PsychoJS.Status.STARTED || merge_test_compare.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_test_compare.setAutoDraw(false);
-    }
-    
-    // *merge_test_timer* updates
-    if (t >= 0.0 && merge_test_timer.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      merge_test_timer.tStart = t;  // (not accounting for frame time here)
-      merge_test_timer.frameNStart = frameN;  // exact frame index
-      
-      merge_test_timer.setAutoDraw(true);
-    }
-
-    frameRemains = 90.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((merge_test_timer.status === PsychoJS.Status.STARTED || merge_test_timer.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      merge_test_timer.setAutoDraw(false);
-    }
-    if (t >= 0.5 && merge_test_mouse.status === PsychoJS.Status.NOT_STARTED) {
-          merge_test_mouse.tStart = t;
-          merge_test_mouse.frameNStart = frameN;  
-          
-          merge_test_mouse.status = PsychoJS.Status.STARTED;
-          merge_test_mouse.mouseClock.reset();
-          prevButtonState = merge_test_mouse.getPressed();
-    }
-    
-    if ((merge_test_mouse.status === PsychoJS.Status.STARTED || merge_test_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-          merge_test_mouse.status = PsychoJS.Status.FINISHED;
-    }
-    
-    if (t >= 0.5 && merge_test_mouse.status === PsychoJS.Status.STARTED) {
-        _mouseButtons = merge_test_mouse.getPressed();
-        if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) {
-            prevButtonState = _mouseButtons;
-            if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { 
-                for (const obj of [merge_test_btn,merge_test_compare]) {
-                    if (merge_test_mouse.isPressedIn(obj) && obj.name === "merge_test_btn") {
-                        merge_test_mouse.status = PsychoJS.Status.FINISHED;
-                        continueRoutine = false;
-                    } else {
-                        if(merge_test_mouse.isPressedIn(obj) && !isComparePressed) {
-                            if(obj.name === "merge_test_compare") {
-                                const compareStatus = compare(merge_test_scale, merge_test_input, merge_test_labels, merge_test_compare, merge_test_scale_instr, merge_test_scale_left, merge_test_scale_right);
-                                merge_test_compareN = (merge_test_compareN + compareStatus[0]);
-                                if (compareStatus[0] !== 0) {
-                                    merge_test_compare_records.push([compareStatus[1],compareStatus[2]]);
-                                }
-                                comparePressedT = t;
-                                isComparePressed = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    merge_test_timer.text = timerWarning(mergeTestTimeL, t);
-    routineT = t;
-    
-    if (isComparePressed && (routineT - comparePressedT) >= 0.1) {
-        merge_test_compare.image = "materials/merge_sort/imgs/compare.png";
-        isComparePressed = false;
-    }
-    // check for quit (typically the Esc key)
-    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
-      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
-    }
-    
-    // check if the Routine should terminate
-    if (!continueRoutine) {  // a component has requested a forced-end of Routine
-      return Scheduler.Event.NEXT;
-    }
-    
-    continueRoutine = false;  // reverts to True if at least one component still running
-    for (const thisComponent of MERGE_TESTComponents)
-      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
-        continueRoutine = true;
-        break;
-      }
-    
-    // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
-      return Scheduler.Event.FLIP_REPEAT;
-    } else {
-      return Scheduler.Event.NEXT;
-    }
-  };
-}
-
-
-var merge_test_res;
-function MERGE_TESTRoutineEnd() {
-  return async function () {
-    //------Ending Routine 'MERGE_TEST'-------
-    for (const thisComponent of MERGE_TESTComponents) {
-      if (typeof thisComponent.setAutoDraw === 'function') {
-        thisComponent.setAutoDraw(false);
-      }
-    }
-    psychoJS.experiment.addData('merge_test_scale_right.text',merge_test_scale_right.text)
-    psychoJS.experiment.addData('merge_test_scale_left.text',merge_test_scale_left.text)
-    // store data for psychoJS.experiment (ExperimentHandler)
-    _mouseXYs = merge_test_mouse.getPos();
-    _mouseButtons = merge_test_mouse.getPressed();
-    psychoJS.experiment.addData('merge_test_mouse.x', _mouseXYs[0]);
-    psychoJS.experiment.addData('merge_test_mouse.y', _mouseXYs[1]);
-    psychoJS.experiment.addData('merge_test_mouse.leftButton', _mouseButtons[0]);
-    psychoJS.experiment.addData('merge_test_mouse.midButton', _mouseButtons[1]);
-    psychoJS.experiment.addData('merge_test_mouse.rightButton', _mouseButtons[2]);
-    merge_test_res = [];
-    
-    for (var i = 0; i < merge_test_labels.length; i ++) {
-        merge_test_res_boxes[i].setAutoDraw(false);
-        merge_test_res_boxes[i].status === PsychoJS.Status.FINISHED;
-        merge_test_res.push(merge_test_res_boxes[i].text);
-    }
-    psychoJS.experiment.addData("merge_test_res.text",merge_test_res.toString());
-    psychoJS.experiment.addData("merge_test_input",merge_test_input);
-    psychoJS.experiment.addData("merge_test_labels",merge_test_labels);
-    psychoJS.experiment.addData("merge_test_compareN",merge_test_compareN);
-    psychoJS.experiment.addData("merge_test_compare_records",merge_test_compare_records);
-    psychoJS.experiment.addData("merge_test.tStart",merge_test.tStart);
-    psychoJS.experiment.addData("merge_test.tEnd",routineT);
-    
-    progressBar.update("MERGE_TEST");
     return Scheduler.Event.NEXT;
   };
 }
@@ -9605,14 +9597,9 @@ function DEBRIEFRoutineBegin(snapshot) {
     DEBRIEFClock.reset(); // clock
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
-    routineTimer.add(120.000000);
     // update component parameters for each repeat
-    // setup some python lists for storing info about the debrief_mouse
-    gotValidClick = false; // until a click is received
     // keep track of which components have finished
     DEBRIEFComponents = [];
-    DEBRIEFComponents.push(intro_text_5);
-    DEBRIEFComponents.push(debrief_mouse);
     
     for (const thisComponent of DEBRIEFComponents)
       if ('status' in thisComponent)
@@ -9629,44 +9616,6 @@ function DEBRIEFRoutineEachFrame() {
     t = DEBRIEFClock.getTime();
     frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
     // update/draw components on each frame
-    
-    // *intro_text_5* updates
-    if (t >= 0.0 && intro_text_5.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      intro_text_5.tStart = t;  // (not accounting for frame time here)
-      intro_text_5.frameNStart = frameN;  // exact frame index
-      
-      intro_text_5.setAutoDraw(true);
-    }
-
-    frameRemains = 0.0 + 120.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if (intro_text_5.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      intro_text_5.setAutoDraw(false);
-    }
-    // *debrief_mouse* updates
-    if (t >= 0.5 && debrief_mouse.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      debrief_mouse.tStart = t;  // (not accounting for frame time here)
-      debrief_mouse.frameNStart = frameN;  // exact frame index
-      
-      debrief_mouse.status = PsychoJS.Status.STARTED;
-      debrief_mouse.mouseClock.reset();
-      prevButtonState = debrief_mouse.getPressed();  // if button is down already this ISN'T a new click
-      }
-    frameRemains = 120.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((debrief_mouse.status === PsychoJS.Status.STARTED || debrief_mouse.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      debrief_mouse.status = PsychoJS.Status.FINISHED;
-  }
-    if (debrief_mouse.status === PsychoJS.Status.STARTED) {  // only update if started and not finished!
-      _mouseButtons = debrief_mouse.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // abort routine on response
-          continueRoutine = false;
-        }
-      }
-    }
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -9685,7 +9634,7 @@ function DEBRIEFRoutineEachFrame() {
       }
     
     // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
+    if (continueRoutine) {
       return Scheduler.Event.FLIP_REPEAT;
     } else {
       return Scheduler.Event.NEXT;
@@ -9702,14 +9651,9 @@ function DEBRIEFRoutineEnd() {
         thisComponent.setAutoDraw(false);
       }
     }
-    // store data for psychoJS.experiment (ExperimentHandler)
-    _mouseXYs = debrief_mouse.getPos();
-    _mouseButtons = debrief_mouse.getPressed();
-    psychoJS.experiment.addData('debrief_mouse.x', _mouseXYs[0]);
-    psychoJS.experiment.addData('debrief_mouse.y', _mouseXYs[1]);
-    psychoJS.experiment.addData('debrief_mouse.leftButton', _mouseButtons[0]);
-    psychoJS.experiment.addData('debrief_mouse.midButton', _mouseButtons[1]);
-    psychoJS.experiment.addData('debrief_mouse.rightButton', _mouseButtons[2]);
+    // the Routine "DEBRIEF" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset();
+    
     return Scheduler.Event.NEXT;
   };
 }
@@ -9766,6 +9710,10 @@ async function quitPsychoJS(message, isCompleted) {
   
   
   
+  
+  
+  window.startHTML('../backend/submission.html');
+  sessionStorage.setItem("record", JSON.stringify(psychoJS.experiment._trialsData));
   
   
   
