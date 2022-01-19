@@ -16,7 +16,7 @@ let expName = 'seq_teaching_exp_inverse';  // from the Builder filename that cre
 let expInfo = {'Participant ID': ''};
 
 // Start code blocks for 'Before Experiment'
-expInfo['Participant ID'] = sessionStorage.getItem("participantCode");
+expInfo['Participant ID'] = sessionStorage.getItem("participantCode").replaceAll("\"","");
 
 var _pj;
 
