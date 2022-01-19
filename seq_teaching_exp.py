@@ -3003,10 +3003,10 @@ thisExp.nextEntry()
 pass
 
 # set up handler to look after randomisation of conditions etc
-TRAIN_1 = data.TrialHandler(nReps=1.0, method='sequential', 
-    extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('materials/merge_train_cond.csv'),
-    seed=None, name='TRAIN_1')
+TRAIN_1 = data.TrialHandler(nReps=1.0, method='sequential',
+                            extraInfo=expInfo, originPath=-1,
+                            trialList=data.importConditions('interface/materials/merge_train_cond.csv'),
+                            seed=None, name='TRAIN_1')
 thisExp.addLoop(TRAIN_1)  # add the loop to the experiment
 thisTRAIN_1 = TRAIN_1.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisTRAIN_1.rgb)
@@ -3834,10 +3834,10 @@ thisExp.nextEntry()
 pass
 
 # set up handler to look after randomisation of conditions etc
-TEST_1 = data.TrialHandler(nReps=1.0, method='sequential', 
-    extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('materials/merge_test_cond.csv'),
-    seed=None, name='TEST_1')
+TEST_1 = data.TrialHandler(nReps=1.0, method='sequential',
+                           extraInfo=expInfo, originPath=-1,
+                           trialList=data.importConditions('interface/materials/merge_test_cond.csv'),
+                           seed=None, name='TEST_1')
 thisExp.addLoop(TEST_1)  # add the loop to the experiment
 thisTEST_1 = TEST_1.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisTEST_1.rgb)
@@ -4311,10 +4311,10 @@ thisExp.nextEntry()
 pass
 
 # set up handler to look after randomisation of conditions etc
-TRAIN_3 = data.TrialHandler(nReps=1.0, method='sequential', 
-    extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('materials/sort_train_cond.csv'),
-    seed=None, name='TRAIN_3')
+TRAIN_3 = data.TrialHandler(nReps=1.0, method='sequential',
+                            extraInfo=expInfo, originPath=-1,
+                            trialList=data.importConditions('interface/materials/sort_train_cond.csv'),
+                            seed=None, name='TRAIN_3')
 thisExp.addLoop(TRAIN_3)  # add the loop to the experiment
 thisTRAIN_3 = TRAIN_3.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisTRAIN_3.rgb)
@@ -5669,10 +5669,10 @@ thisExp.nextEntry()
 pass
 
 # set up handler to look after randomisation of conditions etc
-TEST_2 = data.TrialHandler(nReps=1.0, method='sequential', 
-    extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('materials/sort_test_cond.csv'),
-    seed=None, name='TEST_2')
+TEST_2 = data.TrialHandler(nReps=1.0, method='sequential',
+                           extraInfo=expInfo, originPath=-1,
+                           trialList=data.importConditions('interface/materials/sort_test_cond.csv'),
+                           seed=None, name='TEST_2')
 thisExp.addLoop(TEST_2)  # add the loop to the experiment
 thisTEST_2 = TEST_2.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisTEST_2.rgb)
@@ -6243,10 +6243,10 @@ for thisTEST_2 in TEST_2:
 
 
 # set up handler to look after randomisation of conditions etc
-REVIEW = data.TrialHandler(nReps=1.0, method='sequential', 
-    extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('materials/review_cond.csv'),
-    seed=None, name='REVIEW')
+REVIEW = data.TrialHandler(nReps=1.0, method='sequential',
+                           extraInfo=expInfo, originPath=-1,
+                           trialList=data.importConditions('interface/materials/review_cond.csv'),
+                           seed=None, name='REVIEW')
 thisExp.addLoop(REVIEW)  # add the loop to the experiment
 thisREVIEW = REVIEW.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisREVIEW.rgb)
