@@ -1,14 +1,19 @@
 #!/usr/bin/php
 <?php
-    if (!empty($_POST['record'])) {
-        $record = $_POST['record'];
-        $groupid = $_POST['groupid'];
-        $partid = $_POST['participantCode'];
-        $fp = fopen('data/'.$groupid.'_'.$partid.'.json', 'w');
+    function saveRecord($record, $partid, $groupid) {
+        $partid = str_replace('"', '', $partid);
+        $fp = fopen('../../data/'.$groupid.'_'.$partid.'.json', 'w');
         fwrite($fp, $record);
         fclose($fp);
-        echo "Submission successful. Thank you very much! You may exit now. ";
+    }
+
+    if (isset($_POST['saveRecord']) and !empty($_POST['record'])) {
+        $record = $_POST['record'];
+        $partid = $_POST['participantCode'];
+        $groupid = $_POST['groupid'];
+        saveRecord($record, $partid, $groupid);
+        echo 200;
     } else {
-        echo "Submission unsuccessful. Please contact the coordinator to return the record .csv file alternatively.";
+        echo 500;
     }
 ?>

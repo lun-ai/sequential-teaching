@@ -24,10 +24,11 @@
             fclose($fp);
             $res = [];
             $res[] = $currentSessionId;
-            $res[] = $data[$currentSessionId - 1];
+            $res[] = $data[$currentSessionId][1];
             return json_encode($res);
+        } else {
+            header('HTTP/1.1 500 Internal Server Error');
         }
-        header('HTTP/1.1 500 Internal Server Error');
     }
 
     if (isset($_POST['getCurrentSessionId'])) {

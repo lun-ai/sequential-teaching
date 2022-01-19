@@ -6,24 +6,26 @@
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+</body>
+</html>
 <script>
     var currentSessionId;
+    console.log("calling");
     $.ajax({
           url: "./backend/init.php",
           type: "POST",
           data: {"getCurrentSessionId":""},
-          success: function(initResult) {
-                  sessionStorage.setItem("participantCode", initResult[1]);
-                  console.log(initResult);
+          success: function(res) {
+                  const reslist = res.replace('[','').replace(']','').split(',')
+                  sessionStorage.setItem("participantCode", reslist[1]);
+                  var group = (parseInt(reslist[0]) - 1) % 4;
+                  sessionStorage.setItem("groupid", "c" + (group + 1));
+                  var groupid = String.fromCharCode("A".charCodeAt(0) + group);
                   const currentAddr = window.location.href;
-                  var groupid = (parseInt(initResult[0]) - 1) % 4;
-                  var groupid_char = String.fromCharCode("A".charCodeAt(0) + groupid);
-                  window.location.href = currentAddr.replace("index.html","") + groupid_char;
+                  window.location.href = currentAddr.replace("index.html","") + groupid + "/";
           },
           error: function() {
                   alert('There was some error initiating, please refresh or contact the coordinator!');
           }
     });
 </script>
-</body>
-</html>

@@ -4,29 +4,29 @@
     <meta charset="UTF-8">
     <title>Submission</title>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <body>
-<!--<h1 align="center">You can submit the record by pressing the submit button below ...</h1>-->
-<!--<h2 align="center">If the record submission was unsuccessful, please return the downloaded .csv file back to the coordinator.-->
-<!--</h2>-->
-<!--<h2 align="center">.csv file download initiates 20 secs after reaching this page. </h2>-->
-<form method="post" action="submission.php" align="center">
-	<input type="hidden" id="expRecord" name="record">
-    	<input type="hidden" id="expParCode" name="participantCode">
-	<input type="hidden" id="expGroupId" name="groupid">
-        <button id="recordSubmit" type="submit" style="font-size: 50px;"></button>
-</form>
 <script type='text/javascript'>
     // fetch records from sessionStorage
-	const recordInput = document.getElementById("expRecord");
-	const codeInput = document.getElementById("expParCode");
-	const groupInput = document.getElementById("expGroupId");
     const record = sessionStorage.getItem("record");
     const participantCode = sessionStorage.getItem("participantCode");
     const groupid = sessionStorage.getItem("groupid");
-	// recordInput.value = record;
-	codeInput.value = participantCode;
-	groupInput.value = groupid;
-	document.getElementById("recordSubmit").click();
+
+    $.ajax({
+          url: "./submission.php",
+          type: "POST",
+          data: {"saveRecord":"", "record":record, "participantCode":participantCode, "groupid":groupid},
+          success: function(res) {
+                  if (res === '200') {
+                    alert('Submission successful. Thank you very much! You may close the window tab and exit now.');
+                  } else {
+                    alert("Submission unsuccessful! A record file will be downloaded if you close this message tab. Please contact the coordinator to return the record .csv file alternatively!");
+                  }
+          },
+          error: function() {
+                  alert("Submission unsuccessful! A record file will be downloaded if you close this message tab. Please contact the coordinator to return the record .csv file alternatively!");
+          }
+    });
 </script>
 </body>
 </html>
