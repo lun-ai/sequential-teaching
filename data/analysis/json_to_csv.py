@@ -2,7 +2,7 @@ import json
 import csv
 from os import listdir
 
-DATA_DIR = "./html/submission/data/"
+DATA_DIR = "../records/"
 WRITE_DIR = "csv/"
 
 def parse_json_to_csv(data_dirs, suffix):
