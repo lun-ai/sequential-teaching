@@ -18,13 +18,14 @@
           data: {"saveRecord":"", "record":record, "participantCode":participantCode, "groupid":groupid},
           success: function(res) {
                   if (res === '200') {
-                    alert('Submission successful. Please note down your ID: ' + participantCode.replaceAll("\"","") + '. You may close the window tab and exit if you have done so.');
+                    alert('Submission successful!');
                   } else {
-                    alert("Submission unsuccessful! A record file will be downloaded if you close this message tab. Please contact the coordinator to return the record .csv file alternatively!");
+                    alert("Submission unsuccessful!");
                   }
           },
+          },
           error: function() {
-                  alert("Submission unsuccessful! A record file will be downloaded if you close this message tab. Please contact the coordinator to return the record .csv file alternatively!");
+                  alert("Submission unsuccessful!");
           }
     });
 </script>

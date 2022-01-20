@@ -1,0 +1,9 @@
+img_path_base,input,encryption,ms_compare
+materials/merge_sort/imgs/fruits/banana,"[4, 6, 5, 2, 3, 1]","['A', 'D', 'C', 'B', 'F', 'E']",9
+materials/merge_sort/imgs/fruits/melon,"[6, 3, 5, 4, 2, 1]","['E', 'B', 'C', 'A', 'F', 'D']",8
+materials/merge_sort/imgs/fruits/apple,"[7, 5, 3, 6, 1, 4, 2]","['B', 'F', 'E', 'D', 'G', 'A', 'C']",12
+materials/merge_sort/imgs/fruits/banana,"[4, 7, 2, 6, 3, 5, 1]","['E', 'D', 'G', 'A', 'C', 'B', 'F']",12
+materials/merge_sort/imgs/fruits/melon,"[8, 7, 6, 5, 4, 3, 2, 1]","['A', 'H', 'C', 'E', 'B', 'D', 'F', 'G']",12
+materials/merge_sort/imgs/fruits/banana,"[7, 10, 8, 3, 5, 9, 6, 4, 1, 2]","['J', 'A', 'D', 'H', 'E', 'F', 'I', 'G', 'B', 'C']",20
+materials/merge_sort/imgs/fruits/melon,"[10, 7, 1, 8, 6, 9, 4, 5, 3, 2]","['A', 'I', 'E', 'C', 'H', 'D', 'B', 'F', 'J', 'G']",20
+materials/merge_sort/imgs/fruits/apple,"[2, 9, 8, 10, 4, 5, 6, 7, 3, 1]","['E', 'I', 'H', 'F', 'B', 'G', 'C', 'J', 'D', 'A']",18
