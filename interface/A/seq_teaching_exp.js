@@ -3251,7 +3251,7 @@ async function experimentInit() {
     text: 'If you want to participate in the lottery for winning a book, please enter your e-mail below. Your personal data will be stored separate from your experiment data.',
     font: 'Open Sans',
     units: undefined, 
-    pos: [0, 0.3], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    pos: [0, 0.25], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: 0.0 
   });
@@ -3562,7 +3562,7 @@ function MaRs_IB_1LoopBegin(MaRs_IB_1LoopScheduler, snapshot) {
     // set up handler to look after randomisation of conditions etc
     MaRs_IB_1 = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 0, method: TrialHandler.Method.SEQUENTIAL,
+      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: 'materials/pre_test_train_cond.csv',
       seed: undefined, name: 'MaRs_IB_1'
@@ -3600,7 +3600,7 @@ function MaRs_IB_2LoopBegin(MaRs_IB_2LoopScheduler, snapshot) {
     // set up handler to look after randomisation of conditions etc
     MaRs_IB_2 = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 0, method: TrialHandler.Method.SEQUENTIAL,
+      nReps: 10, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: 'materials/pre_test_cond.csv',
       seed: undefined, name: 'MaRs_IB_2'
@@ -3638,7 +3638,7 @@ function TRAIN_1LoopBegin(TRAIN_1LoopScheduler, snapshot) {
     // set up handler to look after randomisation of conditions etc
     TRAIN_1 = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 0, method: TrialHandler.Method.SEQUENTIAL,
+      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: 'materials/merge_train_cond.csv',
       seed: undefined, name: 'TRAIN_1'
@@ -3679,7 +3679,7 @@ function TEST_1LoopBegin(TEST_1LoopScheduler, snapshot) {
     // set up handler to look after randomisation of conditions etc
     TEST_1 = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 0, method: TrialHandler.Method.SEQUENTIAL,
+      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: 'materials/merge_test_cond.csv',
       seed: undefined, name: 'TEST_1'
@@ -3717,7 +3717,7 @@ function TRAIN_2LoopBegin(TRAIN_2LoopScheduler, snapshot) {
     // set up handler to look after randomisation of conditions etc
     TRAIN_2 = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 0, method: TrialHandler.Method.SEQUENTIAL,
+      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: 'materials/sort_train_cond.csv',
       seed: undefined, name: 'TRAIN_2'
@@ -3758,7 +3758,7 @@ function TEST_2LoopBegin(TEST_2LoopScheduler, snapshot) {
     // set up handler to look after randomisation of conditions etc
     TEST_2 = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 0, method: TrialHandler.Method.SEQUENTIAL,
+      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: 'materials/sort_test_cond.csv',
       seed: undefined, name: 'TEST_2'
@@ -3796,7 +3796,7 @@ function REVIEWLoopBegin(REVIEWLoopScheduler, snapshot) {
     // set up handler to look after randomisation of conditions etc
     REVIEW = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 0, method: TrialHandler.Method.SEQUENTIAL,
+      nReps: 1, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: 'materials/review_cond.csv',
       seed: undefined, name: 'REVIEW'
@@ -9699,7 +9699,7 @@ function LOTTERYRoutineEachFrame() {
       lottery_res.tStart = t;  // (not accounting for frame time here)
       lottery_res.frameNStart = frameN;  // exact frame index
       
-      lottery_res.setAutoDraw(true);
+      lottery_res.setAutoDraw(TRUE);
     }
 
     frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
@@ -9920,7 +9920,6 @@ async function quitPsychoJS(message, isCompleted) {
       window.startHTML('../backend/submission.html');
       sessionStorage.setItem("record", JSON.stringify(psychoJS.experiment._trialsData));
   }
-  
   
   
   
