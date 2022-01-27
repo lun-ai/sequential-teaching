@@ -11,11 +11,12 @@
     const record = sessionStorage.getItem("record");
     const participantCode = sessionStorage.getItem("participantCode");
     const groupid = sessionStorage.getItem("groupid");
+    const emailAddr = sessionStorage.getItem("emailAddr");
 
     $.ajax({
           url: "./submission.php",
           type: "POST",
-          data: {"saveRecord":"", "record":record, "participantCode":participantCode, "groupid":groupid},
+          data: {"saveRecord":"", "record":record, "participantCode":participantCode, "groupid":groupid, "emailAddr":emailAddr},
           success: function(res) {
                   if (res === '200') {
                     alert('Submission successful!');

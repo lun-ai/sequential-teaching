@@ -7,11 +7,22 @@
         fclose($fp);
     }
 
+    function saveEmail($emailAddr) {
+        $fp = fopen('./emails.csv', 'w');
+        fwrite($fp, $emailAddr);
+        fclose($fp);
+    }
+
     if (isset($_POST['saveRecord']) and !empty($_POST['record'])) {
         $record = $_POST['record'];
         $partid = $_POST['participantCode'];
         $groupid = $_POST['groupid'];
+        $emailAddr = $_POST['emailAddr'];
         saveRecord($record, $partid, $groupid);
+        $emailAddr = str_replace('"', '', $emailAddr);
+        if ($emailAddr != '') {
+            saveEmail($emailAddr);
+        }
         echo 200;
     } else {
         echo 500;
