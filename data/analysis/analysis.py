@@ -24,7 +24,10 @@ DATA_DIR_TEST1_GROUP1 = "../test/test_1/Group1/"
 DATA_DIR_TEST1_GROUP2 = "../test/test_1/Group2/"
 DATA_DIR_TEST1_GROUP3 = "../test/test_1/Group3/"
 DATA_DIR_TEST1_GROUP4 = "../test/test_1/Group4/"
+DATA_DIR_TEST1_ANOMALY = "../test/test_1/anomaly/"
 
-# extract_from_CSV([DATA_DIR_TEST1_GROUP1], show_sim=True)
-extract_from_CSV([DATA_DIR_TEST1_GROUP2], show_sim=True)
-# extract_from_CSV([DATA_DIR_TEST1_GROUP4], show_sim=True)
+extract_from_CSV([DATA_DIR_TEST1_GROUP1], show_sim=False)
+# extract_from_CSV([DATA_DIR_TEST1_GROUP2], show_sim=False)
+# extract_from_CSV([DATA_DIR_TEST1_GROUP3], show_sim=False)
+# extract_from_CSV([DATA_DIR_TEST1_GROUP4], show_sim=False)
+# extract_from_CSV([DATA_DIR_TEST1_ANOMALY], show_sim=False)
