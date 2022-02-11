@@ -4,11 +4,13 @@ from scipy import stats
 from os import listdir
 import csv
 import matplotlib.pyplot as plt
-from eval_trace import find_similar_algo
+from eval_trace import find_similar_algo, sim_algo_hist
 
+DEFAULT_GRAPH_PATH = "../results/"
 
-def extract_from_CSV(paths, is_trace_enabled=False, train_only=False, show_records=True, sim="lcs", show_sim=False,
-                     verbose=False):
+def extract_from_CSV(paths, is_trace_enabled=False, train_only=False, show_records=True, sim_graphs=False,
+                     sim="lcs", show_sim=False,
+                     verbose=False, save_graph=False):
     csv_list = []
     filenames = []
     for path in paths:
@@ -41,7 +43,15 @@ def extract_from_CSV(paths, is_trace_enabled=False, train_only=False, show_recor
     merge_train_comparison_records = []
     sort_train_comparison_records = []
 
-    for c in csv_list:
+    train_alg_hist = []
+    test_alg_hist = []
+
+    for i in range(len(csv_list)):
+
+        c = csv_list[i]
+
+        if verbose:
+            print(">>>>>>>>>>>>>>> %s >>>>>>>>>>>>>>>" % (filenames[i]))
 
         p = extract_pre_test(c)
         pre_test.append(p)
@@ -83,17 +93,19 @@ def extract_from_CSV(paths, is_trace_enabled=False, train_only=False, show_recor
                 i += 1
 
         if show_sim:
-            eval_alg_sim(sim, c, verbose=verbose, train_only=train_only)
+            train_algs, algs = eval_alg_sim(sim, c, verbose=verbose, train_only=train_only)
+            train_alg_hist.append(train_algs)
+            test_alg_hist.append(algs)
 
     if show_records:
-        print('>>>>>>>>>>>>>> MaRs-IB >>>>>>>>>>>>>>>>>>')
+        print('>>> MaRs-IB')
         print('MaRs-IB pre-test (correct/completed/accuracy): ' + str(pre_test))
-        print('>>>>>>>>>>>>>> TRAIN >>>>>>>>>>>>>>>>>>')
+        print('>>> TRAIN ')
         print('merge train spearman rank score: ' + str(merge_train_score))
         print('merge train No. comparison: ' + str(merge_train_comparison))
         print('sort train spearman rank score: ' + str(sort_train_score))
         print('sort train No. comparison: ' + str(sort_train_comparison))
-        print('>>>>>>>>>>>>>> TEST >>>>>>>>>>>>>>>>>>')
+        print('>>> TEST ')
         print('merge test time: ' + str(merge_test_response_time))
         print('merge test spearman rank score: ' + str(merge_test_score))
         print('merge test No. comparison: ' + str(merge_test_comparison))
@@ -112,6 +124,38 @@ def extract_from_CSV(paths, is_trace_enabled=False, train_only=False, show_recor
         print('mean sort response time: %s' % numpy.average(sort_test_response_time, axis=0))
         print('mean sort test spearman rank score: %s' % numpy.average(sort_test_score, axis=0))
         print('mean sort No. comparison: %s' % numpy.average(sort_test_comparison, axis=0))
+
+        if sim_graphs:
+            graph_path = ""
+            if len(paths) == 1:
+                key = paths[0].split("/")[-2]
+                if save_graph:
+                    g_l = {"Group1": "c1", "Group2": "c2", "Group3": "c3", "Group4": "c4"}
+
+                    graph_path = DEFAULT_GRAPH_PATH + key + "/" + g_l[key] + "_train_"
+            else:
+                key = "Multiple groups"
+                if save_graph:
+                    graph_path = DEFAULT_GRAPH_PATH
+            draw_sim_hist_graph([np.array(train_alg_hist)[:, :3], np.array(train_alg_hist)[:, 3]],
+                                ["Length of set < 10\nNo. question = 3", "Length of set = 10\nNo. question = 1"],
+                                "No. application in training" + " (" + key + ")", "Frequency", save_path=graph_path)
+            if not train_only:
+                graph_path = ""
+                if len(paths) == 1:
+                    key = paths[0].split("/")[-2]
+                    if save_graph:
+                        graph_path = DEFAULT_GRAPH_PATH + key + "/" + g_l[key] + "_test_"
+                else:
+                    key = "Multiple groups"
+                    if save_graph:
+                        graph_path = DEFAULT_GRAPH_PATH
+                draw_sim_hist_graph([np.array(test_alg_hist)[:, :5], np.array(test_alg_hist)[:, 5:]],
+                                    ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
+                                    "No. application in performance test" + " (" + key + ")", "Frequency", save_path=graph_path)
+                draw_sim_mean_graph([np.array(test_alg_hist)[:, :5], np.array(test_alg_hist)[:, 5:]],
+                                    ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
+                                    "No. application in performance test" + " (" + key + ")", "Mean", save_path=graph_path)
 
 
 def extract_pre_test(input):
@@ -203,8 +247,10 @@ def extract_response(input):
 
 def parseStringLine(line):
     return list(filter(None,
-                       str(line).replace("\n", "").replace("\'", "").replace(" ", "").replace("\"", "").replace("[", "").replace("]",
-                                                                                                               "").split(
+                       str(line).replace("\n", "").replace("\'", "").replace(" ", "").replace("\"", "").replace("[",
+                                                                                                                "").replace(
+                           "]",
+                           "").split(
                            ",")))
 
 
@@ -274,7 +320,7 @@ def reconstruct_trace(trace, path, name):
     plt.close()
 
 
-def eval_alg_sim(method, input, train_only=False, verbose=True):
+def eval_alg_sim(method, input, train_only=False, verbose=False):
     sort_train_input_col = input[0].index("sort_train_input")
     sort_train_labels_col = input[0].index("sort_train_labels")
     sort_train_com_records = input[0].index("sort_train_compare_records")
@@ -284,11 +330,17 @@ def eval_alg_sim(method, input, train_only=False, verbose=True):
     l = [parseStringLine(line[sort_train_labels_col]) for line in input[1:] if line[sort_train_labels_col] != '']
     r = [string2pairlist(line[sort_train_com_records].replace("\"", "\'", )) for line in input[1:] if
          line[sort_train_com_records] != '']
-    print(
-        ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n>>> Sort train phase similarity, No. train questions = " + str(
-            len(i)))
+    if verbose:
+        print(
+            "\n>>> Sort train phase similarity, No. train questions = %s" % (str(
+                len(i))))
+    train_algs = []
     for u in range(len(i)):
-        find_similar_algo(method, i[u], l[u], r[u], verbose)
+        if r[u] != []:
+            train_candidates, _, _, _ = find_similar_algo(method, i[u], l[u], r[u], verbose=verbose)
+            train_algs.append(train_candidates)
+        else:
+            train_algs.append([])
 
     if not train_only:
         sort_test_input_col = input[0].index("sort_test_input")
@@ -301,14 +353,68 @@ def eval_alg_sim(method, input, train_only=False, verbose=True):
         r = [string2pairlist(line[sort_test_com_records].replace("\"", "\'", )) for line in input[1:] if
              line[sort_test_com_records] != '']
 
-        print(
-            ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n>>> Sort test phase similarity, No. test questions = " + str(
-                len(i)))
+        if verbose:
+            print(
+                "\n>>> Sort test phase similarity, No. test questions = %s\n" % (str(
+                    len(i))))
+
+        algs = []
         for u in range(len(i)):
-            find_similar_algo(method, i[u], l[u], r[u], verbose)
-        print("")
+            candidates, _, _, _ = find_similar_algo(method, i[u], l[u], r[u], verbose=verbose)
+            algs.append(candidates)
+
+    return train_algs, algs
 
 
 def string2pairlist(str):
     labels = parseStringLine(str)
     return [[labels[2 * i], labels[2 * i + 1]] for i in range(len(labels) // 2)]
+
+
+def draw_sim_hist_graph(groups, subtitles, title, ylabel, save_path=""):
+    colors = ["lightseagreen", "mediumturquoise", "lightblue", "paleturquoise", "lightskyblue"]
+    fig, ax = plt.subplots(ncols=len(groups))
+    fig.tight_layout(pad=3.0)
+    for i in range(len(groups)):
+        g_flat = groups[i].flatten()
+        hist = sim_algo_hist(g_flat)
+        ax[i].bar(range(len(list(hist.keys()))), list(hist.values()), color=colors)
+        ax[i].set_xticks(range(len(list(hist.keys()))))
+        ax[i].set_xticklabels(hist.keys())
+        ax[i].set_yticks(range(15))
+        ax[i].set_ylabel(ylabel)
+        ax[i].set_title(subtitles[i], y=0.95, pad=-14)
+        fig.suptitle(title, fontsize=16)
+
+    if save_path == "":
+        plt.show()
+    else:
+        plt.savefig(save_path + "alg_freq.png")
+
+
+def draw_sim_mean_graph(groups, subtitles, title, ylabel, save_path=""):
+    colors = ["salmon", "tomato", "darksalmon", "coral", "orangered"]
+    fig, ax = plt.subplots(ncols=len(groups))
+    fig.tight_layout(pad=3.0)
+    for i in range(len(groups)):
+        hist_d = []
+        hist_c = []
+        for j in range(len(groups[i])):
+            hist = sim_algo_hist(groups[i][j])
+            hist_d.append(list(hist.values()))
+            hist_c = list(hist.keys())
+
+        mean = np.mean(hist_d, axis=0)
+        std = np.std(hist_d, axis=0)
+        ax[i].bar(range(len(hist_c)), mean, color=colors, yerr=std)
+        ax[i].set_xticks(range(len(hist_c)))
+        ax[i].set_xticklabels(hist_c)
+        ax[i].set_yticks(range(8))
+        ax[i].set_ylabel(ylabel)
+        ax[i].set_title(subtitles[i], y=0.95, pad=-14)
+        fig.suptitle(title, fontsize=16)
+
+    if save_path == "":
+        plt.show()
+    else:
+        plt.savefig(save_path + "alg_mean.png")

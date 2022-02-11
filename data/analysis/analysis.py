@@ -1,4 +1,4 @@
-from extract_data import *
+from process_data import *
 
 # pre-test analysis, Group A is merge-sort, Group B is sort-merge
 
@@ -26,8 +26,12 @@ DATA_DIR_TEST1_GROUP3 = "../test/test_1/Group3/"
 DATA_DIR_TEST1_GROUP4 = "../test/test_1/Group4/"
 DATA_DIR_TEST1_ANOMALY = "../test/test_1/anomaly/"
 
-# extract_from_CSV([DATA_DIR_TEST1_GROUP1], show_sim=False)
-# extract_from_CSV([DATA_DIR_TEST1_GROUP2], show_sim=False)
-# extract_from_CSV([DATA_DIR_TEST1_GROUP3], show_sim=False)
-extract_from_CSV([DATA_DIR_TEST1_GROUP4], show_sim=False)
+# extract_from_CSV([DATA_DIR_TEST1_GROUP1], sim='chi_sq', show_sim=True, sim_graphs=True, save_graph=True)
+# extract_from_CSV([DATA_DIR_TEST1_GROUP2], sim='chi_sq', show_sim=True, sim_graphs=True, save_graph=True)
+# extract_from_CSV([DATA_DIR_TEST1_GROUP3], sim='chi_sq', show_sim=True, sim_graphs=True, save_graph=True)
+# extract_from_CSV([DATA_DIR_TEST1_GROUP4], sim='chi_sq', show_sim=True, sim_graphs=True, save_graph=True)
+extract_from_CSV([DATA_DIR_TEST1_GROUP1], sim='chi_sq_2x2', show_sim=True, sim_graphs=True)
+# extract_from_CSV([DATA_DIR_TEST1_GROUP2], sim='chi_sq_2x2', show_sim=True, sim_graphs=True)
+# extract_from_CSV([DATA_DIR_TEST1_GROUP3], sim='chi_sq_2x2', show_sim=True, sim_graphs=True)
+# extract_from_CSV([DATA_DIR_TEST1_GROUP4], sim='chi_sq_2x2', show_sim=True, sim_graphs=True)
 # extract_from_CSV([DATA_DIR_TEST1_ANOMALY], show_sim=False)
