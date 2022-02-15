@@ -38,20 +38,24 @@ def vectorise_trace(machine_trace, human_trace, labels):
     for l1 in labels:
         for l2 in labels:
             # a new comparison pair
-            if l1 != l2 and not (str(l1 + ',' + l2) in vm or str(l1 + ',' + l2) in vh) and not (
+            if not (str(l1 + ',' + l2) in vm or str(l1 + ',' + l2) in vh) and not (
                     str(l2 + ',' + l1) in vm or str(l2 + ',' + l1) in vh):
                 vm[l1 + ',' + l2] = 0
                 vh[l1 + ',' + l2] = 0
-                # counting occurrence of pairs
+                # mark occurrence of label pairs
                 if [l1, l2] in machine_trace or [l2, l1] in machine_trace:
-                    vm[l1 + ',' + l2] = vm[l1 + ',' + l2] + 1
+                    vm[l1 + ',' + l2] = 1
                 if [l1, l2] in human_trace or [l2, l1] in human_trace:
-                    vh[l1 + ',' + l2] = vh[l1 + ',' + l2] + 1
+                    vh[l1 + ',' + l2] = 1
+    for v in list(vm.values()):
+        if v > 1:
+            raise ValueError("Occurrence of a set should not be greater than 1!")
     return vm, vh
 
 
 def get_machine_trace(algorithm, input, labels):
     output = algorithm(input)
+    check_sort_output(output[0], output[1], output[2])
     trace = []
     for comp in output[1]:
         trace.append([labels[input.index(comp[0])], labels[input.index(comp[1])]])
@@ -122,7 +126,7 @@ def longest_common_subseq_conse(t1, t2, m, n):
 # perform chi square test first
 # Null hypothesis: the two variables (human/machine, comparison) are independent (change of one variable does not change the other)
 # Alternative hypothesis: the two variables are not independent (change of one variable may result in the other changing)
-def comp_categorical_independence(machine_trace, human_trace, labels, verbose=True):
+def comp_chi2_similar(machine_trace, human_trace, labels, verbose=True):
     # trace is a pool of samples of comparison drawn each being one of the NxN type
     vm, vh = vectorise_trace(machine_trace, human_trace, labels)
     vms, vhs = vectorise_trace_seq(machine_trace, human_trace, labels)
@@ -155,8 +159,8 @@ def comp_categorical_independence(machine_trace, human_trace, labels, verbose=Tr
         res = stats.spearmanr(rm, rh)
 
         if verbose:
-            print("machine trace rank dict: %s" % (rm))
-            print("human trace rank dict: %s" % (rh))
+            print("machine trace rank: %s" % (rm))
+            print("human trace rank: %s" % (rh))
             print("spearman rank coeff score: %s, p-value: %s\n" % (res[0], res[1]))
 
         return True, res
@@ -164,7 +168,9 @@ def comp_categorical_independence(machine_trace, human_trace, labels, verbose=Tr
     return False, [t, p]
 
 
-def comp_categorical_independence_2x2(machine_trace, human_trace, labels, verbose=True):
+def comp_chi2_similar_2x2(machine_trace, human_trace, labels, verbose=True):
+    print(machine_trace)
+    print(human_trace)
     # trace is a pool of samples of comparison drawn each being one of the NxN type
     vm, vh = vectorise_trace(machine_trace, human_trace, labels)
     vms, vhs = vectorise_trace_seq(machine_trace, human_trace, labels)
@@ -190,15 +196,19 @@ def comp_categorical_independence_2x2(machine_trace, human_trace, labels, verbos
         contingency_table[1][0] += 1
         contingency_table[1][1] += 1
 
-    print(contingency_table)
     t, p, _, expected = stats.chi2_contingency(contingency_table)
-    print([t, p])
 
     if verbose:
-        pass
+        print("\nmachine trace size: %s" % (len(machine_trace)))
+        print("machine trace dict: %s" % (vm))
+        print("human trace dict: %s" % (vh))
+        print("machine trace vector: %s" % (vm.values()))
+        print("human trace vector : %s" % (vh.values()))
+        print("contingency_table: %s" % (contingency_table))
+        print("chi square test: %s, p-value: %s" % (t, p))
 
     # if machine trace and human trace are similar, which means accept null hypothesis
-    if p > 0.1:
+    if p < 0.05:
         rm = []
         rh = []
         for k in list(vms.keys()) and list(vhs.keys()):
@@ -208,10 +218,11 @@ def comp_categorical_independence_2x2(machine_trace, human_trace, labels, verbos
                 rh.append(vhs[k])
         # perform spearman rank analysis off the intersection
         res = stats.spearmanr(rm, rh)
-        print(res)
 
         if verbose:
-            pass
+            print("machine trace rank dict: %s" % (rm))
+            print("human trace rank dict: %s" % (rh))
+            print("spearman rank coeff score: %s, p-value: %s\n" % (res[0], res[1]))
 
         return True, res
 
@@ -237,9 +248,9 @@ def get_similarity(method, algorithm, input, labels, ht, verbose=True):
     elif method == "weighted_lcs_conse":
         return comp_long_subseq_sim(mt, ht, labels, verbose=verbose, conse=True) / len(mt), len(mt)
     elif method == "chi_sq":
-        return comp_categorical_independence(mt, ht, labels, verbose=verbose), len(mt)
+        return comp_chi2_similar(mt, ht, labels, verbose=verbose), len(mt)
     elif method == "chi_sq_2x2":
-        return comp_categorical_independence_2x2(mt, ht, labels, verbose=verbose), len(mt)
+        return comp_chi2_similar_2x2(mt, ht, labels, verbose=verbose), len(mt)
 
     else:
         print("Method not implemented")
@@ -269,50 +280,59 @@ def sim_algo_hist(candidates_lists):
     return categories
 
 
-def find_similar_algo(method, input, labels, ht, verbose=False):
+def alphabetical_labels(input, labels):
+    sorted_labels = sorted(labels)
+    res = []
+
+    for l in sorted_labels:
+        i = labels.index(l)
+        res.append(input[i])
+
+    return res, sorted_labels
+
+
+def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False):
     s = []
     c = []
+    t = []
+    funcs = funcs + [("left to right", lambda x, y: (x, y))]
 
     for alg in ALL_ALGORITHMS:
-        u = get_similarity(method, alg, input, labels, ht, verbose=verbose)
-        s.append(u[0])
-        c.append(u[1])
+        for func in funcs:
+            input_f, labels_f = func[1](input, labels)
+            u = get_similarity(method, alg, input_f, labels_f, ht, verbose=verbose)
+            s.append(u[0])
+            c.append(u[1])
+            t.append(func[0])
+
 
     tied_score_alg = []
     score = -np.inf
-    # tied_cost_alg = []
 
     if method == "chi_sq" or method == "chi_sq_2x2":
-        spearman_s = [res[1][0] for res in s if res[0]]
+        spearman_s = [res[1][1] for res in s if res[0] and res[1][0] > 0]
 
         if len(spearman_s) > 0:
             # found similar machine algorithms
-            score = max(spearman_s)
-            has_similar = True
+            score = min(spearman_s)
             method = 'set_intersect_spearman'
+            for i in range(len(s)):
+                if s[i][0] and s[i][1][1] == score:
+                    tied_score_alg.append((ALL_ALGORITHMS[i//len(funcs)].__name__, c[i], t[i]))
         else:
             # no similar machine algorithm is found
-            score = min([res[1][1] for res in s if not res[0]])
-            has_similar = False
-
-        for i in range(len(s)):
-            if s[i][0] == has_similar and s[i][1][0] == score:
-                tied_score_alg.append((ALL_ALGORITHMS[i].__name__, c[i]))
+            if verbose:
+                print(">>> No similar method is found!")
+                return [], score, method, len(ht)
     else:
         score = max(s)
         # max_cost = max(c)
         for i in range(len(s)):
             if s[i] == score:
                 if len(tied_score_alg) > 0:
-                    tied_score_alg.append((ALL_ALGORITHMS[i].__name__, c[i]))
+                    tied_score_alg.append((ALL_ALGORITHMS[i].__name__, c[i], t[i]))
                 else:
-                    tied_score_alg.append((ALL_ALGORITHMS[i].__name__, c[i]))
-        # for i in range(len(c)):
-        #     if c[i] == max_cost:
-        #         if len(tied_cost_alg) > 0:
-        #             tied_cost_alg.append(ALL_ALGORITHMS[i].__name__)
-        #         else:
-        #             tied_cost_alg.append(ALL_ALGORITHMS[i].__name__)
+                    tied_score_alg.append((ALL_ALGORITHMS[i].__name__, c[i], t[i]))
 
     if verbose:
         if len(tied_score_alg) > 1:
@@ -323,13 +343,19 @@ def find_similar_algo(method, input, labels, ht, verbose=False):
                 tied_score_alg, method, score, len(ht)))
     return tied_score_alg, score, method, len(ht)
 
+
 # find_similar_algo("chi_sq", [6, 3, 5, 4, 2, 1], ['E', 'B', 'C', 'A', 'F', 'D'],
 #                   [['E', 'C'], ['A', 'C'], ['F', 'C'], ['F', 'A'], ['B', 'C'], ['B', 'F'], ['B', 'A'], ['D', 'A'],
 #                    ['D', 'B'], ['D', 'F']])
 # print(comp_categorical_independence([['F', 'A'], ['G', 'A'], ['A', 'E'], ['A', 'D'], ['E', 'F'], ['C', 'A'], ['A', 'D']],
 #                                     [['E', 'C'], ['A', 'C'], ['F', 'C'], ['F', 'A'], ['B', 'C'], ['B', 'F'], ['B', 'A'], ['D', 'A']],
 #                                     ['A', 'B', 'C', 'D', 'E', 'F', 'G']))
-# find_similar_algo("chi_sq_2x2", [2, 9, 8, 10, 4, 5, 6, 7, 3, 1], ['E', 'I', 'H', 'F', 'B', 'G', 'C', 'J', 'D', 'A'],
+find_similar_algo("chi_sq_2x2", [2, 9, 8, 10, 4, 5, 6, 7, 3, 1], ['E', 'I', 'H', 'F', 'B', 'G', 'C', 'J', 'D', 'A'],
+                  [['A', 'B'], ['A', 'C'], ['B', 'C'], ['D', 'C'], ['D', 'A'], ['D', 'E'], ['A', 'E'], ['F', 'E'],
+                   ['F', 'C'], ['F', 'B'], ['G', 'B'], ['G', 'F'], ['G', 'H'], ['F', 'H'], ['J', 'H'], ['J', 'C'],
+                   ['J', 'B'], ['J', 'G'], ['J', 'H'], ['J', 'I'], ['H', 'I'], ['F', 'I']],
+                  funcs=[("alphabetical", alphabetical_labels)], verbose=True)
+# find_similar_algo("chi_sq_2x2", [1, 4, 6, 3, 2, 10, 5, 8, 9, 7], ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
 #                   [['A', 'B'], ['A', 'C'], ['B', 'C'], ['D', 'C'], ['D', 'A'], ['D', 'E'], ['A', 'E'], ['F', 'E'],
 #                    ['F', 'C'], ['F', 'B'], ['G', 'B'], ['G', 'F'], ['G', 'H'], ['F', 'H'], ['J', 'H'], ['J', 'C'],
 #                    ['J', 'B'], ['J', 'G'], ['J', 'H'], ['J', 'I'], ['H', 'I'], ['F', 'I']], verbose=True)

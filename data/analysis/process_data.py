@@ -4,7 +4,7 @@ from scipy import stats
 from os import listdir
 import csv
 import matplotlib.pyplot as plt
-from eval_trace import find_similar_algo, sim_algo_hist
+from eval_trace import find_similar_algo, sim_algo_hist, alphabetical_labels
 
 DEFAULT_GRAPH_PATH = "../results/"
 
@@ -319,53 +319,6 @@ def reconstruct_trace(trace, path, name):
     plt.savefig(path + "traces/sort_test/" + name)
     plt.close()
 
-
-def eval_alg_sim(method, input, train_only=False, verbose=False):
-    sort_train_input_col = input[0].index("sort_train_input")
-    sort_train_labels_col = input[0].index("sort_train_labels")
-    sort_train_com_records = input[0].index("sort_train_compare_records")
-
-    i = [list(map(int, parseStringLine(line[sort_train_input_col]))) for line in input[1:] if
-         line[sort_train_input_col] != '']
-    l = [parseStringLine(line[sort_train_labels_col]) for line in input[1:] if line[sort_train_labels_col] != '']
-    r = [string2pairlist(line[sort_train_com_records].replace("\"", "\'", )) for line in input[1:] if
-         line[sort_train_com_records] != '']
-    if verbose:
-        print(
-            "\n>>> Sort train phase similarity, No. train questions = %s" % (str(
-                len(i))))
-    train_algs = []
-    for u in range(len(i)):
-        if r[u] != []:
-            train_candidates, _, _, _ = find_similar_algo(method, i[u], l[u], r[u], verbose=verbose)
-            train_algs.append(train_candidates)
-        else:
-            train_algs.append([])
-
-    if not train_only:
-        sort_test_input_col = input[0].index("sort_test_input")
-        sort_test_labels_col = input[0].index("sort_test_labels")
-        sort_test_com_records = input[0].index("sort_test_compare_records")
-
-        i = [list(map(int, parseStringLine(line[sort_test_input_col]))) for line in input[1:] if
-             line[sort_test_input_col] != '']
-        l = [parseStringLine(line[sort_test_labels_col]) for line in input[1:] if line[sort_test_labels_col] != '']
-        r = [string2pairlist(line[sort_test_com_records].replace("\"", "\'", )) for line in input[1:] if
-             line[sort_test_com_records] != '']
-
-        if verbose:
-            print(
-                "\n>>> Sort test phase similarity, No. test questions = %s\n" % (str(
-                    len(i))))
-
-        algs = []
-        for u in range(len(i)):
-            candidates, _, _, _ = find_similar_algo(method, i[u], l[u], r[u], verbose=verbose)
-            algs.append(candidates)
-
-    return train_algs, algs
-
-
 def string2pairlist(str):
     labels = parseStringLine(str)
     return [[labels[2 * i], labels[2 * i + 1]] for i in range(len(labels) // 2)]
@@ -418,3 +371,52 @@ def draw_sim_mean_graph(groups, subtitles, title, ylabel, save_path=""):
         plt.show()
     else:
         plt.savefig(save_path + "alg_mean.png")
+
+
+def eval_alg_sim(method, input, train_only=False, verbose=False):
+    sort_train_input_col = input[0].index("sort_train_input")
+    sort_train_labels_col = input[0].index("sort_train_labels")
+    sort_train_com_records = input[0].index("sort_train_compare_records")
+
+    i = [list(map(int, parseStringLine(line[sort_train_input_col]))) for line in input[1:] if
+         line[sort_train_input_col] != '']
+    l = [parseStringLine(line[sort_train_labels_col]) for line in input[1:] if line[sort_train_labels_col] != '']
+    r = [string2pairlist(line[sort_train_com_records].replace("\"", "\'", )) for line in input[1:] if
+         line[sort_train_com_records] != '']
+    if verbose:
+        print(
+            "\n>>> Sort train phase similarity, No. train questions = %s" % (str(
+                len(i))))
+    train_algs = []
+    for u in range(len(i)):
+        if r[u] != []:
+            train_candidates, _, _, _ = find_similar_algo(method, i[u], l[u], r[u], funcs=[("alphabetical", alphabetical_labels)], verbose=verbose)
+            train_algs.append(train_candidates)
+        else:
+            train_algs.append([])
+
+    if not train_only:
+        sort_test_input_col = input[0].index("sort_test_input")
+        sort_test_labels_col = input[0].index("sort_test_labels")
+        sort_test_com_records = input[0].index("sort_test_compare_records")
+
+        i = [list(map(int, parseStringLine(line[sort_test_input_col]))) for line in input[1:] if
+             line[sort_test_input_col] != '']
+        l = [parseStringLine(line[sort_test_labels_col]) for line in input[1:] if line[sort_test_labels_col] != '']
+        r = [string2pairlist(line[sort_test_com_records].replace("\"", "\'", )) for line in input[1:] if
+             line[sort_test_com_records] != '']
+
+        if verbose:
+            print(
+                "\n>>> Sort test phase similarity, No. test questions = %s\n" % (str(
+                    len(i))))
+
+        algs = []
+        for u in range(len(i)):
+            candidates, _, _, _ = find_similar_algo(method, i[u], l[u], r[u], verbose=verbose)
+            algs.append(candidates)
+
+    return train_algs, algs
+
+
+

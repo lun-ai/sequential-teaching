@@ -1,6 +1,9 @@
 # Implementation of a set of common sorting algorithms
 # Each outputs a list that is sorted incrementally, comparisons and the count of comparisons
 
+comparison_list = []
+comparisonN = 0
+
 def botup_msort_left_front(x):
     '''
     Applies bottom-up merge sort by popping the front of sublists and merge sublists from left to right
@@ -17,17 +20,17 @@ def botup_msort_left_front(x):
     '''
     comps = []
     compsN = 0
-    res = []
+    result = []
     # Turning the unsorted list into a list containing lists of the length one. That way, only one
     # iterative sorting algorithm suffices.
     for i in range(len(x)):
         a = []
         a.append(x[i])
-        res.append(a)
-    while len(res) > 1:
+        result.append(a)
+    while len(result) > 1:
         # When the list is fully sorted, res only contains one (fully sorted) list.
-        old = res
-        res = []
+        old = result
+        result = []
         for i in range(len(old) // 2):
             y = old[2 * i]
             z = old[2 * i + 1]
@@ -54,10 +57,11 @@ def botup_msort_left_front(x):
                     for j in y:
                         new.append(j)
                     y = []
-            res.append(new)
+            result.append(new)
         if len(old) % 2 == 1:
-            res.append(old[-1])
-    return res[0], comps, compsN
+            result.append(old[-1])
+
+    return result[0], comps, compsN
 
 
 def botup_msort_right_front(x):
@@ -76,17 +80,17 @@ def botup_msort_right_front(x):
     '''
     comps = []
     compsN = 0
-    res = []
+    result = []
     # Turning the unsorted list into a list containing lists of the length one. That way, only one
     # iterative sorting algorithm suffices.
     for i in range(len(x)):
         a = []
         a.append(x[i])
-        res.append(a)
-    while len(res) > 1:
+        result.append(a)
+    while len(result) > 1:
         # When the list is fully sorted, res only contains one (fully sorted) list.
-        old = res
-        res = []
+        old = result
+        result = []
         for i in range(len(old) // 2):
             y = old[2 * i]
             z = old[2 * i + 1]
@@ -113,10 +117,11 @@ def botup_msort_right_front(x):
                 else:
                     new = y + new
                     y = []
-            res.append(new)
+            result.append(new)
         if len(old) % 2 == 1:
-            res.append(old[-1])
-    return res[0], comps, compsN
+            result.append(old[-1])
+
+    return result[0], comps, compsN
 
 
 def botup_msort_left_back(x):
@@ -135,17 +140,17 @@ def botup_msort_left_back(x):
     '''
     comps = []
     compsN = 0
-    res = []
+    result = []
     # Turning the unsorted list into a list containing lists of the length one. That way, only one
     # iterative sorting algorithm suffices.
     for i in range(len(x)):
         a = []
         a.append(x[i])
-        res.append(a)
-    while len(res) > 1:
+        result.append(a)
+    while len(result) > 1:
         # When the list is fully sorted, res only contains one (fully sorted) list.
-        old = res
-        res = []
+        old = result
+        result = []
         for i in range(len(old) // 2):
             y = old[len(old) - 1 - 2 * i]
             z = old[len(old) - 2 * (i + 1)]
@@ -172,10 +177,11 @@ def botup_msort_left_back(x):
                     for j in y:
                         new.append(j)
                     y = []
-            res = [new] + res
+            result = [new] + result
         if len(old) % 2 == 1:
-            res = [old[0]] + res
-    return res[0], comps, compsN
+            result = [old[0]] + result
+
+    return result[0], comps, compsN
 
 
 def botup_msort_right_back(x):
@@ -194,17 +200,17 @@ def botup_msort_right_back(x):
     '''
     comps = []
     compsN = 0
-    res = []
+    result = []
     # Turning the unsorted list into a list containing lists of the length one. That way, only one
     # iterative sorting algorithm suffices.
     for i in range(len(x)):
         a = []
         a.append(x[i])
-        res.append(a)
-    while len(res) > 1:
+        result.append(a)
+    while len(result) > 1:
         # When the list is fully sorted, res only contains one (fully sorted) list.
-        old = res
-        res = []
+        old = result
+        result = []
         for i in range(len(old) // 2):
             y = old[len(old) - 1 - 2 * i]
             z = old[len(old) - 2 * (i + 1)]
@@ -231,10 +237,11 @@ def botup_msort_right_back(x):
                 else:
                     new = y + new
                     y = []
-            res = [new] + res
+            result = [new] + result
         if len(old) % 2 == 1:
-            res = [old[0]] + res
-    return res[0], comps, compsN
+            result = [old[0]] + result
+
+    return result[0], comps, compsN
 
 
 def qsort_first(x):
@@ -404,7 +411,7 @@ def msort_left_front(x):
         else:
             result = result + y
             y = []
-    # print(result)
+
     return result, comps, compsN
 
 
@@ -453,6 +460,7 @@ def msort_right_front(x):
         else:
             result = result + y
             y = []
+
     return result, comps, compsN
 
 
@@ -505,6 +513,7 @@ def msort_left_back(x):
         else:
             result = y + result
             y = []
+
     return result, comps, compsN
 
 
@@ -555,6 +564,7 @@ def msort_right_back(x):
         else:
             result = y + result
             y = []
+
     return result, comps, compsN
 
 
@@ -586,6 +596,7 @@ def bubsort_front(x):
             else:
                 comps.append([x[j + 1], x[j]])
                 compsN += 1
+
     return x, comps, compsN
 
 
@@ -617,6 +628,7 @@ def bubsort_back(x):
             else:
                 comps.append([x[n - j - 2], x[n - 1 - j]])
                 compsN += 1
+
     return x, comps, compsN
 
 
@@ -654,6 +666,7 @@ def isort_front(x):
 
             result.insert(dist, x[i])
             dist = 0
+
     return result, comps, compsN
 
 
@@ -692,6 +705,7 @@ def isort_back(x):
 
             result.insert(i - dist + 1, x[i])
             dist = 1
+
     return result, comps, compsN
 
 
@@ -720,14 +734,15 @@ def dict_sort_front(x):
             continue
         i = 0
         j = len(result) - 1
-        if n < result[i]:
-            comps.append([n, result[i]])
-            compsN += 1
-            result.insert(i, n)
-        elif n > result[j]:
+
+        if n > result[j]:
             comps.append([n, result[j]])
             compsN += 1
             result.insert(j + 1, n)
+        elif n < result[i]:
+            comps.append([n, result[i]])
+            compsN += 1
+            result.insert(i, n)
         else:
             comps.append([n, result[i]])
             comps.append([n, result[j]])
@@ -745,6 +760,50 @@ def dict_sort_front(x):
                 if i >= j - 1:
                     result.insert(j, n)
                     break
+
+    return result, comps, compsN
+
+
+def dict_sort_mid(x):
+    result = []
+    comps = []
+    compsN = 0
+
+    for n in x:
+        if result == []:
+            result.append(n)
+            continue
+        i = 0
+        j = len(result) - 1
+
+        while i <= j:
+            k = (i + j) // 2
+            if n < result[k]:
+                comps.append([n, result[k]])
+                compsN += 1
+                j = k
+
+                if k != i:
+                    comps.append([n, result[i]])
+                    compsN += 1
+                if n < result[i]:
+                    result.insert(i, n)
+                    break
+            else:
+                comps.append([n, result[k]])
+                compsN += 1
+                i = k
+
+                if k != j:
+                    comps.append([n, result[j]])
+                    compsN += 1
+                if n > result[j]:
+                    result.insert(j + 1, n)
+                    break
+            if i >= j - 1:
+                result.insert(j, n)
+                break
+
     return result, comps, compsN
 
 
@@ -782,8 +841,8 @@ def dict_sort_back(x):
             compsN += 1
             result.insert(i, n)
         else:
-            comps.append([n, result[i]])
             comps.append([n, result[j]])
+            comps.append([n, result[i]])
             compsN += 2
             while i < j:
                 k = (i + j) // 2
@@ -798,12 +857,40 @@ def dict_sort_back(x):
                 if i >= j - 1:
                     result.insert(j, n)
                     break
+
     return result, comps, compsN
+
+
+def check_sort_output(result, comps, compsN):
+    if result != sorted(result):
+        raise AssertionError("Algorithm not returning sorted lists!")
+    if compsN != len(comps):
+        raise AssertionError("Algorithm trace does not match number of comparisons!")
+
+def comp_lt(a, b):
+    comparison_list.append([a, b])
+    return a < b
+
+def comp_gt(a, b):
+    comparison_list.append([a, b])
+    return a > b
+
+def comp_leq(a, b):
+    comparison_list.append([a, b])
+    return a <= b
+
+def comp_geq(a, b):
+    comparison_list.append([a, b])
+    return a >= b
+
+def clear_cache_comp():
+    comparison_list.clear()
 
 
 ALL_ALGORITHMS = [botup_msort_left_front, botup_msort_right_front, botup_msort_left_back, botup_msort_right_back,
                   qsort_first, qsort_mid, qsort_last, isort_front, isort_back,
-                  msort_left_front, msort_left_back, msort_left_back, msort_right_back, dict_sort_front, dict_sort_back,
+                  msort_left_front, msort_left_back, msort_left_back, msort_right_back, dict_sort_front, dict_sort_mid,
+                  dict_sort_back,
                   bubsort_front, bubsort_back]
 
 
@@ -825,6 +912,7 @@ def test_all_alg(size, nrange):
     for alg in ALL_ALGORITHMS:
         for l in lists:
             if alg(l)[0] != sorted(l):
+                print([l,alg(l)[0]])
                 if alg.__name__ not in failed_tests.keys():
                     failed_tests[alg.__name__] = [l]
                 else:
@@ -832,3 +920,5 @@ def test_all_alg(size, nrange):
     print(failed_tests)
 
 # test_all_alg(7,7)
+
+# print(dict_sort_mid([1,2,3,4,5,6]))
