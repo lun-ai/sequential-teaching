@@ -350,11 +350,11 @@ def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False):
 # print(comp_categorical_independence([['F', 'A'], ['G', 'A'], ['A', 'E'], ['A', 'D'], ['E', 'F'], ['C', 'A'], ['A', 'D']],
 #                                     [['E', 'C'], ['A', 'C'], ['F', 'C'], ['F', 'A'], ['B', 'C'], ['B', 'F'], ['B', 'A'], ['D', 'A']],
 #                                     ['A', 'B', 'C', 'D', 'E', 'F', 'G']))
-find_similar_algo("chi_sq_2x2", [2, 9, 8, 10, 4, 5, 6, 7, 3, 1], ['E', 'I', 'H', 'F', 'B', 'G', 'C', 'J', 'D', 'A'],
-                  [['A', 'B'], ['A', 'C'], ['B', 'C'], ['D', 'C'], ['D', 'A'], ['D', 'E'], ['A', 'E'], ['F', 'E'],
-                   ['F', 'C'], ['F', 'B'], ['G', 'B'], ['G', 'F'], ['G', 'H'], ['F', 'H'], ['J', 'H'], ['J', 'C'],
-                   ['J', 'B'], ['J', 'G'], ['J', 'H'], ['J', 'I'], ['H', 'I'], ['F', 'I']],
-                  funcs=[("alphabetical", alphabetical_labels)], verbose=True)
+# find_similar_algo("chi_sq_2x2", [2, 9, 8, 10, 4, 5, 6, 7, 3, 1], ['E', 'I', 'H', 'F', 'B', 'G', 'C', 'J', 'D', 'A'],
+#                   [['A', 'B'], ['A', 'C'], ['B', 'C'], ['D', 'C'], ['D', 'A'], ['D', 'E'], ['A', 'E'], ['F', 'E'],
+#                    ['F', 'C'], ['F', 'B'], ['G', 'B'], ['G', 'F'], ['G', 'H'], ['F', 'H'], ['J', 'H'], ['J', 'C'],
+#                    ['J', 'B'], ['J', 'G'], ['J', 'H'], ['J', 'I'], ['H', 'I'], ['F', 'I']],
+#                   funcs=[("alphabetical", alphabetical_labels)], verbose=True)
 # find_similar_algo("chi_sq_2x2", [1, 4, 6, 3, 2, 10, 5, 8, 9, 7], ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
 #                   [['A', 'B'], ['A', 'C'], ['B', 'C'], ['D', 'C'], ['D', 'A'], ['D', 'E'], ['A', 'E'], ['F', 'E'],
 #                    ['F', 'C'], ['F', 'B'], ['G', 'B'], ['G', 'F'], ['G', 'H'], ['F', 'H'], ['J', 'H'], ['J', 'C'],
