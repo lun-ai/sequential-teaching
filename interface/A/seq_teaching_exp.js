@@ -577,237 +577,237 @@ psychoJS.start({
   expName: expName,
   expInfo: expInfo,
   resources: [
-    {'name': 'materials/imgs/MaRs_IB/64_task_25_md_d.png', 'path': 'materials/imgs/MaRs_IB/64_task_25_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
-    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
-    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
-    {'name': 'materials/imgs/MaRs_IB/39_task_20_pd_c.png', 'path': 'materials/imgs/MaRs_IB/39_task_20_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/61_task_52_pd_c.png', 'path': 'materials/imgs/MaRs_IB/61_task_52_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/69_task_24_pd_c.png', 'path': 'materials/imgs/MaRs_IB/69_task_24_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/compare_clicked.png', 'path': 'materials/merge_sort/imgs/compare_clicked.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
-    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
-    {'name': 'materials/merge_sort/imgs/blue_star_clicked.png', 'path': 'materials/merge_sort/imgs/blue_star_clicked.png'},
-    {'name': 'materials/imgs/MaRs_IB/01_task_19_md_b.png', 'path': 'materials/imgs/MaRs_IB/01_task_19_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_03_md_b.png', 'path': 'materials/imgs/MaRs_IB/00_task_03_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/50_task_39_md_b.png', 'path': 'materials/imgs/MaRs_IB/50_task_39_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
-    {'name': 'materials/imgs/MaRs_IB/62_task_31_md_b.png', 'path': 'materials/imgs/MaRs_IB/62_task_31_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/68_task_62_pd_a.png', 'path': 'materials/imgs/MaRs_IB/68_task_62_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_02_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_02_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/06_task_53_md_d.png', 'path': 'materials/imgs/MaRs_IB/06_task_53_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/41_task_49_md_d.png', 'path': 'materials/imgs/MaRs_IB/41_task_49_md_d.png'},
-    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
-    {'name': 'materials/imgs/MaRs_IB/65_task_15_md_b.png', 'path': 'materials/imgs/MaRs_IB/65_task_15_md_b.png'},
-    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
-    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
-    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
-    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
-    {'name': 'materials/imgs/MaRs_IB/28_task_66_pd_a.png', 'path': 'materials/imgs/MaRs_IB/28_task_66_pd_a.png'},
-    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
-    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
-    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
-    {'name': 'materials/imgs/MaRs_IB/27_task_27_md_b.png', 'path': 'materials/imgs/MaRs_IB/27_task_27_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/55_task_64_pd_c.png', 'path': 'materials/imgs/MaRs_IB/55_task_64_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
-    {'name': 'materials/review_cond.csv', 'path': 'materials/review_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/11_task_65_md_d.png', 'path': 'materials/imgs/MaRs_IB/11_task_65_md_d.png'},
-    {'name': 'materials/imgs/prefer_not_to_say_selected.png', 'path': 'materials/imgs/prefer_not_to_say_selected.png'},
-    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
-    {'name': 'materials/imgs/skip.png', 'path': 'materials/imgs/skip.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
-    {'name': 'materials/imgs/MaRs_IB/fixation.png', 'path': 'materials/imgs/MaRs_IB/fixation.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple.png', 'path': 'materials/merge_sort/imgs/fruits/apple.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/54_task_47_md_b.png', 'path': 'materials/imgs/MaRs_IB/54_task_47_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
-    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/46_task_33_md_d.png', 'path': 'materials/imgs/MaRs_IB/46_task_33_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/02_task_38_pd_a.png', 'path': 'materials/imgs/MaRs_IB/02_task_38_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
-    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
-    {'name': 'materials/imgs/MaRs_IB/38_task_76_pd_c.png', 'path': 'materials/imgs/MaRs_IB/38_task_76_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_05_md_d.png', 'path': 'materials/imgs/MaRs_IB/00_task_05_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/12_task_14_pd_a.png', 'path': 'materials/imgs/MaRs_IB/12_task_14_pd_a.png'},
-    {'name': 'materials/pre_test_cond.csv', 'path': 'materials/pre_test_cond.csv'},
-    {'name': 'materials/imgs/MaRs_IB/09_task_73_md_d.png', 'path': 'materials/imgs/MaRs_IB/09_task_73_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/45_task_58_pd_a.png', 'path': 'materials/imgs/MaRs_IB/45_task_58_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
-    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
-    {'name': 'materials/imgs/MaRs_IB/42_task_79_md_b.png', 'path': 'materials/imgs/MaRs_IB/42_task_79_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/08_task_11_md_b.png', 'path': 'materials/imgs/MaRs_IB/08_task_11_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/57_task_61_md_d.png', 'path': 'materials/imgs/MaRs_IB/57_task_61_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/63_task_57_md_d.png', 'path': 'materials/imgs/MaRs_IB/63_task_57_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
-    {'name': 'materials/imgs/MaRs_IB/13_task_40_pd_c.png', 'path': 'materials/imgs/MaRs_IB/13_task_40_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
-    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/sort_test/large_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/large_input_review.png'},
-    {'name': 'materials/imgs/MaRs_IB/40_task_48_pd_c.png', 'path': 'materials/imgs/MaRs_IB/40_task_48_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
-    {'name': 'materials/imgs/MaRs_IB/10_task_26_pd_a.png', 'path': 'materials/imgs/MaRs_IB/10_task_26_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/04_task_70_pd_a.png', 'path': 'materials/imgs/MaRs_IB/04_task_70_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/23_task_72_pd_c.png', 'path': 'materials/imgs/MaRs_IB/23_task_72_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
-    {'name': 'materials/imgs/MaRs_IB/36_task_36_pd_c.png', 'path': 'materials/imgs/MaRs_IB/36_task_36_pd_c.png'},
-    {'name': 'materials/imgs/other_gender_selected.png', 'path': 'materials/imgs/other_gender_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
-    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
-    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
-    {'name': 'materials/merge_sort/imgs/blue_star_door.png', 'path': 'materials/merge_sort/imgs/blue_star_door.png'},
-    {'name': 'materials/imgs/MaRs_IB/24_task_21_md_d.png', 'path': 'materials/imgs/MaRs_IB/24_task_21_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/66_task_51_md_b.png', 'path': 'materials/imgs/MaRs_IB/66_task_51_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
-    {'name': 'materials/imgs/MaRs_IB/26_task_68_pd_c.png', 'path': 'materials/imgs/MaRs_IB/26_task_68_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/51_task_37_md_d.png', 'path': 'materials/imgs/MaRs_IB/51_task_37_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
-    {'name': 'materials/imgs/MaRs_IB/43_task_13_md_d.png', 'path': 'materials/imgs/MaRs_IB/43_task_13_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/34_task_71_md_b.png', 'path': 'materials/imgs/MaRs_IB/34_task_71_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png'},
-    {'name': 'materials/imgs/MaRs_IB/15_task_74_pd_a.png', 'path': 'materials/imgs/MaRs_IB/15_task_74_pd_a.png'},
-    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
-    {'name': 'materials/imgs/MaRs_IB/14_task_50_pd_a.png', 'path': 'materials/imgs/MaRs_IB/14_task_50_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/48_task_12_pd_c.png', 'path': 'materials/imgs/MaRs_IB/48_task_12_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
-    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond_door.png', 'path': 'materials/merge_sort/imgs/purple_diamond_door.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/58_task_23_md_b.png', 'path': 'materials/imgs/MaRs_IB/58_task_23_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
-    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
-    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/30_task_55_md_b.png', 'path': 'materials/imgs/MaRs_IB/30_task_55_md_b.png'},
-    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/22_task_16_pd_c.png', 'path': 'materials/imgs/MaRs_IB/22_task_16_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
-    {'name': 'materials/imgs/MaRs_IB/18_task_30_pd_a.png', 'path': 'materials/imgs/MaRs_IB/18_task_30_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
-    {'name': 'materials/pre_test_train_cond.csv', 'path': 'materials/pre_test_train_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
-    {'name': 'materials/imgs/MaRs_IB/19_task_54_pd_a.png', 'path': 'materials/imgs/MaRs_IB/19_task_54_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/31_task_18_pd_a.png', 'path': 'materials/imgs/MaRs_IB/31_task_18_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'},
-    {'name': 'materials/imgs/MaRs_IB/07_task_60_pd_c.png', 'path': 'materials/imgs/MaRs_IB/07_task_60_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon.png', 'path': 'materials/merge_sort/imgs/fruits/melon.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
-    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
-    {'name': 'materials/imgs/MaRs_IB/05_task_77_md_d.png', 'path': 'materials/imgs/MaRs_IB/05_task_77_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/47_task_28_pd_c.png', 'path': 'materials/imgs/MaRs_IB/47_task_28_pd_c.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_08_pd_c.png', 'path': 'materials/imgs/MaRs_IB/00_task_08_pd_c.png'},
-    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
-    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
-    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_09_md_d.png', 'path': 'materials/imgs/MaRs_IB/00_task_09_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
-    {'name': 'materials/imgs/MaRs_IB/49_task_80_pd_c.png', 'path': 'materials/imgs/MaRs_IB/49_task_80_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
-    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
-    {'name': 'materials/imgs/MaRs_IB/03_task_22_pd_a.png', 'path': 'materials/imgs/MaRs_IB/03_task_22_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
-    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
-    {'name': 'materials/merge_sort/imgs/sort_test/small_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/small_input_review.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
-    {'name': 'materials/imgs/MaRs_IB/37_task_78_pd_a.png', 'path': 'materials/imgs/MaRs_IB/37_task_78_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/67_task_67_md_b.png', 'path': 'materials/imgs/MaRs_IB/67_task_67_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
-    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_04_pd_c.png', 'path': 'materials/imgs/MaRs_IB/00_task_04_pd_c.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
-    {'name': 'materials/imgs/MaRs_IB/35_task_63_md_b.png', 'path': 'materials/imgs/MaRs_IB/35_task_63_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
-    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_10_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_10_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/56_task_56_pd_c.png', 'path': 'materials/imgs/MaRs_IB/56_task_56_pd_c.png'},
-    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
-    {'name': 'materials/imgs/MaRs_IB/21_task_59_md_b.png', 'path': 'materials/imgs/MaRs_IB/21_task_59_md_b.png'},
-    {'name': 'materials/imgs/arrow.png', 'path': 'materials/imgs/arrow.png'},
-    {'name': 'materials/imgs/other_gender.png', 'path': 'materials/imgs/other_gender.png'},
-    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
-    {'name': 'materials/imgs/MaRs_IB/25_task_32_pd_c.png', 'path': 'materials/imgs/MaRs_IB/25_task_32_pd_c.png'},
     {'name': 'materials/merge_sort/imgs/fruits/apple_B.png', 'path': 'materials/merge_sort/imgs/fruits/apple_B.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
-    {'name': 'materials/imgs/MaRs_IB/70_task_42_pd_a.png', 'path': 'materials/imgs/MaRs_IB/70_task_42_pd_a.png'},
-    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
-    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
-    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
-    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
-    {'name': 'materials/imgs/MaRs_IB/33_task_44_pd_c.png', 'path': 'materials/imgs/MaRs_IB/33_task_44_pd_c.png'},
-    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
-    {'name': 'materials/imgs/MaRs_IB/29_task_46_pd_a.png', 'path': 'materials/imgs/MaRs_IB/29_task_46_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
-    {'name': 'materials/imgs/MaRs_IB/17_task_45_md_d.png', 'path': 'materials/imgs/MaRs_IB/17_task_45_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_5.png'},
+    {'name': 'materials/imgs/MaRs_IB/68_task_62_pd_a.png', 'path': 'materials/imgs/MaRs_IB/68_task_62_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/suboptimal_merge_example.png', 'path': 'materials/merge_sort/imgs/merge_train/suboptimal_merge_example.png'},
-    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
-    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
-    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
-    {'name': 'materials/imgs/MaRs_IB/60_task_17_md_d.png', 'path': 'materials/imgs/MaRs_IB/60_task_17_md_d.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'},
-    {'name': 'materials/imgs/MaRs_IB/44_task_75_md_b.png', 'path': 'materials/imgs/MaRs_IB/44_task_75_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
-    {'name': 'materials/imgs/MaRs_IB/32_task_41_md_d.png', 'path': 'materials/imgs/MaRs_IB/32_task_41_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_06_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_06_pd_a.png'},
-    {'name': 'materials/imgs/MaRs_IB/00_task_07_md_b.png', 'path': 'materials/imgs/MaRs_IB/00_task_07_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_A.png', 'path': 'materials/merge_sort/imgs/fruits/banana_A.png'},
     {'name': 'materials/imgs/MaRs_IB/53_task_34_pd_a.png', 'path': 'materials/imgs/MaRs_IB/53_task_34_pd_a.png'},
-    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
-    {'name': 'materials/imgs/MaRs_IB/52_task_69_md_d.png', 'path': 'materials/imgs/MaRs_IB/52_task_69_md_d.png'},
-    {'name': 'materials/imgs/MaRs_IB/20_task_35_md_b.png', 'path': 'materials/imgs/MaRs_IB/20_task_35_md_b.png'},
-    {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
-    {'name': 'materials/imgs/MaRs_IB/16_task_43_md_b.png', 'path': 'materials/imgs/MaRs_IB/16_task_43_md_b.png'},
-    {'name': 'materials/imgs/MaRs_IB/59_task_29_md_d.png', 'path': 'materials/imgs/MaRs_IB/59_task_29_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_C.png', 'path': 'materials/merge_sort/imgs/fruits/melon_C.png'},
+    {'name': 'materials/imgs/MaRs_IB/26_task_68_pd_c.png', 'path': 'materials/imgs/MaRs_IB/26_task_68_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/07_task_60_pd_c.png', 'path': 'materials/imgs/MaRs_IB/07_task_60_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/scale_balanced.png', 'path': 'materials/merge_sort/imgs/scale_balanced.png'},
+    {'name': 'materials/imgs/MaRs_IB/14_task_50_pd_a.png', 'path': 'materials/imgs/MaRs_IB/14_task_50_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_C.png', 'path': 'materials/merge_sort/imgs/fruits/banana_C.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_09_md_d.png', 'path': 'materials/imgs/MaRs_IB/00_task_09_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/33_task_44_pd_c.png', 'path': 'materials/imgs/MaRs_IB/33_task_44_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong.png'},
+    {'name': 'materials/imgs/MaRs_IB/06_task_53_md_d.png', 'path': 'materials/imgs/MaRs_IB/06_task_53_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/04_task_70_pd_a.png', 'path': 'materials/imgs/MaRs_IB/04_task_70_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/white_BG.png', 'path': 'materials/merge_sort/imgs/white_BG.png'},
+    {'name': 'materials/imgs/female.png', 'path': 'materials/imgs/female.png'},
+    {'name': 'materials/imgs/less_than_high_school_selected.png', 'path': 'materials/imgs/less_than_high_school_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_D.png', 'path': 'materials/merge_sort/imgs/fruits/apple_D.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_04_pd_c.png', 'path': 'materials/imgs/MaRs_IB/00_task_04_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/50_task_39_md_b.png', 'path': 'materials/imgs/MaRs_IB/50_task_39_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_J.png', 'path': 'materials/merge_sort/imgs/fruits/banana_J.png'},
+    {'name': 'materials/imgs/_35_44.png', 'path': 'materials/imgs/_35_44.png'},
     {'name': 'materials/imgs/MaRs_IB/00_task_01_md_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_01_md_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_A.png', 'path': 'materials/merge_sort/imgs/fruits/apple_A.png'},
+    {'name': 'materials/imgs/other_gender.png', 'path': 'materials/imgs/other_gender.png'},
+    {'name': 'materials/imgs/MaRs_IB/56_task_56_pd_c.png', 'path': 'materials/imgs/MaRs_IB/56_task_56_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/27_task_27_md_b.png', 'path': 'materials/imgs/MaRs_IB/27_task_27_md_b.png'},
+    {'name': 'materials/imgs/other.png', 'path': 'materials/imgs/other.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_08_pd_c.png', 'path': 'materials/imgs/MaRs_IB/00_task_08_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5.png'},
+    {'name': 'materials/imgs/MaRs_IB/03_task_22_pd_a.png', 'path': 'materials/imgs/MaRs_IB/03_task_22_pd_a.png'},
+    {'name': 'materials/imgs/other_selected.png', 'path': 'materials/imgs/other_selected.png'},
+    {'name': 'materials/merge_train_cond.csv', 'path': 'materials/merge_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/sort_test/large_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/large_input_review.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon.png', 'path': 'materials/merge_sort/imgs/fruits/melon.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/45_task_58_pd_a.png', 'path': 'materials/imgs/MaRs_IB/45_task_58_pd_a.png'},
+    {'name': 'materials/imgs/submit.png', 'path': 'materials/imgs/submit.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_K.png', 'path': 'materials/merge_sort/imgs/fruits/melon_K.png'},
+    {'name': 'materials/imgs/MaRs_IB/23_task_72_pd_c.png', 'path': 'materials/imgs/MaRs_IB/23_task_72_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/34_task_71_md_b.png', 'path': 'materials/imgs/MaRs_IB/34_task_71_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/24_task_21_md_d.png', 'path': 'materials/imgs/MaRs_IB/24_task_21_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/49_task_80_pd_c.png', 'path': 'materials/imgs/MaRs_IB/49_task_80_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_I.png', 'path': 'materials/merge_sort/imgs/fruits/banana_I.png'},
+    {'name': 'materials/imgs/_65_selected.png', 'path': 'materials/imgs/_65_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/29_task_46_pd_a.png', 'path': 'materials/imgs/MaRs_IB/29_task_46_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/28_task_66_pd_a.png', 'path': 'materials/imgs/MaRs_IB/28_task_66_pd_a.png'},
+    {'name': 'materials/imgs/college_selected.png', 'path': 'materials/imgs/college_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_3.png'},
+    {'name': 'materials/imgs/MaRs_IB/17_task_45_md_d.png', 'path': 'materials/imgs/MaRs_IB/17_task_45_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/37_task_78_pd_a.png', 'path': 'materials/imgs/MaRs_IB/37_task_78_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_06_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_06_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_I.png', 'path': 'materials/merge_sort/imgs/fruits/apple_I.png'},
+    {'name': 'materials/sort_test_cond.csv', 'path': 'materials/sort_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_G.png', 'path': 'materials/merge_sort/imgs/fruits/banana_G.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_07_md_b.png', 'path': 'materials/imgs/MaRs_IB/00_task_07_md_b.png'},
+    {'name': 'materials/review_cond.csv', 'path': 'materials/review_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_L.png', 'path': 'materials/merge_sort/imgs/fruits/melon_L.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_A.png', 'path': 'materials/merge_sort/imgs/fruits/melon_A.png'},
+    {'name': 'materials/imgs/MaRs_IB/18_task_30_pd_a.png', 'path': 'materials/imgs/MaRs_IB/18_task_30_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/62_task_31_md_b.png', 'path': 'materials/imgs/MaRs_IB/62_task_31_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong.png'},
+    {'name': 'materials/imgs/MaRs_IB/40_task_48_pd_c.png', 'path': 'materials/imgs/MaRs_IB/40_task_48_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_C.png', 'path': 'materials/merge_sort/imgs/fruits/apple_C.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_I.png', 'path': 'materials/merge_sort/imgs/fruits/melon_I.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/15_task_74_pd_a.png', 'path': 'materials/imgs/MaRs_IB/15_task_74_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple.png', 'path': 'materials/merge_sort/imgs/fruits/apple.png'},
+    {'name': 'materials/imgs/MaRs_IB/25_task_32_pd_c.png', 'path': 'materials/imgs/MaRs_IB/25_task_32_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana.png', 'path': 'materials/merge_sort/imgs/fruits/banana.png'},
+    {'name': 'materials/imgs/MaRs_IB/47_task_28_pd_c.png', 'path': 'materials/imgs/MaRs_IB/47_task_28_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_H.png', 'path': 'materials/merge_sort/imgs/fruits/apple_H.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_L.png', 'path': 'materials/merge_sort/imgs/fruits/apple_L.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_B.png', 'path': 'materials/merge_sort/imgs/fruits/melon_B.png'},
+    {'name': 'materials/imgs/MaRs_IB/46_task_33_md_d.png', 'path': 'materials/imgs/MaRs_IB/46_task_33_md_d.png'},
+    {'name': 'materials/imgs/continue.png', 'path': 'materials/imgs/continue.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct.png'},
+    {'name': 'materials/imgs/MaRs_IB/54_task_47_md_b.png', 'path': 'materials/imgs/MaRs_IB/54_task_47_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct.png'},
+    {'name': 'materials/imgs/MaRs_IB/61_task_52_pd_c.png', 'path': 'materials/imgs/MaRs_IB/61_task_52_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/67_task_67_md_b.png', 'path': 'materials/imgs/MaRs_IB/67_task_67_md_b.png'},
+    {'name': 'materials/imgs/_25_34.png', 'path': 'materials/imgs/_25_34.png'},
+    {'name': 'materials/imgs/_18_24_selected.png', 'path': 'materials/imgs/_18_24_selected.png'},
+    {'name': 'materials/imgs/bachelor_selected.png', 'path': 'materials/imgs/bachelor_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_F.png', 'path': 'materials/merge_sort/imgs/fruits/apple_F.png'},
+    {'name': 'materials/imgs/_55_64.png', 'path': 'materials/imgs/_55_64.png'},
+    {'name': 'materials/imgs/MaRs_IB/fixation.png', 'path': 'materials/imgs/MaRs_IB/fixation.png'},
+    {'name': 'materials/imgs/MaRs_IB/69_task_24_pd_c.png', 'path': 'materials/imgs/MaRs_IB/69_task_24_pd_c.png'},
+    {'name': 'materials/imgs/MaRs_IB/44_task_75_md_b.png', 'path': 'materials/imgs/MaRs_IB/44_task_75_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_E.png', 'path': 'materials/merge_sort/imgs/fruits/melon_E.png'},
     {'name': 'materials/imgs/prefer_not_to_say.png', 'path': 'materials/imgs/prefer_not_to_say.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/12_task_14_pd_a.png', 'path': 'materials/imgs/MaRs_IB/12_task_14_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_correct_expl.png'},
+    {'name': 'materials/merge_test_cond.csv', 'path': 'materials/merge_test_cond.csv'},
+    {'name': 'materials/imgs/MaRs_IB/36_task_36_pd_c.png', 'path': 'materials/imgs/MaRs_IB/36_task_36_pd_c.png'},
+    {'name': 'materials/imgs/_25_34_selected.png', 'path': 'materials/imgs/_25_34_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_G.png', 'path': 'materials/merge_sort/imgs/fruits/melon_G.png'},
+    {'name': 'materials/imgs/MaRs_IB/32_task_41_md_d.png', 'path': 'materials/imgs/MaRs_IB/32_task_41_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_J.png', 'path': 'materials/merge_sort/imgs/fruits/apple_J.png'},
+    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/70_task_42_pd_a.png', 'path': 'materials/imgs/MaRs_IB/70_task_42_pd_a.png'},
+    {'name': 'materials/imgs/_35_44_selected.png', 'path': 'materials/imgs/_35_44_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/20_task_35_md_b.png', 'path': 'materials/imgs/MaRs_IB/20_task_35_md_b.png'},
+    {'name': 'materials/imgs/male_selected.png', 'path': 'materials/imgs/male_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/21_task_59_md_b.png', 'path': 'materials/imgs/MaRs_IB/21_task_59_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge_example.png'},
+    {'name': 'materials/imgs/college.png', 'path': 'materials/imgs/college.png'},
+    {'name': 'materials/imgs/MaRs_IB/60_task_17_md_d.png', 'path': 'materials/imgs/MaRs_IB/60_task_17_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_wrong_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/35_task_63_md_b.png', 'path': 'materials/imgs/MaRs_IB/35_task_63_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/02_task_38_pd_a.png', 'path': 'materials/imgs/MaRs_IB/02_task_38_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_2_correct.png'},
+    {'name': 'materials/imgs/graduate.png', 'path': 'materials/imgs/graduate.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_G.png', 'path': 'materials/merge_sort/imgs/fruits/apple_G.png'},
+    {'name': 'materials/imgs/_45_54_selected.png', 'path': 'materials/imgs/_45_54_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong.png'},
+    {'name': 'materials/imgs/high_school_equivalent.png', 'path': 'materials/imgs/high_school_equivalent.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_wrong_selected.png'},
+    {'name': 'materials/imgs/waiting.png', 'path': 'materials/imgs/waiting.png'},
+    {'name': 'materials/imgs/MaRs_IB/52_task_69_md_d.png', 'path': 'materials/imgs/MaRs_IB/52_task_69_md_d.png'},
+    {'name': 'materials/imgs/doctorate_selected.png', 'path': 'materials/imgs/doctorate_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_1.png'},
+    {'name': 'materials/imgs/high_school_equivalent_selected.png', 'path': 'materials/imgs/high_school_equivalent_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/09_task_73_md_d.png', 'path': 'materials/imgs/MaRs_IB/09_task_73_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/alice.png', 'path': 'materials/merge_sort/imgs/alice.png'},
+    {'name': 'materials/merge_sort/imgs/blue_star_clicked.png', 'path': 'materials/merge_sort/imgs/blue_star_clicked.png'},
+    {'name': 'materials/imgs/MaRs_IB/13_task_40_pd_c.png', 'path': 'materials/imgs/MaRs_IB/13_task_40_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/blue_star_door.png', 'path': 'materials/merge_sort/imgs/blue_star_door.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_expl.png'},
+    {'name': 'materials/imgs/_45_54.png', 'path': 'materials/imgs/_45_54.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_1_1_wrong_expl.png'},
     {'name': 'materials/merge_sort/imgs/merge_train/optimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/optimal_merge.png'},
-    {'name': 'materials/imgs/graduate_selected.png', 'path': 'materials/imgs/graduate_selected.png'}
+    {'name': 'materials/merge_sort/imgs/fruits/banana_B.png', 'path': 'materials/merge_sort/imgs/fruits/banana_B.png'},
+    {'name': 'materials/imgs/MaRs_IB/08_task_11_md_b.png', 'path': 'materials/imgs/MaRs_IB/08_task_11_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/48_task_12_pd_c.png', 'path': 'materials/imgs/MaRs_IB/48_task_12_pd_c.png'},
+    {'name': 'materials/imgs/other_gender_selected.png', 'path': 'materials/imgs/other_gender_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/30_task_55_md_b.png', 'path': 'materials/imgs/MaRs_IB/30_task_55_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_E.png', 'path': 'materials/merge_sort/imgs/fruits/apple_E.png'},
+    {'name': 'materials/imgs/prefer_not_to_say_selected.png', 'path': 'materials/imgs/prefer_not_to_say_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/55_task_64_pd_c.png', 'path': 'materials/imgs/MaRs_IB/55_task_64_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/66_task_51_md_b.png', 'path': 'materials/imgs/MaRs_IB/66_task_51_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/38_task_76_pd_c.png', 'path': 'materials/imgs/MaRs_IB/38_task_76_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png', 'path': 'materials/merge_sort/imgs/merge_test/merge_test_ex_4.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_D.png', 'path': 'materials/merge_sort/imgs/fruits/melon_D.png'},
+    {'name': 'materials/imgs/female_selected.png', 'path': 'materials/imgs/female_selected.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_03_md_b.png', 'path': 'materials/imgs/MaRs_IB/00_task_03_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/31_task_18_pd_a.png', 'path': 'materials/imgs/MaRs_IB/31_task_18_pd_a.png'},
+    {'name': 'materials/imgs/MaRs_IB/39_task_20_pd_c.png', 'path': 'materials/imgs/MaRs_IB/39_task_20_pd_c.png'},
+    {'name': 'materials/merge_sort/imgs/scale_right.png', 'path': 'materials/merge_sort/imgs/scale_right.png'},
+    {'name': 'materials/imgs/MaRs_IB/05_task_77_md_d.png', 'path': 'materials/imgs/MaRs_IB/05_task_77_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/sort_test/small_input_review.png', 'path': 'materials/merge_sort/imgs/sort_test/small_input_review.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_02_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_02_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/purple_diamond_door.png', 'path': 'materials/merge_sort/imgs/purple_diamond_door.png'},
+    {'name': 'materials/imgs/MaRs_IB/59_task_29_md_d.png', 'path': 'materials/imgs/MaRs_IB/59_task_29_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_K.png', 'path': 'materials/merge_sort/imgs/fruits/banana_K.png'},
+    {'name': 'materials/merge_sort/imgs/compare.png', 'path': 'materials/merge_sort/imgs/compare.png'},
+    {'name': 'materials/imgs/less_than_high_school.png', 'path': 'materials/imgs/less_than_high_school.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_05_md_d.png', 'path': 'materials/imgs/MaRs_IB/00_task_05_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/01_task_19_md_b.png', 'path': 'materials/imgs/MaRs_IB/01_task_19_md_b.png'},
+    {'name': 'materials/imgs/MaRs_IB/11_task_65_md_d.png', 'path': 'materials/imgs/MaRs_IB/11_task_65_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/22_task_16_pd_c.png', 'path': 'materials/imgs/MaRs_IB/22_task_16_pd_c.png'},
+    {'name': 'materials/imgs/male.png', 'path': 'materials/imgs/male.png'},
+    {'name': 'materials/imgs/MaRs_IB/10_task_26_pd_a.png', 'path': 'materials/imgs/MaRs_IB/10_task_26_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_H.png', 'path': 'materials/merge_sort/imgs/fruits/banana_H.png'},
+    {'name': 'materials/imgs/_55_64_selected.png', 'path': 'materials/imgs/_55_64_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/apple_K.png', 'path': 'materials/merge_sort/imgs/fruits/apple_K.png'},
+    {'name': 'materials/imgs/MaRs_IB/57_task_61_md_d.png', 'path': 'materials/imgs/MaRs_IB/57_task_61_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_correct_expl.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_correct.png'},
+    {'name': 'materials/merge_sort/imgs/bob.png', 'path': 'materials/merge_sort/imgs/bob.png'},
+    {'name': 'materials/imgs/arrow.png', 'path': 'materials/imgs/arrow.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_L.png', 'path': 'materials/merge_sort/imgs/fruits/banana_L.png'},
+    {'name': 'materials/pre_test_train_cond.csv', 'path': 'materials/pre_test_train_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_example.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_example.png'},
+    {'name': 'materials/imgs/MaRs_IB/00_task_10_pd_a.png', 'path': 'materials/imgs/MaRs_IB/00_task_10_pd_a.png'},
+    {'name': 'materials/imgs/skip.png', 'path': 'materials/imgs/skip.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_F.png', 'path': 'materials/merge_sort/imgs/fruits/banana_F.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/16_task_43_md_b.png', 'path': 'materials/imgs/MaRs_IB/16_task_43_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png', 'path': 'materials/merge_sort/imgs/merge_train/suboptimal_merge.png'},
+    {'name': 'materials/imgs/MaRs_IB/51_task_37_md_d.png', 'path': 'materials/imgs/MaRs_IB/51_task_37_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_correct.png'},
+    {'name': 'materials/imgs/_18_24.png', 'path': 'materials/imgs/_18_24.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_D.png', 'path': 'materials/merge_sort/imgs/fruits/banana_D.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_2_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_J.png', 'path': 'materials/merge_sort/imgs/fruits/melon_J.png'},
+    {'name': 'materials/pre_test_cond.csv', 'path': 'materials/pre_test_cond.csv'},
+    {'name': 'materials/merge_sort/imgs/purple_diamond.png', 'path': 'materials/merge_sort/imgs/purple_diamond.png'},
+    {'name': 'materials/merge_sort/imgs/scale_left.png', 'path': 'materials/merge_sort/imgs/scale_left.png'},
+    {'name': 'materials/imgs/MaRs_IB/42_task_79_md_b.png', 'path': 'materials/imgs/MaRs_IB/42_task_79_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/banana_E.png', 'path': 'materials/merge_sort/imgs/fruits/banana_E.png'},
+    {'name': 'materials/imgs/MaRs_IB/65_task_15_md_b.png', 'path': 'materials/imgs/MaRs_IB/65_task_15_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/sort_train/sort_train_example.png', 'path': 'materials/merge_sort/imgs/sort_train/sort_train_example.png'},
+    {'name': 'materials/imgs/MaRs_IB/41_task_49_md_d.png', 'path': 'materials/imgs/MaRs_IB/41_task_49_md_d.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_3_correct_selected.png'},
+    {'name': 'materials/merge_sort/imgs/compare_clicked.png', 'path': 'materials/merge_sort/imgs/compare_clicked.png'},
+    {'name': 'materials/merge_sort/imgs/grey_BG.png', 'path': 'materials/merge_sort/imgs/grey_BG.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_H.png', 'path': 'materials/merge_sort/imgs/fruits/melon_H.png'},
+    {'name': 'materials/imgs/MaRs_IB/19_task_54_pd_a.png', 'path': 'materials/imgs/MaRs_IB/19_task_54_pd_a.png'},
+    {'name': 'materials/merge_sort/imgs/fruits/melon_F.png', 'path': 'materials/merge_sort/imgs/fruits/melon_F.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_selected.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_expl.png'},
+    {'name': 'materials/imgs/MaRs_IB/43_task_13_md_d.png', 'path': 'materials/imgs/MaRs_IB/43_task_13_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/63_task_57_md_d.png', 'path': 'materials/imgs/MaRs_IB/63_task_57_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/64_task_25_md_d.png', 'path': 'materials/imgs/MaRs_IB/64_task_25_md_d.png'},
+    {'name': 'materials/imgs/MaRs_IB/58_task_23_md_b.png', 'path': 'materials/imgs/MaRs_IB/58_task_23_md_b.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_2_1_wrong_expl.png'},
+    {'name': 'materials/imgs/doctorate.png', 'path': 'materials/imgs/doctorate.png'},
+    {'name': 'materials/imgs/bachelor.png', 'path': 'materials/imgs/bachelor.png'},
+    {'name': 'materials/sort_train_cond.csv', 'path': 'materials/sort_train_cond.csv'},
+    {'name': 'materials/imgs/_65.png', 'path': 'materials/imgs/_65.png'},
+    {'name': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png', 'path': 'materials/merge_sort/imgs/merge_train/merge_train_ex_5_1_wrong_selected.png'}
   ]
 });
 
@@ -866,6 +866,7 @@ var pre_test_instr;
 var pre_test_counter;
 var pre_test_mark;
 var BREAK_1Clock;
+var break_1_timer;
 var break_1_instr;
 var break_1_mouse;
 var break_1_btn;
@@ -1004,6 +1005,7 @@ var sort_expl_mouse;
 var sort_expl_timer;
 var sort_expl_hint;
 var BREAK_2Clock;
+var break_2_timer;
 var break_2_instr;
 var break_2_mouse;
 var break_2_btn;
@@ -1048,11 +1050,14 @@ var review_res;
 var review_mouse;
 var review_timer;
 var EXP_CHECKClock;
-var exp_check_question;
-var exp_check_res;
 var exp_check_btn;
 var exp_check_mouse;
-var exp_check_slider;
+var exp_check_question_3;
+var exp_check_res;
+var exp_check_question_2;
+var exp_check_slider_2;
+var exp_check_question_1;
+var exp_check_slider_1;
 var BACKGROUNDClock;
 var background_instr;
 var gender;
@@ -1338,15 +1343,26 @@ async function experimentInit() {
   
   // Initialize components for Routine "BREAK_1"
   BREAK_1Clock = new util.Clock();
+  break_1_timer = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'break_1_timer',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, (- 0.2)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('orange'),  opacity: undefined,
+    depth: 0.0 
+  });
+  
   break_1_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'break_1_instr',
-    text: 'You may take a short break now!\n\nPlease do not refresh/close the browser tab or leave your device to sleep.\n\nClick the "Continue" button below when you are ready to proceed!',
+    text: 'You may take a short 60 SEC break now! \n\nPlease do not refresh/close the browser tab or leave your device to sleep.\n\nClick the "Continue" button below when you are ready to proceed!',
     font: 'Open Sans',
     units: undefined, 
-    pos: [0, 0.0], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    pos: [0, 0.2], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('yellow'),  opacity: undefined,
-    depth: 0.0 
+    depth: -1.0 
   });
   
   break_1_mouse = new core.Mouse({
@@ -1360,7 +1376,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -2.0 
+    texRes : 128.0, interpolate : true, depth : -3.0 
   });
   // Initialize components for Routine "INTRO"
   INTROClock = new util.Clock();
@@ -2580,15 +2596,26 @@ async function experimentInit() {
   
   // Initialize components for Routine "BREAK_2"
   BREAK_2Clock = new util.Clock();
+  break_2_timer = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'break_2_timer',
+    text: '',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, (- 0.2)], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('orange'),  opacity: undefined,
+    depth: 0.0 
+  });
+  
   break_2_instr = new visual.TextStim({
     win: psychoJS.window,
     name: 'break_2_instr',
-    text: 'You may take a short break now!\n\nPlease do not refresh/close the browser tab or leave your device to sleep.\n\nClick the "Continue" button below when you are ready to proceed!',
+    text: 'You may take a short 60 SEC break now! \n\nPlease do not refresh/close the browser tab or leave your device to sleep.\n\nClick the "Continue" button below when you are ready to proceed!',
     font: 'Open Sans',
     units: undefined, 
     pos: [0, 0.0], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('yellow'),  opacity: undefined,
-    depth: 0.0 
+    depth: -1.0 
   });
   
   break_2_mouse = new core.Mouse({
@@ -2602,7 +2629,7 @@ async function experimentInit() {
     ori : 0.0, pos : [0, (- 0.4)], size : [0.28, 0.1],
     color : new util.Color([1, 1, 1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -2.0 
+    texRes : 128.0, interpolate : true, depth : -3.0 
   });
   // Initialize components for Routine "SORT_TEST_INTRO"
   SORT_TEST_INTROClock = new util.Clock();
@@ -2971,13 +2998,26 @@ async function experimentInit() {
   
   // Initialize components for Routine "EXP_CHECK"
   EXP_CHECKClock = new util.Clock();
-  exp_check_question = new visual.TextStim({
+  exp_check_btn = new visual.ImageStim({
+    win : psychoJS.window,
+    name : 'exp_check_btn', units : undefined, 
+    image : 'materials/imgs/submit.png', mask : undefined,
+    ori : 0.0, pos : [0, (- 0.35)], size : [0.24, 0.1],
+    color : new util.Color([1, 1, 1]), opacity : undefined,
+    flipHoriz : false, flipVert : false,
+    texRes : 128.0, interpolate : true, depth : 0.0 
+  });
+  exp_check_mouse = new core.Mouse({
     win: psychoJS.window,
-    name: 'exp_check_question',
-    text: 'Please let us know If you have received training or have studied any SORTING algorithms before the experiment, \n\nand write in the box below which one(s) you KNOW and HAVE USED for the experiment:',
+  });
+  exp_check_mouse.mouseClock = new util.Clock();
+  exp_check_question_3 = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'exp_check_question_3',
+    text: 'Which of the following sorting algorithms do you know\n(Bubble-Sort / Merge-Sort / Insertion-Sort / Quick-Sort / Dictionary-Sort / Bucket-Sort / Spider-Sort / Ticket-Sort) ?\n\nAnd have you used any for the sorting task in this experiment?',
     font: 'Open Sans',
     units: undefined, 
-    pos: [0, 0.3], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    pos: [0, 0], height: 0.03,  wrapWidth: undefined, ori: 0.0,
     color: new util.Color('white'),  opacity: undefined,
     depth: 0.0 
   });
@@ -2987,8 +3027,8 @@ async function experimentInit() {
     name: 'exp_check_res',
     text: '',
     font: 'Open Sans',
-    pos: [0, (- 0.15)], letterHeight: 0.05,
-    size: [0.7, 0.15],  units: undefined, 
+    pos: [0, (- 0.2)], letterHeight: 0.05,
+    size: [0.7, 0.1],  units: undefined, 
     color: 'black', colorSpace: 'rgb',
     fillColor: 'white', borderColor: undefined,
     bold: false, italic: false,
@@ -2997,29 +3037,48 @@ async function experimentInit() {
     editable: true,
     multiline: true,
     anchor: 'center',
-    depth: -1.0 
+    depth: -3.0 
   });
   
-  exp_check_btn = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'exp_check_btn', units : undefined, 
-    image : 'materials/imgs/submit.png', mask : undefined,
-    ori : 0.0, pos : [0, (- 0.35)], size : [0.24, 0.1],
-    color : new util.Color([1, 1, 1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -2.0 
-  });
-  exp_check_mouse = new core.Mouse({
+  exp_check_question_2 = new visual.TextStim({
     win: psychoJS.window,
+    name: 'exp_check_question_2',
+    text: 'Have you learned/are you learning about sorting algorithms in school or college? ',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, 0.2], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: 0.0 
   });
-  exp_check_mouse.mouseClock = new util.Clock();
-  exp_check_slider = new visual.Slider({
-    win: psychoJS.window, name: 'exp_check_slider',
-    size: [0.5, 0.02], pos: [0, 0.1], units: 'height',
-    labels: ["HAD training", "NO training"], ticks: [1, 2],
+  
+  exp_check_slider_2 = new visual.Slider({
+    win: psychoJS.window, name: 'exp_check_slider_2',
+    size: [0.5, 0.01], pos: [0, 0.15], units: 'height',
+    labels: ["Yes", "NO"], ticks: [1, 2],
     granularity: 1.0, style: ["RADIO"],
     color: new util.Color('white'), markerColor: new util.Color('black'), lineColor: new util.Color('White'), 
-    fontFamily: 'Open Sans', bold: true, italic: false, depth: -4, 
+    fontFamily: 'Open Sans', bold: true, italic: false, depth: -1, 
+    flip: false,
+  });
+  
+  exp_check_question_1 = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'exp_check_question_1',
+    text: 'Do you have a degree in computer sciences / programming?',
+    font: 'Open Sans',
+    units: undefined, 
+    pos: [0, 0.35], height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -6.0 
+  });
+  
+  exp_check_slider_1 = new visual.Slider({
+    win: psychoJS.window, name: 'exp_check_slider_1',
+    size: [0.5, 0.01], pos: [0, 0.3], units: 'height',
+    labels: ["Yes", "NO"], ticks: [1, 2],
+    granularity: 1.0, style: ["RADIO"],
+    color: new util.Color('white'), markerColor: new util.Color('black'), lineColor: new util.Color('White'), 
+    fontFamily: 'Open Sans', bold: true, italic: false, depth: -7, 
     flip: false,
   });
   
@@ -4355,7 +4414,6 @@ function PRE_TESTRoutineEnd() {
 }
 
 
-var breakEnded;
 var BREAK_1Components;
 function BREAK_1RoutineBegin(snapshot) {
   return async function () {
@@ -4366,15 +4424,16 @@ function BREAK_1RoutineBegin(snapshot) {
     BREAK_1Clock.reset(); // clock
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
+    routineTimer.add(60.000000);
     // update component parameters for each repeat
     // setup some python lists for storing info about the break_1_mouse
     gotValidClick = false; // until a click is received
-    breakEnded = false;
     routineT = 0;
     progressBar.show();
     progressBar.update("PRE_TEST");
     // keep track of which components have finished
     BREAK_1Components = [];
+    BREAK_1Components.push(break_1_timer);
     BREAK_1Components.push(break_1_instr);
     BREAK_1Components.push(break_1_mouse);
     BREAK_1Components.push(break_1_btn);
@@ -4395,8 +4454,22 @@ function BREAK_1RoutineEachFrame() {
     frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
     // update/draw components on each frame
     
+    // *break_1_timer* updates
+    if (t >= 0 && break_1_timer.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      break_1_timer.tStart = t;  // (not accounting for frame time here)
+      break_1_timer.frameNStart = frameN;  // exact frame index
+      
+      break_1_timer.setAutoDraw(true);
+    }
+
+    frameRemains = 0 + 60 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (break_1_timer.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      break_1_timer.setAutoDraw(false);
+    }
+    
     // *break_1_instr* updates
-    if (((t >= 0.0)) && break_1_instr.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0 && break_1_instr.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       break_1_instr.tStart = t;  // (not accounting for frame time here)
       break_1_instr.frameNStart = frameN;  // exact frame index
@@ -4404,12 +4477,13 @@ function BREAK_1RoutineEachFrame() {
       break_1_instr.setAutoDraw(true);
     }
 
-    if (break_1_instr.status === PsychoJS.Status.STARTED && Boolean(breakEnded)) {
+    frameRemains = 0 + 60 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (break_1_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       break_1_instr.setAutoDraw(false);
     }
     
     // *break_1_btn* updates
-    if ((t>=0.0) && break_1_btn.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.0 && break_1_btn.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       break_1_btn.tStart = t;  // (not accounting for frame time here)
       break_1_btn.frameNStart = frameN;  // exact frame index
@@ -4417,7 +4491,8 @@ function BREAK_1RoutineEachFrame() {
       break_1_btn.setAutoDraw(true);
     }
 
-    if (break_1_btn.status === PsychoJS.Status.STARTED && Boolean(breakEnded)) {
+    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (break_1_btn.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       break_1_btn.setAutoDraw(false);
     }
     if (((t >= 0.5) && (break_1_mouse.status === PsychoJS.Status.NOT_STARTED))) {
@@ -4428,8 +4503,12 @@ function BREAK_1RoutineEachFrame() {
     }
     if (((break_1_mouse.isPressedIn(break_1_btn) && (break_1_mouse.status === PsychoJS.Status.STARTED)) && (break_1_btn.status === PsychoJS.Status.STARTED))) {
         break_1_mouse.status = PsychoJS.Status.FINISHED;
-        breakEnded = true;
+        continueRoutine = false;
     }
+    if ((break_1_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        break_1_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    break_1_timer.text = timerWarningRemain(60, t, 60);
     routineT = t;
     
     // check for quit (typically the Esc key)
@@ -4450,7 +4529,7 @@ function BREAK_1RoutineEachFrame() {
       }
     
     // refresh the screen if continuing
-    if (continueRoutine) {
+    if (continueRoutine && routineTimer.getTime() > 0) {
       return Scheduler.Event.FLIP_REPEAT;
     } else {
       return Scheduler.Event.NEXT;
@@ -4476,9 +4555,6 @@ function BREAK_1RoutineEnd() {
     psychoJS.experiment.addData('break_1_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('break_1_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("break_1.tEnd",routineT);
-    // the Routine "BREAK_1" was not non-slip safe, so reset the non-slip timer
-    routineTimer.reset();
-    
     return Scheduler.Event.NEXT;
   };
 }
@@ -7834,13 +7910,14 @@ function BREAK_2RoutineBegin(snapshot) {
     BREAK_2Clock.reset(); // clock
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
+    routineTimer.add(60.000000);
     // update component parameters for each repeat
     // setup some python lists for storing info about the break_2_mouse
     gotValidClick = false; // until a click is received
-    breakEnded = false;
     routineT = 0;
     // keep track of which components have finished
     BREAK_2Components = [];
+    BREAK_2Components.push(break_2_timer);
     BREAK_2Components.push(break_2_instr);
     BREAK_2Components.push(break_2_mouse);
     BREAK_2Components.push(break_2_btn);
@@ -7861,8 +7938,22 @@ function BREAK_2RoutineEachFrame() {
     frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
     // update/draw components on each frame
     
+    // *break_2_timer* updates
+    if (t >= 0 && break_2_timer.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      break_2_timer.tStart = t;  // (not accounting for frame time here)
+      break_2_timer.frameNStart = frameN;  // exact frame index
+      
+      break_2_timer.setAutoDraw(true);
+    }
+
+    frameRemains = 0 + 60 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (break_2_timer.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      break_2_timer.setAutoDraw(false);
+    }
+    
     // *break_2_instr* updates
-    if (((t >= 0.0)) && break_2_instr.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0 && break_2_instr.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       break_2_instr.tStart = t;  // (not accounting for frame time here)
       break_2_instr.frameNStart = frameN;  // exact frame index
@@ -7870,12 +7961,13 @@ function BREAK_2RoutineEachFrame() {
       break_2_instr.setAutoDraw(true);
     }
 
-    if (break_2_instr.status === PsychoJS.Status.STARTED && Boolean(breakEnded)) {
+    frameRemains = 0 + 60 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (break_2_instr.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       break_2_instr.setAutoDraw(false);
     }
     
     // *break_2_btn* updates
-    if ((t>=0.0) && break_2_btn.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.0 && break_2_btn.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       break_2_btn.tStart = t;  // (not accounting for frame time here)
       break_2_btn.frameNStart = frameN;  // exact frame index
@@ -7883,7 +7975,8 @@ function BREAK_2RoutineEachFrame() {
       break_2_btn.setAutoDraw(true);
     }
 
-    if (break_2_btn.status === PsychoJS.Status.STARTED && Boolean(breakEnded)) {
+    frameRemains = 0.0 + 60.0 - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if (break_2_btn.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       break_2_btn.setAutoDraw(false);
     }
     if (((t >= 0.5) && (break_2_mouse.status === PsychoJS.Status.NOT_STARTED))) {
@@ -7894,8 +7987,12 @@ function BREAK_2RoutineEachFrame() {
     }
     if (((break_2_mouse.isPressedIn(break_2_btn) && (break_2_mouse.status === PsychoJS.Status.STARTED)) && (break_2_btn.status === PsychoJS.Status.STARTED))) {
         break_2_mouse.status = PsychoJS.Status.FINISHED;
-        breakEnded = true;
+        continueRoutine = false;
     }
+    if ((break_2_mouse.status === PsychoJS.Status.STARTED) && t >= frameRemains) {
+        break_2_mouse.status = PsychoJS.Status.FINISHED;
+    }
+    break_2_timer.text = timerWarningRemain(60, t, 60);
     routineT = t;
     
     // check for quit (typically the Esc key)
@@ -7916,7 +8013,7 @@ function BREAK_2RoutineEachFrame() {
       }
     
     // refresh the screen if continuing
-    if (continueRoutine) {
+    if (continueRoutine && routineTimer.getTime() > 0) {
       return Scheduler.Event.FLIP_REPEAT;
     } else {
       return Scheduler.Event.NEXT;
@@ -7942,9 +8039,6 @@ function BREAK_2RoutineEnd() {
     psychoJS.experiment.addData('break_2_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('break_2_mouse.rightButton', _mouseButtons[2]);
     psychoJS.experiment.addData("break_2.tEnd",routineT);
-    // the Routine "BREAK_2" was not non-slip safe, so reset the non-slip timer
-    routineTimer.reset();
-    
     return Scheduler.Event.NEXT;
   };
 }
@@ -8969,18 +9063,22 @@ function EXP_CHECKRoutineBegin(snapshot) {
     continueRoutine = true; // until we're told otherwise
     routineTimer.add(300.000000);
     // update component parameters for each repeat
-    exp_check_res.setText('');
     // setup some python lists for storing info about the exp_check_mouse
     gotValidClick = false; // until a click is received
-    exp_check_slider.reset()
+    exp_check_res.setText('');
+    exp_check_slider_2.reset()
+    exp_check_slider_1.reset()
     routineT = 0;
     // keep track of which components have finished
     EXP_CHECKComponents = [];
-    EXP_CHECKComponents.push(exp_check_question);
-    EXP_CHECKComponents.push(exp_check_res);
     EXP_CHECKComponents.push(exp_check_btn);
     EXP_CHECKComponents.push(exp_check_mouse);
-    EXP_CHECKComponents.push(exp_check_slider);
+    EXP_CHECKComponents.push(exp_check_question_3);
+    EXP_CHECKComponents.push(exp_check_res);
+    EXP_CHECKComponents.push(exp_check_question_2);
+    EXP_CHECKComponents.push(exp_check_slider_2);
+    EXP_CHECKComponents.push(exp_check_question_1);
+    EXP_CHECKComponents.push(exp_check_slider_1);
     
     for (const thisComponent of EXP_CHECKComponents)
       if ('status' in thisComponent)
@@ -8998,18 +9096,32 @@ function EXP_CHECKRoutineEachFrame() {
     frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
     // update/draw components on each frame
     
-    // *exp_check_question* updates
-    if (t >= 0.0 && exp_check_question.status === PsychoJS.Status.NOT_STARTED) {
+    // *exp_check_btn* updates
+    if (t >= 0.5 && exp_check_btn.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      exp_check_question.tStart = t;  // (not accounting for frame time here)
-      exp_check_question.frameNStart = frameN;  // exact frame index
+      exp_check_btn.tStart = t;  // (not accounting for frame time here)
+      exp_check_btn.frameNStart = frameN;  // exact frame index
       
-      exp_check_question.setAutoDraw(true);
+      exp_check_btn.setAutoDraw(true);
     }
 
     frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((exp_check_question.status === PsychoJS.Status.STARTED || exp_check_question.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      exp_check_question.setAutoDraw(false);
+    if ((exp_check_btn.status === PsychoJS.Status.STARTED || exp_check_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      exp_check_btn.setAutoDraw(false);
+    }
+    
+    // *exp_check_question_3* updates
+    if (t >= 0.0 && exp_check_question_3.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      exp_check_question_3.tStart = t;  // (not accounting for frame time here)
+      exp_check_question_3.frameNStart = frameN;  // exact frame index
+      
+      exp_check_question_3.setAutoDraw(true);
+    }
+
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((exp_check_question_3.status === PsychoJS.Status.STARTED || exp_check_question_3.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      exp_check_question_3.setAutoDraw(false);
     }
     
     // *exp_check_res* updates
@@ -9026,32 +9138,60 @@ function EXP_CHECKRoutineEachFrame() {
       exp_check_res.setAutoDraw(false);
     }
     
-    // *exp_check_btn* updates
-    if (t >= 0.5 && exp_check_btn.status === PsychoJS.Status.NOT_STARTED) {
+    // *exp_check_question_2* updates
+    if (t >= 0.0 && exp_check_question_2.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      exp_check_btn.tStart = t;  // (not accounting for frame time here)
-      exp_check_btn.frameNStart = frameN;  // exact frame index
+      exp_check_question_2.tStart = t;  // (not accounting for frame time here)
+      exp_check_question_2.frameNStart = frameN;  // exact frame index
       
-      exp_check_btn.setAutoDraw(true);
+      exp_check_question_2.setAutoDraw(true);
     }
 
     frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((exp_check_btn.status === PsychoJS.Status.STARTED || exp_check_btn.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      exp_check_btn.setAutoDraw(false);
+    if ((exp_check_question_2.status === PsychoJS.Status.STARTED || exp_check_question_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      exp_check_question_2.setAutoDraw(false);
     }
     
-    // *exp_check_slider* updates
-    if (t >= 0.5 && exp_check_slider.status === PsychoJS.Status.NOT_STARTED) {
+    // *exp_check_slider_2* updates
+    if (t >= 0.5 && exp_check_slider_2.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      exp_check_slider.tStart = t;  // (not accounting for frame time here)
-      exp_check_slider.frameNStart = frameN;  // exact frame index
+      exp_check_slider_2.tStart = t;  // (not accounting for frame time here)
+      exp_check_slider_2.frameNStart = frameN;  // exact frame index
       
-      exp_check_slider.setAutoDraw(true);
+      exp_check_slider_2.setAutoDraw(true);
     }
 
     frameRemains = 300  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
-    if ((exp_check_slider.status === PsychoJS.Status.STARTED || exp_check_slider.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
-      exp_check_slider.setAutoDraw(false);
+    if ((exp_check_slider_2.status === PsychoJS.Status.STARTED || exp_check_slider_2.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      exp_check_slider_2.setAutoDraw(false);
+    }
+    
+    // *exp_check_question_1* updates
+    if (t >= 0.0 && exp_check_question_1.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      exp_check_question_1.tStart = t;  // (not accounting for frame time here)
+      exp_check_question_1.frameNStart = frameN;  // exact frame index
+      
+      exp_check_question_1.setAutoDraw(true);
+    }
+
+    frameRemains = 300.0  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((exp_check_question_1.status === PsychoJS.Status.STARTED || exp_check_question_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      exp_check_question_1.setAutoDraw(false);
+    }
+    
+    // *exp_check_slider_1* updates
+    if (t >= 0.5 && exp_check_slider_1.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      exp_check_slider_1.tStart = t;  // (not accounting for frame time here)
+      exp_check_slider_1.frameNStart = frameN;  // exact frame index
+      
+      exp_check_slider_1.setAutoDraw(true);
+    }
+
+    frameRemains = 300  - psychoJS.window.monitorFramePeriod * 0.75;  // most of one frame period left
+    if ((exp_check_slider_1.status === PsychoJS.Status.STARTED || exp_check_slider_1.status === PsychoJS.Status.FINISHED) && t >= frameRemains) {
+      exp_check_slider_1.setAutoDraw(false);
     }
     if (((t >= 0.5) && (exp_check_mouse.status === PsychoJS.Status.NOT_STARTED))) {
         exp_check_mouse.tStart = t;
@@ -9104,7 +9244,6 @@ function EXP_CHECKRoutineEnd() {
         thisComponent.setAutoDraw(false);
       }
     }
-    psychoJS.experiment.addData('exp_check_res.text',exp_check_res.text)
     // store data for psychoJS.experiment (ExperimentHandler)
     _mouseXYs = exp_check_mouse.getPos();
     _mouseButtons = exp_check_mouse.getPressed();
@@ -9113,12 +9252,20 @@ function EXP_CHECKRoutineEnd() {
     psychoJS.experiment.addData('exp_check_mouse.leftButton', _mouseButtons[0]);
     psychoJS.experiment.addData('exp_check_mouse.midButton', _mouseButtons[1]);
     psychoJS.experiment.addData('exp_check_mouse.rightButton', _mouseButtons[2]);
-    psychoJS.experiment.addData('exp_check_slider.response', exp_check_slider.getRating());
+    psychoJS.experiment.addData('exp_check_res.text',exp_check_res.text)
+    psychoJS.experiment.addData('exp_check_slider_2.response', exp_check_slider_2.getRating());
+    psychoJS.experiment.addData('exp_check_slider_1.response', exp_check_slider_1.getRating());
     psychoJS.experiment.addData("exp_check.tEnd",routineT);
-    if (exp_check_slider.markerPos !== undefined) { 
-        psychoJS.experiment.addData("exp_check_slider.response", exp_check_slider.labels[exp_check_slider.getMarkerPos() - 1]);
+    if (exp_check_slider_1.markerPos !== undefined) { 
+        psychoJS.experiment.addData("exp_check_slider_1.response", exp_check_slider_1.labels[exp_check_slider_1.getMarkerPos() - 1]);
     } else {
-        psychoJS.experiment.addData("exp_check_slider.response", "Not provided");
+        psychoJS.experiment.addData("exp_check_slider_1.response", "Not provided");
+    }
+    
+    if (exp_check_slider_2.markerPos !== undefined) { 
+        psychoJS.experiment.addData("exp_check_slider_2.response", exp_check_slider_2.labels[exp_check_slider_2.getMarkerPos() - 1]);
+    } else {
+        psychoJS.experiment.addData("exp_check_slider_2.response", "Not provided");
     }
     progressBar.update("EXP_CHECK");
     return Scheduler.Event.NEXT;

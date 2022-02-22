@@ -16,7 +16,8 @@
           success: function(res) {
                   const reslist = res.replace('[','').replace(']','').split(',')
                   sessionStorage.setItem("participantCode", reslist[1]);
-                  var group = (parseInt(reslist[0]) - 1) % 4;
+                  // var group = (parseInt(reslist[0]) - 1) % 4;
+                  var group = (parseInt(reslist[0]) - 1) % 1;
                   sessionStorage.setItem("groupid", "c" + (group + 1));
                   var groupid = String.fromCharCode("A".charCodeAt(0) + group);
                   const currentAddr = window.location.href;
