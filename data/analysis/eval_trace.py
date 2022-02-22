@@ -1,6 +1,6 @@
-import numpy
 import numpy as np
 from scipy import stats
+
 from sort_algorithms import *
 
 
@@ -126,7 +126,7 @@ def longest_common_subseq_conse(t1, t2, m, n):
 # perform chi square test first
 # Null hypothesis: the two variables (human/machine, comparison) are independent (change of one variable does not change the other)
 # Alternative hypothesis: the two variables are not independent (change of one variable may result in the other changing)
-def comp_chi2_similar(machine_trace, human_trace, labels, verbose=True):
+def comp_chi2_similar(machine_trace, human_trace, labels, alpha=0.05, verbose=True):
     # trace is a pool of samples of comparison drawn each being one of the NxN type
     vm, vh = vectorise_trace(machine_trace, human_trace, labels)
     vms, vhs = vectorise_trace_seq(machine_trace, human_trace, labels)
@@ -147,7 +147,7 @@ def comp_chi2_similar(machine_trace, human_trace, labels, verbose=True):
         print("chi square test: %s, p-value: %s" % (t, p))
 
     # if machine trace and human trace are similar, which means accept null hypothesis
-    if p > 0.1:
+    if p < alpha:
         rm = []
         rh = []
         for k in list(vms.keys()) and list(vhs.keys()):
@@ -168,9 +168,7 @@ def comp_chi2_similar(machine_trace, human_trace, labels, verbose=True):
     return False, [t, p]
 
 
-def comp_chi2_similar_2x2(machine_trace, human_trace, labels, verbose=True):
-    print(machine_trace)
-    print(human_trace)
+def comp_chi2_similar_2x2(machine_trace, human_trace, labels, alpha=0.05, verbose=True):
     # trace is a pool of samples of comparison drawn each being one of the NxN type
     vm, vh = vectorise_trace(machine_trace, human_trace, labels)
     vms, vhs = vectorise_trace_seq(machine_trace, human_trace, labels)
@@ -199,7 +197,9 @@ def comp_chi2_similar_2x2(machine_trace, human_trace, labels, verbose=True):
     t, p, _, expected = stats.chi2_contingency(contingency_table)
 
     if verbose:
-        print("\nmachine trace size: %s" % (len(machine_trace)))
+        print("\n" + str(machine_trace))
+        print(human_trace)
+        print("machine trace size: %s" % (len(machine_trace)))
         print("machine trace dict: %s" % (vm))
         print("human trace dict: %s" % (vh))
         print("machine trace vector: %s" % (vm.values()))
@@ -208,7 +208,7 @@ def comp_chi2_similar_2x2(machine_trace, human_trace, labels, verbose=True):
         print("chi square test: %s, p-value: %s" % (t, p))
 
     # if machine trace and human trace are similar, which means accept null hypothesis
-    if p < 0.05:
+    if p < alpha:
         rm = []
         rh = []
         for k in list(vms.keys()) and list(vhs.keys()):
@@ -229,7 +229,7 @@ def comp_chi2_similar_2x2(machine_trace, human_trace, labels, verbose=True):
     return False, [t, p]
 
 
-def get_similarity(method, algorithm, input, labels, ht, verbose=True):
+def get_similarity(method, algorithm, input, labels, ht, verbose=True, alpha=0.05):
     if verbose:
         print("\nRunning %s" % algorithm.__name__)
     mt = get_machine_trace(algorithm, input, labels)
@@ -248,9 +248,9 @@ def get_similarity(method, algorithm, input, labels, ht, verbose=True):
     elif method == "weighted_lcs_conse":
         return comp_long_subseq_sim(mt, ht, labels, verbose=verbose, conse=True) / len(mt), len(mt)
     elif method == "chi_sq":
-        return comp_chi2_similar(mt, ht, labels, verbose=verbose), len(mt)
+        return comp_chi2_similar(mt, ht, labels, verbose=verbose, alpha=alpha), len(mt)
     elif method == "chi_sq_2x2":
-        return comp_chi2_similar_2x2(mt, ht, labels, verbose=verbose), len(mt)
+        return comp_chi2_similar_2x2(mt, ht, labels, verbose=verbose, alpha=alpha), len(mt)
 
     else:
         print("Method not implemented")
@@ -291,7 +291,7 @@ def alphabetical_labels(input, labels):
     return res, sorted_labels
 
 
-def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False):
+def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False, alpha=0.05):
     s = []
     c = []
     t = []
@@ -300,11 +300,10 @@ def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False):
     for alg in ALL_ALGORITHMS:
         for func in funcs:
             input_f, labels_f = func[1](input, labels)
-            u = get_similarity(method, alg, input_f, labels_f, ht, verbose=verbose)
+            u = get_similarity(method, alg, input_f, labels_f, ht, verbose=verbose, alpha=alpha)
             s.append(u[0])
             c.append(u[1])
             t.append(func[0])
-
 
     tied_score_alg = []
     score = -np.inf
@@ -318,7 +317,7 @@ def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False):
             method = 'set_intersect_spearman'
             for i in range(len(s)):
                 if s[i][0] and s[i][1][1] == score:
-                    tied_score_alg.append((ALL_ALGORITHMS[i//len(funcs)].__name__, c[i], t[i]))
+                    tied_score_alg.append((ALL_ALGORITHMS[i // len(funcs)].__name__, c[i], t[i]))
         else:
             # no similar machine algorithm is found
             if verbose:
@@ -343,7 +342,6 @@ def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False):
                 tied_score_alg, method, score, len(ht)))
     return tied_score_alg, score, method, len(ht)
 
-
 # find_similar_algo("chi_sq", [6, 3, 5, 4, 2, 1], ['E', 'B', 'C', 'A', 'F', 'D'],
 #                   [['E', 'C'], ['A', 'C'], ['F', 'C'], ['F', 'A'], ['B', 'C'], ['B', 'F'], ['B', 'A'], ['D', 'A'],
 #                    ['D', 'B'], ['D', 'F']])
@@ -355,7 +353,7 @@ def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False):
 #                    ['F', 'C'], ['F', 'B'], ['G', 'B'], ['G', 'F'], ['G', 'H'], ['F', 'H'], ['J', 'H'], ['J', 'C'],
 #                    ['J', 'B'], ['J', 'G'], ['J', 'H'], ['J', 'I'], ['H', 'I'], ['F', 'I']],
 #                   funcs=[("alphabetical", alphabetical_labels)], verbose=True)
-# find_similar_algo("chi_sq_2x2", [1, 4, 6, 3, 2, 10, 5, 8, 9, 7], ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+# find_similar_algo("chi_sq_2x2", [1, 4, 6, 3, 2, 10, 5, 8, 9, 7], ['A', 'B', 'Cs', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
 #                   [['A', 'B'], ['A', 'C'], ['B', 'C'], ['D', 'C'], ['D', 'A'], ['D', 'E'], ['A', 'E'], ['F', 'E'],
 #                    ['F', 'C'], ['F', 'B'], ['G', 'B'], ['G', 'F'], ['G', 'H'], ['F', 'H'], ['J', 'H'], ['J', 'C'],
 #                    ['J', 'B'], ['J', 'G'], ['J', 'H'], ['J', 'I'], ['H', 'I'], ['F', 'I']], verbose=True)

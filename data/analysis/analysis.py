@@ -30,8 +30,17 @@ DATA_DIR_TEST1_ANOMALY = "../test/test_1/anomaly/"
 # extract_from_CSV([DATA_DIR_TEST1_GROUP2], sim='chi_sq', show_sim=True, sim_graphs=True, save_graph=True)
 # extract_from_CSV([DATA_DIR_TEST1_GROUP3], sim='chi_sq', show_sim=True, sim_graphs=True, save_graph=True)
 # extract_from_CSV([DATA_DIR_TEST1_GROUP4], sim='chi_sq', show_sim=True, sim_graphs=True, save_graph=True)
-extract_from_CSV([DATA_DIR_TEST1_GROUP1], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True)
-# extract_from_CSV([DATA_DIR_TEST1_GROUP2], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True)
-extract_from_CSV([DATA_DIR_TEST1_GROUP3], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True)
-# extract_from_CSV([DATA_DIR_TEST1_GROUP4], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True)
-# extract_from_CSV([DATA_DIR_TEST1_ANOMALY], show_sim=False)
+
+g1 = extract_from_CSV([DATA_DIR_TEST1_GROUP1], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True, significance=0.01)
+g2 = extract_from_CSV([DATA_DIR_TEST1_GROUP2], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True)
+g3 = extract_from_CSV([DATA_DIR_TEST1_GROUP3], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True, significance=0.01)
+g4 = extract_from_CSV([DATA_DIR_TEST1_GROUP4], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True)
+
+
+# t_test_with_graph([[np.array(g1["sort_test_comp"])[:, :5].flatten(),
+#                     np.array(g3["sort_test_comp"])[:, :5].flatten()],
+#                    [np.array(g1["sort_test_comp"])[:, 5:].flatten(),
+#                     np.array(g3["sort_test_comp"])[:, 5:].flatten()]],
+#                   ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
+#                   "No. Comparisons",
+#                   ["G1", "G3"], "Mean", save_path="../results/")
