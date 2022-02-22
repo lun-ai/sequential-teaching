@@ -8,8 +8,8 @@
     }
 
     function saveEmail($emailAddr) {
-        $fp = fopen('./emails.csv', 'a');
-        fwrite($fp, $emailAddr);
+        $fp = fopen('./emails.txt', 'a');
+        fwrite($fp, $emailAddr.PHP_EOL);
         fclose($fp);
     }
 
