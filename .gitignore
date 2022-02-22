@@ -9,3 +9,5 @@ data/**/*.png
 *browsers.js
 *lastrun.py
 test.*
+data
+*.py
