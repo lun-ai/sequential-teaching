@@ -10,3 +10,4 @@ data/**/*.png
 *lastrun.py
 test.*
 data
+*.py
