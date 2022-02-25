@@ -8,12 +8,12 @@ from scipy import stats
 
 from eval_trace import find_similar_algo, sim_algo_hist, alphabetical_labels
 
-DEFAULT_GRAPH_PATH = "../results/"
+DEFAULT_GRAPH_PATH = "../results/test_1/"
 
 
 def extract_from_CSV(paths, is_trace_enabled=False, train_only=False, show_records=True, sim_graphs=False,
                      sim="lcs", show_sim=False,
-                     verbose=False, save_graph=False, significance=0.05):
+                     verbose=False, save_graph=False, significance=0.05, save_path=""):
     csv_list = []
     filenames = []
     for path in paths:
@@ -108,7 +108,7 @@ def extract_from_CSV(paths, is_trace_enabled=False, train_only=False, show_recor
     if show_records:
         print('>>> Run time: ' + str(exp_run_time))
         print('>>> MaRs-IB')
-        print('MaRs-IB pre-test (correct/completed/accuracy): ' + str(pre_test))
+        print('MaRs-IB pre-test (correct answers/total answered/accuracy): ' + str(pre_test))
         print('>>> TRAIN ')
         print('merge train spearman rank score: ' + str(merge_train_score))
         print('merge train No. comparison: ' + str(merge_train_comparison))
@@ -125,40 +125,43 @@ def extract_from_CSV(paths, is_trace_enabled=False, train_only=False, show_recor
         print('sort test No. comparison: ' + str(sort_test_comparison))
         print('machine sort No. comparison: %s' % ([9, 8, 12, 12, 12, 20, 20, 18]))
         print('sort test comparison records: ' + str(np.array(sort_test_comparison_records)))
-        print('strategy reflection: ' + str(free_res))
+        print('background and strategy reflection: ' + str(numpy.array(free_res)))
 
-        print('\nmean merge response time: %s' % numpy.average(merge_test_response_time, axis=0))
-        print('mean merge test spearman rank score: %s' % numpy.average(merge_test_score, axis=0))
-        print('mean merge No. comparison: %s' % numpy.average(merge_test_comparison, axis=0))
-        print('mean sort response time: %s' % numpy.average(sort_test_response_time, axis=0))
-        print('mean sort test spearman rank score: %s' % numpy.average(sort_test_score, axis=0))
-        print('mean sort No. comparison: %s' % numpy.average(sort_test_comparison, axis=0))
+        print(
+            '\nmean merge response time: %s' % numpy.round(numpy.nanmean(merge_test_response_time, axis=0), decimals=3))
+        print('mean merge test spearman rank score: %s' % numpy.round(numpy.nanmean(merge_test_score, axis=0),
+                                                                      decimals=3))
+        print('mean merge No. comparison: %s' % numpy.round(numpy.nanmean(merge_test_comparison, axis=0), decimals=3))
+        print('mean sort response time: %s' % numpy.round(numpy.nanmean(sort_test_response_time, axis=0), decimals=3))
+        print(
+            'mean sort test spearman rank score: %s' % numpy.round(numpy.nanmean(sort_test_score, axis=0), decimals=3))
+        print('mean sort No. comparison: %s' % numpy.round(numpy.nanmean(sort_test_comparison, axis=0), decimals=3))
 
         if sim_graphs:
-            graph_path = ""
             if len(paths) == 1:
                 key = paths[0].split("/")[-2]
                 if save_graph:
                     g_l = {"Group1": "c1", "Group2": "c2", "Group3": "c3", "Group4": "c4"}
 
-                    graph_path = DEFAULT_GRAPH_PATH + key + "/" + g_l[key] + "_train_"
+                    graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path) + key + "/" + g_l[
+                        key] + "_train_"
             else:
                 key = "Multiple groups"
                 if save_graph:
-                    graph_path = DEFAULT_GRAPH_PATH
+                    graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path)
             draw_sim_hist_graph([np.array(train_alg_hist)[:, :3], np.array(train_alg_hist)[:, 3]],
                                 ["Length of set < 10\nNo. question = 3", "Length of set = 10\nNo. question = 1"],
                                 "No. application in training" + " (" + key + ")", "Frequency", save_path=graph_path)
             if not train_only:
-                graph_path = ""
                 if len(paths) == 1:
                     key = paths[0].split("/")[-2]
                     if save_graph:
-                        graph_path = DEFAULT_GRAPH_PATH + key + "/" + g_l[key] + "_test_"
+                        graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path) + key + "/" + g_l[
+                            key] + "_test_"
                 else:
                     key = "Multiple groups"
                     if save_graph:
-                        graph_path = DEFAULT_GRAPH_PATH
+                        graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path)
                 draw_sim_hist_graph([np.array(test_alg_hist)[:, :5], np.array(test_alg_hist)[:, 5:]],
                                     ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
                                     "No. application in performance test" + " (" + key + ")", "Frequency",
@@ -372,9 +375,15 @@ def extract_trace(input):
 
 
 def extract_free_response(input):
-    exp_col = input[0].index("exp_check_res.text")
+    if "exp_check_slider_1.response" in input[0]:
+        exp_text = (input[-1][input[0].index("exp_check_slider_1.response")],
+                    input[-1][input[0].index("exp_check_slider_2.response")],
+                              input[-1][input[0].index("exp_check_res.text")])
+    else:
+        exp_text = (input[-1][input[0].index("exp_check_slider.response")],
+                              input[-1][input[0].index("exp_check_res.text")])
     review_col = input[0].index("review_res.text")
-    return [input[-1][exp_col]] + [line[review_col] if line[review_col] != '' else 'Empty' for line in input[734:738]]
+    return [exp_text, [line[review_col] if line[review_col] != '' else 'Empty' for line in input[734:738]]]
 
 
 def parseTrace(line):

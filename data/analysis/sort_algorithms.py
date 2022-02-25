@@ -1,9 +1,6 @@
 # Implementation of a set of common sorting algorithms
 # Each outputs a list that is sorted incrementally, comparisons and the count of comparisons
 
-comparison_list = []
-comparisonN = 0
-
 def botup_msort_left_front(x):
     '''
     Applies bottom-up merge sort by popping the front of sublists and merge sublists from left to right
@@ -710,6 +707,10 @@ def isort_back(x):
 
 
 def dict_sort_front(x):
+    return ds_front(x, [])
+
+
+def ds_front(x, partial):
     '''
     Applies insertion sort by prioritising comparison with the first element of the partially sorted list
 
@@ -724,7 +725,7 @@ def dict_sort_front(x):
     list : [sorted list, comps, compsN]
     '''
 
-    result = []
+    result = partial
     comps = []
     compsN = 0
 
@@ -765,7 +766,11 @@ def dict_sort_front(x):
 
 
 def dict_sort_mid(x):
-    result = []
+    return ds_mid(x, [])
+
+
+def ds_mid(x, partial):
+    result = partial
     comps = []
     compsN = 0
 
@@ -783,7 +788,7 @@ def dict_sort_mid(x):
                 compsN += 1
                 j = k
 
-                if k != i:
+                if k != i and [n, result[i]] not in comps and [result[i], n] not in comps:
                     comps.append([n, result[i]])
                     compsN += 1
                 if n < result[i]:
@@ -794,7 +799,7 @@ def dict_sort_mid(x):
                 compsN += 1
                 i = k
 
-                if k != j:
+                if k != j and [n, result[j]] not in comps and [result[j], n] not in comps:
                     comps.append([n, result[j]])
                     compsN += 1
                 if n > result[j]:
@@ -808,6 +813,10 @@ def dict_sort_mid(x):
 
 
 def dict_sort_back(x):
+    return ds_back(x, [])
+
+
+def ds_back(x, partial):
     '''
     Applies insertion sort by prioritising comparison with the last element of the partially sorted list
 
@@ -822,7 +831,7 @@ def dict_sort_back(x):
     list : [sorted list, comps, compsN]
     '''
 
-    result = []
+    result = partial
     comps = []
     compsN = 0
 
@@ -861,30 +870,47 @@ def dict_sort_back(x):
     return result, comps, compsN
 
 
+def is_front_hybrid_ds_front(x, k):
+    res1, c1, cN1 = isort_front(x[:k])
+    res2, c2, cN2 = ds_front(x[k:], res1)
+    return res2, c1 + c2, cN1 + cN2
+
+
+def is_front_hybrid_ds_mid(x, k):
+    res1, c1, cN1 = isort_front(x[:k])
+    res2, c2, cN2 = ds_mid(x[k:], res1)
+    return res2, c1 + c2, cN1 + cN2
+
+
+def is_front_hybrid_ds_back(x, k):
+    res1, c1, cN1 = isort_front(x[:k])
+    res2, c2, cN2 = ds_back(x[k:], res1)
+    return res2, c1 + c2, cN1 + cN2
+
+
+def is_back_hybrid_ds_front(x, k):
+    res1, c1, cN1 = isort_back(x[:k])
+    res2, c2, cN2 = ds_front(x[k:], res1)
+    return res2, c1 + c2, cN1 + cN2
+
+
+def is_back_hybrid_ds_mid(x, k):
+    res1, c1, cN1 = isort_back(x[:k])
+    res2, c2, cN2 = ds_mid(x[k:], res1)
+    return res2, c1 + c2, cN1 + cN2
+
+
+def is_back_hybrid_ds_back(x, k):
+    res1, c1, cN1 = isort_back(x[:k])
+    res2, c2, cN2 = ds_back(x[k:], res1)
+    return res2, c1 + c2, cN1 + cN2
+
+
 def check_sort_output(result, comps, compsN):
     if result != sorted(result):
         raise AssertionError("Algorithm not returning sorted lists!")
     if compsN != len(comps):
         raise AssertionError("Algorithm trace does not match number of comparisons!")
-
-def comp_lt(a, b):
-    comparison_list.append([a, b])
-    return a < b
-
-def comp_gt(a, b):
-    comparison_list.append([a, b])
-    return a > b
-
-def comp_leq(a, b):
-    comparison_list.append([a, b])
-    return a <= b
-
-def comp_geq(a, b):
-    comparison_list.append([a, b])
-    return a >= b
-
-def clear_cache_comp():
-    comparison_list.clear()
 
 
 ALL_ALGORITHMS = [botup_msort_left_front, botup_msort_right_front, botup_msort_left_back, botup_msort_right_back,
@@ -892,7 +918,8 @@ ALL_ALGORITHMS = [botup_msort_left_front, botup_msort_right_front, botup_msort_l
                   msort_left_front, msort_left_back, msort_left_back, msort_right_back, dict_sort_front, dict_sort_mid,
                   dict_sort_back,
                   bubsort_front, bubsort_back]
-
+HYBRID_ALGORITHMS = [is_front_hybrid_ds_front, is_front_hybrid_ds_mid, is_front_hybrid_ds_back, is_back_hybrid_ds_front,
+                     is_back_hybrid_ds_mid, is_back_hybrid_ds_back]
 
 def recur_gen_list(test_lists, nrange):
     newL = []
@@ -911,14 +938,26 @@ def test_all_alg(size, nrange):
         lists = recur_gen_list(lists, nrange)
     for alg in ALL_ALGORITHMS:
         for l in lists:
-            if alg(l)[0] != sorted(l):
-                print([l,alg(l)[0]])
+            r = alg(l)
+            if r[0] != sorted(l):
+                print([l, r[0]])
                 if alg.__name__ not in failed_tests.keys():
                     failed_tests[alg.__name__] = [l]
                 else:
                     failed_tests[alg.__name__].append(l)
+    for alg in HYBRID_ALGORITHMS:
+        for l in lists:
+            for k in range(1, len(l)):
+                r = alg(l, k)
+                if r[0] != sorted(l):
+                    print([l, r[0]])
+                    if alg.__name__ not in failed_tests.keys():
+                        failed_tests[alg.__name__] = [l]
+                    else:
+                        failed_tests[alg.__name__].append(l)
     print(failed_tests)
 
-# test_all_alg(7,7)
+# test_all_alg(7, 7)
 
-# print(dict_sort_mid([1,2,3,4,5,6]))
+# print(dict_sort_mid([3, 2, 4, 5, 6, 7, 1]))
+# print(dict_sort_front([1, 2, 3, 4, 5, 7, 6]))

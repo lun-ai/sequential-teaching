@@ -53,12 +53,29 @@ def vectorise_trace(machine_trace, human_trace, labels):
     return vm, vh
 
 
-def get_machine_trace(algorithm, input, labels):
+def get_machine_trace(algorithm, input, labels, verbose=False):
+    if verbose:
+        print("\nRunning %s" % algorithm.__name__)
     output = algorithm(input)
     check_sort_output(output[0], output[1], output[2])
     trace = []
     for comp in output[1]:
         trace.append([labels[input.index(comp[0])], labels[input.index(comp[1])]])
+    if verbose:
+        print("%s exited" % algorithm.__name__)
+    return trace
+
+
+def get_machine_trace_hybrid(algorithm, input, labels, aux, verbose=False):
+    if verbose:
+        print("\nRunning %s" % algorithm.__name__)
+    output = algorithm(input, aux)
+    check_sort_output(output[0], output[1], output[2])
+    trace = []
+    for comp in output[1]:
+        trace.append([labels[input.index(comp[0])], labels[input.index(comp[1])]])
+    if verbose:
+        print("%s exited" % algorithm.__name__)
     return trace
 
 
@@ -230,11 +247,12 @@ def comp_chi2_similar_2x2(machine_trace, human_trace, labels, alpha=0.05, verbos
 
 
 def get_similarity(method, algorithm, input, labels, ht, verbose=True, alpha=0.05):
-    if verbose:
-        print("\nRunning %s" % algorithm.__name__)
-    mt = get_machine_trace(algorithm, input, labels)
-    if verbose:
-        print("%s exited" % algorithm.__name__)
+    mt = get_machine_trace(algorithm, input, labels, verbose=verbose)
+    r = get_similarity_aux(ht, mt, labels, method, verbose=verbose, alpha=alpha)
+    return r
+
+
+def get_similarity_aux(ht, mt, labels, method, verbose=False, alpha=0.05):
     if method == "euc":
         return comp_euc_sim(mt, ht, labels, verbose=verbose), len(mt)
     elif method == "spm":
@@ -258,7 +276,7 @@ def get_similarity(method, algorithm, input, labels, ht, verbose=True, alpha=0.0
 
 
 def sim_algo_hist(candidates_lists):
-    categories = {"BS": 0, "DS": 0, "IS": 0, "MS": 0, "QS": 0}
+    categories = {"BS": 0, "DS": 0, "IS": 0, "MS": 0, "QS": 0, "Hybrid": 0}
 
     for c in candidates_lists:
         if c != []:
@@ -274,8 +292,11 @@ def sim_algo_hist(candidates_lists):
                 categories["QS"] += 1
             elif len(list(filter(lambda x: x[0] in ["bubsort_front", "bubsort_back"], c))) == len(c):
                 categories["BS"] += 1
-            elif len(list(filter(lambda x: x[0] in ["dict_sort_front", "dict_sort_back"], c))) == len(c):
+            elif len(list(filter(lambda x: x[0] in ["dict_sort_front", "dict_sort_mid", "dict_sort_back"], c))) == len(c):
                 categories["DS"] += 1
+            elif len(list(filter(lambda x: '_'.join(x[0].split('_')[:-1]) in ["is_front_hybrid_ds_front", "is_front_hybrid_ds_mid", "is_front_hybrid_ds_back", "is_back_hybrid_ds_front",
+                     "is_back_hybrid_ds_mid", "is_back_hybrid_ds_back"], c))) == len(c):
+                categories["Hybrid"] += 1
 
     return categories
 
@@ -295,15 +316,28 @@ def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False, alpha=
     s = []
     c = []
     t = []
+    alg_names = []
     funcs = funcs + [("left to right", lambda x, y: (x, y))]
 
     for alg in ALL_ALGORITHMS:
+        alg_names.append(alg.__name__)
         for func in funcs:
             input_f, labels_f = func[1](input, labels)
             u = get_similarity(method, alg, input_f, labels_f, ht, verbose=verbose, alpha=alpha)
             s.append(u[0])
             c.append(u[1])
             t.append(func[0])
+
+    for alg in HYBRID_ALGORITHMS:
+        for k in range(1, len(input)):
+            alg_names.append(alg.__name__ + "_" + str(k))
+            for func in funcs:
+                input_f, labels_f = func[1](input, labels)
+                mt = get_machine_trace_hybrid(alg, input_f, labels_f, k, verbose=verbose)
+                u = get_similarity_aux(ht, mt, labels_f, method, verbose=verbose, alpha=alpha)
+                s.append(u[0])
+                c.append(u[1])
+                t.append(func[0])
 
     tied_score_alg = []
     score = -np.inf
@@ -317,7 +351,7 @@ def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False, alpha=
             method = 'set_intersect_spearman'
             for i in range(len(s)):
                 if s[i][0] and s[i][1][1] == score:
-                    tied_score_alg.append((ALL_ALGORITHMS[i // len(funcs)].__name__, c[i], t[i]))
+                    tied_score_alg.append((alg_names[i // len(funcs)], c[i], t[i]))
         else:
             # no similar machine algorithm is found
             if verbose:
@@ -329,16 +363,16 @@ def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False, alpha=
         for i in range(len(s)):
             if s[i] == score:
                 if len(tied_score_alg) > 0:
-                    tied_score_alg.append((ALL_ALGORITHMS[i].__name__, c[i], t[i]))
+                    tied_score_alg.append((alg_names[i].__name__, c[i], t[i]))
                 else:
-                    tied_score_alg.append((ALL_ALGORITHMS[i].__name__, c[i], t[i]))
+                    tied_score_alg.append((alg_names[i].__name__, c[i], t[i]))
 
     if verbose:
         if len(tied_score_alg) > 1:
-            print(">>> There is a Tie between %s with score %s for %s when length(human_trace) = %s" % (
+            print(">>> There is a Tie between %s with score %s for %s when length(human_trace) = %s\n" % (
                 tied_score_alg, score, method, len(ht)))
         else:
-            print(">>> Most matching algorithm is %s with %s value %s when length(human_trace) = %s" % (
+            print(">>> Most matching algorithm is %s with %s value %s when length(human_trace) = %s\n" % (
                 tied_score_alg, method, score, len(ht)))
     return tied_score_alg, score, method, len(ht)
 
