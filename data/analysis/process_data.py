@@ -55,8 +55,8 @@ def extract_from_CSV(paths, is_trace_enabled=False, train_only=False, show_recor
 
         c = csv_list[i]
 
-        if verbose:
-            print(">>>>>>>>>>>>>>> %s >>>>>>>>>>>>>>>" % (filenames[i]))
+        # if verbose:
+        print(">>>>>>>>>>>>>>> %s >>>>>>>>>>>>>>>" % (filenames[i]))
 
         p = extract_pre_test(c)
         pre_test.append(p)

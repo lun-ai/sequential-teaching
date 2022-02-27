@@ -2,7 +2,7 @@ import json
 import csv
 from os import listdir
 
-DATA_DIR = "../test/test_1/records_json/"
+DATA_DIR = "../test/records_json/"
 WRITE_DIR = "csv/"
 
 def parse_json_to_csv(data_dirs, suffix):

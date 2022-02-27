@@ -9,4 +9,5 @@ data/**/*.png
 *browsers.js
 *lastrun.py
 test.*
-data/test/test_1/records_json/csv/*
+data/test/records_json/csv/*
+data/test/records_json/*.json

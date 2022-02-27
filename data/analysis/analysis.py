@@ -26,6 +26,7 @@ DATA_DIR_TEST1_GROUP3 = "../test/test_1/Group3/"
 DATA_DIR_TEST1_GROUP4 = "../test/test_1/Group4/"
 DATA_DIR_TEST1_ANOMALY = "../test/test_1/anomaly/"
 DATA_DIR_AMT_GROUP1 = "../test/amt/Group1/"
+DATA_DIR_AMT_GROUP3 = "../test/amt/Group3/"
 DATA_DIR_TEST1_ANOMALY = "../test/amt/anomaly/"
 
 # extract_from_CSV([DATA_DIR_TEST1_GROUP1], sim='chi_sq', show_sim=True, sim_graphs=True, save_graph=True)
@@ -38,8 +39,8 @@ DATA_DIR_TEST1_ANOMALY = "../test/amt/anomaly/"
 # g3 = extract_from_CSV([DATA_DIR_TEST1_GROUP3], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True, significance=0.01)
 # g4 = extract_from_CSV([DATA_DIR_TEST1_GROUP4], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True)
 
-# extract_from_CSV([DATA_DIR_AMT_GROUP1], sim='chi_sq_2x2', show_sim=True, sim_graphs=False, verbose=False)
-extract_from_CSV(["../test/amt/"], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True, save_path="../results/amt/", significance=0.01)
+extract_from_CSV([DATA_DIR_AMT_GROUP3], sim='chi_sq_2x2', show_sim=True, sim_graphs=False, verbose=False)
+# extract_from_CSV([DATA_DIR_AMT_GROUP1], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True, save_path="../results/amt/", significance=0.01)
 
 # t_test_with_graph([[np.array(g1["sort_test_comp"])[:, :5].flatten(),
 #                     np.array(g3["sort_test_comp"])[:, :5].flatten()],
