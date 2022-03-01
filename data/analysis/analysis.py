@@ -43,8 +43,8 @@ DATA_DIR_AMT_ANOMALY = "../test/amt/anomaly/"
 
 # extract_from_CSV([DATA_DIR_AMT_GROUP1], sim='chi_sq_2x2', show_sim=True, sim_graphs=False, verbose=False)
 # extract_from_CSV([DATA_DIR_AMT_GROUP2], sim='chi_sq_2x2', show_sim=True, sim_graphs=False, verbose=False)
-# extract_from_CSV([DATA_DIR_AMT_GROUP3], sim='chi_sq_2x2', show_sim=True, sim_graphs=False, verbose=False)
-extract_from_CSV([DATA_DIR_AMT_GROUP4], sim='chi_sq_2x2', show_sim=True, sim_graphs=False, verbose=False)
+extract_from_CSV([DATA_DIR_AMT_GROUP3], sim='chi_sq_2x2', show_sim=True, sim_graphs=False, verbose=False)
+# extract_from_CSV([DATA_DIR_AMT_GROUP4], sim='chi_sq_2x2', show_sim=True, sim_graphs=False, verbose=False)
 # extract_from_CSV([DATA_DIR_AMT_GROUP1], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True, save_path="../results/amt/", significance=0.01)
 
 # t_test_with_graph([[np.array(g1["sort_test_comp"])[:, :5].flatten(),
