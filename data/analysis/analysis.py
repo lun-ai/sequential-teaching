@@ -41,16 +41,18 @@ DATA_DIR_AMT_ANOMALY = "../test/amt/anomaly/"
 # g3 = extract_from_CSV([DATA_DIR_TEST1_GROUP3], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True, significance=0.01)
 # g4 = extract_from_CSV([DATA_DIR_TEST1_GROUP4], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True)
 
-g1 = extract_from_CSV([DATA_DIR_AMT_GROUP1], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
-                      significance=0.005, save_path="../results/amt/", verbose=False, control_v="time")
-# g2 = extract_from_CSV([DATA_DIR_AMT_GROUP2], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
-#                       significance=0.005, save_path="../results/amt/", verbose=False, control_v="score")
-g3 = extract_from_CSV([DATA_DIR_AMT_GROUP3], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
-                      significance=0.005, save_path="../results/amt/", verbose=False, control_v="time")
+# g1 = extract_from_CSV([DATA_DIR_AMT_GROUP1], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
+#                       significance=0.005, save_path="../results/amt/", verbose=False, control_v="merge_score")
+g2 = extract_from_CSV([DATA_DIR_AMT_GROUP2], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
+                      significance=0.005, save_path="../results/amt/", verbose=False, control_v="merge_score")
+# g3 = extract_from_CSV([DATA_DIR_AMT_GROUP3], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
+#                       significance=0.005, save_path="../results/amt/", verbose=False, control_v="merge_score")
 # g4 = extract_from_CSV([DATA_DIR_AMT_GROUP4], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
 #                       significance=0.005, save_path="../results/amt/", verbose=False, control_v="score")
 
 # ttest_two_groups(g1, g2, "G1", "G2")
-ttest_two_groups(g1, g3, "G1", "G3")
+# ttest_two_groups(g1, g3, "G1", "G3")
+# ttest_two_groups(g1, g4, "G1", "G4")
 # ttest_two_groups(g2, g4, "G2", "G4")
+# ttest_two_groups(g2, g3, "G2", "G3")
 # ttest_two_groups(g3, g4, "G3", "G4")

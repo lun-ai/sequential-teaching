@@ -222,9 +222,9 @@ def comp_chi2_similar_2x2(machine_trace, human_trace, labels, alpha=0.05, verbos
         print("machine trace vector: %s" % (vm.values()))
         print("human trace vector : %s" % (vh.values()))
         print("contingency_table: %s" % (contingency_table))
-        print("chi square test: %s, p-value: %s" % (t, p))
+        print("chi square test alpha %s: %s, p-value: %s" % (alpha, t, p))
 
-    # if machine trace and human trace are similar, which means accept null hypothesis
+    # if machine trace and human trace are correlated, which means reject null hypothesis
     if p < alpha:
         rm = []
         rh = []
