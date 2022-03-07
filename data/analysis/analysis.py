@@ -43,12 +43,12 @@ DATA_DIR_AMT_ANOMALY = "../test/amt/anomaly/"
 
 # g1 = extract_from_CSV([DATA_DIR_AMT_GROUP1], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
 #                       significance=0.005, save_path="../results/amt/", verbose=False, control_v="merge_score")
-g2 = extract_from_CSV([DATA_DIR_AMT_GROUP2], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
-                      significance=0.005, save_path="../results/amt/", verbose=False, control_v="merge_score")
+# g2 = extract_from_CSV([DATA_DIR_AMT_GROUP2], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
+#                       significance=0.005, save_path="../results/amt/", verbose=False, control_v="merge_score")
 # g3 = extract_from_CSV([DATA_DIR_AMT_GROUP3], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
 #                       significance=0.005, save_path="../results/amt/", verbose=False, control_v="merge_score")
-# g4 = extract_from_CSV([DATA_DIR_AMT_GROUP4], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
-#                       significance=0.005, save_path="../results/amt/", verbose=False, control_v="score")
+g4 = extract_from_CSV([DATA_DIR_AMT_GROUP4], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True,
+                      significance=0.005, save_path="../results/amt/", verbose=False, control_v="score")
 
 # ttest_two_groups(g1, g2, "G1", "G2")
 # ttest_two_groups(g1, g3, "G1", "G3")
