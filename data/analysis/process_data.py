@@ -12,8 +12,8 @@ DEFAULT_GRAPH_PATH = "../results/test_1/"
 
 
 def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, show_records=True, sim_graphs=False,
-                     sim="chi_sq_2x2", show_sim=False,
-                     verbose=False, save_graph=False, significance=0.05, save_path="", control_v=""):
+                     sim="chi_sq_2x2", sim_analysis=False,
+                     verbose=False, save_graph=False, significance=0.05, save_path="", control_v="", filter_mul=1):
     csv_list = []
     filenames = []
     for path in paths:
@@ -55,24 +55,23 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
 
         c = csv_list[i]
 
-        # if verbose:
         print(">>>>>>>>>>>>>>> %s >>>>>>>>>>>>>>>" % (filenames[i]))
 
         p = extract_pre_test(c)
         pre_test.append(p)
 
-        t = extract_time(c)
+        t = extract_run_time(c)
         exp_run_time.append(t)
-
-        t1, t2 = extract_test_time(c)
-        merge_test_response_time.append(t1)
-        sort_test_response_time.append(t2)
 
         s1, s2 = extract_response(c)
         merge_test_score.append(s1)
         sort_test_score.append(s2)
 
-        c1, c2, r1, r2 = extract_comparison(c, "\'")
+        t1, t2 = extract_test_time(c, s1, s2)
+        merge_test_response_time.append(t1)
+        sort_test_response_time.append(t2)
+
+        c1, c2, r1, r2 = extract_comparison(c, "\'", s1, s2)
         merge_test_comparison.append(c1)
         sort_test_comparison.append(c2)
         merge_test_comparison_records.append(r1)
@@ -100,7 +99,7 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
                 reconstruct_trace(d, path, name + "_" + str(i))
                 i += 1
 
-        if show_sim:
+        if sim_analysis:
             train_algs, algs = eval_alg_sim(sim, c, verbose=verbose, train_only=train_only, significance=significance)
             train_alg_hist.append(train_algs)
             test_alg_hist.append(algs)
@@ -123,12 +122,14 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
     std_ms = np.nanstd(np.nanmean(merge_test_score, axis=1))
 
     for i in range(len(sort_test_score)):
-        if (mean_ms_all - std_ms) <= np.nanmean(merge_test_score[i]) <= (mean_ms_all + std_ms):
+        if (mean_ms_all - filter_mul * std_ms) <= np.nanmean(merge_test_score[i]) <= (
+                mean_ms_all + filter_mul * std_ms):
             sort_test_score_f.append(sort_test_score[i])
             sort_test_response_time_f.append(sort_test_response_time[i])
             sort_test_comparison_f.append(sort_test_comparison[i])
-            train_alg_hist_f.append(train_alg_hist[i])
-            test_alg_hist_f.append(test_alg_hist[i])
+            if sim_analysis:
+                train_alg_hist_f.append(train_alg_hist[i])
+                test_alg_hist_f.append(test_alg_hist[i])
 
     sort_test_comparison_f2 = []
     sort_test_response_time_f2 = []
@@ -136,7 +137,19 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
     train_alg_hist_f2 = []
     test_alg_hist_f2 = []
 
-    if control_v == "merge_score":
+    if control_v == "pre_test":
+        mean_pt = np.nanmean(np.array(pre_test)[:, 2])
+        std_pt = np.nanstd(np.array(pre_test)[:, 2])
+        for i in range(len(pre_test)):
+            if (mean_pt - filter_mul * std_pt) <= pre_test[i][2] <= (mean_pt + filter_mul * std_pt):
+                sort_test_score_f2.append(sort_test_score[i])
+                sort_test_comparison_f2.append(sort_test_comparison[i])
+                sort_test_response_time_f2.append(sort_test_response_time[i])
+                if sim_analysis:
+                    train_alg_hist_f2.append(train_alg_hist[i])
+                    test_alg_hist_f2.append(test_alg_hist[i])
+
+    elif control_v == "merge_score":
         sort_test_score_f2 = sort_test_score_f
         sort_test_comparison_f2 = sort_test_comparison_f
         sort_test_response_time_f2 = sort_test_response_time_f
@@ -155,8 +168,9 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
                 sort_test_score_f2.append(sort_test_score_f[i])
                 sort_test_response_time_f2.append(sort_test_response_time_f[i])
                 sort_test_comparison_f2.append(sort_test_comparison_f[i])
-                train_alg_hist_f2.append(train_alg_hist_f[i])
-                test_alg_hist_f2.append(test_alg_hist_f[i])
+                if sim_analysis:
+                    train_alg_hist_f2.append(train_alg_hist_f[i])
+                    test_alg_hist_f2.append(test_alg_hist_f[i])
     elif control_v == "time":
 
         mean_1 = np.nanmean(np.array(sort_test_response_time_f)[:, :5])
@@ -170,8 +184,9 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
                 sort_test_score_f2.append(sort_test_score_f[i])
                 sort_test_response_time_f2.append(sort_test_response_time_f[i])
                 sort_test_comparison_f2.append(sort_test_comparison_f[i])
-                train_alg_hist_f2.append(train_alg_hist_f[i])
-                test_alg_hist_f2.append(test_alg_hist_f[i])
+                if sim_analysis:
+                    train_alg_hist_f2.append(train_alg_hist_f[i])
+                    test_alg_hist_f2.append(test_alg_hist_f[i])
     elif control_v == "efficiency":
 
         mean_1 = np.nanmean(np.array(sort_test_comparison_f)[:, :5])
@@ -185,8 +200,9 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
                 sort_test_score_f2.append(sort_test_score_f[i])
                 sort_test_response_time_f2.append(sort_test_response_time_f[i])
                 sort_test_comparison_f2.append(sort_test_comparison_f[i])
-                train_alg_hist_f2.append(train_alg_hist_f[i])
-                test_alg_hist_f2.append(test_alg_hist_f[i])
+                if sim_analysis:
+                    train_alg_hist_f2.append(train_alg_hist_f[i])
+                    test_alg_hist_f2.append(test_alg_hist_f[i])
     else:
         sort_test_score_f2 = sort_test_score
         sort_test_comparison_f2 = sort_test_comparison
@@ -194,10 +210,13 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
         train_alg_hist_f2 = train_alg_hist
         test_alg_hist_f2 = test_alg_hist
 
+    print('>>> Run time: ' + str(exp_run_time))
+    print("--- partition size: " + str(len(sort_test_comparison_f2)))
+    print('>>> MaRs-IB')
+    print('MaRs-IB pre-test (correct answers/total answered/accuracy): ' + str(
+        ['/'.join([str(i) for i in res]) for res in pre_test]))
+
     if show_records:
-        print('>>> Run time: ' + str(exp_run_time))
-        print('>>> MaRs-IB')
-        print('MaRs-IB pre-test (correct answers/total answered/accuracy): ' + str(pre_test))
         print('>>> TRAIN ')
         print_records('merge train spearman rank score: ', merge_train_score, filenames)
         print_records('merge train No. comparison: ', merge_train_comparison, filenames)
@@ -216,16 +235,14 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
         # print_records('sort test comparison records: ', np.array(sort_test_comparison_records), filenames)
         print_records('background and strategy reflection: ', numpy.array(free_res), filenames)
 
-        print("--- partition size: " + str(len(sort_test_comparison_f2)))
         print('\nmean merge response time: %s' % mean_mt)
         print('mean merge test spearman rank score: %s' % mean_ms)
         print('mean merge No. comparison: %s' % mean_mc)
         print('mean sort response time: %s' % mean_st)
-        print(
-            'mean sort test spearman rank score: %s' % mean_ss)
+        print('mean sort test spearman rank score: %s' % mean_ss)
         print('mean sort No. comparison: %s' % mean_sc)
 
-        if sim_graphs:
+        if sim_analysis and sim_graphs:
             if len(paths) == 1:
                 key = paths[0].split("/")[-2]
                 if save_graph:
@@ -281,23 +298,29 @@ def extract_pre_test(input):
     total_correct = sum([1 if res[i] == ans[i] else 0 for i in range(len(res))])
     total_answered = sum([1 if r in ['a', 'b', 'c', 'd'] else 0 for r in res])
 
-    return "%s/%s/%s" % (total_correct, total_answered, round(float(total_correct / total_answered), 3))
+    return [total_correct, total_answered, round(float(total_correct / total_answered), 3)]
 
 
-def extract_test_time(input):
+def extract_test_time(input, m_score, s_score):
     merge_test_time_col = [input[0].index("merge_test.tStart"), input[0].index("merge_test.tEnd")]
     sort_test_time_col = [input[0].index("sort_test.tStart"), input[0].index("sort_test.tEnd")]
+
+    m_nan_idx = [i for i in range(len(m_score)) if np.isnan(m_score[i])]
+    s_nan_idx = [i for i in range(len(s_score)) if np.isnan(s_score[i])]
 
     t1 = [round(float(line[merge_test_time_col[1]]) - float(line[merge_test_time_col[0]]), 2) for line in input[1:] if
           line[merge_test_time_col[0]] != '' and line[merge_test_time_col[1]] != '']
     t2 = [round(float(line[sort_test_time_col[1]]) - float(line[sort_test_time_col[0]]), 2) for line in input[1:] if
           line[sort_test_time_col[0]] != '' and line[sort_test_time_col[1]] != '']
 
+    t1 = [t1[i] if i not in m_nan_idx else np.NaN for i in range(len(t1))]
+    t2 = [t2[i] if i not in s_nan_idx else np.NaN for i in range(len(t2))]
+
     return t1, t2
 
 
 # returns the experiment run time
-def extract_time(input):
+def extract_run_time(input):
     pre_test_t = [input[1][input[0].index("pre_test_intro_mouse.tEnd")]]
     col1 = input[0].index("pre_test_train.tEnd")
     pre_test_t += [line[col1] for line in input[1:] if line[col1] != '']
@@ -415,10 +438,12 @@ def extract_response(input):
     a1 = [labels2Ints(l1[i], i1[i], r1[i]) if containLabels(l1[i], r1[i]) else [] for i in range(min(len(l1), len(r1)))]
     a2 = [labels2Ints(l2[i], i2[i], r2[i]) if containLabels(l2[i], r2[i]) else [] for i in range(min(len(l2), len(r2)))]
 
-    s1 = [round(stats.spearmanr(sorted(i1[i]), a1[i])[0], 3) if len(l1[i]) == len(a1[i]) else numpy.NaN for i in
+    s1 = [round(stats.spearmanr(sorted(i1[i]), a1[i])[0], 3) if len(l1[i]) == len(a1[i]) else 0.0 for i in
           range(min(len(i1), len(a1)))]
-    s2 = [round(stats.spearmanr(sorted(i2[i]), a2[i])[0], 3) if len(l2[i]) == len(a2[i]) else numpy.NaN for i in
+    # s1 = list(map(lambda x: np.NaN if x < 0.0 else x, s1))
+    s2 = [round(stats.spearmanr(sorted(i2[i]), a2[i])[0], 3) if len(l2[i]) == len(a2[i]) else 0.0 for i in
           range(min(len(i2), len(a2)))]
+    # s2 = list(map(lambda x: np.NaN if x < 0.0 else x, s2))
 
     return s1, s2
 
@@ -440,14 +465,19 @@ def labels2Ints(labels, ints, res):
     return [ints[labels.index(r)] for r in res]
 
 
-def extract_comparison(input, label_pad):
+def extract_comparison(input, label_pad, m_score, s_score):
     merge_test_com_col = input[0].index("merge_test_compareN")
     merge_test_com_records = input[0].index("merge_test_compare_records")
     sort_test_com_col = input[0].index("sort_test_compareN")
     sort_test_com_records = input[0].index("sort_test_compare_records")
 
-    return [int(line[merge_test_com_col]) for line in input[1:] if line[merge_test_com_col] != ''], [
-        int(line[sort_test_com_col]) for line in input[1:] if line[sort_test_com_col] != ''], [
+    m_nan_idx = [i for i in range(len(m_score)) if np.isnan(m_score[i])]
+    s_nan_idx = [i for i in range(len(s_score)) if np.isnan(s_score[i])]
+    m_compN_l = [int(line[merge_test_com_col]) for line in input[1:] if line[merge_test_com_col] != '']
+    s_compN_l = [int(line[sort_test_com_col]) for line in input[1:] if line[sort_test_com_col] != '']
+
+    return [m_compN_l[i] if i not in m_nan_idx else np.NaN for i in range(len(m_compN_l))], [
+        s_compN_l[i] if i not in s_nan_idx else np.NaN for i in range(len(s_compN_l))], [
                line[merge_test_com_records].replace("\"", label_pad) for line in input[1:] if
                line[merge_test_com_records] != ''], [line[sort_test_com_records].replace("\"", label_pad) for line in
                                                      input[1:] if line[sort_test_com_records] != '']
@@ -509,7 +539,7 @@ def string2pairlist(str):
     return [[labels[2 * i], labels[2 * i + 1]] for i in range(len(labels) // 2)]
 
 
-def t_test_with_graph(groups, subtitles, title, xlabel, ylabel, save_path="", name="mean_comp.png", ylim=50):
+def t_test_with_graph(groups, subtitles, title, xlabel, ylabel, save_path="", ylim=50):
     colors = ["olivedrab", "yellowgreen", "lawngreen", "darkseagreen", "palegreen", "limegreen", "darkolivegreen"]
     fig, ax = plt.subplots(ncols=len(groups))
     fig.tight_layout(pad=3.0)
@@ -540,7 +570,7 @@ def t_test_with_graph(groups, subtitles, title, xlabel, ylabel, save_path="", na
     if save_path == "":
         plt.show()
     else:
-        plt.savefig(save_path + name)
+        plt.savefig(save_path + ylabel + "_" + title + "_" + "_".join(xlabel) + ".png")
 
 
 def draw_sim_hist_graph(groups, subtitles, title, ylabel, save_path="", ylim=16, alpha=0.05):
@@ -642,37 +672,19 @@ def eval_alg_sim(method, input, train_only=False, verbose=False, significance=0.
     return train_algs, algs
 
 
-def ttest_two_groups(g1, g2, name1, name2):
-    t_test_with_graph([[np.nanmean(np.array(g1["sort_test_comp"])[:, :5], axis=1),
-                        np.nanmean(np.array(g2["sort_test_comp"])[:, :5], axis=1)],
-                       [np.nanmean(np.array(g1["sort_test_comp"])[:, 5:], axis=1),
-                        np.nanmean(np.array(g2["sort_test_comp"])[:, 5:], axis=1)]],
-                      # t_test_with_graph([[np.array(g1["sort_test_comp"])[:, :5].flatten(),
-                      #                     np.array(g2["sort_test_comp"])[:, :5].flatten()],
-                      #                    [np.array(g1["sort_test_comp"])[:, 5:].flatten(),
-                      #                     np.array(g2["sort_test_comp"])[:, 5:].flatten()]],
+def ttest_two_groups(gs, ns):
+    t_test_with_graph([[np.nanmean(np.array(g["sort_test_comp"])[:, :5], axis=1) for g in gs],
+                       [np.nanmean(np.array(g["sort_test_comp"])[:, 5:], axis=1) for g in gs]],
                       ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
                       "No. Comparisons",
-                      [name1, name2], "Mean", save_path="../results/")
-    t_test_with_graph([[np.nanmean(np.array(g1["sort_test_time"])[:, :5], axis=1),
-                        np.nanmean(np.array(g2["sort_test_time"])[:, :5], axis=1)],
-                       [np.nanmean(np.array(g1["sort_test_time"])[:, 5:], axis=1),
-                        np.nanmean(np.array(g2["sort_test_time"])[:, 5:], axis=1)]],
-                      # t_test_with_graph([[np.array(g1["sort_test_time"])[:, :5].flatten(),
-                      #                     np.array(g2["sort_test_time"])[:, :5].flatten()],
-                      #                    [np.array(g1["sort_test_time"])[:, 5:].flatten(),
-                      #                     np.array(g2["sort_test_time"])[:, 5:].flatten()]],
+                      ns, "Mean", save_path="../results/")
+    t_test_with_graph([[np.nanmean(np.array(g["sort_test_time"])[:, :5], axis=1) for g in gs],
+                       [np.nanmean(np.array(g["sort_test_time"])[:, 5:], axis=1) for g in gs]],
                       ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
                       "Response time",
-                      [name1, name2], "Mean", save_path="../results/", name="mean_res_time.png", ylim=300)
-    t_test_with_graph([[np.nanmean(np.array(g1["sort_test_score"])[:, :5], axis=1),
-                        np.nanmean(np.array(g2["sort_test_score"])[:, :5], axis=1)],
-                       [np.nanmean(np.array(g1["sort_test_score"])[:, 5:], axis=1),
-                        np.nanmean(np.array(g2["sort_test_score"])[:, 5:], axis=1)]],
-                      # t_test_with_graph([[np.array(g1["sort_test_score"])[:, :5].flatten(),
-                      #                     np.array(g2["sort_test_score"])[:, :5].flatten()],
-                      #                    [np.array(g1["sort_test_score"])[:, 5:].flatten(),
-                      #                     np.array(g2["sort_test_score"])[:, 5:].flatten()]],
+                      ns, "Mean", save_path="../results/", ylim=300)
+    t_test_with_graph([[np.nanmean(np.array(g["sort_test_score"])[:, :5], axis=1) for g in gs],
+                       [np.nanmean(np.array(g["sort_test_score"])[:, 5:], axis=1) for g in gs]],
                       ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
                       "Response score",
-                      [name1, name2], "Mean", save_path="../results/", name="mean_score.png", ylim=1.5)
+                      ns, "Mean", save_path="../results/", ylim=1.5)
