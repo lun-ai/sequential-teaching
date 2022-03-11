@@ -58,10 +58,11 @@ g4 = extract_from_CSV([DATA_DIR_AMT_GROUP4], sim='chi_sq_2x2', sim_analysis=Fals
                       significance=0.005, filter_mul=1, save_path="../results/amt/", verbose=False,
                       control_v="pre_test")
 
-# ttest_two_groups([g1, g2], ["G1", "G2"])
-# ttest_two_groups([g1, g3], ["G1", "G3"])
-# ttest_two_groups([g1, g4], ["G1", "G4"])
-# ttest_two_groups([g2, g3], ["G2", "G3"])
-# ttest_two_groups([g2, g4], ["G2", "G4"])
-# ttest_two_groups([g3, g4], ["G3", "G4"])
-ttest_two_groups([g1, g2, g3, g4], ["G1", "G2", "G3", "G4"])
+# sort_ttest([g1, g2], ["G1", "G2"])
+# sort_ttest([g1, g3], ["G1", "G3"])
+# sort_ttest([g1, g4], ["G1", "G4"])
+# sort_ttest([g2, g3], ["G2", "G3"])
+# sort_ttest([g2, g4], ["G2", "G4"])
+# sort_ttest([g3, g4], ["G3", "G4"])
+# sort_ttest([g1, g2, g3, g4], ["G1", "G2", "G3", "G4"])
+merge_ttest([g1, g2, g3, g4], ["G1", "G2", "G3", "G4"])
