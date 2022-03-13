@@ -41,20 +41,20 @@ DATA_DIR_AMT_ANOMALY = "../test/amt/anomaly/"
 # g3 = extract_from_CSV([DATA_DIR_TEST1_GROUP3], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True, significance=0.01)
 # g4 = extract_from_CSV([DATA_DIR_TEST1_GROUP4], sim='chi_sq_2x2', show_sim=True, sim_graphs=True, save_graph=True)
 
-g1 = extract_from_CSV([DATA_DIR_AMT_GROUP1], sim='chi_sq_2x2', sim_analysis=False, sim_graphs=True, save_graph=True,
-                      show_records=False,
-                      significance=0.005, filter_mul=1, save_path="../results/amt/", verbose=False,
-                      control_v="pre_test")
-g2 = extract_from_CSV([DATA_DIR_AMT_GROUP2], sim='chi_sq_2x2', sim_analysis=False, sim_graphs=True, save_graph=True,
-                      show_records=False,
-                      significance=0.005, filter_mul=1, save_path="../results/amt/", verbose=False,
-                      control_v="pre_test")
-g3 = extract_from_CSV([DATA_DIR_AMT_GROUP3], sim='chi_sq_2x2', sim_analysis=False, sim_graphs=True, save_graph=True,
-                      show_records=False,
-                      significance=0.005, filter_mul=1, save_path="../results/amt/", verbose=False,
-                      control_v="pre_test")
+# g1 = extract_from_CSV([DATA_DIR_AMT_GROUP1], sim='chi_sq_2x2', sim_analysis=False, sim_graphs=True, save_graph=True,
+#                       show_records=True,
+#                       significance=0.005, filter_mul=1, save_path="../results/amt/", verbose=False,
+#                       control_v="pre_test")
+# g2 = extract_from_CSV([DATA_DIR_AMT_GROUP2], sim='chi_sq_2x2', sim_analysis=False, sim_graphs=True, save_graph=True,
+#                       show_records=True,
+#                       significance=0.005, filter_mul=1, save_path="../results/amt/", verbose=False,
+#                       control_v="pre_test")
+# g3 = extract_from_CSV([DATA_DIR_AMT_GROUP3], sim='chi_sq_2x2', sim_analysis=False, sim_graphs=True, save_graph=True,
+#                       show_records=True,
+#                       significance=0.005, filter_mul=1, save_path="../results/amt/", verbose=False,
+#                       control_v="pre_test")
 g4 = extract_from_CSV([DATA_DIR_AMT_GROUP4], sim='chi_sq_2x2', sim_analysis=False, sim_graphs=True, save_graph=True,
-                      show_records=False,
+                      show_records=True,
                       significance=0.005, filter_mul=1, save_path="../results/amt/", verbose=False,
                       control_v="pre_test")
 
@@ -65,4 +65,4 @@ g4 = extract_from_CSV([DATA_DIR_AMT_GROUP4], sim='chi_sq_2x2', sim_analysis=Fals
 # sort_ttest([g2, g4], ["G2", "G4"])
 # sort_ttest([g3, g4], ["G3", "G4"])
 # sort_ttest([g1, g2, g3, g4], ["G1", "G2", "G3", "G4"])
-merge_ttest([g1, g2, g3, g4], ["G1", "G2", "G3", "G4"])
+# merge_ttest([g1, g2, g3, g4], ["G1", "G2", "G3", "G4"])
