@@ -292,10 +292,14 @@ def sim_algo_hist(candidates_lists):
                 categories["QS"] += 1
             elif len(list(filter(lambda x: x[0] in ["bubsort_front", "bubsort_back"], c))) == len(c):
                 categories["BS"] += 1
-            elif len(list(filter(lambda x: x[0] in ["dict_sort_front", "dict_sort_mid", "dict_sort_back"], c))) == len(c):
+            elif len(list(filter(lambda x: x[0] in ["dict_sort_front", "dict_sort_mid", "dict_sort_back"], c))) == len(
+                    c):
                 categories["DS"] += 1
-            elif len(list(filter(lambda x: '_'.join(x[0].split('_')[:-1]) in ["is_front_hybrid_ds_front", "is_front_hybrid_ds_mid", "is_front_hybrid_ds_back", "is_back_hybrid_ds_front",
-                     "is_back_hybrid_ds_mid", "is_back_hybrid_ds_back"], c))) == len(c):
+            elif len(list(filter(
+                    lambda x: '_'.join(x[0].split('_')[:-1]) in ["is_front_hybrid_ds_front", "is_front_hybrid_ds_mid",
+                                                                 "is_front_hybrid_ds_back", "is_back_hybrid_ds_front",
+                                                                 "is_back_hybrid_ds_mid", "is_back_hybrid_ds_back"],
+                    c))) == len(c):
                 categories["Hybrid"] += 1
 
     return categories
@@ -312,16 +316,16 @@ def alphabetical_labels(input, labels):
     return res, sorted_labels
 
 
-def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False, alpha=0.05):
+def find_similar_algo(method, input, labels, ht, label_order=[], verbose=False, alpha=0.05):
     s = []
     c = []
     t = []
     alg_names = []
-    funcs = funcs + [("left to right", lambda x, y: (x, y))]
+    label_order = label_order + [("left to right", lambda x, y: (x, y))]
 
     for alg in ALL_ALGORITHMS:
         alg_names.append(alg.__name__)
-        for func in funcs:
+        for func in label_order:
             input_f, labels_f = func[1](input, labels)
             u = get_similarity(method, alg, input_f, labels_f, ht, verbose=verbose, alpha=alpha)
             s.append(u[0])
@@ -331,7 +335,7 @@ def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False, alpha=
     for alg in HYBRID_ALGORITHMS:
         for k in range(1, len(input)):
             alg_names.append(alg.__name__ + "_" + str(k))
-            for func in funcs:
+            for func in label_order:
                 input_f, labels_f = func[1](input, labels)
                 mt = get_machine_trace_hybrid(alg, input_f, labels_f, k, verbose=verbose)
                 u = get_similarity_aux(ht, mt, labels_f, method, verbose=verbose, alpha=alpha)
@@ -351,7 +355,7 @@ def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False, alpha=
             method = 'set_intersect_spearman'
             for i in range(len(s)):
                 if s[i][0] and s[i][1][1] == score:
-                    tied_score_alg.append((alg_names[i // len(funcs)], c[i], t[i]))
+                    tied_score_alg.append((alg_names[i // len(label_order)], c[i], t[i]))
         else:
             # no similar machine algorithm is found
             if verbose:
@@ -376,18 +380,27 @@ def find_similar_algo(method, input, labels, ht, funcs=[], verbose=False, alpha=
                 tied_score_alg, method, score, len(ht)))
     return tied_score_alg, score, method, len(ht)
 
-# find_similar_algo("chi_sq", [6, 3, 5, 4, 2, 1], ['E', 'B', 'C', 'A', 'F', 'D'],
-#                   [['E', 'C'], ['A', 'C'], ['F', 'C'], ['F', 'A'], ['B', 'C'], ['B', 'F'], ['B', 'A'], ['D', 'A'],
-#                    ['D', 'B'], ['D', 'F']])
-# print(comp_categorical_independence([['F', 'A'], ['G', 'A'], ['A', 'E'], ['A', 'D'], ['E', 'F'], ['C', 'A'], ['A', 'D']],
-#                                     [['E', 'C'], ['A', 'C'], ['F', 'C'], ['F', 'A'], ['B', 'C'], ['B', 'F'], ['B', 'A'], ['D', 'A']],
-#                                     ['A', 'B', 'C', 'D', 'E', 'F', 'G']))
+
+# trace analysis examples - find the closest match with the lowest spearman rank coefficient value / chi-sq test value
+# against real human trace
 # find_similar_algo("chi_sq_2x2", [2, 9, 8, 10, 4, 5, 6, 7, 3, 1], ['E', 'I', 'H', 'F', 'B', 'G', 'C', 'J', 'D', 'A'],
 #                   [['A', 'B'], ['A', 'C'], ['B', 'C'], ['D', 'C'], ['D', 'A'], ['D', 'E'], ['A', 'E'], ['F', 'E'],
 #                    ['F', 'C'], ['F', 'B'], ['G', 'B'], ['G', 'F'], ['G', 'H'], ['F', 'H'], ['J', 'H'], ['J', 'C'],
 #                    ['J', 'B'], ['J', 'G'], ['J', 'H'], ['J', 'I'], ['H', 'I'], ['F', 'I']],
-#                   funcs=[("alphabetical", alphabetical_labels)], verbose=True)
-# find_similar_algo("chi_sq_2x2", [1, 4, 6, 3, 2, 10, 5, 8, 9, 7], ['A', 'B', 'Cs', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
-#                   [['A', 'B'], ['A', 'C'], ['B', 'C'], ['D', 'C'], ['D', 'A'], ['D', 'E'], ['A', 'E'], ['F', 'E'],
-#                    ['F', 'C'], ['F', 'B'], ['G', 'B'], ['G', 'F'], ['G', 'H'], ['F', 'H'], ['J', 'H'], ['J', 'C'],
-#                    ['J', 'B'], ['J', 'G'], ['J', 'H'], ['J', 'I'], ['H', 'I'], ['F', 'I']], verbose=True)
+#                   label_order=[("alphabetical", alphabetical_labels)], verbose=True)
+
+# against machine trace (botup_msort_left_front)
+# find_similar_algo("chi_sq_2x2", [2, 9, 8, 10, 4, 5, 6, 7, 3, 1], ['E', 'I', 'H', 'F', 'B', 'G', 'C', 'J', 'D', 'A'],
+#                   [['B', 'A'], ['C', 'D'], ['F', 'E'], ['H', 'G'], ['I', 'J'], ['D', 'A'], ['B', 'D'], ['C', 'B'],
+#                    ['G', 'E'], ['F', 'G'], ['F', 'H'], ['E', 'A'], ['D', 'E'], ['G', 'D'], ['G', 'B'], ['C', 'G'],
+#                    ['H', 'C'], ['J', 'A'], ['J', 'E'], ['J', 'D'], ['J', 'B'], ['J', 'G'], ['J', 'C'], ['H', 'J'],
+#                    ['I', 'H'], ['F', 'I']],
+#                   label_order=[("alphabetical", alphabetical_labels)], verbose=True)
+
+# against machine trace (dict_sort_front)
+# find_similar_algo("chi_sq_2x2", [2, 9, 8, 10, 4, 5, 6, 7, 3, 1], ['E', 'I', 'H', 'F', 'B', 'G', 'C', 'J', 'D', 'A'],
+#                   [['B', 'A'], ['C', 'B'], ['D', 'A'], ['D', 'C'], ['D', 'B'], ['E', 'A'], ['E', 'C'], ['E', 'D'],
+#                    ['F', 'C'], ['G', 'A'], ['G', 'F'], ['G', 'D'], ['G', 'B'], ['G', 'C'], ['H', 'A'], ['H', 'F'],
+#                    ['H', 'B'], ['H', 'G'], ['H', 'C'], ['I', 'A'], ['I', 'F'], ['I', 'B'], ['I', 'C'], ['I', 'H'],
+#                    ['J', 'A'], ['J', 'F'], ['J', 'G'], ['J', 'H'], ['J', 'C']],
+#                   label_order=[("alphabetical", alphabetical_labels)], verbose=True)

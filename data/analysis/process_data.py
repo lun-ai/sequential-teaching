@@ -4,16 +4,22 @@ from os import listdir
 import matplotlib.pyplot as plt
 import numpy
 import numpy as np
+import pandas as pd
+import statsmodels.api as sm
 from scipy import stats
+from statsmodels.formula.api import ols
+from statsmodels.graphics.api import interaction_plot
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
 from eval_trace import find_similar_algo, sim_algo_hist, alphabetical_labels
 
 DEFAULT_GRAPH_PATH = "../results/test_1/"
 
 
-def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, show_records=True, sim_graphs=False,
-                     sim="chi_sq_2x2", sim_analysis=False, filter_algs=[],
-                     verbose=False, save_graph=False, significance=0.05, save_path="", control_v="", filter_mul=1):
+def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, show_records=True, similarity_graphs=False,
+                     sim="chi_sq_2x2", trace_similarity_analysis=False, filter_algorithms=[],
+                     verbose=False, save_graphs=False, chi_sq_significance=0.05, save_path="", control_v="",
+                     filter_multiplier=1):
     csv_list = []
     filenames = []
     for path in paths:
@@ -52,13 +58,7 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
     test_alg_estimates = []
 
     demographic_raw = []
-    demographic = [
-        {"_18_24": 0, "_25_34": 0, "_35_44": 0, "_45_54": 0, "_55_64": 0, "_65": 0},
-        {"less_than_high_school": 0, "high_school_equivalent": 0, "college": 0, "bachelor": 0, "graduate": 0,
-         "doctorate": 0, "other": 0},
-        {"female": 0, "male": 0, "other_gender": 0, "prefer_not_to_say": 0}
-
-    ]
+    demographic = get_new_demographic_table()
 
     for i in range(len(csv_list)):
 
@@ -110,8 +110,9 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
                 reconstruct_trace(d, path, name + "_" + str(i))
                 i += 1
 
-        if sim_analysis:
-            train_algs, algs = eval_alg_sim(sim, c, verbose=verbose, train_only=train_only, significance=significance)
+        if trace_similarity_analysis:
+            train_algs, algs = eval_alg_sim(sim, c, verbose=verbose, train_only=train_only,
+                                            significance=chi_sq_significance)
             train_alg_estimates.append(train_algs)
             test_alg_estimates.append(algs)
 
@@ -132,12 +133,12 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
     std_ms = np.nanstd(np.nanmean(merge_test_score, axis=1))
 
     for i in range(len(sort_test_score)):
-        if (mean_ms_all - filter_mul * std_ms) <= np.nanmean(merge_test_score[i]) <= (
-                mean_ms_all + filter_mul * std_ms):
+        if (mean_ms_all - filter_multiplier * std_ms) <= np.nanmean(merge_test_score[i]) <= (
+                mean_ms_all + filter_multiplier * std_ms):
             sort_test_score_1.append(sort_test_score[i])
             sort_test_response_time_1.append(sort_test_response_time[i])
             sort_test_comparison_1.append(sort_test_comparison[i])
-            if sim_analysis:
+            if trace_similarity_analysis:
                 train_alg_estimates_1.append(train_alg_estimates[i])
                 test_alg_estimates_1.append(test_alg_estimates[i])
 
@@ -149,12 +150,14 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
     sort_test_score_2 = []
     train_alg_hist_2 = []
     test_alg_hist_2 = []
+    pre_test_2 = []
+    free_res_2 = []
 
     if control_v == "pre_test":
         mean_pt = np.nanmean(np.array(pre_test)[:, 2])
         std_pt = np.nanstd(np.array(pre_test)[:, 2])
         for i in range(len(pre_test)):
-            if (mean_pt - filter_mul * std_pt) <= pre_test[i][2] <= (mean_pt + filter_mul * std_pt):
+            if (mean_pt - filter_multiplier * std_pt) <= pre_test[i][2] <= (mean_pt + filter_multiplier * std_pt):
                 # if demographic_raw[i][0] > "_35":
                 demographic = format_demographic(demographic_raw[i], demographic)
                 merge_test_response_time_2.append(merge_test_response_time[i])
@@ -163,133 +166,143 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
                 sort_test_score_2.append(sort_test_score[i])
                 sort_test_comparison_2.append(sort_test_comparison[i])
                 sort_test_response_time_2.append(sort_test_response_time[i])
-                if "BS" in filter_algs and sim_algo_hist(test_alg_estimates[i])["BS"] != 0:
-                    for k in range(len(test_alg_estimates[i])):
-                        estimate = test_alg_estimates[i][k]
-                        if len(estimate) != 0 and len(
-                                list(filter(lambda x: x[0] in ["bubsort_front", "bubsort_back"], estimate))) == len(
-                            estimate):
-                            sort_test_score_2[len(sort_test_score_2) - 1][k] = np.NaN
-                            sort_test_response_time_2[len(sort_test_response_time_2) - 1][k] = np.NaN
-                            sort_test_comparison_2[len(sort_test_comparison_2) - 1][k] = np.NaN
-                if "IS" in filter_algs and sim_algo_hist(test_alg_estimates[i])["IS"] != 0:
-                    for k in range(len(test_alg_estimates[i])):
-                        estimate = test_alg_estimates[i][k]
-                        if len(estimate) != 0 and len(
-                                list(filter(lambda x: x[0] in ["isort_front", "isort_back"], estimate))) == len(
-                            estimate):
-                            sort_test_score_2[len(sort_test_score_2) - 1][k] = np.NaN
-                            sort_test_response_time_2[len(sort_test_response_time_2) - 1][k] = np.NaN
-                            sort_test_comparison_2[len(sort_test_comparison_2) - 1][k] = np.NaN
-                if "QS" in filter_algs and sim_algo_hist(test_alg_estimates[i])["QS"] != 0:
-                    for k in range(len(test_alg_estimates[i])):
-                        estimate = test_alg_estimates[i][k]
-                        if len(estimate) != 0 and len(
-                                list(filter(lambda x: x[0] in ["qsort_first", "qsort_mid", "qsort_last"],
-                                            estimate))) == len(
-                            estimate):
-                            sort_test_score_2[len(sort_test_score_2) - 1][k] = np.NaN
-                            sort_test_response_time_2[len(sort_test_response_time_2) - 1][k] = np.NaN
-                            sort_test_comparison_2[len(sort_test_comparison_2) - 1][k] = np.NaN
-                if "DS" in filter_algs and sim_algo_hist(test_alg_estimates[i])["DS"] != 0:
-                    for k in range(len(test_alg_estimates[i])):
-                        estimate = test_alg_estimates[i][k]
-                        if len(estimate) != 0 and len(
-                                list(filter(lambda x: x[0] in ["dict_sort_front", "dict_sort_mid", "dict_sort_back"],
-                                            estimate))) == len(
-                            estimate):
-                            sort_test_score_2[len(sort_test_score_2) - 1][k] = np.NaN
-                            sort_test_response_time_2[len(sort_test_response_time_2) - 1][k] = np.NaN
-                            sort_test_comparison_2[len(sort_test_comparison_2) - 1][k] = np.NaN
-                if "MS" in filter_algs and sim_algo_hist(test_alg_estimates[i])["MS"] != 0:
-                    for k in range(len(test_alg_estimates[i])):
-                        estimate = test_alg_estimates[i][k]
-                        if len(estimate) != 0 and len(
-                                list(filter(lambda x: x[0] in ["botup_msort_left_front", "botup_msort_right_front",
-                                                               "botup_msort_left_back",
-                                                               "botup_msort_right_back", "msort_left_front",
-                                                               "msort_left_back",
-                                                               "msort_left_back",
-                                                               "msort_right_back"],
-                                            estimate))) == len(
-                            estimate):
-                            sort_test_score_2[len(sort_test_score_2) - 1][k] = np.NaN
-                            sort_test_response_time_2[len(sort_test_response_time_2) - 1][k] = np.NaN
-                            sort_test_comparison_2[len(sort_test_comparison_2) - 1][k] = np.NaN
-                if "Hybrid" in filter_algs and sim_algo_hist(test_alg_estimates[i])["Hybrid"] != 0:
-                    for k in range(len(test_alg_estimates[i])):
-                        estimate = test_alg_estimates[i][k]
-                        if len(estimate) != 0 and len(
-                                list(filter(lambda x: x[0] in ["is_front_hybrid_ds_front", "is_front_hybrid_ds_mid",
-                                                               "is_front_hybrid_ds_back", "is_back_hybrid_ds_front",
-                                                               "is_back_hybrid_ds_mid", "is_back_hybrid_ds_back"],
-                                            estimate))) == len(
-                            estimate):
-                            sort_test_score_2[len(sort_test_score_2) - 1][k] = np.NaN
-                            sort_test_response_time_2[len(sort_test_response_time_2) - 1][k] = np.NaN
-                            sort_test_comparison_2[len(sort_test_comparison_2) - 1][k] = np.NaN
-                if sim_analysis:
-                    train_alg_hist_2.append(train_alg_estimates[i])
-                    test_alg_hist_2.append(test_alg_estimates[i])
+                pre_test_2.append(pre_test[i])
+                free_res_2.append(free_res[i])
+                # if "BS" in filter_algorithms and sim_algo_hist(test_alg_estimates[i])["BS"] != 0:
+                #     for k in range(len(test_alg_estimates[i])):
+                #         estimate = test_alg_estimates[i][k]
+                #         if len(estimate) != 0 and len(
+                #                 list(filter(lambda x: x[0] in ["bubsort_front", "bubsort_back"], estimate))) == len(
+                #             estimate):
+                #             sort_test_score_2[len(sort_test_score_2) - 1][k] = np.NaN
+                #             sort_test_response_time_2[len(sort_test_response_time_2) - 1][k] = np.NaN
+                #             sort_test_comparison_2[len(sort_test_comparison_2) - 1][k] = np.NaN
+                # if "IS" in filter_algorithms and sim_algo_hist(test_alg_estimates[i])["IS"] != 0:
+                #     for k in range(len(test_alg_estimates[i])):
+                #         estimate = test_alg_estimates[i][k]
+                #         if len(estimate) != 0 and len(
+                #                 list(filter(lambda x: x[0] in ["isort_front", "isort_back"], estimate))) == len(
+                #             estimate):
+                #             sort_test_score_2[len(sort_test_score_2) - 1][k] = np.NaN
+                #             sort_test_response_time_2[len(sort_test_response_time_2) - 1][k] = np.NaN
+                #             sort_test_comparison_2[len(sort_test_comparison_2) - 1][k] = np.NaN
+                # if "QS" in filter_algorithms and sim_algo_hist(test_alg_estimates[i])["QS"] != 0:
+                #     for k in range(len(test_alg_estimates[i])):
+                #         estimate = test_alg_estimates[i][k]
+                #         if len(estimate) != 0 and len(
+                #                 list(filter(lambda x: x[0] in ["qsort_first", "qsort_mid", "qsort_last"],
+                #                             estimate))) == len(
+                #             estimate):
+                #             sort_test_score_2[len(sort_test_score_2) - 1][k] = np.NaN
+                #             sort_test_response_time_2[len(sort_test_response_time_2) - 1][k] = np.NaN
+                #             sort_test_comparison_2[len(sort_test_comparison_2) - 1][k] = np.NaN
+                # if "DS" in filter_algorithms and sim_algo_hist(test_alg_estimates[i])["DS"] != 0:
+                #     for k in range(len(test_alg_estimates[i])):
+                #         estimate = test_alg_estimates[i][k]
+                #         if len(estimate) != 0 and len(
+                #                 list(filter(lambda x: x[0] in ["dict_sort_front", "dict_sort_mid", "dict_sort_back"],
+                #                             estimate))) == len(
+                #             estimate):
+                #             sort_test_score_2[len(sort_test_score_2) - 1][k] = np.NaN
+                #             sort_test_response_time_2[len(sort_test_response_time_2) - 1][k] = np.NaN
+                #             sort_test_comparison_2[len(sort_test_comparison_2) - 1][k] = np.NaN
+                # if "MS" in filter_algorithms and sim_algo_hist(test_alg_estimates[i])["MS"] != 0:
+                #     for k in range(len(test_alg_estimates[i])):
+                #         estimate = test_alg_estimates[i][k]
+                #         if len(estimate) != 0 and len(
+                #                 list(filter(lambda x: x[0] in ["botup_msort_left_front", "botup_msort_right_front",
+                #                                                "botup_msort_left_back",
+                #                                                "botup_msort_right_back", "msort_left_front",
+                #                                                "msort_left_back",
+                #                                                "msort_left_back",
+                #                                                "msort_right_back"],
+                #                             estimate))) == len(
+                #             estimate):
+                #             sort_test_score_2[len(sort_test_score_2) - 1][k] = np.NaN
+                #             sort_test_response_time_2[len(sort_test_response_time_2) - 1][k] = np.NaN
+                #             sort_test_comparison_2[len(sort_test_comparison_2) - 1][k] = np.NaN
+                # if "Hybrid" in filter_algorithms and sim_algo_hist(test_alg_estimates[i])["Hybrid"] != 0:
+                #     for k in range(len(test_alg_estimates[i])):
+                #         estimate = test_alg_estimates[i][k]
+                #         if len(estimate) != 0 and len(
+                #                 list(filter(lambda x: x[0] in ["is_front_hybrid_ds_front", "is_front_hybrid_ds_mid",
+                #                                                "is_front_hybrid_ds_back", "is_back_hybrid_ds_front",
+                #                                                "is_back_hybrid_ds_mid", "is_back_hybrid_ds_back"],
+                #                             estimate))) == len(
+                #             estimate):
+                #             sort_test_score_2[len(sort_test_score_2) - 1][k] = np.NaN
+                #             sort_test_response_time_2[len(sort_test_response_time_2) - 1][k] = np.NaN
+                #             sort_test_comparison_2[len(sort_test_comparison_2) - 1][k] = np.NaN
+                # if trace_similarity_analysis:
+                #     train_alg_hist_2.append(train_alg_estimates[i])
+                #     test_alg_hist_2.append(test_alg_estimates[i])
 
-    elif control_v == "merge_score":
-        sort_test_score_2 = sort_test_score_1
-        sort_test_comparison_2 = sort_test_comparison_1
-        sort_test_response_time_2 = sort_test_response_time_1
-        train_alg_hist_2 = train_alg_estimates_1
-        test_alg_hist_2 = test_alg_estimates_1
-    elif control_v == "score":
-
-        mean_1 = np.nanmean(np.array(sort_test_score_1)[:, :5])
-        mean_2 = np.nanmean(np.array(sort_test_score_1)[:, 5:])
-        std_1 = np.nanstd(np.nanmean(np.array(sort_test_score_1)[:, :5], axis=1))
-        std_2 = np.nanstd(np.nanmean(np.array(sort_test_score_1)[:, 5:], axis=1))
-
-        for i in range(len(sort_test_score_1)):
-            if (mean_1 - std_1) <= np.nanmean(sort_test_score_1[i][:5]) <= (mean_1 + std_1) and \
-                    (mean_2 - std_2) <= np.nanmean(sort_test_score_1[i][5:]) <= (mean_2 + std_2):
-                sort_test_score_2.append(sort_test_score_1[i])
-                sort_test_response_time_2.append(sort_test_response_time_1[i])
-                sort_test_comparison_2.append(sort_test_comparison_1[i])
-                if sim_analysis:
-                    train_alg_hist_2.append(train_alg_estimates_1[i])
-                    test_alg_hist_2.append(test_alg_estimates_1[i])
-    elif control_v == "time":
-
-        mean_1 = np.nanmean(np.array(sort_test_response_time_1)[:, :5])
-        mean_2 = np.nanmean(np.array(sort_test_response_time_1)[:, 5:])
-        std_1 = np.nanstd(np.nanmean(np.array(sort_test_response_time_1)[:, :5], axis=1))
-        std_2 = np.nanstd(np.nanmean(np.array(sort_test_response_time_1)[:, 5:], axis=1))
-
-        for i in range(len(sort_test_response_time_1)):
-            if (mean_1 - std_1) <= np.nanmean(sort_test_response_time_1[i][:5]) <= (mean_1 + std_1) and \
-                    (mean_2 - std_2) <= np.nanmean(sort_test_response_time_1[i][5:]) <= (mean_2 + std_2):
-                sort_test_score_2.append(sort_test_score_1[i])
-                sort_test_response_time_2.append(sort_test_response_time_1[i])
-                sort_test_comparison_2.append(sort_test_comparison_1[i])
-                if sim_analysis:
-                    train_alg_hist_2.append(train_alg_estimates_1[i])
-                    test_alg_hist_2.append(test_alg_estimates_1[i])
-    elif control_v == "efficiency":
-
-        mean_1 = np.nanmean(np.array(sort_test_comparison_1)[:, :5])
-        mean_2 = np.nanmean(np.array(sort_test_comparison_1)[:, 5:])
-        std_1 = np.nanstd(np.nanmean(np.array(sort_test_comparison_1)[:, :5], axis=1))
-        std_2 = np.nanstd(np.nanmean(np.array(sort_test_comparison_1)[:, 5:], axis=1))
-
-        for i in range(len(sort_test_comparison_1)):
-            if (mean_1 - std_1) <= np.nanmean(sort_test_comparison_1[i][:5]) <= (mean_1 + std_1) and \
-                    (mean_2 - std_2) <= np.nanmean(sort_test_comparison_1[i][5:]) <= (mean_2 + std_2):
-                sort_test_score_2.append(sort_test_score_1[i])
-                sort_test_response_time_2.append(sort_test_response_time_1[i])
-                sort_test_comparison_2.append(sort_test_comparison_1[i])
-                if sim_analysis:
-                    train_alg_hist_2.append(train_alg_estimates_1[i])
-                    test_alg_hist_2.append(test_alg_estimates_1[i])
+    # elif control_v == "merge_score":
+    #     sort_test_score_2 = sort_test_score_1
+    #     sort_test_comparison_2 = sort_test_comparison_1
+    #     sort_test_response_time_2 = sort_test_response_time_1
+    #     train_alg_hist_2 = train_alg_estimates_1
+    #     test_alg_hist_2 = test_alg_estimates_1
+    # elif control_v == "score":
+    #
+    #     mean_1 = np.nanmean(np.array(sort_test_score_1)[:, :5])
+    #     mean_2 = np.nanmean(np.array(sort_test_score_1)[:, 5:])
+    #     std_1 = np.nanstd(np.nanmean(np.array(sort_test_score_1)[:, :5], axis=1))
+    #     std_2 = np.nanstd(np.nanmean(np.array(sort_test_score_1)[:, 5:], axis=1))
+    #
+    #     for i in range(len(sort_test_score_1)):
+    #         if (mean_1 - std_1) <= np.nanmean(sort_test_score_1[i][:5]) <= (mean_1 + std_1) and \
+    #                 (mean_2 - std_2) <= np.nanmean(sort_test_score_1[i][5:]) <= (mean_2 + std_2):
+    #             sort_test_score_2.append(sort_test_score_1[i])
+    #             sort_test_response_time_2.append(sort_test_response_time_1[i])
+    #             sort_test_comparison_2.append(sort_test_comparison_1[i])
+    #             if trace_similarity_analysis:
+    #                 train_alg_hist_2.append(train_alg_estimates_1[i])
+    #                 test_alg_hist_2.append(test_alg_estimates_1[i])
+    # elif control_v == "time":
+    #
+    #     mean_1 = np.nanmean(np.array(sort_test_response_time_1)[:, :5])
+    #     mean_2 = np.nanmean(np.array(sort_test_response_time_1)[:, 5:])
+    #     std_1 = np.nanstd(np.nanmean(np.array(sort_test_response_time_1)[:, :5], axis=1))
+    #     std_2 = np.nanstd(np.nanmean(np.array(sort_test_response_time_1)[:, 5:], axis=1))
+    #
+    #     for i in range(len(sort_test_response_time_1)):
+    #         if (mean_1 - std_1) <= np.nanmean(sort_test_response_time_1[i][:5]) <= (mean_1 + std_1) and \
+    #                 (mean_2 - std_2) <= np.nanmean(sort_test_response_time_1[i][5:]) <= (mean_2 + std_2):
+    #             sort_test_score_2.append(sort_test_score_1[i])
+    #             sort_test_response_time_2.append(sort_test_response_time_1[i])
+    #             sort_test_comparison_2.append(sort_test_comparison_1[i])
+    #             if trace_similarity_analysis:
+    #                 train_alg_hist_2.append(train_alg_estimates_1[i])
+    #                 test_alg_hist_2.append(test_alg_estimates_1[i])
+    # elif control_v == "efficiency":
+    #
+    #     mean_1 = np.nanmean(np.array(sort_test_comparison_1)[:, :5])
+    #     mean_2 = np.nanmean(np.array(sort_test_comparison_1)[:, 5:])
+    #     std_1 = np.nanstd(np.nanmean(np.array(sort_test_comparison_1)[:, :5], axis=1))
+    #     std_2 = np.nanstd(np.nanmean(np.array(sort_test_comparison_1)[:, 5:], axis=1))
+    #
+    #     for i in range(len(sort_test_comparison_1)):
+    #         if (mean_1 - std_1) <= np.nanmean(sort_test_comparison_1[i][:5]) <= (mean_1 + std_1) and \
+    #                 (mean_2 - std_2) <= np.nanmean(sort_test_comparison_1[i][5:]) <= (mean_2 + std_2):
+    #             sort_test_score_2.append(sort_test_score_1[i])
+    #             sort_test_response_time_2.append(sort_test_response_time_1[i])
+    #             sort_test_comparison_2.append(sort_test_comparison_1[i])
+    #             if trace_similarity_analysis:
+    #                 train_alg_hist_2.append(train_alg_estimates_1[i])
+    #                 test_alg_hist_2.append(test_alg_estimates_1[i])
     else:
+        for i in range(len(pre_test)):
+            demographic = format_demographic(demographic_raw[i], demographic)
+
+        merge_test_score_2 = merge_test_score
+        merge_test_comparison_2 = merge_test_comparison
+        merge_test_response_time_2 = merge_test_response_time
         sort_test_score_2 = sort_test_score
         sort_test_comparison_2 = sort_test_comparison
         sort_test_response_time_2 = sort_test_response_time
+        pre_test_2 = pre_test
+        free_res_2 = free_res
         train_alg_hist_2 = train_alg_estimates
         test_alg_hist_2 = test_alg_estimates
 
@@ -328,47 +341,53 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only=False, sho
         print('mean sort test spearman rank score: %s' % mean_ss)
         print('mean sort No. comparison: %s' % mean_sc)
 
-    if sim_analysis and sim_graphs:
+    if trace_similarity_analysis and similarity_graphs:
         if len(paths) == 1:
             key = paths[0].split("/")[-2]
-            if save_graph:
+            if save_graphs:
                 g_l = {"Group1": "c1", "Group2": "c2", "Group3": "c3", "Group4": "c4"}
 
                 graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path) + key + "/" + g_l[
                     key] + "_train_"
         else:
             key = "Multiple groups"
-            if save_graph:
+            if save_graphs:
                 graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path)
         draw_sim_hist_graph([np.array(train_alg_hist_2)[:, :3], np.array(train_alg_hist_2)[:, 3]],
                             ["Length of set < 10\nNo. question = 3", "Length of set = 10\nNo. question = 1"],
                             "No. application in training" + " (" + key + ")", "Frequency", save_path=graph_path,
-                            alpha=significance)
+                            alpha=chi_sq_significance)
         if not train_only:
             if len(paths) == 1:
                 key = paths[0].split("/")[-2]
-                if save_graph:
+                if save_graphs:
                     graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path) + key + "/" + g_l[
                         key] + "_test_"
             else:
                 key = "Multiple groups"
-                if save_graph:
+                if save_graphs:
                     graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path)
             draw_sim_hist_graph([np.array(test_alg_hist_2)[:, :5], np.array(test_alg_hist_2)[:, 5:]],
                                 ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
                                 "No. application in performance test" + " (" + key + ")", "Frequency",
-                                save_path=graph_path, alpha=significance, ylim=12)
+                                save_path=graph_path, alpha=chi_sq_significance, ylim=12)
             draw_sim_mean_graph([np.array(test_alg_hist_2)[:, :5], np.array(test_alg_hist_2)[:, 5:]],
                                 ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
                                 "No. application in performance test" + " (" + key + ")", "Mean",
-                                save_path=graph_path, alpha=significance, ylim=3)
+                                save_path=graph_path, alpha=chi_sq_significance, ylim=3)
+
     res = {"merge_test_score": merge_test_score_2,
            "merge_test_time": merge_test_response_time_2,
            "merge_test_comp": merge_test_comparison_2,
            "sort_test_comp": sort_test_comparison_2,
            "sort_test_time": sort_test_response_time_2,
            "sort_test_score": sort_test_score_2,
-           "test_alg": test_alg_hist_2}
+           "pre_test": pre_test_2,
+           "free_res": free_res_2,
+           "demographic": demographic_raw}
+
+    if trace_similarity_analysis:
+        res["test_alg"] = test_alg_hist_2
     return res
 
 
@@ -481,6 +500,15 @@ def extract_run_time(input):
     return np.sum([float(f) for f in pre_test_t + break_t + intro_t + question_t + response_t])
 
 
+def get_new_demographic_table():
+    return [
+        {"_18_24": 0, "_25_34": 0, "_35_44": 0, "_45_54": 0, "_55_64": 0, "_65": 0},
+        {"less_than_high_school": 0, "high_school_equivalent": 0, "college": 0, "bachelor": 0, "graduate": 0,
+         "doctorate": 0, "other": 0},
+        {"female": 0, "male": 0, "other_gender": 0, "prefer_not_to_say": 0}
+    ]
+
+
 def extract_train_response(input):
     # merge_test_input_col = input[0].index("merge_train_input")
     sort_test_input_col = input[0].index("sort_train_input")
@@ -537,10 +565,14 @@ def extract_response(input):
 
     s1 = [round(stats.spearmanr(sorted(i1[i]), a1[i])[0], 3) if len(l1[i]) == len(a1[i]) else 0.0 for i in
           range(min(len(i1), len(a1)))]
-    # s1 = list(map(lambda x: np.NaN if x < 0.0 else x, s1))
+    # s1 = [np.sqrt(1 - score_regularise(round(stats.spearmanr(sorted(i1[i]), a1[i])[0], 3))) if len(l1[i]) == len(a1[i]) else 1 for i in
+    #       range(min(len(i1), len(a1)))]
+    s1 = list(map(lambda x: 0.5 * abs(x) if x < 0.0 else x, s1))
     s2 = [round(stats.spearmanr(sorted(i2[i]), a2[i])[0], 3) if len(l2[i]) == len(a2[i]) else 0.0 for i in
           range(min(len(i2), len(a2)))]
-    # s2 = list(map(lambda x: np.NaN if x < 0.0 else x, s2))
+    # s2 = [np.sqrt(1 - score_regularise(round(stats.spearmanr(sorted(i2[i]), a2[i])[0], 3))) if len(l2[i]) == len(a2[i]) else 1 for i in
+    #       range(min(len(i2), len(a2)))]
+    s2 = list(map(lambda x: 0.5 * abs(x) if x < 0.0 else x, s2))
 
     return s1, s2
 
@@ -554,8 +586,29 @@ def parseStringLine(line):
                            ",")))
 
 
+def save_free_ans_csv(filepath, data):
+    header = ["Has CS degree", "Has learned sort alg", "Used sort alg", "Strategy for sorting short number sets",
+              "Strategy for sorting long sets", "Strategy of using blue star (merge) for purple diamond (sort)",
+              "Blue star strategy 1 vs. blue star strategy 2"]
+    rows = [[d[0][1], d[0][1], d[0][2], d[1][0].lower(), d[1][1].lower(), d[1][2].lower(), d[1][3].lower()] for d in
+            data]
+    with open(filepath, "w", newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(header)
+        writer.writerows(rows)
+
+
 def containLabels(labels, ans):
     return not (False in [a in labels for a in ans])
+
+
+def score_regularise(score):
+    if score > 0:
+        return score
+    elif score < 0:
+        return abs(score) / 1.5
+    else:
+        return score
 
 
 def labels2Ints(labels, ints, res):
@@ -644,7 +697,92 @@ def string2pairlist(str):
     return [[labels[2 * i], labels[2 * i + 1]] for i in range(len(labels) // 2)]
 
 
-def t_test_with_graph(groups, subtitles, title, xlabel, ylabel, save_path="", ylim=50):
+def ANOVA_with_graph(gs, title, xlabel, ylabel, save_path="", ylim=50, subtitles=[], anova_two_way=True,
+                     tukey_two_way=True):
+    colors = ["orangered", "deepskyblue"]
+    linestyle = ["-", '--']
+    makers = ["D", "^"]
+    fig, ax = plt.subplots(ncols=len(gs))
+    fig.tight_layout(pad=3.0)
+
+    for i in range(len(gs)):
+
+        x = [0, 1]
+        if len(gs) == 1:
+            axis = ax
+        else:
+            axis = ax[i]
+            if subtitles:
+                axis.set_title(subtitles[i], y=0.95, pad=-14)
+
+        iv_1_f = [*["merge then sort"] * len(gs[i][0]), *["merge then sort"] * len(gs[i][1]),
+                  *["sort then merge"] * len(gs[i][2]), *["sort then merge"] * len(gs[i][3])]
+        iv_2_f = [*["with explanations"] * len(gs[i][0]), *["without explanations"] * len(gs[i][1]),
+                  *["with explanations"] * len(gs[i][2]), *["without explanations"] * len(gs[i][3])]
+        dv_f = [*gs[i][0], *gs[i][1], *gs[i][2], *gs[i][3]]
+        df = pd.DataFrame({"Curriculum": iv_1_f,
+                           title.split()[-1]: dv_f})
+        if anova_two_way:
+            df["Explanations"] = iv_2_f
+            format = title.split()[-1] + ' ~ C(Curriculum) + C(Explanations) + C(Curriculum):C(Explanations)'
+            if tukey_two_way:
+                df["Combination"] = df["Curriculum"] + " / " + df["Explanations"]
+            else:
+                df["Combination"] = df["Curriculum"]
+
+            means = [np.nanmean(g) for g in gs[i]]
+            print("mean - " + str(means))
+            stderr = [np.nanstd(g) / np.sqrt(len(list(filter(lambda x: not np.isnan(x), g)))) for g in gs[i]]
+            print("stderr - " + str(stderr))
+
+            fig = interaction_plot(
+                df["Curriculum"],
+                df["Explanations"],
+                dv_f,
+                colors=colors,
+                linestyles=linestyle,
+                markers=makers,
+                legendloc="lower right",
+                ylabel=ylabel,
+                ax=axis
+            )
+
+        else:
+            format = title.split()[-1] + ' ~ C(Curriculum)'
+            df["Combination"] = df["Curriculum"]
+
+            means = [np.nanmean([*gs[i][0], *gs[i][1]]), np.nanmean([*gs[i][2], *gs[i][3]])]
+            print("mean - " + str(means))
+            stderr = [np.nanstd([*gs[i][0], *gs[i][1]]) / np.sqrt(
+                len(list(filter(lambda x: not np.isnan(x), [*gs[i][0], *gs[i][1]])))),
+                      np.nanstd([*gs[i][2], *gs[i][3]]) / np.sqrt(
+                          len(list(filter(lambda x: not np.isnan(x), [*gs[i][2], *gs[i][3]]))))]
+            print("stderr - " + str(stderr))
+
+            axis.legend(["with explanations", "without explanations"], loc="lower right")
+            axis.set_ylabel(ylabel)
+            axis.plot(x, means, color=colors[i], linestyle=linestyle[i], marker=makers[i])
+
+        axis.set_xticks(x)
+        axis.set_xlim([-0.5, 1.5])
+        axis.set_xticklabels(["MS", "SM"])
+        axis.set_ylim([min(means) - 5 * max(stderr), max(means) + 5 * max(stderr)])
+        fig.suptitle(title, fontsize=16)
+
+        model = ols(format, data=df).fit()
+        ANOVA = sm.stats.anova_lm(model, typ=2)
+        print(ANOVA)
+
+        tukey = pairwise_tukeyhsd(endog=dv_f, groups=df["Combination"], alpha=0.05)
+        print(tukey)
+
+    if save_path == "":
+        plt.show()
+    else:
+        plt.savefig(save_path + "ANOVA_" + ylabel + "_" + title + "_" + "_".join(xlabel) + ".png")
+
+
+def t_test_with_graph(groups, title, xlabel, ylabel, save_path="", subtitles=[], ylim=50):
     colors = ["olivedrab", "yellowgreen", "lawngreen", "darkseagreen", "palegreen", "limegreen", "darkolivegreen"]
     fig, ax = plt.subplots(ncols=len(groups))
     fig.tight_layout(pad=3.0)
@@ -653,37 +791,36 @@ def t_test_with_graph(groups, subtitles, title, xlabel, ylabel, save_path="", yl
         for j in range(len(groups[i])):
             for k in range(len(groups[i])):
                 if j < k:
-                    print("T-test Group %s and Group %s, result: %s" % (
-                        xlabel[j], xlabel[k], stats.ttest_ind(list(filter(lambda x: not np.isnan(x), groups[i][j])),
-                                                              list(filter(lambda x: not np.isnan(x), groups[i][k])))))
+                    ttest = stats.ttest_ind(list(filter(lambda x: not np.isnan(x), groups[i][j])),
+                                            list(filter(lambda x: not np.isnan(x), groups[i][k])))
+                    print("T-test %s and %s value = %s, p = %s" % (
+                        xlabel[j], xlabel[k], round(ttest[0], 6), round(ttest[1] / 2, 8)))
 
-        means = [np.nanmean(g) for g in groups[i]]
+        means = [round(np.nanmean(g), 6) for g in groups[i]]
         print("mean - " + str(means))
         std = [np.nanstd(g) / np.sqrt(len(list(filter(lambda x: not np.isnan(x), g)))) for g in groups[i]]
-        print("std - " + str([np.nanstd(g) for g in groups[i]]))
+        print("std - " + str([round(np.nanstd(g), 6) for g in groups[i]]))
 
         x = range(len(groups[i]))
 
         if len(groups) == 1:
-            ax.bar(x, means, color=colors, yerr=std)
-            ax.set_xticks(x)
-            ax.set_xticklabels(xlabel)
-            ax.set_yticks(np.linspace(0, ylim, 11, True))
-            ax.set_ylabel(ylabel)
-            ax.set_title(subtitles[i], y=0.95, pad=-14)
-        elif len(groups) > 1:
-            ax[i].bar(x, means, color=colors, yerr=std)
-            ax[i].set_xticks(x)
-            ax[i].set_xticklabels(xlabel)
-            ax[i].set_yticks(np.linspace(0, ylim, 11, True))
-            ax[i].set_ylabel(ylabel)
-            ax[i].set_title(subtitles[i], y=0.95, pad=-14)
+            axis = ax
+        else:
+            axis = ax[i]
+            if subtitles:
+                axis.set_title(subtitles[i], y=0.95, pad=-14)
+        axis.bar(x, means, color=colors, yerr=std)
+        axis.set_xticks(x)
+        axis.set_xticklabels(xlabel)
+        axis.set_yticks(np.linspace(0, ylim, 11, True))
+        axis.set_ylabel(ylabel)
+        axis.set_title(subtitles[i], y=0.95, pad=-14)
         fig.suptitle(title, fontsize=16)
 
     if save_path == "":
         plt.show()
     else:
-        plt.savefig(save_path + ylabel + "_" + title + "_" + "_".join(xlabel) + ".png")
+        plt.savefig(save_path + "ttest_" + ylabel + "_" + title + "_" + "_".join(xlabel) + ".png")
 
 
 def draw_sim_hist_graph(groups, subtitles, title, ylabel, save_path="", ylim=16, alpha=0.05):
@@ -755,7 +892,7 @@ def eval_alg_sim(method, input, train_only=False, verbose=False, significance=0.
     for u in range(len(i)):
         if r[u] != []:
             train_candidates, _, _, _ = find_similar_algo(method, i[u], l[u], r[u],
-                                                          funcs=[("alphabetical", alphabetical_labels)],
+                                                          label_order=[("alphabetical", alphabetical_labels)],
                                                           verbose=verbose, alpha=significance)
             train_algs.append(train_candidates)
         else:
@@ -785,34 +922,175 @@ def eval_alg_sim(method, input, train_only=False, verbose=False, significance=0.
     return train_algs, algs
 
 
-def sort_ttest(gs, ns):
-    t_test_with_graph([[np.nanmean(np.array(g["sort_test_comp"])[:, :5], axis=1) for g in gs],
-                       [np.nanmean(np.array(g["sort_test_comp"])[:, 5:], axis=1) for g in gs]],
-                      ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
-                      "Sort Test No. Comparisons",
-                      ns, "Mean", save_path="../results/")
-    t_test_with_graph([[np.nanmean(np.array(g["sort_test_time"])[:, :5], axis=1) for g in gs],
-                       [np.nanmean(np.array(g["sort_test_time"])[:, 5:], axis=1) for g in gs]],
-                      ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
-                      "Sort Test Response time",
-                      ns, "Mean", save_path="../results/", ylim=300)
-    t_test_with_graph([[np.nanmean(np.array(g["sort_test_score"])[:, :5], axis=1) for g in gs],
-                       [np.nanmean(np.array(g["sort_test_score"])[:, 5:], axis=1) for g in gs]],
-                      ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
-                      "Sort Test Response score",
-                      ns, "Mean", save_path="../results/", ylim=1)
+def sort_statistical_tests(gs, ns, test="ANOVA", anova_two_way=True, tukey_two_way=True):
+    print("\n>>> sort test statistics")
+    print("\n>>> no. comparisons")
+    if test == "ttest":
+        t_test_with_graph(
+            # [[np.nanmean(np.array(g["sort_test_comp"])[:, :5], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_comp"])[:, 5:], axis=1) for g in gs]],
+            [[np.array(g["sort_test_comp"])[:, :5].flatten() for g in gs],
+             [np.array(g["sort_test_comp"])[:, 5:].flatten() for g in gs]],
+            # [[np.nanmean(np.array(g["sort_test_comp"])[:, :2], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_comp"])[:, 2:5], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_comp"])[:, 5:7], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_comp"])[:, 7:], axis=1) for g in gs]],
+            # [[np.nanmean(np.array(g["sort_test_comp"])[:, 5:6], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_comp"])[:, 6:7], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_comp"])[:, 7:], axis=1) for g in gs]],
+            # ["Length of set = 6\nNo. question = 2", "7 <= Length of set <= 8\nNo. question = 3",
+            #  "Length of set = 10\nNo. question = 2", "Length of set = 10\nNo. question = 1"],
+            "Sort Test No. Comparisons",
+            ns, "Mean", subtitles=["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
+            save_path="../results/")
+    else:
+        ANOVA_with_graph(
+            [[np.array(g["sort_test_comp"])[:, :5].flatten() for g in gs],
+             [np.array(g["sort_test_comp"])[:, 5:].flatten() for g in gs]],
+            # [[np.array(g["sort_test_comp"])[:, :].flatten() for g in gs]],
+            "Sort Test No. Comparisons",
+            ns, "Mean", subtitles=["Short sets\nNo. question = 4", "Long sets\nNo. question = 4"],
+            save_path="../results/",
+            anova_two_way=anova_two_way,
+            tukey_two_way=tukey_two_way
+        )
+    print(">>> response time")
+    if test == "ttest":
+        t_test_with_graph(
+            # [[np.nanmean(np.array(g["sort_test_time"])[:, :5], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_time"])[:, 5:], axis=1) for g in gs]],
+            [[np.array(g["sort_test_time"])[:, :5].flatten() for g in gs],
+             [np.array(g["sort_test_time"])[:, 5:].flatten() for g in gs]],
+            # [[np.nanmean(np.array(g["sort_test_time"])[:, :2], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_time"])[:, 2:5], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_time"])[:, 5:7], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_time"])[:, 7:], axis=1) for g in gs]],
+            # [[np.nanmean(np.array(g["sort_test_time"])[:, 5:6], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_time"])[:, 6:7], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_time"])[:, 7:], axis=1) for g in gs]],
+            # ["Length of set = 6\nNo. question = 2", "7 <= Length of set <= 8\nNo. question = 3",
+            #  "Length of set = 10\nNo. question = 2", "Length of set = 10\nNo. question = 1"],
+            "Sort Test Response time",
+            ns, "Mean", subtitles=["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
+            save_path="../results/", ylim=300)
+    else:
+        ANOVA_with_graph(
+            [[np.array(g["sort_test_time"])[:, :5].flatten() for g in gs],
+             [np.array(g["sort_test_time"])[:, 5:].flatten() for g in gs]],
+            # [[np.array(g["sort_test_time"])[:, :].flatten() for g in gs]],
+            "Sort Test Response time",
+            ns, "Mean", save_path="../results/",
+            subtitles=["Short sets\nNo. question = 4", "Long sets\nNo. question = 4"], ylim=300,
+            anova_two_way=anova_two_way,
+            tukey_two_way=tukey_two_way
+        )
+    print(">>> Score")
+    if test == "ttest":
+        t_test_with_graph(
+            # [[np.nanmean(np.array(g["sort_test_score"])[:, :5], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_score"])[:, 5:], axis=1) for g in gs]],
+            [[np.array(g["sort_test_score"])[:, :5].flatten() for g in gs],
+             [np.array(g["sort_test_score"])[:, 5:].flatten() for g in gs]],
+            # [[np.nanmean(np.array(g["sort_test_score"])[:, :2], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_score"])[:, 2:5], axis=1) for g in gs],
+            #  [[np.nanmean(np.array(g["sort_test_score"])[:, 5:6], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_score"])[:, 6:7], axis=1) for g in gs],
+            #  [np.nanmean(np.array(g["sort_test_score"])[:, 7:], axis=1) for g in gs]],
+            # ["Length of set = 6\nNo. question = 2", "7 <= Length of set <= 8\nNo. question = 3",
+            #  "Length of set = 10\nNo. question = 2", "Length of set = 10\nNo. question = 1"],
+            "Sort Test Response score",
+            ns, "Mean", subtitles=["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
+            save_path="../results/", ylim=1)
+    else:
+        ANOVA_with_graph(
+            [[np.array(g["sort_test_score"])[:, :5].flatten() for g in gs],
+             [np.array(g["sort_test_score"])[:, 5:].flatten() for g in gs]],
+            # [[np.array(g["sort_test_score"])[:, :].flatten() for g in gs]],
+            "Sort Test Response score",
+            ns, "Mean", save_path="../results/",
+            subtitles=["Short sets\nNo. question = 4", "Long sets\nNo. question = 4"], ylim=1,
+            anova_two_way=anova_two_way,
+            tukey_two_way=tukey_two_way
+        )
 
 
-def merge_ttest(gs, ns):
-    t_test_with_graph([[np.nanmean(np.array(g["merge_test_comp"]), axis=1) for g in gs]],
-                      ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
-                      "Merge Test No. Comparisons",
-                      ns, "Mean", save_path="../results/", ylim=15)
-    t_test_with_graph([[np.nanmean(np.array(g["merge_test_time"]), axis=1) for g in gs]],
-                      ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
-                      "Merge Test Response time",
-                      ns, "Mean", save_path="../results/", ylim=100)
-    t_test_with_graph([[np.nanmean(np.array(g["merge_test_score"]), axis=1) for g in gs]],
-                      ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
-                      "Merge Test Response score",
-                      ns, "Mean", save_path="../results/", ylim=1)
+def merge_statistical_tests(gs, ns, test="ANOVA"):
+    print("\n>>> merge test statistics")
+    print("\n>>> no. comparisons")
+    if test == "ttest":
+        t_test_with_graph([[np.nanmean(np.array(g["merge_test_comp"]), axis=1) for g in gs]],
+                          ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
+                          "Merge Test No. Comparisons",
+                          ns, "Mean", save_path="../results/", ylim=15)
+    else:
+        pass
+    print(">>> response time")
+    if test == "ttest":
+        t_test_with_graph([[np.nanmean(np.array(g["merge_test_time"]), axis=1) for g in gs]],
+                          ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
+                          "Merge Test Response time",
+                          ns, "Mean", save_path="../results/", ylim=100)
+    else:
+        pass
+    print(">>> Score")
+    if test == "ttest":
+        t_test_with_graph([[np.nanmean(np.array(g["merge_test_score"]), axis=1) for g in gs]],
+                          ["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
+                          "Merge Test Response score",
+                          ns, "Mean", save_path="../results/", ylim=1)
+    else:
+        pass
+
+
+def pre_test_cross_groups_filter(gs, ns, filter_mul=1):
+    print("\n>>> Perform pre-test filter u-std <= acc <= u+std\n")
+    pre_test_res = []
+    for g in gs:
+        pre_test_res += g["pre_test"]
+    cross_groups_mean = np.mean(np.array(pre_test_res)[:, 2])
+    cross_groups_std = np.std(np.array(pre_test_res)[:, 2])
+
+    for g in gs:
+        pre_test_data = list(g["pre_test"])
+        for key in g.keys():
+            data = []
+            for i in range(len(g[key])):
+                if (cross_groups_mean - filter_mul * cross_groups_std) <= pre_test_data[i][2] <= (
+                        cross_groups_mean + filter_mul * cross_groups_std):
+                    data.append(g[key][i])
+            g[key] = data
+
+    for i in range(len(gs)):
+        g = gs[i]
+        size = 0
+        for key in g.keys():
+            if size == 0:
+                size = len(g[key])
+            else:
+                if size != len(g[key]):
+                    print(key)
+                    raise Exception("Error in processing records!")
+        print(">>> %s size = %s" % (ns[i], size))
+
+        table = get_new_demographic_table()
+        for d in g["demographic"]:
+            table = format_demographic(d, table)
+        print(">>> demographic age: " + str(table[0]))
+        print(">>> demographic education: " + str(table[1]))
+        print(">>> demographic gender: " + str(table[2]))
+
+    return gs, cross_groups_mean, cross_groups_std
+
+
+def plot_line_graphs(gs, ns):
+    pass
+
+
+def parse_textual_response_corpus(gs, ns):
+    for i in range(len(gs)):
+        group_corpus = {}
+        for data in gs[i]["free_res"]:
+            for ans in np.array(data[1])[:2]:
+                words = ans.replace(".", "").replace("'", "").replace(",", "").split(" ")
+                for w in words:
+                    group_corpus[w] += 1
