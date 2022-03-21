@@ -707,24 +707,37 @@ def isort_back(x):
 
 
 def dict_sort_front(x):
+    '''
+        Applies dictionary sort by prioritising comparison with the first element of the partially sorted list
+
+        Tested
+
+        PARAMETERS
+        ----------
+        x : list
+
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
+    '''
     return ds_front(x, [])
 
 
 def ds_front(x, partial):
     '''
-    Applies insertion sort by prioritising comparison with the first element of the partially sorted list
+        Applies dictionary sort by prioritising comparison from x with the first element of the partially sorted list
 
-    Tested
+        Tested
 
-    PARAMETERS
-    ----------
-    x : list
+        PARAMETERS
+        ----------
+        x : list
+        partial: list
 
-    RETURNS
-    -------
-    list : [sorted list, comps, compsN]
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
     '''
-
     result = partial
     comps = []
     compsN = 0
@@ -766,10 +779,37 @@ def ds_front(x, partial):
 
 
 def dict_sort_mid(x):
+    '''
+        Applies dictionary sort by prioritising comparison with the middleelement of the partially sorted list
+
+        Tested
+
+        PARAMETERS
+        ----------
+        x : list
+
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
+    '''
     return ds_mid(x, [])
 
 
 def ds_mid(x, partial):
+    '''
+        Applies dictionary sort by prioritising comparison from x with the middle element of the partially sorted list
+
+        Tested
+
+        PARAMETERS
+        ----------
+        x : list
+        partial: list
+
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
+    '''
     result = partial
     comps = []
     compsN = 0
@@ -813,22 +853,36 @@ def ds_mid(x, partial):
 
 
 def dict_sort_back(x):
+    '''
+        Applies dictionary sort by prioritising comparison with the last element of the partially sorted list
+
+        Tested
+
+        PARAMETERS
+        ----------
+        x : list
+
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
+    '''
     return ds_back(x, [])
 
 
 def ds_back(x, partial):
     '''
-    Applies insertion sort by prioritising comparison with the last element of the partially sorted list
+        Applies dictionary sort by prioritising comparison from x with the last element of the partially sorted list
 
-    Tested
+        Tested
 
-    PARAMETERS
-    ----------
-    x : list
+        PARAMETERS
+        ----------
+        x : list
+        partial: list
 
-    RETURNS
-    -------
-    list : [sorted list, comps, compsN]
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
     '''
 
     result = partial
@@ -871,48 +925,142 @@ def ds_back(x, partial):
 
 
 def is_front_hybrid_ds_front(x, k):
+    '''
+        Applies hybrid insertion and dictionary sort variants and switch at kth index of x
+
+        Tested
+
+        PARAMETERS
+        ----------
+        x : list
+        k : int
+
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
+    '''
     res1, c1, cN1 = isort_front(x[:k])
     res2, c2, cN2 = ds_front(x[k:], res1)
     return res2, c1 + c2, cN1 + cN2
 
 
 def is_front_hybrid_ds_mid(x, k):
+    '''
+        Applies hybrid insertion and dictionary sort variants and switch at kth index of x
+
+        Tested
+
+        PARAMETERS
+        ----------
+        x : list
+        k : int
+
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
+    '''
     res1, c1, cN1 = isort_front(x[:k])
     res2, c2, cN2 = ds_mid(x[k:], res1)
     return res2, c1 + c2, cN1 + cN2
 
 
 def is_front_hybrid_ds_back(x, k):
+    '''
+        Applies hybrid insertion and dictionary sort variants and switch at kth index of x
+
+        Tested
+
+        PARAMETERS
+        ----------
+        x : list
+        k : int
+
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
+    '''
     res1, c1, cN1 = isort_front(x[:k])
     res2, c2, cN2 = ds_back(x[k:], res1)
     return res2, c1 + c2, cN1 + cN2
 
 
 def is_back_hybrid_ds_front(x, k):
+    '''
+        Applies hybrid insertion and dictionary sort variants and switch at kth index of x
+
+        Tested
+
+        PARAMETERS
+        ----------
+        x : list
+        k : int
+
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
+    '''
     res1, c1, cN1 = isort_back(x[:k])
     res2, c2, cN2 = ds_front(x[k:], res1)
     return res2, c1 + c2, cN1 + cN2
 
 
 def is_back_hybrid_ds_mid(x, k):
+    '''
+        Applies hybrid insertion and dictionary sort variants and switch at kth index of x
+
+        Tested
+
+        PARAMETERS
+        ----------
+        x : list
+        k : int
+
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
+    '''
     res1, c1, cN1 = isort_back(x[:k])
     res2, c2, cN2 = ds_mid(x[k:], res1)
     return res2, c1 + c2, cN1 + cN2
 
 
 def is_back_hybrid_ds_back(x, k):
+    '''
+        Applies hybrid insertion and dictionary sort variants and switch at kth index of x
+
+        Tested
+
+        PARAMETERS
+        ----------
+        x : list
+        k : int
+
+        RETURNS
+        -------
+        list : [sorted list, comps, compsN]
+    '''
     res1, c1, cN1 = isort_back(x[:k])
     res2, c2, cN2 = ds_back(x[k:], res1)
     return res2, c1 + c2, cN1 + cN2
 
 
-def check_sort_output(result, comps, compsN):
-    if result != sorted(result):
+def check_sort_output(input, comps, compsN):
+    '''
+    
+    Raise exception if input list of integers is not correctly sorted
+    or the number of comparisons does not match the machine trace
+    
+    :param input: 
+    :param comps: 
+    :param compsN: 
+    :return: 
+    '''
+    if input != sorted(input):
         raise AssertionError("Algorithm not returning sorted lists!")
     if compsN != len(comps):
         raise AssertionError("Algorithm trace does not match number of comparisons!")
 
-
+# collection of all algorithms
 ALL_ALGORITHMS = [botup_msort_left_front, botup_msort_right_front, botup_msort_left_back, botup_msort_right_back,
                   qsort_first, qsort_mid, qsort_last, isort_front, isort_back,
                   msort_left_front, msort_left_back, msort_left_back, msort_right_back, dict_sort_front, dict_sort_mid,
@@ -921,17 +1069,35 @@ ALL_ALGORITHMS = [botup_msort_left_front, botup_msort_right_front, botup_msort_l
 HYBRID_ALGORITHMS = [is_front_hybrid_ds_front, is_front_hybrid_ds_mid, is_front_hybrid_ds_back, is_back_hybrid_ds_front,
                      is_back_hybrid_ds_mid, is_back_hybrid_ds_back]
 
+# for testing algorithm implementations
 def recur_gen_list(test_lists, nrange):
+    '''
+
+    Recursively generate lists for testing algorithm correctness
+
+    :param test_lists:
+    :param nrange:
+    :return:
+
+    '''
     newL = []
     for l in test_lists:
         k = l.copy()
         for i in range(1, nrange + 1):
             if i not in k:
-                newL = newL + [k + [i]]
+                newL.append([k + [i]])
     return newL
 
 
 def test_all_alg(size, nrange):
+    '''
+
+    Test correctness of algorithms with inputs up to size and integers in [1, nrange]
+
+    :param size:
+    :param nrange:
+    :return:
+    '''
     lists = [[]]
     failed_tests = {}
     for i in range(0, size):
@@ -956,8 +1122,3 @@ def test_all_alg(size, nrange):
                     else:
                         failed_tests[alg.__name__].append(l)
     print(failed_tests)
-
-# test_all_alg(7, 7)
-
-# print(dict_sort_mid([3, 2, 4, 5, 6, 7, 1]))
-# print(dict_sort_front([1, 2, 3, 4, 5, 7, 6]))
