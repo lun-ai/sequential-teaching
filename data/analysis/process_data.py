@@ -70,13 +70,15 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
     sort_test_score = []
     merge_test_comparison = []
     sort_test_comparison = []
-    sort_test_trace = []
+    sort_test_mouse_trace = []
     merge_test_comparison_records = []
     sort_test_comparison_records = []
     free_res = []
 
     exp_run_time = []
 
+    merge_train_response_time = []
+    sort_train_response_time = []
     merge_train_score = []
     sort_train_score = []
     merge_train_comparison = []
@@ -119,9 +121,9 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
         merge_test_comparison_records.append(r1)
         sort_test_comparison_records.append(r2)
 
-        # s3, s4 = extract_train_response(c)
-        # merge_train_score.append(s3)
-        # sort_train_score.append(s4)
+        s3, s4 = extract_train_response_score(c)
+        merge_train_score.append(s3)
+        sort_train_score.append(s4)
 
         c3, c4, r3, r4 = extract_train_comparison(c, "\'")
         merge_train_comparison.append(c3)
@@ -129,17 +131,13 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
         merge_train_comparison_records.append(r3)
         sort_train_comparison_records.append(r4)
 
+        # if visualisation of mouse trace is enabled
+        if is_visual_trace_enabled:
+            t = extract_mouse_trace(c)
+            sort_test_mouse_trace.append(t)
+
         e = extract_free_response(c)
         free_res.append(e)
-
-        if is_visual_trace_enabled:
-            t = extract_trace(c)
-            sort_test_trace.append(t)
-            name = c[1][c[0].index("participant")]
-            i = 1
-            for d in t:
-                reconstruct_trace(d, path, name + "_" + str(i))
-                i += 1
 
         if trace_similarity_analysis:
             train_algs, algs = eval_alg_sim(trace_analysis_method, c, verbose=verbose, train_only=train_only_trace,
@@ -178,6 +176,9 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
     merge_test_comparison_2 = []
     sort_test_comparison_2 = []
     sort_test_response_time_2 = []
+    sort_train_score_2 = []
+    sort_train_response_time_2 = []
+    sort_train_comparison_2 = []
     sort_test_score_2 = []
     train_alg_hist_2 = []
     test_alg_hist_2 = []
@@ -195,14 +196,20 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
                     pre_test_mean_acc + filter_std_multiplier * pre_test_std_acc):
 
                 demographic = format_demographic(demographic_raw[i], demographic)
+
                 merge_test_response_time_2.append(merge_test_response_time[i])
                 merge_test_comparison_2.append(merge_test_comparison[i])
                 merge_test_score_2.append(merge_test_score[i])
+
                 pre_test_2.append(pre_test[i])
                 free_res_2.append(free_res[i])
+
                 s = sort_test_score[i]
                 sc = sort_test_comparison[i]
                 rt = sort_test_response_time[i]
+
+                sort_train_score_2.append(sort_train_score[i])
+                sort_train_comparison_2.append(sort_train_comparison[i])
 
                 # exclude sort answers with trace matching provided algorithm abbreviations
                 if "BS" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["BS"] != 0:
@@ -281,6 +288,15 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
                 if trace_similarity_analysis:
                     train_alg_hist_2.append(train_alg_estimates[i])
                     test_alg_hist_2.append(test_alg_estimates[i])
+
+                # save sort mouse trace visualisation to save_path
+                if is_visual_trace_enabled:
+                    participantID = filenames[i].split(".")[0]
+                    t = sort_test_mouse_trace[i]
+                    i = 1
+                    for d in t:
+                        reconstruct_trace(d, save_path, participantID + "_" + str(i))
+                        i += 1
     else:
 
         # if no filtering is applied
@@ -293,8 +309,14 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
         sort_test_score_2 = sort_test_score
         sort_test_comparison_2 = sort_test_comparison
         sort_test_response_time_2 = sort_test_response_time
+
         pre_test_2 = pre_test
         free_res_2 = free_res
+
+        sort_train_score_2 = sort_train_score
+        sort_train_response_time_2 = sort_train_response_time
+        sort_train_comparison_2 = sort_train_comparison
+
         train_alg_hist_2 = train_alg_estimates
         test_alg_hist_2 = test_alg_estimates
 
@@ -509,7 +531,7 @@ def get_new_demographic_table():
     ]
 
 
-def extract_train_response_score(input):
+def extract_train_response_score(input, negative_score_weight=0.5):
     # merge_test_input_col = input[0].index("merge_train_input")
     sort_test_input_col = input[0].index("sort_train_input")
     # merge_test_labels_col = input[0].index("merge_train_labels")
@@ -533,10 +555,12 @@ def extract_train_response_score(input):
 
     # s1 = [round(stats.spearmanr(sorted(i1[i]), a1[i])[0], 3) if len(l1[i]) == len(r1[i]) else numpy.NaN for i in
     #       range(min(len(i1), len(a1)))]
-    s2 = [round(stats.spearmanr(sorted(i2[i]), a2[i])[0], 3) if len(l2[i]) == len(a2[i]) else numpy.NaN for i in
-          range(min(len(i2), len(a2)))]
 
-    return s2
+    s2 = [round(stats.spearmanr(sorted(i2[i]), a2[i])[0], 3) if len(l2[i]) == len(a2[i]) else 0.0 for i in
+          range(min(len(i2), len(a2)))]
+    s2 = list(map(lambda x: score_adjustments(x, negative_score_weight), s2))
+
+    return [], s2
 
 
 def extract_response_score(input, negative_score_weight=0.5):
@@ -577,7 +601,7 @@ def extract_response_score(input, negative_score_weight=0.5):
 def parseStringLine(line):
     return list(filter(None,
                        str(line).replace("\n", "").replace("\'", "").replace(" ", "").
-                       replace("\"", "").replace("[","").replace("]","").split(",")))
+                       replace("\"", "").replace("[", "").replace("]", "").split(",")))
 
 
 def save_free_ans_csv(filepath, data):
@@ -594,6 +618,7 @@ def save_free_ans_csv(filepath, data):
 
 def containLabels(labels, ans):
     return not (False in [a in labels for a in ans])
+
 
 # adjust spearman rank score to [0.0, 1.0] with weighting
 def score_adjustments(score, weight):
@@ -646,7 +671,7 @@ def extract_train_comparison(input, label_pad):
                                                      input[1:] if line[sort_test_com_records] != '']
 
 
-def extract_trace(input):
+def extract_mouse_trace(input):
     sort_test_trace_col = input[0].index("sort_test_trace")
     t1 = [parseTrace(line[sort_test_trace_col]) for line in input[1:] if line[sort_test_trace_col] != '']
     return t1
@@ -667,7 +692,7 @@ def extract_free_response(input):
 def parseTrace(line):
     trace = line.replace("\"", "").replace("[", "").strip("]]").split("],")
     trace = [t.split(",") for t in trace]
-    trace = [[int(t[0]), float(t[1]), float(t[2])] for t in trace]
+    trace = [[int(t[0]), float(t[1]), float(t[2])] for t in trace if t[0] != ""]
     dict = {1: [(-0.25, 0.3)], 2: [(-0.2, 0.3)], 3: [(-0.15, 0.3)], 4: [(-0.1, 0.3)], 5: [(-0.05, 0.3)],
             6: [(0.0, 0.3)], 7: [(0.05, 0.3)], 8: [(0.1, 0.3)], 9: [(0.15, 0.3)], 10: [(0.2, 0.3)]}
     for t in trace:
@@ -676,17 +701,22 @@ def parseTrace(line):
 
 
 def reconstruct_trace(trace, path, name):
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22',
+              '#17becf']
     for t in trace:
-        plt.plot(np.array(trace[t])[:, 0], np.array(trace[t])[:, 1], label=t)
+        if len(trace[t]) != 1:
+            plt.plot(np.array(trace[t])[0, 0], np.array(trace[t])[0, 1], marker="*", color=colors[int(t) - 1])
+        plt.plot(np.array(trace[t])[:, 0], np.array(trace[t])[:, 1], color=colors[int(t) - 1])
     plt.title(name)
     plt.axis('off')
-    plt.savefig(path + "traces/sort_test/" + name)
+    plt.savefig(path + "traces/" + name + ".png")
     plt.close()
 
 
 def string2pairlist(str):
     labels = parseStringLine(str)
     return [[labels[2 * i], labels[2 * i + 1]] for i in range(len(labels) // 2)]
+
 
 # print ANOVA and Tukey statistics and generate line graphs for one-way/two-way ANOVA
 def ANOVA_with_graph(gs, title, xlabel, ylabel, save_path="", subtitles=[], anova_two_way=True,
@@ -734,7 +764,7 @@ def ANOVA_with_graph(gs, title, xlabel, ylabel, save_path="", subtitles=[], anov
                 linestyles=linestyle,
                 markers=makers,
                 legendloc="lower right",
-                ylabel=ylabel,
+                ylabel=title.split()[-1],
                 ax=axis
             )
             axis.errorbar(x, [means[0], means[2]], yerr=[stderr[0], stderr[2]], ls='none', color=colors[0])
@@ -759,8 +789,9 @@ def ANOVA_with_graph(gs, title, xlabel, ylabel, save_path="", subtitles=[], anov
         axis.set_xticks(x)
         axis.set_xlim([-0.5, 1.5])
         axis.set_xticklabels(["MS", "SM"])
-        axis.set_ylim([min(means) - 5 * max(stderr), max(means) + 5 * max(stderr)])
-        fig.suptitle(title, fontsize=16)
+        axis.set_ylim([max(0.0, min(means) - 5 * max(stderr)), max(means) + 5 * max(stderr)])
+        fig.suptitle(title, y=0.95, fontsize=16)
+        fig.set_size_inches(6.5, 6.5)
 
         model = ols(format, data=df).fit()
         ANOVA = sm.stats.anova_lm(model, typ=2)
@@ -773,6 +804,7 @@ def ANOVA_with_graph(gs, title, xlabel, ylabel, save_path="", subtitles=[], anov
         plt.show()
     else:
         plt.savefig(save_path + "ANOVA_" + ylabel + "_" + title + "_" + "_".join(xlabel) + ".png")
+
 
 # perform multiple pairwise t-tests and print statistics
 def t_test_with_graph(groups, title, xlabel, ylabel, save_path="", subtitles=[], ylim=50):
@@ -815,6 +847,7 @@ def t_test_with_graph(groups, title, xlabel, ylabel, save_path="", subtitles=[],
     else:
         plt.savefig(save_path + "ttest_" + ylabel + "_" + title + "_" + "_".join(xlabel) + ".png")
 
+
 # generate histogram following trace similarity analysis
 def draw_sim_hist_graph(groups, title, ylabel, save_path="", ylim=16, subtitles=[], alpha=0.05):
     colors = ["lightseagreen", "mediumturquoise", "lightblue", "paleturquoise", "lightskyblue", "darkcyan"]
@@ -852,6 +885,7 @@ def draw_sim_hist_graph(groups, title, ylabel, save_path="", ylim=16, subtitles=
         plt.show()
     else:
         plt.savefig(save_path + "alg_freq_" + str(alpha) + ".png")
+
 
 # generate bar graphs following trace similarity analysis
 def draw_sim_mean_graph(groups, title, ylabel, save_path="", ylim=9, subtitles=[], alpha=0.05):
@@ -898,6 +932,7 @@ def draw_sim_mean_graph(groups, title, ylabel, save_path="", ylim=9, subtitles=[
     else:
         plt.savefig(save_path + "alg_mean_" + str(alpha) + ".png")
 
+
 # extract human sorting trace from raw records and perform trace analysis
 def eval_alg_sim(method, input, train_only=False, verbose=False, significance=0.05):
     sort_train_input_col = input[0].index("sort_train_input")
@@ -940,7 +975,6 @@ def eval_alg_sim(method, input, train_only=False, verbose=False, significance=0.
                 "\n>>> Sort test phase similarity, No. test questions = %s\n" % (str(
                     len(i))))
 
-
         for u in range(len(i)):
             candidates, _, _, _ = find_similar_algo(method, i[u], l[u], r[u], verbose=verbose, alpha=significance)
             algs.append(candidates)
@@ -948,114 +982,56 @@ def eval_alg_sim(method, input, train_only=False, verbose=False, significance=0.
     return train_algs, algs
 
 
-def sort_statistical_tests(gs, ns, test="ANOVA", anova_two_way=True, tukey_two_way=True):
-    print("\n>>> sort test statistics")
-    print(">>> Score")
-    if test == "ttest":
-        t_test_with_graph(
-            [[np.array(g["sort_test_score"])[:, :5].flatten() for g in gs],
-             [np.array(g["sort_test_score"])[:, 5:].flatten() for g in gs]],
-            "Sort Test Response score",
-            ns, "Mean", subtitles=["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
-            save_path="../results/", ylim=1)
-    else:
-        ANOVA_with_graph(
-            # [[np.array(g["sort_test_score"])[:, :5].flatten() for g in gs],
-            #  [np.array(g["sort_test_score"])[:, 5:].flatten() for g in gs]],
-            [[list_concat(g["sort_test_score"]) for g in gs]],
-            "Sort Test Response score",
-            ns, "Mean", save_path="../results/",
-            subtitles=["Short sets\nNo. question = 5", "Long sets\nNo. question = 3"],
-            anova_two_way=anova_two_way,
-            tukey_two_way=tukey_two_way
-        )
-    print("\n>>> no. comparisons")
-    if test == "ttest":
-        t_test_with_graph(
-            [[np.array(g["sort_test_comp"])[:, :5].flatten() for g in gs],
-             [np.array(g["sort_test_comp"])[:, 5:].flatten() for g in gs]],
-            "Sort Test No. Comparisons",
-            ns, "Mean", subtitles=["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
-            save_path="../results/")
-    else:
-        ANOVA_with_graph(
-            # [[np.array(g["sort_test_comp"])[:, :5].flatten() for g in gs],
-            #  [np.array(g["sort_test_comp"])[:, 5:].flatten() for g in gs]],
-            [[list_concat(g["sort_test_comp"]) for g in gs]],
-            "Sort Test No. Comparisons",
-            ns, "Mean", subtitles=["Short sets\nNo. question = 5", "Long sets\nNo. question = 3"],
-            save_path="../results/",
-            anova_two_way=anova_two_way,
-            tukey_two_way=tukey_two_way
-        )
-    print(">>> response time")
-    if test == "ttest":
-        t_test_with_graph(
-            [[np.array(g["sort_test_time"])[:, :5].flatten() for g in gs],
-             [np.array(g["sort_test_time"])[:, 5:].flatten() for g in gs]],
-            "Sort Test Response time",
-            ns, "Mean", subtitles=["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
-            save_path="../results/", ylim=300)
-    else:
-        ANOVA_with_graph(
-            # [[np.array(g["sort_test_time"])[:, :5].flatten() for g in gs],
-            #  [np.array(g["sort_test_time"])[:, 5:].flatten() for g in gs]],
-            [[list_concat(g["sort_test_time"]) for g in gs]],
-            "Sort Test Response time",
-            ns, "Mean", save_path="../results/",
-            subtitles=["Short sets\nNo. question = 5", "Long sets\nNo. question = 3"],
-            anova_two_way=anova_two_way,
-            tukey_two_way=tukey_two_way
-        )
+def sort_statistical_tests(gs, ns, test="ANOVA", anova_two_way=True, tukey_two_way=True, record_names=[],
+                            record_alias=[]):
+    print("\n>>> Sort Statistics")
+    for i in range(len(record_names)):
+        print(">>> " + record_names[i])
+        if test == "ttest":
+            t_test_with_graph(
+                [[np.array(g[record_names[i]])[:, :5].flatten() for g in gs],
+                 [np.array(g[record_names[i]])[:, 5:].flatten() for g in gs]],
+                "Sort " + record_alias[i],
+                ns, "Mean", subtitles=["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
+                save_path="../results/", ylim=1)
+        else:
+            ANOVA_with_graph(
+                # [[np.array(g[record_names[i]])[:, :5].flatten() for g in gs],
+                #  [np.array(g[record_names[i]])[:, 5:].flatten() for g in gs]],
+                [[list_concat(g[record_names[i]]) for g in gs]],
+                "Sort " + record_alias[i],
+                ns, "Mean", save_path="../results/",
+                subtitles=["Short sets\nNo. question = 5", "Long sets\nNo. question = 3"],
+                anova_two_way=anova_two_way,
+                tukey_two_way=tukey_two_way
+            )
 
 
-def merge_statistical_tests(gs, ns, test="ANOVA", anova_two_way=True, tukey_two_way=True):
-    print("\n>>> merge test statistics")
-    print(">>> Score")
-    if test == "ttest":
-        t_test_with_graph([[np.array(g["merge_test_score"]).flatten() for g in gs]],
-                          "Merge Test Response score",
-                          ns, "Mean", save_path="../results/", ylim=1)
-    else:
-        ANOVA_with_graph(
-            [[np.array(g["merge_test_score"]).flatten() for g in gs]],
-            "Merge Test Response score",
-            ns, "Mean",
-            save_path="../results/",
-            anova_two_way=anova_two_way,
-            tukey_two_way=tukey_two_way,
-            colors=["limegreen", "gold"]
-        )
-    print("\n>>> no. comparisons")
-    if test == "ttest":
-        t_test_with_graph([[np.array(g["merge_test_comp"]).flatten() for g in gs]],
-                          "Merge Test No. Comparisons",
-                          ns, "Mean", save_path="../results/", ylim=15)
-    else:
-        ANOVA_with_graph(
-            [[np.array(g["merge_test_comp"]).flatten() for g in gs]],
-            "Merge Test No. Comparisons",
-            ns, "Mean",
-            save_path="../results/",
-            anova_two_way=anova_two_way,
-            tukey_two_way=tukey_two_way,
-            colors=["limegreen", "gold"]
-        )
-    print(">>> response time")
-    if test == "ttest":
-        t_test_with_graph([[np.array(g["merge_test_time"]).flatten() for g in gs]],
-                          "Merge Test Response time",
-                          ns, "Mean", save_path="../results/", ylim=100)
-    else:
-        ANOVA_with_graph(
-            [[np.array(g["merge_test_time"]).flatten() for g in gs]],
-            "Merge Test Response time",
-            ns, "Mean",
-            save_path="../results/",
-            anova_two_way=anova_two_way,
-            tukey_two_way=tukey_two_way,
-            colors=["limegreen", "gold"]
-        )
+
+def merge_statistical_tests(gs, ns, test="ANOVA", anova_two_way=True, tukey_two_way=True, record_names=[],
+                            record_alias=[]):
+    print("\n>>> Merge Statistics")
+    for i in range(len(record_names)):
+        print(">>> " + record_names[i])
+        if test == "ttest":
+            t_test_with_graph([[np.array(g[record_names[i]]).flatten() for g in gs]],
+                              "Merge " + record_alias[i],
+                              ns, "Mean", save_path="../results/", ylim=1)
+        else:
+            ANOVA_with_graph(
+                # [[np.array(g["merge_test_score"])[:, :3].flatten() for g in gs],
+                #  [np.array(g["merge_test_score"])[:, 3:].flatten() for g in gs]],
+                [[np.array(g[record_names[i]]).flatten() for g in gs]],
+                "Merge " + record_alias[i],
+                ns, "Mean",
+                save_path="../results/",
+                # subtitles=["Short sets\nNo. question = 3", "Long sets\nNo. question = 2"],
+                anova_two_way=anova_two_way,
+                tukey_two_way=tukey_two_way,
+                colors=["limegreen", "gold"]
+            )
+
+
 
 # filter based on extracted and parsed group pre-test data, u+/-std
 def pre_test_cross_groups_filter(gs, ns, filter_mul=1):
