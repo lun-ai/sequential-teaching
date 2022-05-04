@@ -1,6 +1,0 @@
-img_path,input,encryption
-materials/merge_sort/imgs/merge_test/merge_test_ex_1.png,"[1, 2, 5, 3, 4]","['C', 'A', 'B', 'D', 'E']"
-materials/merge_sort/imgs/merge_test/merge_test_ex_2.png,"[3, 4, 5, 1, 2]","['B', 'A', 'C', 'D', 'E']"
-materials/merge_sort/imgs/merge_test/merge_test_ex_3.png,"[3, 5, 6, 1, 2, 4]","['A', 'C', 'B', 'F', 'D', 'E']"
-materials/merge_sort/imgs/merge_test/merge_test_ex_4.png,"[2, 3, 5, 7, 1, 4, 6]","['D', 'B', 'C', 'A', 'E', 'G', 'F']"
-materials/merge_sort/imgs/merge_test/merge_test_ex_5.png,"[1, 4, 5, 6, 2, 3, 7]","['C', 'A', 'B', 'D', 'E', 'G', 'F']"
