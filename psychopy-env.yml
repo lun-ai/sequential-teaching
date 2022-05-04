@@ -1,0 +1,17 @@
+name: psychopy
+channels:
+- conda-forge
+dependencies:
+- python=3.6
+- psychopy
+- pip
+- pip:
+# need to manually install psychotoolbox to prevent compatibility issues
+# use webkit2gtk-4.0 as an alternative to webkitgtk
+# follow steps to create conda env for psychopy installation from https://www.psychopy.org/download.html
+#  - psychtoolbox==3.0.16
+  - pygame
+  - pyo
+  - pyparallel; platform_system != "Windows"
+  - SoundFile; platform_system == "Windows"
+  - websocket_client
