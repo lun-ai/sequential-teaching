@@ -11,3 +11,4 @@ data/**/*.png
 test.*
 data/test/records_json/csv/*
 data/test/records_json/*.json
+data/participant_codes/*

@@ -8,7 +8,6 @@ import pandas as pd
 import statsmodels.api as sm
 from scipy import stats
 from statsmodels.formula.api import ols
-from statsmodels.graphics.api import interaction_plot
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
 from eval_trace import find_similar_algo, sim_algo_hist, alphabetical_labels
@@ -212,68 +211,66 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
                 sort_train_comparison_2.append(sort_train_comparison[i])
 
                 # exclude sort answers with trace matching provided algorithm abbreviations
-                if "BS" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["BS"] != 0:
+                if trace_similarity_analysis:
                     for k in range(len(test_alg_estimates[i])):
                         estimate = test_alg_estimates[i][k]
-                        if len(estimate) != 0 and len(
-                                list(filter(lambda x: x[0] in ["bubsort_front", "bubsort_back"], estimate))) == len(
-                            estimate):
-                            s[k] = np.NaN
-                            rt[k] = np.NaN
-                            sc[k] = np.NaN
-                if "IS" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["IS"] != 0:
-                    for k in range(len(test_alg_estimates[i])):
-                        estimate = test_alg_estimates[i][k]
-                        if len(estimate) != 0 and len(
-                                list(filter(lambda x: x[0] in ["isort_front", "isort_back"], estimate))) == len(
-                            estimate):
-                            s[k] = np.NaN
-                            rt[k] = np.NaN
-                            sc[k] = np.NaN
-                if "QS" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["QS"] != 0:
-                    for k in range(len(test_alg_estimates[i])):
-                        estimate = test_alg_estimates[i][k]
-                        if len(estimate) != 0 and len(
-                                list(filter(lambda x: x[0] in ["qsort_first", "qsort_mid", "qsort_last"],
-                                            estimate))) == len(
-                            estimate):
-                            s[k] = np.NaN
-                            rt[k] = np.NaN
-                            sc[k] = np.NaN
-                if "DS" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["DS"] != 0:
-                    for k in range(len(test_alg_estimates[i])):
-                        estimate = test_alg_estimates[i][k]
-                        if len(estimate) != 0 and len(
-                                list(filter(lambda x: x[0] in ["dict_sort_front", "dict_sort_mid", "dict_sort_back"],
-                                            estimate))) == len(
-                            estimate):
-                            s[k] = np.NaN
-                            rt[k] = np.NaN
-                            sc[k] = np.NaN
-                if "MS" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["MS"] != 0:
-                    for k in range(len(test_alg_estimates[i])):
-                        estimate = test_alg_estimates[i][k]
-                        if len(estimate) != 0 and len(
-                                list(filter(lambda x: x[0] in ["botup_msort_left_front", "botup_msort_right_front",
-                                                               "botup_msort_left_back",
-                                                               "botup_msort_right_back", "msort_left_front",
-                                                               "msort_left_back",
-                                                               "msort_left_back",
-                                                               "msort_right_back"],
-                                            estimate))) == len(
-                            estimate):
-                            s[k] = np.NaN
-                            rt[k] = np.NaN
-                            sc[k] = np.NaN
-                if "Hybrid" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["Hybrid"] != 0:
-                    for k in range(len(test_alg_estimates[i])):
-                        estimate = test_alg_estimates[i][k]
-                        if len(estimate) != 0 and len(
-                                list(filter(lambda x: x[0] in ["is_front_hybrid_ds_front", "is_front_hybrid_ds_mid",
-                                                               "is_front_hybrid_ds_back", "is_back_hybrid_ds_front",
-                                                               "is_back_hybrid_ds_mid", "is_back_hybrid_ds_back"],
-                                            estimate))) == len(
-                            estimate):
+                        if len(estimate) != 0:
+                            if len(list(filter(lambda x: x[0] in ["bubsort_front", "bubsort_back"], estimate))) == len(
+                                    estimate):
+                                if "BS" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["BS"] != 0:
+                                    s[k] = np.NaN
+                                    rt[k] = np.NaN
+                                    sc[k] = np.NaN
+                                continue
+                            elif len(list(filter(lambda x: x[0] in ["isort_front", "isort_back"], estimate))) == len(
+                                    estimate):
+                                if "IS" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["IS"] != 0:
+                                    s[k] = np.NaN
+                                    rt[k] = np.NaN
+                                    sc[k] = np.NaN
+                                continue
+                            elif len(list(filter(lambda x: x[0] in ["qsort_first", "qsort_mid", "qsort_last"],
+                                                 estimate))) == len(estimate):
+                                if "QS" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["QS"] != 0:
+                                    s[k] = np.NaN
+                                    rt[k] = np.NaN
+                                    sc[k] = np.NaN
+                                continue
+                            elif len(list(filter(
+                                    lambda x: x[0] in ["dict_sort_front", "dict_sort_mid", "dict_sort_back"],
+                                    estimate))) == len(estimate):
+                                if "DS" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["DS"] != 0:
+                                    s[k] = np.NaN
+                                    rt[k] = np.NaN
+                                    sc[k] = np.NaN
+                                continue
+                            elif len(list(filter(lambda x: x[0] in ["botup_msort_left_front", "botup_msort_right_front",
+                                                                    "botup_msort_left_back",
+                                                                    "botup_msort_right_back", "msort_left_front",
+                                                                    "msort_left_back",
+                                                                    "msort_left_back",
+                                                                    "msort_right_back"],
+                                                 estimate))) == len(estimate):
+                                if "MS" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["MS"] != 0:
+                                    s[k] = np.NaN
+                                    rt[k] = np.NaN
+                                    sc[k] = np.NaN
+                                continue
+                            elif len(
+                                    list(filter(lambda x: '_'.join(x[0].split('_')[:-1]) in ["is_front_hybrid_ds_front",
+                                                                                             "is_front_hybrid_ds_mid",
+                                                                                             "is_front_hybrid_ds_back",
+                                                                                             "is_back_hybrid_ds_front",
+                                                                                             "is_back_hybrid_ds_mid",
+                                                                                             "is_back_hybrid_ds_back"],
+                                                estimate))) == len(estimate):
+                                if "Hybrid" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])[
+                                    "Hybrid"] != 0:
+                                    s[k] = np.NaN
+                                    rt[k] = np.NaN
+                                    sc[k] = np.NaN
+                                continue
+                        if "Other" in exclude_algorithms and sim_algo_hist(test_alg_estimates[i])["Other"] != 0:
                             s[k] = np.NaN
                             rt[k] = np.NaN
                             sc[k] = np.NaN
@@ -358,52 +355,55 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
 
     # process and save trace analysis histograms/bar graphs
     if trace_similarity_analysis and similarity_graphs:
-        if len(paths) == 1:
-            g_l = {"Group1": "c1", "Group2": "c2", "Group3": "c3", "Group4": "c4", "with_bg": "bg"}
+        graph_path = ""
+        g_l = {"Group1": "g1", "Group2": "g2", "Group3": "g3", "Group4": "g4", "with_bg": "bg"}
+        key = paths[0].split("/")[-2] if g_l[paths[0].split("/")[-2]] != "bg" else paths[0].split("/")[-3]
+        if save_graphs:
+            graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path) + key + "/" + g_l[
+                key] + "_train_"
+        # draw_sim_hist_graph(
+        #     # [np.array(train_alg_hist_2)[:, :3], np.array(train_alg_hist_2)[:, 3]],
+        #     [np.array(train_alg_hist_2)],
+        #     "No. application in training" + " (" + key + ")", "Frequency", save_path=graph_path,
+        #     # subtitles=["Length of set < 10\nNo. question = 3",
+        #     #            "Length of set = 10\nNo. question = 1"],
+        #     alpha=chi_sq_significance)
+        draw_sim_mean_graph(
+            # [np.array(train_alg_hist_2)[:, :3], np.array(train_alg_hist_2)[:, 3]],
+            [np.array(train_alg_hist_2)],
+            "No. application in training" + " (" + key + ")", "Mean",
+            # subtitles=["Length of set < 10\nNo. question = 3",
+            #            "Length of set = 10\nNo. question = 1"],
+            save_path=graph_path, alpha=chi_sq_significance, ylim=0.5)
+        if not train_only_trace:
             key = paths[0].split("/")[-2] if g_l[paths[0].split("/")[-2]] != "bg" else paths[0].split("/")[-3]
             if save_graphs:
                 graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path) + key + "/" + g_l[
-                    key] + "_train_"
-        else:
-            key = "Multiple groups"
-            if save_graphs:
-                graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path)
-        draw_sim_hist_graph([np.array(train_alg_hist_2)[:, :3], np.array(train_alg_hist_2)[:, 3]],
-                            "No. application in training" + " (" + key + ")", "Frequency", save_path=graph_path,
-                            subtitles=["Length of set < 10\nNo. question = 3", "Length of set = 10\nNo. question = 1"],
-                            alpha=chi_sq_significance)
-        if not train_only_trace:
-            if len(paths) == 1:
-                key = paths[0].split("/")[-2] if g_l[paths[0].split("/")[-2]] != "bg" else paths[0].split("/")[-3]
-                if save_graphs:
-                    graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path) + key + "/" + g_l[
-                        key] + "_test_"
-            else:
-                key = "Multiple groups"
-                if save_graphs:
-                    graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path)
-            draw_sim_hist_graph(
-                # [np.array(test_alg_hist_2)[:, :5], np.array(test_alg_hist_2)[:, 5:]],
-                [np.array(test_alg_hist_2)],
-                "No. application in performance test" + " (" + key + ")", "Frequency",
-                save_path=graph_path,
-                # subtitles=["Length of set < 10\nNo. question = 5",
-                #            "Length of set = 10\nNo. question = 3"],
-                alpha=chi_sq_significance, ylim=40)
+                    key] + "_test_"
+            # draw_sim_hist_graph(
+            #     # [np.array(test_alg_hist_2)[:, :5], np.array(test_alg_hist_2)[:, 5:]],
+            #     [np.array(test_alg_hist_2)],
+            #     "No. application in performance test" + " (" + key + ")", "Frequency",
+            #     save_path=graph_path,
+            #     # subtitles=["Length of set < 10\nNo. question = 5",
+            #     #            "Length of set = 10\nNo. question = 3"],
+            #     alpha=chi_sq_significance, ylim=40)
             draw_sim_mean_graph(
                 # [np.array(test_alg_hist_2)[:, :5], np.array(test_alg_hist_2)[:, 5:]],
                 [np.array(test_alg_hist_2)],
                 "No. application in performance test" + " (" + key + ")", "Mean",
                 # subtitles=["Length of set < 10\nNo. question = 5",
                 #            "Length of set = 10\nNo. question = 3"],
-                save_path=graph_path, alpha=chi_sq_significance, ylim=3)
+                save_path=graph_path, alpha=chi_sq_significance, ylim=0.5)
 
     res = {"merge_test_score": merge_test_score_2,
-           "merge_test_time": merge_test_response_time_2,
            "merge_test_comp": merge_test_comparison_2,
+           "merge_test_time": merge_test_response_time_2,
+           "sort_test_score": sort_test_score_2,
            "sort_test_comp": sort_test_comparison_2,
            "sort_test_time": sort_test_response_time_2,
-           "sort_test_score": sort_test_score_2,
+           "sort_train_score": sort_train_score_2,
+           "sort_train_comp": sort_train_comparison_2,
            "pre_test": pre_test_2,
            "free_res": free_res_2,
            "demographic": demographic_raw}
@@ -720,15 +720,18 @@ def string2pairlist(str):
 
 # print ANOVA and Tukey statistics and generate line graphs for one-way/two-way ANOVA
 def ANOVA_with_graph(gs, title, xlabel, ylabel, save_path="", subtitles=[], anova_two_way=True,
-                     tukey_two_way=True, colors=["orangered", "deepskyblue"]):
+                     tukey_two_way=True, colors=["orangered", "deepskyblue"], one_way_iv="CO"):
     linestyle = ["-", '--']
     makers = ["D", "^"]
     fig, ax = plt.subplots(ncols=len(gs))
     fig.tight_layout(pad=3.0)
+    plt.yticks(fontsize=12)
+    iv_name = title.split()[-1].replace("(", "").replace(")", "")
+    print(title.split())
 
     for i in range(len(gs)):
 
-        x = [0, 1]
+        x = [0.2, 0.8]
         if len(gs) == 1:
             axis = ax
         else:
@@ -736,74 +739,96 @@ def ANOVA_with_graph(gs, title, xlabel, ylabel, save_path="", subtitles=[], anov
             if subtitles:
                 axis.set_title(subtitles[i], y=0.95, pad=-14)
 
+        axis.set_xticks(x)
+
         iv_1_f = [*["MS"] * len(gs[i][0]), *["MS"] * len(gs[i][1]),
                   *["SM"] * len(gs[i][2]), *["SM"] * len(gs[i][3])]
         iv_2_f = [*["WEX"] * len(gs[i][0]), *["WOEX"] * len(gs[i][1]),
                   *["WEX"] * len(gs[i][2]), *["WOEX"] * len(gs[i][3])]
         dv_f = [*gs[i][0], *gs[i][1], *gs[i][2], *gs[i][3]]
         df = pd.DataFrame({"CO": iv_1_f,
-                           title.split()[-1]: dv_f})
+                           "EX": iv_2_f,
+                           iv_name: dv_f})
         if anova_two_way:
-            df["EX"] = iv_2_f
-            format = title.split()[-1] + ' ~ C(CO) + C(EX) + C(CO):C(EX)'
+            format = iv_name + ' ~ C(CO) + C(EX) + C(CO):C(EX)'
             if tukey_two_way:
                 df["Combination"] = df["CO"] + " / " + df["EX"]
             else:
-                df["Combination"] = df["CO"]
+                df["Combination"] = df[one_way_iv]
 
             means = [np.nanmean(g) for g in gs[i]]
             print("mean - " + str(means))
             stderr = [np.nanstd(g) / np.sqrt(len(list(filter(lambda x: not np.isnan(x), g)))) for g in gs[i]]
             print("stderr - " + str(stderr))
 
-            fig = interaction_plot(
-                df["CO"],
-                df["EX"],
-                dv_f,
-                colors=colors,
-                linestyles=linestyle,
-                markers=makers,
-                legendloc="lower right",
-                ylabel=title.split()[-1],
-                ax=axis
-            )
-            axis.errorbar(x, [means[0], means[2]], yerr=[stderr[0], stderr[2]], ls='none', color=colors[0])
-            axis.errorbar(x, [means[1], means[3]], yerr=[stderr[1], stderr[3]], ls='none', color=colors[1])
+            # fig = interaction_plot(
+            #     df["CO"],
+            #     df["EX"],
+            #     dv_f,
+            #     colors=colors,
+            #     linestyles=linestyle,
+            #     markers=makers,
+            #     legendloc="lower right",
+            #     ax=axis
+            # )
+            axis.errorbar(x, [means[0], means[2]], yerr=[stderr[0], stderr[2]], linestyle=linestyle[0],
+                          color=colors[0])
+            axis.errorbar(x, [means[1], means[3]], yerr=[stderr[1], stderr[3]], linestyle=linestyle[1],
+                          color=colors[1])
+            axis.set_ylabel("", fontsize=14)
+            axis.legend(["WEX", "WOEX"], loc="best", title="EX", fontsize=14, title_fontsize=14)
+            axis.text(x[0], means[0] - stderr[0] - 0.03, "Group 1 (MS/WEX)", ha='center', va='bottom', fontsize=12)
+            axis.text(x[0], means[1] + stderr[1] + 0.03, "Group 2 (MS/WOEX)", ha='center', va='top', fontsize=12)
+            axis.text(x[1], means[2] + stderr[2] + 0.03, "Group 3 (SM/WEX)", ha='center', va='top', fontsize=12)
+            axis.text(x[1], means[3] - stderr[3] - 0.03, "Group 4 (SM/WOEX)", ha='center', va='bottom', fontsize=12)
+            axis.set_xticklabels(["MS", "SM"], fontsize=14)
+            axis.set_xlabel("CO", fontsize=16)
 
         else:
-            format = title.split()[-1] + ' ~ C(CO)'
-            df["Combination"] = df["CO"]
+            format = iv_name + ' ~ C(' + one_way_iv + ')'
+            df["Combination"] = df[one_way_iv]
 
-            means = [np.nanmean([*gs[i][0], *gs[i][1]]), np.nanmean([*gs[i][2], *gs[i][3]])]
-            print("mean - " + str(means))
-            stderr = [np.nanstd([*gs[i][0], *gs[i][1]]) / np.sqrt(
-                len(list(filter(lambda x: not np.isnan(x), [*gs[i][0], *gs[i][1]])))),
-                      np.nanstd([*gs[i][2], *gs[i][3]]) / np.sqrt(
-                          len(list(filter(lambda x: not np.isnan(x), [*gs[i][2], *gs[i][3]]))))]
-            print("stderr - " + str(stderr))
-
-            axis.legend(["WEX", "WOEX"], loc="lower right")
-            axis.set_ylabel(ylabel)
+            if one_way_iv == "CO":
+                axis.set_xticklabels(["MS", "SM"], fontsize=14)
+                axis.set_xlabel("CO", fontsize=16)
+                means = [np.nanmean([*gs[i][0], *gs[i][1]]), np.nanmean([*gs[i][2], *gs[i][3]])]
+                print("mean - " + str(means))
+                stderr = [np.nanstd([*gs[i][0], *gs[i][1]]) / np.sqrt(
+                    len(list(filter(lambda x: not np.isnan(x), [*gs[i][0], *gs[i][1]])))),
+                          np.nanstd([*gs[i][2], *gs[i][3]]) / np.sqrt(
+                              len(list(filter(lambda x: not np.isnan(x), [*gs[i][2], *gs[i][3]]))))]
+                print("stderr - " + str(stderr))
+            else:
+                axis.set_xticklabels(["WEX", "WOEX"], fontsize=14)
+                axis.set_xlabel(one_way_iv, fontsize=16)
+                means = [np.nanmean([*gs[i][0], *gs[i][2]]), np.nanmean([*gs[i][1], *gs[i][3]])]
+                print("mean - " + str(means))
+                stderr = [np.nanstd([*gs[i][0], *gs[i][2]]) / np.sqrt(
+                    len(list(filter(lambda x: not np.isnan(x), [*gs[i][0], *gs[i][2]])))),
+                          np.nanstd([*gs[i][1], *gs[i][3]]) / np.sqrt(
+                              len(list(filter(lambda x: not np.isnan(x), [*gs[i][1], *gs[i][3]]))))]
+                print("stderr - " + str(stderr))
+            axis.set_ylabel("", fontsize=14)
             axis.errorbar(x, means, color=colors[i], yerr=stderr, linestyle=linestyle[i], marker=makers[i])
+            axis.text(x[0], means[0] + stderr[0] + 0.03, "Group 1 (MS/WEX) \nand\nGroup 3 (SM/WEX)", ha='center', va='top', fontsize=12)
+            axis.text(x[1], means[1] + stderr[1] + 0.03, "Group 2 (MS/WOEX) \nand\nGroup 4 (SM/WOEX)", ha='center', va='top', fontsize=12)
 
-        axis.set_xticks(x)
-        axis.set_xlim([-0.5, 1.5])
-        axis.set_xticklabels(["MS", "SM"])
-        axis.set_ylim([max(0.0, min(means) - 5 * max(stderr)), max(means) + 5 * max(stderr)])
-        fig.suptitle(title, y=0.95, fontsize=16)
+
+        axis.set_xlim([-0.2, 1.2])
+        axis.set_ylim([max(0.0, min(means) - 3 * max(stderr)), max(means) + 3 * max(stderr)])
+        fig.suptitle("", y=0.95, fontsize=16)
         fig.set_size_inches(6.5, 6.5)
 
         model = ols(format, data=df).fit()
         ANOVA = sm.stats.anova_lm(model, typ=2)
         print(ANOVA)
-
         tukey = pairwise_tukeyhsd(endog=dv_f, groups=df["Combination"], alpha=0.05)
         print(tukey)
 
     if save_path == "":
         plt.show()
     else:
-        plt.savefig(save_path + "ANOVA_" + ylabel + "_" + title + "_" + "_".join(xlabel) + ".png")
+        plt.savefig(save_path + "ANOVA_" + ylabel + "_" + title.replace(" ", "_") + "_" + "_".join(xlabel) + ".png")
 
 
 # perform multiple pairwise t-tests and print statistics
@@ -839,7 +864,6 @@ def t_test_with_graph(groups, title, xlabel, ylabel, save_path="", subtitles=[],
         axis.set_xticklabels(xlabel)
         axis.set_yticks(np.linspace(0, ylim, 11, True))
         axis.set_ylabel(ylabel)
-        axis.set_title(subtitles[i], y=0.95, pad=-14)
         fig.suptitle(title, fontsize=16)
 
     if save_path == "":
@@ -850,7 +874,8 @@ def t_test_with_graph(groups, title, xlabel, ylabel, save_path="", subtitles=[],
 
 # generate histogram following trace similarity analysis
 def draw_sim_hist_graph(groups, title, ylabel, save_path="", ylim=16, subtitles=[], alpha=0.05):
-    colors = ["lightseagreen", "mediumturquoise", "lightblue", "paleturquoise", "lightskyblue", "darkcyan"]
+    colors = ["paleturquoise", "darkslategrey", "paleturquoise", "darkslategrey", "darkslategrey", "darkslategrey",
+              "paleturquoise"]
     fig, ax = plt.subplots(ncols=len(groups))
     fig.tight_layout(pad=3.0)
     for i in range(len(groups)):
@@ -867,7 +892,7 @@ def draw_sim_hist_graph(groups, title, ylabel, save_path="", ylim=16, subtitles=
         for j in range(len(list(hist.keys()))):
             hist_v[keys[j]] = (hist[keys[j]], colors[j])
 
-        hist_v = dict(sorted(hist_v.items(), key=lambda item: item[1][0]))
+        hist_v = dict(sorted(hist_v.items(), key=lambda item: -item[1][0]))
 
         values = [float(v) for v in np.array(list(hist_v.values()))[:, 0]]
         colors = [c for c in np.array(list(hist_v.values()))[:, 1]]
@@ -888,8 +913,8 @@ def draw_sim_hist_graph(groups, title, ylabel, save_path="", ylim=16, subtitles=
 
 
 # generate bar graphs following trace similarity analysis
-def draw_sim_mean_graph(groups, title, ylabel, save_path="", ylim=9, subtitles=[], alpha=0.05):
-    colors = ["salmon", "tomato", "darksalmon", "coral", "orangered", "firebrick"]
+def draw_sim_mean_graph(groups, title, ylabel, save_path="", subtitles=[], alpha=0.05, ylim=1):
+    colors = ["salmon", "darkred", "salmon", "darkred", "darkred", "darkred", "salmon"]
     fig, ax = plt.subplots(ncols=len(groups))
     fig.tight_layout(pad=3.0)
 
@@ -898,11 +923,12 @@ def draw_sim_mean_graph(groups, title, ylabel, save_path="", ylim=9, subtitles=[
         hist_c = []
         for j in range(len(groups[i])):
             hist = sim_algo_hist(groups[i][j])
-            hist_d.append(list(hist.values()))
+            hist_d.append(
+                [v / len(groups[i][0]) for v in list(hist.values())])
             hist_c = list(hist.keys())
 
-        mean = np.mean(hist_d, axis=0)
-        std = np.std(hist_d, axis=0) / np.sqrt(np.size(hist_d))
+        means = np.mean(hist_d, axis=0)
+        stderr = np.std(hist_d, axis=0) / np.sqrt(np.size(hist_d))
 
         if len(groups) == 1:
             axis = ax
@@ -911,21 +937,29 @@ def draw_sim_mean_graph(groups, title, ylabel, save_path="", ylim=9, subtitles=[
 
         hist_v = {}
         for j in range(len(hist_c)):
-            hist_v[hist_c[j]] = (mean[j], std[j], colors[j])
+            hist_v[hist_c[j]] = (means[j], stderr[j], colors[j])
 
-        hist_v = dict(sorted(hist_v.items(), key=lambda item: item[1][0]))
+        hist_v = dict(sorted(hist_v.items(), key=lambda item: -item[1][0]))
         values = [float(v) for v in np.array(list(hist_v.values()))[:, 0]]
         colors = [c for c in np.array(list(hist_v.values()))[:, 2]]
-        std = [float(s) for s in np.array(list(hist_v.values()))[:, 1]]
+        stderr = [float(s) for s in np.array(list(hist_v.values()))[:, 1]]
 
-        axis.bar(range(len(hist_c)), values, color=colors, yerr=std)
+        axis.bar(range(len(hist_c)), values, color=colors)
         axis.set_xticks(range(len(hist_c)))
-        axis.set_xticklabels(hist_v.keys())
-        axis.set_yticks(range(ylim))
-        axis.set_ylabel(ylabel)
+        axis.set_xticklabels(hist_v.keys(), fontsize=15)
+        axis.set_ylim([0.0, ylim])
+        axis.set_ylabel("")
+        for rect in axis.patches:
+            height = rect.get_height()
+            ypos = rect.get_y() + height + 0.03
+            axis.text(rect.get_x() + rect.get_width() / 2., ypos,
+                      str(round(height, 3)), ha='center', va='bottom')
         if subtitles:
             axis.set_title(subtitles[i], y=0.95, pad=-14)
-        fig.suptitle(title, fontsize=16)
+        fig.suptitle("", fontsize=16)
+
+        print(title + ": " + " & ".join(
+            [str(round(hist_v[key][0], 3)) for key in ["BS", "DS", "IS", "MS", "QS", "Hybrid", "Other"]]))
 
     if save_path == "":
         plt.show()
@@ -976,21 +1010,25 @@ def eval_alg_sim(method, input, train_only=False, verbose=False, significance=0.
                     len(i))))
 
         for u in range(len(i)):
-            candidates, _, _, _ = find_similar_algo(method, i[u], l[u], r[u], verbose=verbose, alpha=significance)
+            candidates, _, _, _ = find_similar_algo(method, i[u], l[u], r[u],
+                                                    label_order=[("alphabetical", alphabetical_labels)],
+                                                    verbose=verbose, alpha=significance)
             algs.append(candidates)
 
     return train_algs, algs
 
 
 def sort_statistical_tests(gs, ns, test="ANOVA", anova_two_way=True, tukey_two_way=True, record_names=[],
-                            record_alias=[]):
+                           record_alias=[],
+                           one_way_iv="CO"):
     print("\n>>> Sort Statistics")
     for i in range(len(record_names)):
         print(">>> " + record_names[i])
         if test == "ttest":
             t_test_with_graph(
-                [[np.array(g[record_names[i]])[:, :5].flatten() for g in gs],
-                 [np.array(g[record_names[i]])[:, 5:].flatten() for g in gs]],
+                # [[np.array(g[record_names[i]])[:, :5].flatten() for g in gs],
+                #  [np.array(g[record_names[i]])[:, 5:].flatten() for g in gs]],
+                [[list_concat(g[record_names[i]]) for g in gs]],
                 "Sort " + record_alias[i],
                 ns, "Mean", subtitles=["Length of set < 10\nNo. question = 5", "Length of set = 10\nNo. question = 3"],
                 save_path="../results/", ylim=1)
@@ -1003,13 +1041,13 @@ def sort_statistical_tests(gs, ns, test="ANOVA", anova_two_way=True, tukey_two_w
                 ns, "Mean", save_path="../results/",
                 subtitles=["Short sets\nNo. question = 5", "Long sets\nNo. question = 3"],
                 anova_two_way=anova_two_way,
-                tukey_two_way=tukey_two_way
+                tukey_two_way=tukey_two_way,
+                one_way_iv=one_way_iv
             )
 
 
-
 def merge_statistical_tests(gs, ns, test="ANOVA", anova_two_way=True, tukey_two_way=True, record_names=[],
-                            record_alias=[]):
+                            record_alias=[], one_way_iv="CO"):
     print("\n>>> Merge Statistics")
     for i in range(len(record_names)):
         print(">>> " + record_names[i])
@@ -1028,9 +1066,9 @@ def merge_statistical_tests(gs, ns, test="ANOVA", anova_two_way=True, tukey_two_
                 # subtitles=["Short sets\nNo. question = 3", "Long sets\nNo. question = 2"],
                 anova_two_way=anova_two_way,
                 tukey_two_way=tukey_two_way,
-                colors=["limegreen", "gold"]
+                colors=["limegreen", "gold"],
+                one_way_iv=one_way_iv
             )
-
 
 
 # filter based on extracted and parsed group pre-test data, u+/-std
@@ -1071,6 +1109,8 @@ def pre_test_cross_groups_filter(gs, ns, filter_mul=1):
         print(">>> demographic age: " + str(table[0]))
         print(">>> demographic education: " + str(table[1]))
         print(">>> demographic gender: " + str(table[2]))
+        print(">>> groups mean: " + str(cross_groups_mean))
+        print(">>> groups std: " + str(cross_groups_std))
 
     return gs, cross_groups_mean, cross_groups_std
 

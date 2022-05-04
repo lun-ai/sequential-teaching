@@ -1060,6 +1060,7 @@ def check_sort_output(input, comps, compsN):
     if compsN != len(comps):
         raise AssertionError("Algorithm trace does not match number of comparisons!")
 
+
 # collection of all algorithms
 ALL_ALGORITHMS = [botup_msort_left_front, botup_msort_right_front, botup_msort_left_back, botup_msort_right_back,
                   qsort_first, qsort_mid, qsort_last, isort_front, isort_back,
@@ -1068,6 +1069,7 @@ ALL_ALGORITHMS = [botup_msort_left_front, botup_msort_right_front, botup_msort_l
                   bubsort_front, bubsort_back]
 HYBRID_ALGORITHMS = [is_front_hybrid_ds_front, is_front_hybrid_ds_mid, is_front_hybrid_ds_back, is_back_hybrid_ds_front,
                      is_back_hybrid_ds_mid, is_back_hybrid_ds_back]
+
 
 # for testing algorithm implementations
 def recur_gen_list(test_lists, nrange):
@@ -1121,4 +1123,6 @@ def test_all_alg(size, nrange):
                         failed_tests[alg.__name__] = [l]
                     else:
                         failed_tests[alg.__name__].append(l)
-    print(failed_tests)
+    if failed_tests.keys():
+        print(failed_tests)
+        raise Exception("Algorithm correctness test failed: check implementation of sort algorithms and their outputs!")

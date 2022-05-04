@@ -111,7 +111,7 @@ def comp_long_subseq_sim(machine_trace, human_trace, labels, conse=False, verbos
 
 
 def longest_common_subseq(t1, t2, m, n):
-    stack = [[None] * (n + 1) for i in range(m + 1)]
+    stack = [[Nz] * (n + 1) for i in range(m + 1)]
     for i in range(m + 1):
         for j in range(n + 1):
             if i == 0 or j == 0:
@@ -140,53 +140,8 @@ def longest_common_subseq_conse(t1, t2, m, n):
     return curr_max
 
 
-# perform chi square test first
-# Null hypothesis: the two variables (human/machine, comparison) are independent (change of one variable does not change the other)
-# Alternative hypothesis: the two variables are not independent (change of one variable may result in the other changing)
-def comp_chi2_similar(machine_trace, human_trace, labels, alpha=0.05, verbose=True):
-    # trace is a pool of samples of comparison drawn each being one of the NxN type
-    vm, vh = vectorise_trace(machine_trace, human_trace, labels)
-    vms, vhs = vectorise_trace_seq(machine_trace, human_trace, labels)
-
-    # perform chi^2 test
-    for k in list(vm.keys()) and list(vh.keys()):
-        # strip 0 values in both vectors
-        if vm[k] == 0 and vh[k] == 0:
-            del vm[k]
-            del vh[k]
-    t, p, _, expected = stats.chi2_contingency([list(vm.values()), list(vh.values())])
-
-    if verbose:
-        print("\nmachine trace dict: %s" % (vm))
-        print("human trace dict: %s" % (vh))
-        print("machine trace vector: %s" % (vm.values()))
-        print("human trace vector : %s" % (vh.values()))
-        print("chi square test: %s, p-value: %s" % (t, p))
-
-    # if machine trace and human trace are similar, which means accept null hypothesis
-    if p < alpha:
-        rm = []
-        rh = []
-        for k in list(vms.keys()) and list(vhs.keys()):
-            # obtain common comparisons
-            if vms[k] != 0 and vhs[k] != 0:
-                rm.append(vms[k])
-                rh.append(vhs[k])
-        # perform spearman rank analysis off the intersection
-        res = stats.spearmanr(rm, rh)
-
-        if verbose:
-            print("machine trace rank: %s" % (rm))
-            print("human trace rank: %s" % (rh))
-            print("spearman rank coeff score: %s, p-value: %s\n" % (res[0], res[1]))
-
-        return True, res
-
-    return False, [t, p]
-
-
-def comp_chi2_similar_2x2(machine_trace, human_trace, labels, alpha=0.05, verbose=True):
-    # trace is a pool of samples of comparison drawn each being one of the NxN type
+def comp_contingency_similar_2x2(machine_trace, human_trace, labels, alpha=0.05, verbose=True):
+    # trace is set of number pairs in NxN
     vm, vh = vectorise_trace(machine_trace, human_trace, labels)
     vms, vhs = vectorise_trace_seq(machine_trace, human_trace, labels)
 
@@ -194,7 +149,7 @@ def comp_chi2_similar_2x2(machine_trace, human_trace, labels, alpha=0.05, verbos
 
     # perform chi^2 test
     for k in list(vm.keys()) and list(vh.keys()):
-        # strip 0 values in both vectors
+        # count 1's in both vectors
         if vm[k] == 0 and vh[k] == 0:
             contingency_table[0][0] += 1
         elif vm[k] == 0 and vh[k] == 1:
@@ -212,11 +167,12 @@ def comp_chi2_similar_2x2(machine_trace, human_trace, labels, alpha=0.05, verbos
         contingency_table[1][1] += 1
 
     t, p, _, expected = stats.chi2_contingency(contingency_table)
+    # t, p = stats.fisher_exact(contingency_table)
 
     if verbose:
         print("\n" + str(machine_trace))
         print(human_trace)
-        print("machine trace size: %s" % (len(machine_trace)))
+        print("machine trace size\: %s" % (len(machine_trace)))
         print("machine trace dict: %s" % (vm))
         print("human trace dict: %s" % (vh))
         print("machine trace vector: %s" % (vm.values()))
@@ -241,13 +197,26 @@ def comp_chi2_similar_2x2(machine_trace, human_trace, labels, alpha=0.05, verbos
             print("human trace rank dict: %s" % (rh))
             print("spearman rank coeff score: %s, p-value: %s\n" % (res[0], res[1]))
 
-        return True, res
+        if res[0] >= 0 and res[1] < 0.025:
+            if verbose:
+                print("spearman rank coeff positive, return result")
+            return True, res
 
     return False, [t, p]
 
 
 def get_similarity(method, algorithm, input, labels, ht, verbose=True, alpha=0.05):
     mt = get_machine_trace(algorithm, input, labels, verbose=verbose)
+
+    if verbose:
+        s_mt = str(mt)
+        s_ht = str(ht)
+        for l in labels:
+            s_mt = s_mt.replace(l, str(input[labels.index(l)]))
+            s_ht = s_ht.replace(l, str(input[labels.index(l)]))
+        print(s_mt.replace('\'', ''))
+        print(s_ht.replace('\'', ''))
+
     r = get_similarity_aux(ht, mt, labels, method, verbose=verbose, alpha=alpha)
     return r
 
@@ -265,10 +234,8 @@ def get_similarity_aux(ht, mt, labels, method, verbose=False, alpha=0.05):
         return comp_long_subseq_sim(mt, ht, labels, verbose=verbose, conse=True), len(mt)
     elif method == "weighted_lcs_conse":
         return comp_long_subseq_sim(mt, ht, labels, verbose=verbose, conse=True) / len(mt), len(mt)
-    elif method == "chi_sq":
-        return comp_chi2_similar(mt, ht, labels, verbose=verbose, alpha=alpha), len(mt)
     elif method == "chi_sq_2x2":
-        return comp_chi2_similar_2x2(mt, ht, labels, verbose=verbose, alpha=alpha), len(mt)
+        return comp_contingency_similar_2x2(mt, ht, labels, verbose=verbose, alpha=alpha), len(mt)
 
     else:
         print("Method not implemented")
@@ -276,7 +243,7 @@ def get_similarity_aux(ht, mt, labels, method, verbose=False, alpha=0.05):
 
 
 def sim_algo_hist(candidates_lists):
-    categories = {"BS": 0, "DS": 0, "IS": 0, "MS": 0, "QS": 0, "Hybrid": 0}
+    categories = {"BS": 0, "DS": 0, "IS": 0, "MS": 0, "QS": 0, "Hybrid": 0, "Other": 0}
 
     for c in candidates_lists:
         if c != []:
@@ -301,7 +268,10 @@ def sim_algo_hist(candidates_lists):
                                                                  "is_back_hybrid_ds_mid", "is_back_hybrid_ds_back"],
                     c))) == len(c):
                 categories["Hybrid"] += 1
-
+            else:
+                categories["Other"] += 1
+        else:
+            categories["Other"] += 1
     return categories
 
 
@@ -389,13 +359,11 @@ def find_similar_algo(method, input, labels, ht, label_order=[], verbose=False, 
 #                    ['J', 'B'], ['J', 'G'], ['J', 'H'], ['J', 'I'], ['H', 'I'], ['F', 'I']],
 #                   label_order=[("alphabetical", alphabetical_labels)], verbose=True)
 
-# against machine trace (botup_msort_left_front)
+# against machine trace (qsort_mid)
 # find_similar_algo("chi_sq_2x2", [2, 9, 8, 10, 4, 5, 6, 7, 3, 1], ['E', 'I', 'H', 'F', 'B', 'G', 'C', 'J', 'D', 'A'],
-#                   [['B', 'A'], ['C', 'D'], ['F', 'E'], ['H', 'G'], ['I', 'J'], ['D', 'A'], ['B', 'D'], ['C', 'B'],
-#                    ['G', 'E'], ['F', 'G'], ['F', 'H'], ['E', 'A'], ['D', 'E'], ['G', 'D'], ['G', 'B'], ['C', 'G'],
-#                    ['H', 'C'], ['J', 'A'], ['J', 'E'], ['J', 'D'], ['J', 'B'], ['J', 'G'], ['J', 'C'], ['H', 'J'],
-#                    ['I', 'H'], ['F', 'I']],
-#                   label_order=[("alphabetical", alphabetical_labels)], verbose=True)
+#                   [['E', 'G'], ['G', 'I'], ['G', 'H'], ['G', 'F'], ['B', 'G'], ['G', 'C'], ['G', 'J'], ['D', 'G'],
+#                    ['A', 'G'], ['E', 'D'], ['D', 'B'], ['A', 'D'], ['A', 'E'], ['I', 'F'], ['H', 'F'], ['C', 'F'],
+#                    ['J', 'F'], ['C', 'I'], ['C', 'H'], ['C', 'J'], ['H', 'I'], ['J', 'H']], verbose=True)
 
 # against machine trace (dict_sort_front)
 # find_similar_algo("chi_sq_2x2", [2, 9, 8, 10, 4, 5, 6, 7, 3, 1], ['E', 'I', 'H', 'F', 'B', 'G', 'C', 'J', 'D', 'A'],
@@ -404,3 +372,8 @@ def find_similar_algo(method, input, labels, ht, label_order=[], verbose=False, 
 #                    ['H', 'B'], ['H', 'G'], ['H', 'C'], ['I', 'A'], ['I', 'F'], ['I', 'B'], ['I', 'C'], ['I', 'H'],
 #                    ['J', 'A'], ['J', 'F'], ['J', 'G'], ['J', 'H'], ['J', 'C']],
 #                   label_order=[("alphabetical", alphabetical_labels)], verbose=True)
+
+find_similar_algo("chi_sq_2x2", [4, 6, 5, 2, 3, 1], ['E', 'B', 'G', 'C', 'D', 'A'],
+                  [['E', 'B'], ['G', 'C'], ['C', 'E'], ['E', 'G'], ['G', 'B'], ['D', 'A'], ['A', 'C'], ['C', 'D'],
+                   ['D', 'E']],
+                  label_order=[("alphabetical", alphabetical_labels)], verbose=True)
