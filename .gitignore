@@ -4,10 +4,11 @@ __pycache__/
 env/
 node_modules
 /*.png
-data/**/*.png
 /*.csv
 *browsers.js
 *lastrun.py
 test.*
-data
 *.py
+data/test/records_json/csv/*
+data/test/records_json/*.json
+data/participant_codes/*
