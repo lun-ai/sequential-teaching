@@ -373,7 +373,8 @@ def find_similar_algo(method, input, labels, ht, label_order=[], verbose=False, 
 #                    ['J', 'A'], ['J', 'F'], ['J', 'G'], ['J', 'H'], ['J', 'C']],
 #                   label_order=[("alphabetical", alphabetical_labels)], verbose=True)
 
-find_similar_algo("chi_sq_2x2", [4, 6, 5, 2, 3, 1], ['E', 'B', 'G', 'C', 'D', 'A'],
-                  [['E', 'B'], ['G', 'C'], ['C', 'E'], ['E', 'G'], ['G', 'B'], ['D', 'A'], ['A', 'C'], ['C', 'D'],
-                   ['D', 'E']],
-                  label_order=[("alphabetical", alphabetical_labels)], verbose=True)
+# against machine trace (botup_msort_left_front)
+# find_similar_algo("chi_sq_2x2", [4, 6, 5, 2, 3, 1], ['E', 'B', 'G', 'C', 'D', 'A'],
+#                   [['E', 'B'], ['G', 'C'], ['C', 'E'], ['E', 'G'], ['G', 'B'], ['D', 'A'], ['A', 'C'], ['C', 'D'],
+#                    ['D', 'E']],
+#                   label_order=[("alphabetical", alphabetical_labels)], verbose=True)
