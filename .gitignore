@@ -1,14 +1,4 @@
-interface/lib/
 .idea/
 __pycache__/
 env/
 node_modules
-/*.png
-/*.csv
-*browsers.js
-*lastrun.py
-test.*
-*.py
-data/test/records_json/csv/*
-data/test/records_json/*.json
-data/participant_codes/*

@@ -1,5 +1,6 @@
-:- ['database/merge_sort/generate_train_ex.pl'].
+:- ['metagol/database/generate_train_ex.pl'].
 
+% same merge training examples provided to humans in AMT empirical study
 examples(
     merge,
     [
@@ -10,6 +11,7 @@ examples(
     ]
 ).
 
+% same merge sort training examples provided to humans in AMT empirical study
 examples(
     merge_sort,
     [
@@ -21,6 +23,7 @@ examples(
     ]
 ).
 
+% convert examples into states with composite objects
 get_examples(merge,Pos1/Neg1):-
     examples(merge,Pos/Neg),
     get_examples(merge,Pos/Neg,Pos1/Neg1).

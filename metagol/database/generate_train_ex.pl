@@ -1,7 +1,7 @@
 :- use_module(library(random)).
 :- use_module(library(system)).
 
-:-['auxiliary.pl'].
+:-['metagol/auxiliary.pl'].
 
 get_examples(Name,Pos/Neg,Pos1/Neg1):-
     findall(E1,(member(E,Pos),get_examples_aux(Name,E,E1)),Pos1),
@@ -72,13 +72,13 @@ create_test_set(TaskName):-
     forall(member(E,Test2),test_neg_merge_sort(E)),
     length(Test1,L1),
     length(Test2,L2),
-    atomic_list_concat(['database/merge_sort/',TaskName,
+    atomic_list_concat(['metagol/database/',TaskName,
                         '_test_examples_1000'],Name),
     save_data(Name,[test-Test3]),
     format('% test set for ~w created and saved\n% pos size: ~w; neg size: ~w\n',[TaskName,L1,L2]).
 
 load_test_set(TaskName,TestEx):-
-    atomic_list_concat(['database/merge_sort/',TaskName,
+    atomic_list_concat(['metagol/database/',TaskName,
                         '_test_examples_1000'],Name),
     load_data(Name,[test-TestEx]),
     format('% test set for ~w loaded\n',[TaskName]).
