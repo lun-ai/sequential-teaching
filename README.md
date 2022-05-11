@@ -1,4 +1,4 @@
-# Materials and interface for explanatory effects of sequential teaching
+# Explanatory machine learning for sequential human teaching
 
 ## Summary
 In the presence work, we explore the explanatory effects of curriculum order and the presence of machine-learned explanations for sequential problem-solving.
@@ -23,7 +23,7 @@ swipl -s metagol/experiments/merge_sort/learn.pl -g learn_merge_sort_in_episodes
 ### Amazon Mechanical Turk data
 All AMT data in csv format can be found in folder data/test/amt
 
-### setup processing of data from paths to experiment / trials groups
+### Setup processing of data from paths to experiment / trials groups
 data/analysis/analysis.py
 
 Requirements:
@@ -91,7 +91,7 @@ merge_statistical_tests([g1, g2, g3, g4], ["G1", "G2", "G3", "G4"], anova_two_wa
 ```
 Lines graphs with standard error are saved. 
 
-### functions for processing data from raw records
+### Functions for processing data from raw records
 data/analysis/process_data.py
 
 Implemented functions:
@@ -100,10 +100,10 @@ Implemented functions:
 - Convert of raw data for further processing and statistical tests
 - produce graphs from human sort trace analysis and meta-results
 
-### evaluation of the closest matches of given human sort trace
+### Evaluation of the closest matches of given human sort trace
 data/analysis/eval_trace.py
 
-### a list of sorting algorithm implementations
+### List of sorting algorithm implementations
 data/analysis/sort_algorithms.py
 
 Implemented sorting algorithms:
