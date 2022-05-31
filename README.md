@@ -54,7 +54,7 @@ Requirements:
 
 ### Setup processing of data from paths to experiment / trials groups
 
-data/analysis/analysis.py
+data/scripts/analysis.py
 
 Implemented functions:
 
@@ -73,7 +73,7 @@ however, implemented ways to visualise these results (see below).
 
 ### Functions for processing data from raw records
 
-data/analysis/process_data.py
+data/scripts/process_data.py
 
 Implemented functions:
 
@@ -84,11 +84,11 @@ Implemented functions:
 
 ### Evaluation of the closest matches of given human sort trace
 
-data/analysis/eval_trace.py
+data/scripts/eval_trace.py
 
 ### List of sorting algorithm implementations
 
-data/analysis/sort_algorithms.py
+data/scripts/sort_algorithms.py
 
 Implemented sorting algorithms:
 
@@ -102,7 +102,7 @@ Implemented sorting algorithms:
 
 ### Example
 
-To generate merge/sort performance test comparisons between groups, in data/analysis/analysis.py, uncomment (if
+To generate merge/sort performance test comparisons between groups, in data/scripts/analysis.py, uncomment (if
 commented) the following lines:
 
 ```python
