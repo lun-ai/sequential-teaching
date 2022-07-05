@@ -204,5 +204,5 @@ reply as soon as available.
 A. Cropper and S.H. Muggleton. Learning efficient logical robot strategies involving composable objects. In Proceedings
 of the 24th International Joint Conference Artificial Intelligence (IJCAI 2015), pages 3423-3429. IJCAI, 2015.
 
-Peirce, J. W., Gray, J. R., Simpson, S., MacAskill, M. R., Höchenberger, R., Sogo, H., Kastman, E., Lindeløv, J. (2019).
-PsychoPy2: experiments in behavior made easy. Behavior Research Methods. 10.3758/s13428-018-01193-y
+J. W. Peirce et al. PsychoPy2: Experiments in behavior made easy. Behav Res 51, 195–203 (2019)
+. DOI: https://doi.org/10.3758/s13428-018-01193-y
