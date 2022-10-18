@@ -183,6 +183,7 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
     test_alg_hist_2 = []
     pre_test_2 = []
     free_res_2 = []
+    filenames_2 = []
 
     if filter_name == "pre_test" or (pre_test_mean_acc != 0.0 and pre_test_std_acc != 0.0):
 
@@ -202,6 +203,7 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
 
                 pre_test_2.append(pre_test[i])
                 free_res_2.append(free_res[i])
+                filenames_2.append(filenames[i])
 
                 s = sort_test_score[i]
                 sc = sort_test_comparison[i]
@@ -309,6 +311,7 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
 
         pre_test_2 = pre_test
         free_res_2 = free_res
+        filenames_2 = filenames
 
         sort_train_score_2 = sort_train_score
         sort_train_response_time_2 = sort_train_response_time
@@ -396,7 +399,8 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
                 #            "Length of set = 10\nNo. question = 3"],
                 save_path=graph_path, alpha=chi_sq_significance, ylim=0.5)
 
-    res = {"merge_test_score": merge_test_score_2,
+    res = {"record_names": filenames_2,
+           "merge_test_score": merge_test_score_2,
            "merge_test_comp": merge_test_comparison_2,
            "merge_test_time": merge_test_response_time_2,
            "sort_test_score": sort_test_score_2,
@@ -605,11 +609,17 @@ def parseStringLine(line):
 
 
 def save_free_ans_csv(filepath, data):
-    header = ["Has CS degree", "Has learned sort alg", "Used sort alg", "Strategy for sorting short number sets",
+    # header = ["Has CS degree", "Has learned sort alg", "Used sort alg", "Strategy for sorting short number sets",
+    #           "Strategy for sorting long sets", "Strategy of using blue star (merge) for purple diamond (sort)",
+    #           "Blue star strategy 1 vs. blue star strategy 2"]
+    # rows = [[d[0][0], d[0][1], d[0][2], d[1][0].lower(), d[1][1].lower(), d[1][2].lower(), d[1][3].lower()] for d in
+    #         data["free_res"]]
+    header = ["Strategy for sorting short number sets",
               "Strategy for sorting long sets", "Strategy of using blue star (merge) for purple diamond (sort)",
               "Blue star strategy 1 vs. blue star strategy 2"]
-    rows = [[d[0][1], d[0][1], d[0][2], d[1][0].lower(), d[1][1].lower(), d[1][2].lower(), d[1][3].lower()] for d in
-            data]
+    d = data["free_res"]
+    rows = [[data["record_names"][dn].replace(".csv", ""), d[dn][1][0], d[dn][1][1], d[dn][1][2], d[dn][1][3]] for dn in
+            range(len(d))]
     with open(filepath, "w", newline='') as file:
         writer = csv.writer(file)
         writer.writerow(header)
@@ -1122,7 +1132,7 @@ def list_concat(ls):
     return res
 
 
-def parse_textual_response_corpus(gs, ns):
+def parse_textual_response_corpus(gs):
     for i in range(len(gs)):
         group_corpus = {}
         for data in gs[i]["free_res"]:

@@ -1,9 +1,9 @@
 from process_data import *
 
 # Flags
-TRACE_ANALYSIS_ON = True
-SHOW_RECORDS = False
-PRODUCE_SIMILARITY_GRAPHS = True
+TRACE_ANALYSIS_ON = False
+SHOW_RECORDS = True
+PRODUCE_SIMILARITY_GRAPHS = False
 VERBOSE = False
 ALPHA = 0.025
 groups_mean = 0.6544112903225806
@@ -150,17 +150,25 @@ g4 = extract_from_CSV([DATA_DIR_AMT_GROUP4], trace_analysis_method='chi_sq_2x2',
 
 ########################################################################################################################
 # perform statistical tests on test data
-sort_statistical_tests([g1, g2, g3, g4], ["G1", "G2", "G3", "G4"], anova_two_way=True, tukey_two_way=False,
-                       record_names=["sort_test_score", "sort_test_comp", "sort_test_time"],
-                       record_alias=["Performance Test Score (PS)", "Performance Test No. Comparisons",
-                                     "Performance Test Response Time"]
-                       )
-merge_statistical_tests([g1, g2, g3, g4], ["G1", "G2", "G3", "G4"], anova_two_way=False, tukey_two_way=False,
-                        record_names=["merge_test_score", "merge_test_comp", "merge_test_time"],
-                        record_alias=["Performance Test Score (PS)", "Performance Test No. Comparisons",
-                                      "Performance Test Response Time"],
-                        one_way_iv="EX"
-                        )
+# sort_statistical_tests([g1, g2, g3, g4], ["G1", "G2", "G3", "G4"], anova_two_way=True, tukey_two_way=False,
+#                        record_names=["sort_test_score", "sort_test_comp", "sort_test_time"],
+#                        record_alias=["Performance Test Score (PS)", "Performance Test No. Comparisons",
+#                                      "Performance Test Response Time"]
+#                        )
+# merge_statistical_tests([g1, g2, g3, g4], ["G1", "G2", "G3", "G4"], anova_two_way=False, tukey_two_way=False,
+#                         record_names=["merge_test_score", "merge_test_comp", "merge_test_time"],
+#                         record_alias=["Performance Test Score (PS)", "Performance Test No. Comparisons",
+#                                       "Performance Test Response Time"],
+#                         one_way_iv="EX"
+#                         )
+
+########################################################################################################################
+# Extract textual responses
+save_free_ans_csv("../results/amt/g1_text_res.txt", g1)
+save_free_ans_csv("../results/amt/g2_text_res.txt", g2)
+save_free_ans_csv("../results/amt/g3_text_res.txt", g3)
+save_free_ans_csv("../results/amt/g4_text_res.txt", g4)
+
 
 ########################################################################################################################
 # perform statistical tests on performance comparing specific human strategies to the rest
