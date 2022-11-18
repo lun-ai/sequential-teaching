@@ -369,6 +369,7 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
            "sort_test_time": sort_test_response_time_2,
            "sort_train_score": sort_train_score_2,
            "sort_train_comp": sort_train_comparison_2,
+           "sort_train_time": sort_train_response_time_2,
            "pre_test": pre_test_2,
            "free_res": free_res_2,
            "demographic": demographic_entries,
@@ -1161,135 +1162,6 @@ def parse_textual_response_corpus(gs):
                 for w in words:
                     group_corpus[w] += 1
 
-
-def chi2_alg_dist_diff(train_alg_dist_aggr, test_alg_dist_aggr, alpha=0.05, category_wise=True):
-    # Run Chi^2 tests on training and performance algorithm frequency data
-    # Takes input training and test algorithm distribution histograms
-    # Iteratively selects one category and run Chi^2 against the rest (2x2 contingency table)
-    # Or run Chi^2 on 2x6 contingency table
-    for i in range(len(train_alg_dist_aggr)):
-        if category_wise:
-            for c in ALG_CATAGORIES:
-                contingency_table = [
-                    [train_alg_dist_aggr[i][c], (sum(train_alg_dist_aggr[i].values()) - train_alg_dist_aggr[i][c])],
-                    [test_alg_dist_aggr[i][c], sum(test_alg_dist_aggr[i].values()) - test_alg_dist_aggr[i][c]]]
-                t, p, _, e = stats.chi2_contingency(contingency_table)
-                print("contingency_table for alg %s: %s" % (c, contingency_table))
-                print("chi square test for alg %s - alpha %s: %s, p-value: %s" % (c, alpha, t, p))
-        else:
-            contingency_table = [list(train_alg_dist_aggr[i].values()), list(test_alg_dist_aggr[i].values())]
-            t, p, _, e = stats.chi2_contingency(contingency_table)
-            print("contingency_table: %s" % (contingency_table))
-            print("chi square test - alpha %s: %s, p-value: %s" % (alpha, t, p))
-
-
-def ANOVA_alg_dist_diff(train_alg_dist, test_alg_dist):
-    # Run ANOVA on algorithm categories and stage against proportion/frequency data
-    # Individual variable - algorithm: BS, DS, IS, MS, QS, Hybrid, Other
-    #                     - Stage: training, performance test
-    # Dependent variable - Proportion or Frequency
-
-    train_alg_dist_trans = np.array(train_alg_dist).T
-    test_alg_dist_trans = np.array(test_alg_dist).T
-
-    iv_1_f = [*["BS"] * len(train_alg_dist_trans[0]),
-              *["DS"] * len(train_alg_dist_trans[1]),
-              *["IS"] * len(train_alg_dist_trans[2]),
-              *["MS"] * len(train_alg_dist_trans[3]),
-              *["QS"] * len(train_alg_dist_trans[4]),
-              *["Hybrid"] * len(train_alg_dist_trans[5]),
-              *["Other"] * len(train_alg_dist_trans[6])]
-    iv_2_f = [*["Train"] * len(iv_1_f), *["Test"] * len(iv_1_f)]
-    iv_1_f = [*iv_1_f * 2]
-    train_alg_dist_concat = np.concatenate(train_alg_dist_trans)
-    test_alg_dist_concat = np.concatenate(test_alg_dist_trans)
-    dv_f = [*train_alg_dist_concat, *test_alg_dist_concat]
-    df = pd.DataFrame({
-        "ALG": iv_1_f,
-        "STAGE": iv_2_f,
-        "FREQ": dv_f
-    })
-
-    format = "FREQ ~ C(ALG) + C(STAGE) + C(ALG):C(STAGE)"
-    model = ols(format, data=df).fit()
-    ANOVA = sm.stats.anova_lm(model, typ=2)
-    print(ANOVA)
-    df["Combination"] = df["ALG"] + " / " + df["STAGE"]
-    tukey = pairwise_tukeyhsd(endog=dv_f, groups=df["Combination"], alpha=0.05)
-    print(tukey)
-
-
-def ttest_alg_dist_diff(train_alg_dist, test_alg_dist):
-    # run Welch's ttest (no equal population variance assumption) between
-    # training and performance
-    train_alg_dist_trans = np.array(train_alg_dist).T / sum(train_alg_dist[0])
-    test_alg_dist_trans = np.array(test_alg_dist).T / sum(test_alg_dist[0])
-    print(">>>   Category   |    Train Mean    |    Test Mean    |   t   |  p-value ")
-    for i in range(len(ALG_CATAGORIES)):
-        ttest = stats.ttest_ind(train_alg_dist_trans[i], test_alg_dist_trans[i], equal_var=True)
-        print("   %s   |     %s     |    %s    | %s | %s " % (
-            ALG_CATAGORIES[i],
-            round(np.mean(train_alg_dist_trans[i]), 5),
-            round(np.mean(test_alg_dist_trans[i]), 5),
-            round(ttest[0], 6),
-            round(ttest[1], 6) / 2))
-
-# def mcnemar_alg_dist_diff(train_alg_dist, test_alg_dist):
-#     train_alg_dist_trans = np.array(train_alg_dist).T
-#     test_alg_dist_trans = np.array(test_alg_dist).T
-#
-#     train_eff_algs = np.array([train_alg_dist_trans[1],
-#                                train_alg_dist_trans[3],
-#                                train_alg_dist_trans[4],
-#                                train_alg_dist_trans[5]])
-#     train_others_algs = np.array([train_alg_dist_trans[0],
-#                                   train_alg_dist_trans[2],
-#                                   train_alg_dist_trans[6]])
-#     test_eff_algs = np.array([test_alg_dist_trans[1],
-#                               test_alg_dist_trans[3],
-#                               test_alg_dist_trans[4],
-#                               test_alg_dist_trans[5]])
-#     test_others_algs = np.array([test_alg_dist_trans[0],
-#                                  test_alg_dist_trans[2],
-#                                  test_alg_dist_trans[6]])
-#
-#     contingency_table = np.array([[np.sum(train_eff_algs), np.sum(train_others_algs)],
-#                                   [np.sum(test_eff_algs), np.sum(test_others_algs)]])
-#     print("Contingency table: " + str(contingency_table))
-#     test = statsmodels.stats.contingency_tables.mcnemar(contingency_table)
-#     print(test)
-
-def mcnemar_par_eff_diff(train_alg_dist, test_alg_dist):
-    # Perform McNemar's t-test on misalignment between algorithm efficiency in training and test
-    # Algorithms: ["BS", "DS", "IS", "MS", "QS", "Hybrid", "Other"]
-    # table: [train efficient, train inefficient] x [test efficient, test inefficient]
-
-    contingency_table = [[0, 0],
-                         [0, 0]]
-
-    for i in range(len(train_alg_dist)):
-        t = train_alg_dist[i]
-        if sum([t[0], t[2]]) < sum([t[1], t[3], t[4], t[5]]):
-            u = test_alg_dist[i]
-            if sum([u[0], u[2]]) < sum([u[1], u[3], u[4], u[5]]):
-                # print("%s %s - %s" % (t, u, "(train eff, test eff)"))
-                contingency_table[0][0] += 1
-            else:
-                # print("%s %s - %s" % (t, u, "(train eff, test ineff)"))
-                contingency_table[1][0] += 1
-        else:
-            u = test_alg_dist[i]
-            if sum([u[0], u[2]]) < sum([u[1], u[3], u[4], u[5]]):
-                # print("%s %s - %s" % (t, u, "(train ineff, test eff)"))
-                contingency_table[0][1] += 1
-            else:
-                # print("%s %s - %s" % (t, u, "(train ineff, test ineff)"))
-                contingency_table[1][1] += 1
-
-    print("Contingency table: " + str(contingency_table))
-    test = statsmodels.stats.contingency_tables.mcnemar(contingency_table)
-    print(test)
-
 def mcnemar_par_alg_diff(train_alg_dist, test_alg_dist):
     # Perform McNemar's t-test on misalignment between algorithm application in training and test
     # Algorithms: ["BS", "DS", "IS", "MS", "QS", "Hybrid", "Other"]
@@ -1321,42 +1193,3 @@ def mcnemar_par_alg_diff(train_alg_dist, test_alg_dist):
         print("%s Contingency table: %s" % (algs[i], str(contingency_table)))
         test = statsmodels.stats.contingency_tables.mcnemar(contingency_table, correction=False)
         print(test)
-
-def Z_trans_ANOVA_alg_dist_diff(train_alg_dist, test_alg_dist):
-
-    train_alg_dist_trans = np.array(train_alg_dist).T
-    test_alg_dist_trans = np.array(test_alg_dist).T
-
-    z_train = [stats.zscore(t) for t in train_alg_dist_trans]
-    for t in z_train:
-        t[np.isnan(t)] = 0
-    z_test = [stats.zscore(t) for t in test_alg_dist_trans]
-
-    iv_1_f = [*["BS"] * len(z_train[0]),
-              *["DS"] * len(z_train[1]),
-              *["IS"] * len(z_train[2]),
-              *["MS"] * len(z_train[3]),
-              *["QS"] * len(z_train[4]),
-              *["Hybrid"] * len(z_train[5]),
-              *["Other"] * len(z_train[6])]
-    iv_2_f = [*["Train"] * len(iv_1_f), *["Test"] * len(iv_1_f)]
-    iv_1_f = [*iv_1_f * 2]
-    train_alg_dist_concat = np.concatenate(z_train)
-    test_alg_dist_concat = np.concatenate(z_test)
-    print(train_alg_dist_concat)
-    print(test_alg_dist_concat)
-
-    dv_f = [*train_alg_dist_concat, *test_alg_dist_concat]
-    df = pd.DataFrame({
-        "ALG": iv_1_f,
-        "STAGE": iv_2_f,
-        "Z": dv_f
-    })
-
-    format = "Z ~ C(STAGE)"
-    model = ols(format, data=df).fit()
-    ANOVA = sm.stats.anova_lm(model, typ=2)
-    print(ANOVA)
-    df["Combination"] = df["STAGE"]
-    tukey = pairwise_tukeyhsd(endog=dv_f, groups=df["Combination"], alpha=0.05)
-    print(tukey)
