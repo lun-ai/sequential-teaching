@@ -54,9 +54,7 @@ Requirements:
 
 ### Setup processing of data from paths to experiment / trials groups
 
-data/scripts/analysis.py
-
-Implemented functions:
+The following functions have been implemented in data/scripts/analysis.py:
 
 - extract data from records
 - human sorting trace analysis (chi-sq followed by spearman rank) against various machine traces including:
