@@ -1,11 +1,13 @@
 import csv
 from os import listdir
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+import statsmodels.stats.contingency_tables
 from scipy import stats
 from statsmodels.formula.api import ols
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
@@ -13,13 +15,15 @@ from statsmodels.stats.multicomp import pairwise_tukeyhsd
 from eval_trace import find_similar_algo, sim_algo_hist, alphabetical_labels
 
 DEFAULT_GRAPH_PATH = "../results/test_1/"
+ALG_CATAGORIES = ["BS", "DS", "IS", "MS", "QS", "Hybrid", "Other"]
+matplotlib.use('svg')
 
 
 def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=False, show_records=True,
-                     similarity_graphs=False,
+                     draw_similarity_graphs=False,
                      trace_analysis_method="chi_sq_2x2", trace_similarity_analysis=False, exclude_algorithms=[],
                      filter_name="",
-                     verbose=False, save_graphs=False, chi_sq_significance=0.005, save_path="",
+                     verbose=False, save_similarity_graphs=False, chi_sq_significance=0.005, save_path="",
                      pre_test_mean_acc=0.0, pre_test_std_acc=0.0,
                      filter_std_multiplier=1):
     '''
@@ -31,7 +35,7 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
     :param is_visual_trace_enabled: produce visualisation of human trace
     :param train_only_trace: focus on human sorting traces from training only
     :param show_records: prints extracted data to terminal.
-    :param similarity_graphs: generate bar graphs showing machine algorithms
+    :param draw_similarity_graphs: generate bar graphs showing machine algorithms
                               that approximately match human sorting trace
     :param trace_analysis_method: which of the trace analysis methods should be used, e.g. "chi_sq_2x2", "chi_sq" for chi
                            square based and longest common subsequence "lcs"
@@ -40,7 +44,7 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
     :param pre_test_mean_acc: MaRs-IB pretest mean accuracy for pretest filtering, if already known
     :param pre_test_std_acc: MaRs-IB pretest std accuracy pretest filtering, if already known
     :param verbose: should be turned off if not for debugging and detailed execution info
-    :param save_graphs: should similarity graphs be save or rendered
+    :param save_similarity_graphs: should similarity graphs be save or rendered
     :param chi_sq_significance: significance level for chi sq tests in trace analysis
     :param save_path: base path for saving generated graphs, e.g. "../results/amt/"
     :param filter_name:
@@ -88,8 +92,8 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
     train_alg_estimates = []
     test_alg_estimates = []
 
-    demographic_raw = []
-    demographic = get_new_demographic_table()
+    demographic_entries = []
+    demographic_acc = get_new_demographic_table()
 
     for i in range(len(csv_list)):
 
@@ -98,7 +102,7 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
 
         print(">>>>>>>>>>>>>>> %s >>>>>>>>>>>>>>>" % (filenames[i]))
 
-        demographic_raw.append(extract_demographic(c))
+        demographic_entries.append(extract_demographic(c))
 
         p = extract_pre_test(c)
         pre_test.append(p)
@@ -195,7 +199,7 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
             if (pre_test_mean_acc - filter_std_multiplier * pre_test_std_acc) <= pre_test[i][2] <= (
                     pre_test_mean_acc + filter_std_multiplier * pre_test_std_acc):
 
-                demographic = format_demographic(demographic_raw[i], demographic)
+                demographic_acc = format_demographic(demographic_entries[i], demographic_acc)
 
                 merge_test_response_time_2.append(merge_test_response_time[i])
                 merge_test_comparison_2.append(merge_test_comparison[i])
@@ -300,7 +304,7 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
 
         # if no filtering is applied
         for i in range(len(pre_test)):
-            demographic = format_demographic(demographic_raw[i], demographic)
+            demographic_acc = format_demographic(demographic_entries[i], demographic_acc)
 
         merge_test_score_2 = merge_test_score
         merge_test_comparison_2 = merge_test_comparison
@@ -323,9 +327,9 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
     # print group general information
     print('>>> Run time: ' + str(exp_run_time))
     print(">>> partition size: " + str(len(sort_test_comparison_2)))
-    print(">>> demographic age: " + str(demographic[0]))
-    print(">>> demographic education: " + str(demographic[1]))
-    print(">>> demographic gender: " + str(demographic[2]))
+    print(">>> demographic age: " + str(demographic_acc[0]))
+    print(">>> demographic education: " + str(demographic_acc[1]))
+    print(">>> demographic gender: " + str(demographic_acc[2]))
     print('>>> MaRs-IB')
     print('MaRs-IB pre-test (correct answers/total answered/accuracy): ' + str(
         ['/'.join([str(i) for i in res]) for res in pre_test]))
@@ -356,49 +360,6 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
         print('mean sort test spearman rank score: %s' % mean_ss)
         print('mean sort No. comparison: %s' % mean_sc)
 
-    # process and save trace analysis histograms/bar graphs
-    if trace_similarity_analysis and similarity_graphs:
-        graph_path = ""
-        g_l = {"Group1": "g1", "Group2": "g2", "Group3": "g3", "Group4": "g4", "with_bg": "bg"}
-        key = paths[0].split("/")[-2] if g_l[paths[0].split("/")[-2]] != "bg" else paths[0].split("/")[-3]
-        if save_graphs:
-            graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path) + key + "/" + g_l[
-                key] + "_train_"
-        # draw_sim_hist_graph(
-        #     # [np.array(train_alg_hist_2)[:, :3], np.array(train_alg_hist_2)[:, 3]],
-        #     [np.array(train_alg_hist_2)],
-        #     "No. application in training" + " (" + key + ")", "Frequency", save_path=graph_path,
-        #     # subtitles=["Length of set < 10\nNo. question = 3",
-        #     #            "Length of set = 10\nNo. question = 1"],
-        #     alpha=chi_sq_significance)
-        draw_sim_mean_graph(
-            # [np.array(train_alg_hist_2)[:, :3], np.array(train_alg_hist_2)[:, 3]],
-            [np.array(train_alg_hist_2)],
-            "No. application in training" + " (" + key + ")", "Mean",
-            # subtitles=["Length of set < 10\nNo. question = 3",
-            #            "Length of set = 10\nNo. question = 1"],
-            save_path=graph_path, alpha=chi_sq_significance, ylim=0.5)
-        if not train_only_trace:
-            key = paths[0].split("/")[-2] if g_l[paths[0].split("/")[-2]] != "bg" else paths[0].split("/")[-3]
-            if save_graphs:
-                graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path) + key + "/" + g_l[
-                    key] + "_test_"
-            # draw_sim_hist_graph(
-            #     # [np.array(test_alg_hist_2)[:, :5], np.array(test_alg_hist_2)[:, 5:]],
-            #     [np.array(test_alg_hist_2)],
-            #     "No. application in performance test" + " (" + key + ")", "Frequency",
-            #     save_path=graph_path,
-            #     # subtitles=["Length of set < 10\nNo. question = 5",
-            #     #            "Length of set = 10\nNo. question = 3"],
-            #     alpha=chi_sq_significance, ylim=40)
-            draw_sim_mean_graph(
-                # [np.array(test_alg_hist_2)[:, :5], np.array(test_alg_hist_2)[:, 5:]],
-                [np.array(test_alg_hist_2)],
-                "No. application in performance test" + " (" + key + ")", "Mean",
-                # subtitles=["Length of set < 10\nNo. question = 5",
-                #            "Length of set = 10\nNo. question = 3"],
-                save_path=graph_path, alpha=chi_sq_significance, ylim=0.5)
-
     res = {"record_names": filenames_2,
            "merge_test_score": merge_test_score_2,
            "merge_test_comp": merge_test_comparison_2,
@@ -410,10 +371,57 @@ def extract_from_CSV(paths, is_visual_trace_enabled=False, train_only_trace=Fals
            "sort_train_comp": sort_train_comparison_2,
            "pre_test": pre_test_2,
            "free_res": free_res_2,
-           "demographic": demographic_raw}
+           "demographic": demographic_entries,
+           }
 
+    # process and save trace analysis histograms/bar graphs
     if trace_similarity_analysis:
-        res["test_alg"] = test_alg_hist_2
+        graph_path = ""
+        g_l = {"Group1": "g1", "Group2": "g2", "Group3": "g3", "Group4": "g4", "with_bg": "bg"}
+        key = paths[0].split("/")[-2] if g_l[paths[0].split("/")[-2]] != "bg" else paths[0].split("/")[-3]
+        if save_similarity_graphs:
+            graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path) + key + "/" + g_l[
+                key] + "_train_"
+        # draw_sim_hist_graph(
+        #     # [np.array(train_alg_hist_2)[:, :3], np.array(train_alg_hist_2)[:, 3]],
+        #     [np.array(train_alg_hist_2)],
+        #     "No. application in training" + " (" + key + ")", "Frequency", save_path=graph_path,
+        #     # subtitles=["Length of set < 10\nNo. question = 3",
+        #     #            "Length of set = 10\nNo. question = 1"],
+        #     alpha=chi_sq_significance)
+        train_alg_hist_aggr, train_alg_hist_3 = similarity_distribution(
+            # [np.array(train_alg_hist_2)[:, :3], np.array(train_alg_hist_2)[:, 3]],
+            [np.array(train_alg_hist_2)],
+            "No. application in training" + " (" + key + ")", "Mean",
+            # subtitles=["Length of set < 10\nNo. question = 3",
+            #            "Length of set = 10\nNo. question = 1"],
+            save_path=graph_path, alpha=chi_sq_significance, ylim=0.5, distribution_graph=draw_similarity_graphs)
+        print(">>> human sorting strategy distribution (Train): " + str(train_alg_hist_aggr))
+        res["train_alg"] = train_alg_hist_3
+
+        if not train_only_trace:
+            key = paths[0].split("/")[-2] if g_l[paths[0].split("/")[-2]] != "bg" else paths[0].split("/")[-3]
+            if save_similarity_graphs:
+                graph_path = (DEFAULT_GRAPH_PATH if save_path == "" else save_path) + key + "/" + g_l[
+                    key] + "_test_"
+            # draw_sim_hist_graph(
+            #     # [np.array(test_alg_hist_2)[:, :5], np.array(test_alg_hist_2)[:, 5:]],
+            #     [np.array(test_alg_hist_2)],
+            #     "No. application in performance test" + " (" + key + ")", "Frequency",
+            #     save_path=graph_path,
+            #     # subtitles=["Length of set < 10\nNo. question = 5",
+            #     #            "Length of set = 10\nNo. question = 3"],
+            #     alpha=chi_sq_significance, ylim=40)
+            test_alg_hist_aggr, test_alg_hist_3 = similarity_distribution(
+                # [np.array(test_alg_hist_2)[:, :5], np.array(test_alg_hist_2)[:, 5:]],
+                [np.array(test_alg_hist_2)],
+                "No. application in performance test" + " (" + key + ")", "Mean",
+                # subtitles=["Length of set < 10\nNo. question = 5",
+                #            "Length of set = 10\nNo. question = 3"],
+                save_path=graph_path, alpha=chi_sq_significance, ylim=0.5, distribution_graph=draw_similarity_graphs)
+            print(">>> human sorting strategy distribution (Test): " + str(test_alg_hist_aggr))
+            res["test_alg"] = test_alg_hist_3
+
     return res
 
 
@@ -737,7 +745,6 @@ def ANOVA_with_graph(gs, title, xlabel, ylabel, save_path="", subtitles=[], anov
     fig.tight_layout(pad=3.0)
     plt.yticks(fontsize=12)
     iv_name = title.split()[-1].replace("(", "").replace(")", "")
-    print(title.split())
 
     for i in range(len(gs)):
 
@@ -820,9 +827,10 @@ def ANOVA_with_graph(gs, title, xlabel, ylabel, save_path="", subtitles=[], anov
                 print("stderr - " + str(stderr))
             axis.set_ylabel("", fontsize=14)
             axis.errorbar(x, means, color=colors[i], yerr=stderr, linestyle=linestyle[i], marker=makers[i])
-            axis.text(x[0], means[0] + stderr[0] + 0.03, "Group 1 (MS/WEX) \nand\nGroup 3 (SM/WEX)", ha='center', va='top', fontsize=12)
-            axis.text(x[1], means[1] + stderr[1] + 0.03, "Group 2 (MS/WOEX) \nand\nGroup 4 (SM/WOEX)", ha='center', va='top', fontsize=12)
-
+            axis.text(x[0], means[0] + stderr[0] + 0.03, "Group 1 (MS/WEX) \nand\nGroup 3 (SM/WEX)", ha='center',
+                      va='top', fontsize=12)
+            axis.text(x[1], means[1] + stderr[1] + 0.03, "Group 2 (MS/WOEX) \nand\nGroup 4 (SM/WOEX)", ha='center',
+                      va='top', fontsize=12)
 
         axis.set_xlim([-0.2, 1.2])
         axis.set_ylim([max(0.0, min(means) - 3 * max(stderr)), max(means) + 3 * max(stderr)])
@@ -836,7 +844,7 @@ def ANOVA_with_graph(gs, title, xlabel, ylabel, save_path="", subtitles=[], anov
         print(tukey)
 
     if save_path == "":
-        plt.show()
+        plt.savefig(DEFAULT_GRAPH_PATH)
     else:
         plt.savefig(save_path + "ANOVA_" + ylabel + "_" + title.replace(" ", "_") + "_" + "_".join(xlabel) + ".png")
 
@@ -877,7 +885,7 @@ def t_test_with_graph(groups, title, xlabel, ylabel, save_path="", subtitles=[],
         fig.suptitle(title, fontsize=16)
 
     if save_path == "":
-        plt.show()
+        plt.savefig(DEFAULT_GRAPH_PATH)
     else:
         plt.savefig(save_path + "ttest_" + ylabel + "_" + title + "_" + "_".join(xlabel) + ".png")
 
@@ -923,58 +931,70 @@ def draw_sim_hist_graph(groups, title, ylabel, save_path="", ylim=16, subtitles=
 
 
 # generate bar graphs following trace similarity analysis
-def draw_sim_mean_graph(groups, title, ylabel, save_path="", subtitles=[], alpha=0.05, ylim=1):
+def similarity_distribution(groups, title, ylabel, save_path="", subtitles=[], alpha=0.05, ylim=1.0,
+                            distribution_graph=False):
     colors = ["salmon", "darkred", "salmon", "darkred", "darkred", "darkred", "salmon"]
     fig, ax = plt.subplots(ncols=len(groups))
     fig.tight_layout(pad=3.0)
+    all_dist_aggr = []
+    all_dist = []
 
     for i in range(len(groups)):
         hist_d = []
-        hist_c = []
+        hist_k = []
+        tmp = {"BS": 0, "DS": 0, "IS": 0, "MS": 0, "QS": 0, "Hybrid": 0, "Other": 0}
         for j in range(len(groups[i])):
             hist = sim_algo_hist(groups[i][j])
+            total_freq = sum(hist.values())
             hist_d.append(
-                [v / len(groups[i][0]) for v in list(hist.values())])
-            hist_c = list(hist.keys())
+                [v / total_freq for v in list(hist.values())])
+            hist_k = list(hist.keys())
+            for k in tmp.keys():
+                tmp[k] += hist[k]
+            all_dist.append(list(hist.values()))
+        all_dist_aggr.append(tmp)
 
         means = np.mean(hist_d, axis=0)
         stderr = np.std(hist_d, axis=0) / np.sqrt(np.size(hist_d))
 
-        if len(groups) == 1:
-            axis = ax
-        else:
-            axis = ax[i]
-
         hist_v = {}
-        for j in range(len(hist_c)):
-            hist_v[hist_c[j]] = (means[j], stderr[j], colors[j])
-
+        for j in range(len(hist_k)):
+            hist_v[hist_k[j]] = (means[j], stderr[j], colors[j])
         hist_v = dict(sorted(hist_v.items(), key=lambda item: -item[1][0]))
-        values = [float(v) for v in np.array(list(hist_v.values()))[:, 0]]
-        colors = [c for c in np.array(list(hist_v.values()))[:, 2]]
-        stderr = [float(s) for s in np.array(list(hist_v.values()))[:, 1]]
+        print(title + " mean: " + " & ".join(
+            [str(round(hist_v[key][0], 3)) for key in ALG_CATAGORIES]))
 
-        axis.bar(range(len(hist_c)), values, color=colors)
-        axis.set_xticks(range(len(hist_c)))
-        axis.set_xticklabels(hist_v.keys(), fontsize=15)
-        axis.set_ylim([0.0, ylim])
-        axis.set_ylabel("")
-        for rect in axis.patches:
-            height = rect.get_height()
-            ypos = rect.get_y() + height + 0.03
-            axis.text(rect.get_x() + rect.get_width() / 2., ypos,
-                      str(round(height, 3)), ha='center', va='bottom')
-        if subtitles:
-            axis.set_title(subtitles[i], y=0.95, pad=-14)
-        fig.suptitle("", fontsize=16)
+        if distribution_graph:
+            if len(groups) == 1:
+                axis = ax
+            else:
+                axis = ax[i]
 
-        print(title + ": " + " & ".join(
-            [str(round(hist_v[key][0], 3)) for key in ["BS", "DS", "IS", "MS", "QS", "Hybrid", "Other"]]))
+            values = [float(v) for v in np.array(list(hist_v.values()))[:, 0]]
+            colors = [c for c in np.array(list(hist_v.values()))[:, 2]]
+            stderr = [float(s) for s in np.array(list(hist_v.values()))[:, 1]]
 
-    if save_path == "":
-        plt.show()
-    else:
-        plt.savefig(save_path + "alg_mean_" + str(alpha) + ".png")
+            axis.bar(range(len(hist_k)), values, color=colors)
+            axis.set_xticks(range(len(hist_k)))
+            axis.set_xticklabels(hist_v.keys(), fontsize=15)
+            axis.set_ylim([0.0, ylim])
+            axis.set_ylabel("")
+            for rect in axis.patches:
+                height = rect.get_height()
+                ypos = rect.get_y() + height + 0.03
+                axis.text(rect.get_x() + rect.get_width() / 2., ypos,
+                          str(round(height, 3)), ha='center', va='bottom')
+            if subtitles:
+                axis.set_title(subtitles[i], y=0.95, pad=-14)
+            fig.suptitle("", fontsize=16)
+
+    if distribution_graph:
+        if save_path == "":
+            plt.show()
+        else:
+            plt.savefig(save_path + "alg_mean_" + str(alpha) + ".png")
+
+    return all_dist_aggr, all_dist
 
 
 # extract human sorting trace from raw records and perform trace analysis
@@ -1140,3 +1160,203 @@ def parse_textual_response_corpus(gs):
                 words = ans.replace(".", "").replace("'", "").replace(",", "").split(" ")
                 for w in words:
                     group_corpus[w] += 1
+
+
+def chi2_alg_dist_diff(train_alg_dist_aggr, test_alg_dist_aggr, alpha=0.05, category_wise=True):
+    # Run Chi^2 tests on training and performance algorithm frequency data
+    # Takes input training and test algorithm distribution histograms
+    # Iteratively selects one category and run Chi^2 against the rest (2x2 contingency table)
+    # Or run Chi^2 on 2x6 contingency table
+    for i in range(len(train_alg_dist_aggr)):
+        if category_wise:
+            for c in ALG_CATAGORIES:
+                contingency_table = [
+                    [train_alg_dist_aggr[i][c], (sum(train_alg_dist_aggr[i].values()) - train_alg_dist_aggr[i][c])],
+                    [test_alg_dist_aggr[i][c], sum(test_alg_dist_aggr[i].values()) - test_alg_dist_aggr[i][c]]]
+                t, p, _, e = stats.chi2_contingency(contingency_table)
+                print("contingency_table for alg %s: %s" % (c, contingency_table))
+                print("chi square test for alg %s - alpha %s: %s, p-value: %s" % (c, alpha, t, p))
+        else:
+            contingency_table = [list(train_alg_dist_aggr[i].values()), list(test_alg_dist_aggr[i].values())]
+            t, p, _, e = stats.chi2_contingency(contingency_table)
+            print("contingency_table: %s" % (contingency_table))
+            print("chi square test - alpha %s: %s, p-value: %s" % (alpha, t, p))
+
+
+def ANOVA_alg_dist_diff(train_alg_dist, test_alg_dist):
+    # Run ANOVA on algorithm categories and stage against proportion/frequency data
+    # Individual variable - algorithm: BS, DS, IS, MS, QS, Hybrid, Other
+    #                     - Stage: training, performance test
+    # Dependent variable - Proportion or Frequency
+
+    train_alg_dist_trans = np.array(train_alg_dist).T
+    test_alg_dist_trans = np.array(test_alg_dist).T
+
+    iv_1_f = [*["BS"] * len(train_alg_dist_trans[0]),
+              *["DS"] * len(train_alg_dist_trans[1]),
+              *["IS"] * len(train_alg_dist_trans[2]),
+              *["MS"] * len(train_alg_dist_trans[3]),
+              *["QS"] * len(train_alg_dist_trans[4]),
+              *["Hybrid"] * len(train_alg_dist_trans[5]),
+              *["Other"] * len(train_alg_dist_trans[6])]
+    iv_2_f = [*["Train"] * len(iv_1_f), *["Test"] * len(iv_1_f)]
+    iv_1_f = [*iv_1_f * 2]
+    train_alg_dist_concat = np.concatenate(train_alg_dist_trans)
+    test_alg_dist_concat = np.concatenate(test_alg_dist_trans)
+    dv_f = [*train_alg_dist_concat, *test_alg_dist_concat]
+    df = pd.DataFrame({
+        "ALG": iv_1_f,
+        "STAGE": iv_2_f,
+        "FREQ": dv_f
+    })
+
+    format = "FREQ ~ C(ALG) + C(STAGE) + C(ALG):C(STAGE)"
+    model = ols(format, data=df).fit()
+    ANOVA = sm.stats.anova_lm(model, typ=2)
+    print(ANOVA)
+    df["Combination"] = df["ALG"] + " / " + df["STAGE"]
+    tukey = pairwise_tukeyhsd(endog=dv_f, groups=df["Combination"], alpha=0.05)
+    print(tukey)
+
+
+def ttest_alg_dist_diff(train_alg_dist, test_alg_dist):
+    # run Welch's ttest (no equal population variance assumption) between
+    # training and performance
+    train_alg_dist_trans = np.array(train_alg_dist).T / sum(train_alg_dist[0])
+    test_alg_dist_trans = np.array(test_alg_dist).T / sum(test_alg_dist[0])
+    print(">>>   Category   |    Train Mean    |    Test Mean    |   t   |  p-value ")
+    for i in range(len(ALG_CATAGORIES)):
+        ttest = stats.ttest_ind(train_alg_dist_trans[i], test_alg_dist_trans[i], equal_var=True)
+        print("   %s   |     %s     |    %s    | %s | %s " % (
+            ALG_CATAGORIES[i],
+            round(np.mean(train_alg_dist_trans[i]), 5),
+            round(np.mean(test_alg_dist_trans[i]), 5),
+            round(ttest[0], 6),
+            round(ttest[1], 6) / 2))
+
+# def mcnemar_alg_dist_diff(train_alg_dist, test_alg_dist):
+#     train_alg_dist_trans = np.array(train_alg_dist).T
+#     test_alg_dist_trans = np.array(test_alg_dist).T
+#
+#     train_eff_algs = np.array([train_alg_dist_trans[1],
+#                                train_alg_dist_trans[3],
+#                                train_alg_dist_trans[4],
+#                                train_alg_dist_trans[5]])
+#     train_others_algs = np.array([train_alg_dist_trans[0],
+#                                   train_alg_dist_trans[2],
+#                                   train_alg_dist_trans[6]])
+#     test_eff_algs = np.array([test_alg_dist_trans[1],
+#                               test_alg_dist_trans[3],
+#                               test_alg_dist_trans[4],
+#                               test_alg_dist_trans[5]])
+#     test_others_algs = np.array([test_alg_dist_trans[0],
+#                                  test_alg_dist_trans[2],
+#                                  test_alg_dist_trans[6]])
+#
+#     contingency_table = np.array([[np.sum(train_eff_algs), np.sum(train_others_algs)],
+#                                   [np.sum(test_eff_algs), np.sum(test_others_algs)]])
+#     print("Contingency table: " + str(contingency_table))
+#     test = statsmodels.stats.contingency_tables.mcnemar(contingency_table)
+#     print(test)
+
+def mcnemar_par_eff_diff(train_alg_dist, test_alg_dist):
+    # Perform McNemar's t-test on misalignment between algorithm efficiency in training and test
+    # Algorithms: ["BS", "DS", "IS", "MS", "QS", "Hybrid", "Other"]
+    # table: [train efficient, train inefficient] x [test efficient, test inefficient]
+
+    contingency_table = [[0, 0],
+                         [0, 0]]
+
+    for i in range(len(train_alg_dist)):
+        t = train_alg_dist[i]
+        if sum([t[0], t[2]]) < sum([t[1], t[3], t[4], t[5]]):
+            u = test_alg_dist[i]
+            if sum([u[0], u[2]]) < sum([u[1], u[3], u[4], u[5]]):
+                # print("%s %s - %s" % (t, u, "(train eff, test eff)"))
+                contingency_table[0][0] += 1
+            else:
+                # print("%s %s - %s" % (t, u, "(train eff, test ineff)"))
+                contingency_table[1][0] += 1
+        else:
+            u = test_alg_dist[i]
+            if sum([u[0], u[2]]) < sum([u[1], u[3], u[4], u[5]]):
+                # print("%s %s - %s" % (t, u, "(train ineff, test eff)"))
+                contingency_table[0][1] += 1
+            else:
+                # print("%s %s - %s" % (t, u, "(train ineff, test ineff)"))
+                contingency_table[1][1] += 1
+
+    print("Contingency table: " + str(contingency_table))
+    test = statsmodels.stats.contingency_tables.mcnemar(contingency_table)
+    print(test)
+
+def mcnemar_par_alg_diff(train_alg_dist, test_alg_dist):
+    # Perform McNemar's t-test on misalignment between algorithm application in training and test
+    # Algorithms: ["BS", "DS", "IS", "MS", "QS", "Hybrid", "Other"]
+    # table: [train alg, train others] x [test alg, test others]
+
+    for i in range(len(train_alg_dist[0])):
+        algs = ["BS", "DS", "IS", "MS", "QS", "Hybrid", "Other"]
+        contingency_table = [[0, 0],
+                             [0, 0]]
+        for j in range(len(train_alg_dist)):
+            t = train_alg_dist[j]
+            if t[i] != 0:
+                u = test_alg_dist[j]
+                if u[i] != 0:
+                    # print("%s %s - %s" % (t, u, "(train " + algs[i] + ", test " + algs[i] + ")"))
+                    contingency_table[0][0] += 1
+                else:
+                    # print("%s %s - %s" % (t, u, "(train " + algs[i] + ")"))
+                    contingency_table[1][0] += 1
+            else:
+                u = test_alg_dist[j]
+                if u[i] != 0:
+                    # print("%s %s - %s" % (t, u, "(test " + algs[i] + ")"))
+                    contingency_table[0][1] += 1
+                else:
+                    # print("%s %s - %s" % (t, u, "()"))
+                    contingency_table[1][1] += 1
+
+        print("%s Contingency table: %s" % (algs[i], str(contingency_table)))
+        test = statsmodels.stats.contingency_tables.mcnemar(contingency_table, correction=False)
+        print(test)
+
+def Z_trans_ANOVA_alg_dist_diff(train_alg_dist, test_alg_dist):
+
+    train_alg_dist_trans = np.array(train_alg_dist).T
+    test_alg_dist_trans = np.array(test_alg_dist).T
+
+    z_train = [stats.zscore(t) for t in train_alg_dist_trans]
+    for t in z_train:
+        t[np.isnan(t)] = 0
+    z_test = [stats.zscore(t) for t in test_alg_dist_trans]
+
+    iv_1_f = [*["BS"] * len(z_train[0]),
+              *["DS"] * len(z_train[1]),
+              *["IS"] * len(z_train[2]),
+              *["MS"] * len(z_train[3]),
+              *["QS"] * len(z_train[4]),
+              *["Hybrid"] * len(z_train[5]),
+              *["Other"] * len(z_train[6])]
+    iv_2_f = [*["Train"] * len(iv_1_f), *["Test"] * len(iv_1_f)]
+    iv_1_f = [*iv_1_f * 2]
+    train_alg_dist_concat = np.concatenate(z_train)
+    test_alg_dist_concat = np.concatenate(z_test)
+    print(train_alg_dist_concat)
+    print(test_alg_dist_concat)
+
+    dv_f = [*train_alg_dist_concat, *test_alg_dist_concat]
+    df = pd.DataFrame({
+        "ALG": iv_1_f,
+        "STAGE": iv_2_f,
+        "Z": dv_f
+    })
+
+    format = "Z ~ C(STAGE)"
+    model = ols(format, data=df).fit()
+    ANOVA = sm.stats.anova_lm(model, typ=2)
+    print(ANOVA)
+    df["Combination"] = df["STAGE"]
+    tukey = pairwise_tukeyhsd(endog=dv_f, groups=df["Combination"], alpha=0.05)
+    print(tukey)
