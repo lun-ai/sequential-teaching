@@ -21,7 +21,7 @@ sorter(A,B):-merger(A,C),sorter(C,B).
 
 
 
-% wrapper of the compare action
+% wrapper of the compare_nums/2 action
 
 compare_nums_wrapper(A,B) :-
     compare_nums(A,B).
@@ -47,7 +47,7 @@ compare_nums_wrapper(A,B,trace,Expr,Mapping) :-
 
 
 
-% wrapper of the action that dumps all bag integers into memory
+% wrapper of the drop_bag_remaining/2 action that dumps all bag integers into memory
 
 drop_bag_remaining_wrapper(A,B) :-
     drop_bag_remaining(A,B).
@@ -72,6 +72,8 @@ drop_bag_remaining_wrapper(A,B,trace,Expr,Mapping) :-
 
 
 
+% text template for the compare_nums/2 action
+
 compare_text([S1|_],[S2|_],Mapping,Prefix) :-
     number_string(I1,S1),
     number_string(I2,S2),
@@ -83,11 +85,15 @@ compare_text([S1|_],[S2|_],Mapping,Prefix) :-
 
 
 
+% text template of the drop_bag_remaining/2 action
+
 drop_text([],[S1|Ss],Mapping) :-
     findall(L,(member(S,[S1|Ss]),number_string(I,S),nth1(I,Mapping,L)),Ls),
     format('Apend ~w\n',[Ls]).
 drop_text(I1,I2,Mapping) :-
     drop_text(I2,I1,Mapping).
+
+
 
 % An example of comparing correct/wrong output of merging from traces
 % Two key actions are compare_nums/2 and drop_bag_remaining/2
