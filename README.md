@@ -24,7 +24,7 @@ Requirement:
 
 ### Learning the target program
 
-Learn programs simulate execution of a robot sorting on short expressions of integers.
+Learn programs simulate execution of a robot sorting on short expressions of distinct integers.
 These expressions are single integers or integers linked by the '<' symbol, 
 e.g. "5", "1 < 2", "4 < 6 < 9". 
 
@@ -69,7 +69,8 @@ Sequences are converted into expressions while at the end of merging a sorted se
 ```prolog
 [
   merger([1,4], [2,3], [1, 2, 3, 4])  % pos example
-]/[
+]
+[
   merger([1,4], [2,3], [1, 2, 4, 3])  % neg example
 ]
                    ]
