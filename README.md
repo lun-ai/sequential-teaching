@@ -67,13 +67,13 @@ One positive and one negative example are required. merger/2 takes two sequences
 Sequences are converted into expressions while at the end of merging a sorted sequence is produced.
 
 ```prolog
-[
-  merger([1,4], [2,3], [1, 2, 3, 4])  % pos example
-]
-[
-  merger([1,4], [2,3], [1, 2, 4, 3])  % neg example
-]
-                   ]
+get_examples(merge,
+             [
+                merger([1,4], [2,3], [1, 2, 3, 4])  % pos example
+             ]/[
+                merger([1,4], [2,3], [1, 2, 4, 3])  % neg example
+             ],
+             [E1]/[E2]).
 ```
 
 An example of textual explanation generated can be viewed by running
