@@ -73,7 +73,7 @@ get_examples(merge,
              ]/[
                 merger([1,4], [2,3], [1, 2, 4, 3])  % neg example
              ],
-             [E1]/[E2]).
+             [Pos]/[Neg]).
 ```
 
 An example of textual explanation generated can be viewed by running
