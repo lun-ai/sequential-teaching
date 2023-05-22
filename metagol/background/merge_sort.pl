@@ -24,11 +24,17 @@ world_replace(X,Y,A,B):-
     append(Prefix,[X|Suffix],A),
     append(Prefix,[Y|Suffix],B),!.
 
+
+
 %% definition of item order, used for item comparison
+
 order_leq(A,B):-A=<B.
 order_gt(A,B):-A>B.
 
+
+
 %% assume learner knows lexicographic order of numbers from 0 to 50
+
 lexi_order([0,1,2,3,4,5,6,7,8,9,
             10,11,12,13,14,15,16,17,18,19,
             20,21,22,23,24,25,26,27,28,29,
@@ -97,10 +103,13 @@ spearman_rank([H|T],L,Rank,SumXY,SumX,SumY,SumXSq,SumYSq,Size):-
 square(X,Y):-
     Y is X*X.
 
+
+
 %% Compare the spearman rank coff of values in two consecutive states, ro<V1,L> and ro<V2,L>
 %% where L is the lexicographic order of elements in V1 and V2
 %% higher spearman value = more sorted
 %% skipping computation of the constant denominator
+
 term_order(spearman,A,B):-
     compute_spearman(A,C1),
     compute_spearman(B,C2),
@@ -114,13 +123,19 @@ increment_energy(A,B,Amount):-
 record_energy(A,Amount):-
     world_check(energy(Amount),A).
 
+
+
 %% additionally covers an edge case for extending an expression
+
 extend_expr("",Expr,Expr):-!.
 extend_expr(Expr,Expr1,Expr2):-
     atomics_to_string([Expr,Expr1],"<",Expr2).
 
+
+
 %% performs a compare of two number strings, one from left bag and one from right bag
 %% extends latest expression in memory with the smaller number string and the less-than sign
+
 compare_nums(A,B):-
     world_check(left_bag([H1|T1]),A),
     world_check(right_bag([H2|_]),A),
@@ -144,7 +159,10 @@ compare_nums(A,B):-
     world_replace(memory(_),memory([Seq1|Seqs]),C,D),
     increment_energy(D,B,1).
 
+
+
 %% construct the remaining of an expression when either one of left/right bags is empty
+
 drop_bag_remaining(A,B):-
     world_check(left_bag([]),A),!,
     world_check(right_bag(R),A),
@@ -160,8 +178,11 @@ drop_bag_remaining(A,B):-
     world_replace(left_bag(_),left_bag([]),A,C),
     world_replace(memory(_),memory([Seq1|Seqs]),C,B).
 
+
+
 %% parse two expressions from expr into left, right bag as sequences of number strings
 %% by parsing, less-than symbols are stripped from expressions
+
 parse_exprs(A,B):-
     world_check(left_bag([]),A),
     world_check(right_bag([]),A),
@@ -174,9 +195,12 @@ parse_exprs(A,B):-
     world_replace(right_bag(_),right_bag(Values2),D,E),
     world_replace(memory(_),memory([""|M]),E,B).
 
+
+
 %% recycle expressions in memory into expr
 %% either recycle or merge action can take place at any world state
 %% recycling conceptually implements a cycler list
+
 recycle_memory(A,B):-
     world_check(expr(Exprs),A),
     Exprs \= [_,_|_],
@@ -187,7 +211,10 @@ recycle_memory(A,B):-
     world_replace(memory(_),memory([]),A,C),
     world_replace(expr(_),expr(Exprs1),C,B).
 
+
+
 %% holds if there is only one expression in the world state (checks expr, memory and bags)
+
 single_expr(A,A):-
     world_check(expr([_]),A),
     world_check(memory([]),A),

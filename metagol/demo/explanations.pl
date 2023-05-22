@@ -119,7 +119,7 @@ find_merger_inconsistency :-
                     [
                         merger([1,4], [2,3], [1, 2, 3, 4])
                     ]/[
-                        merger([1,4], [2,3], [1, 4, 2, 3])
+                        merger([1,4], [2,3], [1, 2, 4, 3])
                     ],
                  [E1]/[E2]),
     E1=.. [merger,A1,B1],

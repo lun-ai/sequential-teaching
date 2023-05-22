@@ -3,7 +3,7 @@
 ## Summary
 
 This work aims to explore the explanatory effects of curriculum order and the presence of machine-learned explanations
-for sequential problem-solving.
+for sequential problem-solving. A pre-print paper on this work is available on [https://arxiv.org/abs/2205.10250](https://arxiv.org/abs/2205.10250).
 
 An empirical study was carried out involving human participants from Amazon Mechanical Turk (AMT) in a four-groups
 factorial 2 x 2 design. Human participants were asked to learn an efficient sorting strategy while being presented
@@ -16,25 +16,85 @@ Meta-interpretive learning system, [Metagolo](https://dl.acm.org/doi/10.5555/283
 Informed consent for participation in the experiment and publication of data was obtained from all participants included
 in the study.
 
-## Use Metagolo to learn the merge sort variant
+## Using Metagolo to learn the merge sort variant
 
 Requirement:
 
 - SWI-Prolog
 
-To learn merge sort without learning merge first,
+### Learning the target program
+
+Learn programs simulate execution of a robot sorting on short expressions of integers.
+These expressions are single integers or integers linked by the '<' symbol, 
+e.g. "5", "1 < 2", "4 < 6 < 9". 
+
+Primitives are defined based on composable objects and actions to compare/manipulate the symbols.
+
+These primitives are defined in the file:
+
+metagol/background/merge_sort.pl
+
+To learn merge sort without learning merge first, run
 
 ```bash
 swipl -s metagol/experiments/merge_sort/learn.pl -g learn_merge_sort -g halt
 ```
 
-To first learn merge and then learn merge sort,
+To first learn merge and then learn merge sort, run
 
 ```bash
 swipl -s metagol/experiments/merge_sort/learn.pl -g learn_merge_sort_in_episodes -g halt
 ```
 
+Programs learned via dependent learning cover merger/2 and sorter/2:
+
+```prolog
+merger(A,B):-parse_exprs(A,C),merger_1(C,B).
+merger_1(A,B):-compare_nums(A,C),merger_1(C,B).
+merger_1(A,B):-compare_nums(A,C),drop_bag_remaining(C,B).
+
+sorter(A,B):-single_expr(A,C),single_expr(C,B).
+sorter(A,B):-recycle_memory(A,C),sorter(C,B).
+sorter(A,B):-merger(A,C),sorter(C,B).
+```
+
+### Explaining the target program
+
 The program merger was used to generate explanations for teaching human participants in the AMT experiment.
+
+One positive and one negative example are required. merger/2 takes two sequences of increasing magnitudes. 
+
+Sequences are converted into expressions while at the end of merging a sorted sequence is produced.
+
+```prolog
+[
+  merger([1,4], [2,3], [1, 2, 3, 4])  % pos example
+]/[
+  merger([1,4], [2,3], [1, 2, 4, 3])  % neg example
+]
+                   ]
+```
+
+An example of textual explanation generated can be viewed by running
+
+```commandline
+swipl -s metagol/demo/explanations.pl -g find_merger_inconsistency -g halt
+
+% An example of comparing correct/wrong output of merging from traces
+Compare - Left: [1,4] Right: [2,3] Expr: [] -> Left: [4] Right: [2,3] Expr: [1]
+Item A is lighter than item D
+ apend item A
+Compare - Left: [4] Right: [2,3] Expr: [1] -> Left: [4] Right: [3] Expr: [1<2]
+Item D is lighter than item B
+ apend item D
+Compare - Left: [4] Right: [3] Expr: [1<2] -> Left: [4] Right: [] Expr: [1<2<3]
+Item C is lighter than item B
+ apend item C
+Error   - correct: 1<2<3 wrong: 1<2<4
+Item C is lighter than item B
+should apend item C
+```
+
 
 ## Data processing
 
